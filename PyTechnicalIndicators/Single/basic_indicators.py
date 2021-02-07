@@ -4,6 +4,8 @@ import statistics
 
 def log(price):
     # Use math.log instead
+    if not price:
+        raise Exception('There needs to be a price to log')
     return math.log(price)
 
 
