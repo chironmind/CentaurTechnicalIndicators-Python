@@ -28,6 +28,7 @@ def log_diff(prices):
     return logdiffs
 
 
+# TODO: fill the first couple of periods with empty values
 def stddev(prices, period):
     # period is the the timeframe that you want it calculate it for throughout time
     if period <= 0:

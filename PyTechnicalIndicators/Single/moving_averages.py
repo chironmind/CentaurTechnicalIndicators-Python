@@ -6,7 +6,7 @@ def moving_average(prices):
 
 def exponential_moving_average(prices):
     length_prices = len(prices)
-    if length_prices == 0:
+    if length_prices <= 1:
         raise Exception('There needs to be prices to be able to do an exponential moving average')
     alpha = 2 / (length_prices + 1)
     price_sum = 0
@@ -23,7 +23,7 @@ def exponential_moving_average(prices):
 def smoothed_moving_average(prices):
     # SmoothedMA is same as EMA but alpha = 1 / len(prices)
     length_prices = len(prices)
-    if length_prices == 0:
+    if length_prices <= 1:
         raise Exception('There needs to be prices to be able to do an exponential moving average')
 
     alpha = 1 / length_prices

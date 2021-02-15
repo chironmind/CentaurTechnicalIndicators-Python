@@ -54,6 +54,7 @@ def stochastic_oscillator(close_prices):
 
 
 def personalised_rsi(prices, period, ma_model=None):
+    # TODO: allow pma
     if len(prices) < period:
         raise Exception(f'Submitted prices needs to be greater than submitted period of {period}')
 
@@ -83,14 +84,35 @@ def personalised_rsi(prices, period, ma_model=None):
             previous_average_gains = moving_average(previous_gains)
             previous_average_loss = moving_average(previous_loss)
         elif ma_model in sma:
-            previous_average_gains = smoothed_moving_average(previous_gains)
-            previous_average_loss = smoothed_moving_average(previous_loss)
+            if len(previous_gains) == 1:
+                previous_average_gains = moving_average(previous_gains)
+            else:
+                previous_average_gains = smoothed_moving_average(previous_gains)
+
+            if len(previous_loss) == 1:
+                previous_average_loss = moving_average(previous_loss)
+            else:
+                previous_average_loss = smoothed_moving_average(previous_loss)
         elif ma_model in ema:
-            previous_average_gains = exponential_moving_average(previous_gains)
-            previous_average_loss = exponential_moving_average(previous_loss)
+            if len(previous_gains) == 1:
+                previous_average_gains = moving_average(previous_gains)
+            else:
+                previous_average_gains = exponential_moving_average(previous_gains)
+
+            if len(previous_loss) == 1:
+                previous_average_loss = moving_average(previous_loss)
+            else:
+                previous_average_loss = exponential_moving_average(previous_loss)
         else:
-            previous_average_gains = smoothed_moving_average(previous_gains)
-            previous_average_loss = smoothed_moving_average(previous_loss)
+            if len(previous_gains) == 1:
+                previous_average_gains = moving_average(previous_gains)
+            else:
+                previous_average_gains = smoothed_moving_average(previous_gains)
+
+            if len(previous_loss) == 1:
+                previous_average_loss = moving_average(previous_loss)
+            else:
+                previous_average_loss = smoothed_moving_average(previous_loss)
 
         if previous_average_loss == 0:
             rsi.append(100)
