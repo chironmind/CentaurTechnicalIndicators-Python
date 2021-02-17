@@ -1,8 +1,8 @@
 
 import pandas
-# import matplotlib.pyplot as plt
-from PyTechnicalIndicators.Bulk import basic_indicators, moving_averages, strength_indicators
+import matplotlib.pyplot as plt
 import random
+from PyTechnicalIndicators.Bulk import basic_indicators, moving_averages, strength_indicators, candle_indicators
 
 # TODO: at the end of each of these add one to show the use of single
 
@@ -18,8 +18,9 @@ log_diff_df = pandas.DataFrame(index=data.index)
 log_diff_df['log diff'] = basic_indicators.log_diff(data['Typical Price'])
 
 # TODO: want to grph them and probably have them as separate time series
-print(log_df)
+plt.plot(log_df)
 print(log_diff_df)
+exit()
 
 # median
 median_5_period = basic_indicators.median(data['Typical Price'], 5)
@@ -116,9 +117,7 @@ print(exponential_moving_averages_df)
 # Personalised Moving Average
 # TODO: explain random alpha nomitaor and denominator
 random_alpha_nominator = random.uniform(0, 2)
-print(f'random_alpha_nominator: {random_alpha_nominator}')
 random_alpha_denominator = random.random()
-print(f'random_alpha_denominator: {random_alpha_denominator}')
 
 personalised_moving_averages_df = pandas.DataFrame(data=data, index=data.index, copy=True)
 personalised_moving_averages_df['5 day PMA'] = moving_averages.personalised_moving_average(
@@ -185,3 +184,42 @@ print(stochastic_oscillator)
 personalised_stochastic_oscillator = strength_indicators.personalised_stochastic_oscillator(data['Typical Price'], 10)
 # TODO: Graph
 print(personalised_stochastic_oscillator)
+
+# Bollinger Bands
+bollinger_bands_df = pandas.DataFrame(data=data, index=data.index, copy=True)
+bollinger_bands = candle_indicators.bollinger_bands(data['Typical Price'], True)
+bollinger_bands_df['Upper Band'] = bollinger_bands[0]
+bollinger_bands_df['Lower Band'] = bollinger_bands[1]
+print(bollinger_bands_df)
+
+# Personalised Bollinger Bands
+personalised_bollinger_bands_df = pandas.DataFrame(data=data, index=data.index, copy=True)
+personalised_bollinger_bands = candle_indicators.personalised_bollinger_bands(
+    data['Typical Price'],
+    40,
+    'ema',
+    1.5,
+    True)
+personalised_bollinger_bands_df['Upper Band'] = personalised_bollinger_bands[0]
+personalised_bollinger_bands_df['Lower Band'] = personalised_bollinger_bands[1]
+print(personalised_bollinger_bands_df)
+
+# Ichimoku Cloud
+ichimoku_cloud_df = pandas.DataFrame(data=data, index=data.index, copy=True)
+ichimoku_cloud = candle_indicators.ichimoku_cloud(data['High'], data['Low'], True)
+ichimoku_cloud_df['Senkou Span A'] = ichimoku_cloud[0]
+ichimoku_cloud_df['Senkou Span B'] = ichimoku_cloud[1]
+print(ichimoku_cloud_df)
+
+# Personalised Ichimoku Cloud
+personalised_ichimoku_cloud_df = pandas.DataFrame(data=data, index=data.index, copy=True)
+personalised_ichimoku_cloud = candle_indicators.personalised_ichimoku_cloud(
+    data['High'],
+    data['Low'],
+    10,
+    20,
+    40,
+    True)
+personalised_ichimoku_cloud_df['Senkou Span A'] = personalised_ichimoku_cloud[0]
+personalised_ichimoku_cloud_df['Senkou Span B'] = personalised_ichimoku_cloud[1]
+print(personalised_ichimoku_cloud_df)
