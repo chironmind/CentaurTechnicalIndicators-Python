@@ -28,8 +28,7 @@ def log_diff(prices):
     return logdiffs
 
 
-# TODO: fill the first couple of periods with empty values
-def stddev(prices, period):
+def stddev(prices, period, fill_empty=False, fill_value=None):
     # period is the the timeframe that you want it calculate it for throughout time
     if period <= 0:
         raise Exception('Period needs to be at least 1')
@@ -38,14 +37,16 @@ def stddev(prices, period):
         raise Exception('Length of prices needs to be greater than 0')
 
     stddevs = []
-
+    if fill_empty:
+        for i in range(period):
+            stddevs.append(fill_value)
     for i in range(period, len(prices)):
         stddevs.append(statistics.stdev(prices[i - period:i]))
 
     return stddevs
 
 
-def mean(prices, period):
+def mean(prices, period, fill_empty=False, fill_value=None):
     if period <= 0:
         raise Exception('Period needs to be at least 1')
 
@@ -53,29 +54,33 @@ def mean(prices, period):
         raise Exception('Length of prices needs to be greater than 0')
 
     means = []
-
+    if fill_empty:
+        for i in range(period):
+            means.append(fill_value)
     for i in range(period, len(prices)):
         means.append(statistics.mean(prices[i - period:i]))
 
     return means
 
 
-def median(prices, period):
+def median(prices, period, fill_empty=False, fill_value=None):
     if period <= 0:
         raise Exception('Period needs to be at least 1')
 
     if len(prices) < 0:
         raise Exception('Length of prices needs to be greater than 0')
 
-    means = []
-
+    medians = []
+    if fill_empty:
+        for i in range(period):
+            medians.append(fill_value)
     for i in range(period, len(prices)):
-        means.append(statistics.median(prices[i - period:i]))
+        medians.append(statistics.median(prices[i - period:i]))
 
-    return means
+    return medians
 
 
-def variance(prices, period):
+def variance(prices, period, fill_empty=False, fill_value=None):
     if period <= 0:
         raise Exception('Period needs to be at least 1')
 
@@ -83,6 +88,9 @@ def variance(prices, period):
         raise Exception('Length of prices needs to be greater than 0')
 
     vars = []
+    if fill_empty:
+        for i in range(period):
+            vars.append(fill_value)
     for i in range(period, len(prices)):
         vars.append(statistics.variance(prices[i - period:i]))
 
