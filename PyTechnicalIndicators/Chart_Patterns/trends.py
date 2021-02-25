@@ -54,19 +54,25 @@ def break_down_trend(price_list):
 
         if previous_trend is None:
             previous_trend = current_trend
-            previous_price = price_list[position]
+            previous_tuple = price_list[position]
             trend_start = price_list[position]
             continue
 
         current_price = price_list[position][0]
+        print(current_price)
         current_index = price_list[position][1]
+        print(current_index)
         previous_price = previous_tuple[0]
+        print(previous_price)
         previous_index = previous_tuple[1]
+        print(previous_index)
         time_passed = current_index - previous_index
+        print(time_passed)
         trended_price = previous_price + (previous_trend * time_passed)
+        print(trended_price)
 
         stddev_diff = 2*(statistics.stdev(trended_price))
-
+        print(stddev_diff)
         upper_trend_limit = trended_price + stddev_diff
         lower_trend_limit = trended_price - stddev_diff
 
