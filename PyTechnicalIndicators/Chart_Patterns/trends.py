@@ -70,7 +70,7 @@ def break_down_trend(price_list):
         print(time_passed)
         trended_price = previous_price + (previous_trend * time_passed)
         print(trended_price)
-
+        # TODO: stddev needs to be of a list, should take it of the period
         stddev_diff = 2*(statistics.stdev(trended_price))
         print(stddev_diff)
         upper_trend_limit = trended_price + stddev_diff
@@ -91,8 +91,71 @@ def break_down_trends(typical_prices, min_period=2):
     peaks_list = get_peaks(typical_prices, min_period)
     pits_list = get_pits(typical_prices, min_period)
 
-    peak_trends = break_down_trend(peaks_list)
-    pit_trends = break_down_trend(pits_list)
+    peak_trends = []
+    pit_trends = []
+
+    previous_peak_trend = None
+    previous_peak = ()
+    peak_trend_start = ()
+
+    for position in range(len(peaks_list)-1):
+        current_trend = peaks_list[position+1][0] - peaks_list[position][0]
+
+        if previous_peak_trend is None:
+            previous_peak_trend = current_trend
+            previous_peak = peaks_list[position]
+            peak_trend_start = peaks_list[position]
+            continue
+
+        current_price = peaks_list[position][0]
+        current_index = peaks_list[position][1]
+        previous_price = previous_peak[0]
+        previous_index = previous_peak[1]
+        time_passed = current_index - previous_index
+        trended_price = previous_price + (previous_peak_trend * time_passed)
+        # TODO: stddev needs to be of a list, should take it of the period
+        stddev_diff = 2*(statistics.stdev(typical_prices[previous_index:current_index]))
+        upper_trend_limit = trended_price + stddev_diff
+        lower_trend_limit = trended_price - stddev_diff
+
+        if current_trend > upper_trend_limit or current_trend < lower_trend_limit:
+            period_trend = current_price - peak_trend_start[0]
+            peak_trends.append((peak_trend_start[1], current_index, period_trend))
+            peak_trend_start = peaks_list[position]
+
+        previous_peak = peaks_list[position]
+        previous_peak_trend = current_trend
+
+    previous_pit_trend = None
+    previous_pit = ()
+    pit_trend_start = ()
+
+    for position in range(len(pits_list)-1):
+        current_trend = pits_list[position+1][0] - pits_list[position][0]
+
+        if previous_pit_trend is None:
+            previous_pit_trend = current_trend
+            previous_pit = pits_list[position]
+            pit_trend_start = pits_list[position]
+            continue
+
+        current_price = pits_list[position][0]
+        current_index = pits_list[position][1]
+        previous_price = previous_pit[0]
+        previous_index = previous_pit[1]
+        time_passed = current_index - previous_index
+        trended_price = previous_price + (previous_pit_trend * time_passed)
+        stddev_diff = 2*(statistics.stdev(typical_prices[previous_index:current_index]))
+        upper_trend_limit = trended_price + stddev_diff
+        lower_trend_limit = trended_price - stddev_diff
+
+        if current_trend > upper_trend_limit or current_trend < lower_trend_limit:
+            period_trend = current_price - pit_trend_start[0]
+            pit_trends.append((pit_trend_start[1], current_index, period_trend))
+            pit_trend_start = peaks_list[position]
+
+        previous_pit = peaks_list[position]
+        previous_pit_trend = current_trend
 
     return peak_trends, pit_trends
 
