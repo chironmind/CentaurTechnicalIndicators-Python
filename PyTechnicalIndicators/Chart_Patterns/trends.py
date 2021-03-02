@@ -42,131 +42,92 @@ def get_trend_angle(price_a, index_a, price_b, index_b):
     return math.degrees(angle)
 
 
-def break_down_trend(price_list):
+def break_down_trend(outlier_list, typical_prices):
     trends = []
 
-    previous_trend = None
-    previous_tuple = ()
-    trend_start = ()
+    previous_tuple = outlier_list[1]
+    trend_start = outlier_list[0]
+    period_trends = []
+    is_new_trend = False
 
-    for position in range(len(price_list)-1):
-        current_trend = price_list[position+1][0] - price_list[position][0]
+    for position in range(2, len(outlier_list)):
+        current_price = outlier_list[position][0]
+        current_index = outlier_list[position][1]
+        previous_price = previous_tuple[0]
+        previous_index = previous_tuple[1]
+        current_period_length = current_index - previous_index
 
-        if previous_trend is None:
-            previous_trend = current_trend
-            previous_tuple = price_list[position]
-            trend_start = price_list[position]
+        previous_trend = (previous_price - trend_start[0]) / (previous_index - trend_start[1])
+        expected_price = previous_price + (current_period_length * previous_trend)
+        current_trend = (current_price - trend_start[0]) / (current_index - trend_start[1])
+        micro_period_trend = (current_price - previous_price) / (current_index - previous_index)
+
+        if current_period_length <= 3:
             continue
 
-        current_price = price_list[position][0]
-        print(current_price)
-        current_index = price_list[position][1]
-        print(current_index)
-        previous_price = previous_tuple[0]
-        print(previous_price)
-        previous_index = previous_tuple[1]
-        print(previous_index)
-        time_passed = current_index - previous_index
-        print(time_passed)
-        trended_price = previous_price + (previous_trend * time_passed)
-        print(trended_price)
-        # TODO: stddev needs to be of a list, should take it of the period
-        stddev_diff = 2*(statistics.stdev(trended_price))
-        print(stddev_diff)
-        upper_trend_limit = trended_price + stddev_diff
-        lower_trend_limit = trended_price - stddev_diff
+        period_trends.append(previous_trend)
 
-        if current_trend > upper_trend_limit or current_trend < lower_trend_limit:
-            period_trend = current_price - trend_start[0]
-            trends.append((trend_start[1], current_index, period_trend))
-            trend_start = price_list[position]
+        std_dev_multiplier = 2
+        if len(period_trends) > 1:
+            trend_std_dev = statistics.stdev(period_trends)
 
-        previous_tuple = price_list[position]
-        previous_trend = current_trend
+            upper_trend_band = previous_trend + trend_std_dev
+            lower_trend_band = previous_trend - trend_std_dev
+            if current_trend > upper_trend_band or current_trend < lower_trend_band:
+                std_dev_multiplier = 1
+            elif micro_period_trend > upper_trend_band or micro_period_trend < lower_trend_band:
+                std_dev_multiplier = 1
+
+        period_std_dev = statistics.stdev(typical_prices[trend_start[1]:current_index+1])
+        upper_trend_limit = expected_price + (std_dev_multiplier * period_std_dev)
+        lower_trend_limit = expected_price - (std_dev_multiplier * period_std_dev)
+
+        if current_price > upper_trend_limit or current_price < lower_trend_limit:
+            trends.append((trend_start[1], previous_index, previous_trend))
+            # Trend started at t-1 as t is current outlier
+            trend_start = previous_tuple
+            period_trends = []
+
+        previous_tuple = outlier_list[position]
 
     return trends
 
 
-def break_down_trends(typical_prices, min_period=2):
+def break_down_trends(typical_prices, min_period=2, peaks_only=False, pits_only=False):
     peaks_list = get_peaks(typical_prices, min_period)
     pits_list = get_pits(typical_prices, min_period)
 
-    peak_trends = []
-    pit_trends = []
+    if not pits_only:
+        peak_trends = break_down_trend(peaks_list, typical_prices)
+    if not peaks_only:
+        pit_trends = break_down_trend(pits_list, typical_prices)
 
-    previous_peak_trend = None
-    previous_peak = ()
-    peak_trend_start = ()
-
-    for position in range(len(peaks_list)-1):
-        current_trend = peaks_list[position+1][0] - peaks_list[position][0]
-
-        if previous_peak_trend is None:
-            previous_peak_trend = current_trend
-            previous_peak = peaks_list[position]
-            peak_trend_start = peaks_list[position]
-            continue
-
-        current_price = peaks_list[position][0]
-        current_index = peaks_list[position][1]
-        previous_price = previous_peak[0]
-        previous_index = previous_peak[1]
-        time_passed = current_index - previous_index
-        trended_price = previous_price + (previous_peak_trend * time_passed)
-        # TODO: stddev needs to be of a list, should take it of the period
-        stddev_diff = 2*(statistics.stdev(typical_prices[previous_index:current_index]))
-        upper_trend_limit = trended_price + stddev_diff
-        lower_trend_limit = trended_price - stddev_diff
-
-        if current_trend > upper_trend_limit or current_trend < lower_trend_limit:
-            period_trend = current_price - peak_trend_start[0]
-            peak_trends.append((peak_trend_start[1], current_index, period_trend))
-            peak_trend_start = peaks_list[position]
-
-        previous_peak = peaks_list[position]
-        previous_peak_trend = current_trend
-
-    previous_pit_trend = None
-    previous_pit = ()
-    pit_trend_start = ()
-
-    for position in range(len(pits_list)-1):
-        current_trend = pits_list[position+1][0] - pits_list[position][0]
-
-        if previous_pit_trend is None:
-            previous_pit_trend = current_trend
-            previous_pit = pits_list[position]
-            pit_trend_start = pits_list[position]
-            continue
-
-        current_price = pits_list[position][0]
-        current_index = pits_list[position][1]
-        previous_price = previous_pit[0]
-        previous_index = previous_pit[1]
-        time_passed = current_index - previous_index
-        trended_price = previous_price + (previous_pit_trend * time_passed)
-        stddev_diff = 2*(statistics.stdev(typical_prices[previous_index:current_index]))
-        upper_trend_limit = trended_price + stddev_diff
-        lower_trend_limit = trended_price - stddev_diff
-
-        if current_trend > upper_trend_limit or current_trend < lower_trend_limit:
-            period_trend = current_price - pit_trend_start[0]
-            pit_trends.append((pit_trend_start[1], current_index, period_trend))
-            pit_trend_start = peaks_list[position]
-
-        previous_pit = peaks_list[position]
-        previous_pit_trend = current_trend
+    if peaks_only:
+        return peak_trends
+    if pits_only:
+        return pit_trends
 
     return peak_trends, pit_trends
 
-    # TODO: figure out how to merge...
-    #  take into account the diff between peaks, and pits will allow to stop false positives
-    #  this will need to be graphed to see how applicable it is...
 
+def merge_trends(typical_prices, min_period=2):
+    peaks_list = get_peaks(typical_prices, min_period)
+    pits_list = get_pits(typical_prices, min_period)
+    outlier_list = peaks_list
+    last_index = 0
+    for pit in pits_list:
+        for outlier_index in range(last_index, len(outlier_list)):
+            if pit[1] < outlier_list[outlier_index][1]:
+                outlier_list.insert(outlier_index, pit)
+                last_index = outlier_index
+                break
 
-# TODO: figure out the trendline that connects the most peaks/pits so that breakouts can be highlighted
-#  figure out how to break down trends into different areas to slow up/down/flat
+            if outlier_index == len(outlier_list):
+                outlier_list.append(pit)
+                last_index = len(outlier_list)
+
+    return break_down_trend(outlier_list, typical_prices)
+
 # todo: fibonacci retractment, get a peak and pit, and then do the retractement based on that
-# todo: take into accout volume to determine support and resistance???
-
-# for notebok get general industry direction and general overall market direction
+# todo: take into account volume to determine support and resistance, volume will need to be transformed into a series,
+#   use the first value as 100, and change accordingly
