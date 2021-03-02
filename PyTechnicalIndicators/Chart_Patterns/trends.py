@@ -48,7 +48,6 @@ def break_down_trend(outlier_list, typical_prices):
     previous_tuple = outlier_list[1]
     trend_start = outlier_list[0]
     period_trends = []
-    is_new_trend = False
 
     for position in range(2, len(outlier_list)):
         current_price = outlier_list[position][0]
@@ -127,6 +126,8 @@ def merge_trends(typical_prices, min_period=2):
                 last_index = len(outlier_list)
 
     return break_down_trend(outlier_list, typical_prices)
+
+# todo: create bands for the stddev to graph
 
 # todo: fibonacci retractment, get a peak and pit, and then do the retractement based on that
 # todo: take into account volume to determine support and resistance, volume will need to be transformed into a series,

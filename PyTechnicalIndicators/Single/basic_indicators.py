@@ -34,6 +34,7 @@ def mean(prices):
 
 
 def median(prices):
+    # Use statistics.mean instead
     if len(prices) == 0:
         raise Exception('There needs to be prices to be able to calculate a median')
 
