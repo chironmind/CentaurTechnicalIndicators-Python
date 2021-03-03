@@ -24,7 +24,7 @@ def smoothed_moving_average(prices):
     # SmoothedMA is same as EMA but alpha = 1 / len(prices)
     length_prices = len(prices)
     if length_prices <= 1:
-        raise Exception('There needs to be prices to be able to do an exponential moving average')
+        raise Exception('There needs to be prices to be able to do an smoothed moving average')
 
     alpha = 1 / length_prices
     price_sum = 0
@@ -42,7 +42,10 @@ def smoothed_moving_average(prices):
 def personalised_moving_average(prices, alpha_nominator, alpha_denominator):
     length_prices = len(prices)
     if length_prices == 0:
-        raise Exception('There needs to be prices to be able to do an exponential moving average')
+        raise Exception('There needs to be prices to be able to do personalised moving average')
+
+    if length_prices + alpha_denominator == 0:
+        raise Exception('The length of prices and the value of the alpha denominator add up to 0, and division by 0 isn\'t possible')
 
     alpha = alpha_nominator / (length_prices + alpha_denominator)
     price_sum = 0
@@ -76,6 +79,7 @@ def signal_line(macd):
 
 
 def personalised_macd(prices, short_period, long_period):
+    # TODO: Allow changing of the ema to another model
     if short_period <= 0 or long_period <= 0:
         raise Exception('Period needs to be at least 1')
 
@@ -91,6 +95,7 @@ def personalised_macd(prices, short_period, long_period):
 
 
 def personalised_signal_line(macd):
+    # TODO: allow choice of the MA model
     if len(macd) == 0:
         raise Exception("Submitted MACD array is too short needs to be greater than 0")
 
