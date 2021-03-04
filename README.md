@@ -52,7 +52,7 @@ The simple moving average of a series
 
 __Parameters:__
 
--_prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
+- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
 
 __Example:__
 ```python
@@ -67,7 +67,7 @@ The exponential moving average (EMA), this is usually used when the latest price
 
 __Parameters:__
 
--_prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
+- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
 
 __Example:__
 ```python
@@ -83,7 +83,7 @@ The smoothed moving average (SMA) is similar to the exponential moving average, 
 
 __Parameters:__
 
--_prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
+- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
 
 __Example:__
 ```python
@@ -109,9 +109,9 @@ The SMA used an alpha nominator of 1 and an alpha denominator of 0.
 
 __Parameters:__
 
--_prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
--_alpha_nominator:_ float or int, can be 0, but it isn't recommended.
--_alpha_denominator:_ float or int, can be 0
+- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
+- _alpha_nominator:_ float or int, can be 0, but it isn't recommended.
+- _alpha_denominator:_ float or int, can be 0
 
 __Example:__
 ```python
