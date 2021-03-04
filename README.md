@@ -20,20 +20,19 @@ Single and Bulk have identical functions, Single returns a single value, Bulk re
 time if you only a single value returned for you series, or to avoid looping a call if you have a lot of data to process.
 
 It is important to note that the functions expect a list of prices to work, with the oldest value at the beginning of the
- list and the most recent price at the end. An indexed Pandas DF will not work, you will have to `list()` before
- you passe it into these functions, the [Example]() has more details.
+ list and the most recent price at the end. An indexed Pandas DF will not work, you will have to `list()` before your variables
+ you pass it into these functions, the [Example]() has more details.
 
 ---
 
 ### Single
 
 Single is broken down into 4 sections:
-    - moving_averages: contains the common moving averages (moving average, exponential ma, smoothed ma, macd),
+
+- moving_averages: contains the common moving averages (moving average, exponential ma, smoothed ma, macd),
         as well as a personalised moving average.
-
-    - strength_indicators: currently only has Relative Strength Index and Stochastic as well as their personalised variations.
-
-    - candle_indicators: currently only has Bollinger Bands and the Ichimoku Cloud as well as their personalised variations.
+- strength_indicators: currently only has Relative Strength Index and Stochastic as well as their personalised variations.
+- candle_indicators: currently only has Bollinger Bands and the Ichimoku Cloud as well as their personalised variations.  
 
 By personalised variations we mean that we have allowed the user to determine how certain calculations were done.
 For example, the RSI uses as smoothed MA to calculate the average gains, the personalised RSI allows you to choose your
@@ -47,7 +46,7 @@ Calling moving_averages
 from PyTechnicalIndicators.Single import moving_averages
 ```
 
-- **moving_average(prices)**
+##### moving_average(prices)
 
 The simple moving average of a series
 
@@ -61,7 +60,7 @@ prices = [100, 102, 101 ... ]
 ma = moving_averages.moving_average(prices)
 ```
 
-- **exponential_moving_average(prices)**
+##### exponential_moving_average(prices)
 
 The exponential moving average (EMA), this is usually used when the latest prices are expected to have a greater impact
 
@@ -75,7 +74,7 @@ prices = [100, 102, 101 ... ]
 ema = moving_averages.exponential_moving_average(prices)
 ```
 
-- **smoothed_moving_average(prices)**
+##### smoothed_moving_average(prices)
 
 The smoothed moving average (SMA) is similar to the exponential moving average, the calculation of the alpha varies
  slightly (see personalised_moving_average for a more detailed explanation of the alpha)
@@ -90,7 +89,7 @@ prices = [100, 102, 101 ... ]
 sma = moving_averages.smoothed_moving_average(prices)
 ```
 
-- **personalised_moving_average(prices, alpha_nominator, alpha_denominator)**
+##### personalised_moving_average(prices, alpha_nominator, alpha_denominator)
 
 The personalised moving average (PMA) allows you to determine your nominator and denominator values for the alpha.
 The alpha determines the impact of previous prices, the higher the alpha the lower past values have an impact. The
@@ -117,13 +116,15 @@ prices = [100, 102, 101 ... ]
 pma = moving_averages.personalised_moving_average(prices, 3, 2)
 ```
 
-- **moving_average_divergence_convergence(prices)**
+##### moving_average_divergence_convergence(prices)
 
-- **signal_line(macd)**
 
-- **personalised_macd(prices, short_period, long_period)**
 
-- **personalised_signal_line(macd)**
+##### **signal_line(macd)**
+
+##### **personalised_macd(prices, short_period, long_period)**
+
+##### **personalised_signal_line(macd)**
 ---
 
 ## Contributing
