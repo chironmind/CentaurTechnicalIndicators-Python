@@ -51,6 +51,7 @@ from PyTechnicalIndicators.Single import moving_averages
 The simple moving average of a series
 
 __Parameters:__
+
 -_prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
 
 __Example:__
@@ -65,9 +66,10 @@ ma = moving_averages.moving_average(prices)
 The exponential moving average (EMA), this is usually used when the latest prices are expected to have a greater impact
 
 __Parameters:__
+
 -_prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
 
-_-Example:__
+__Example:__
 ```python
 prices = [100, 102, 101 ... ]
 
@@ -80,6 +82,7 @@ The smoothed moving average (SMA) is similar to the exponential moving average, 
  slightly (see personalised_moving_average for a more detailed explanation of the alpha)
 
 __Parameters:__
+
 -_prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
 
 __Example:__
@@ -105,6 +108,7 @@ The EMA used an alpha nominator of 2 and an alpha denominator of 1.
 The SMA used an alpha nominator of 1 and an alpha denominator of 0.
 
 __Parameters:__
+
 -_prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
 -_alpha_nominator:_ float or int, can be 0, but it isn't recommended.
 -_alpha_denominator:_ float or int, can be 0
