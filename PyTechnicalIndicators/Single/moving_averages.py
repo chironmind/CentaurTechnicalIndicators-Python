@@ -1,3 +1,7 @@
+ma = ['ma', 'moving average', 'moving_average']
+sma = ['sma', 'smoothed moving average', 'smoothed_moving_average']
+ema = ['ema', 'exponential moving average', 'exponential_moving_average']
+
 def moving_average(prices):
     if len(prices) == 0:
         raise Exception('There needs to be prices to be able to do a moving average')
@@ -78,25 +82,42 @@ def signal_line(macd):
     return exponential_moving_average(macd)
 
 
-def personalised_macd(prices, short_period, long_period):
-    # TODO: Allow changing of the ema to another model
-    if short_period <= 0 or long_period <= 0:
+def personalised_macd(prices, short_period, long_period, ma_model='ema'):
+    if short_period <= 0 or long_period <= short_period:
         raise Exception('Period needs to be at least 1')
 
     prices_length = len(prices)
     if prices_length < long_period:
         raise Exception(f"Submitted prices is too short to calculate MACD needs to be greater than {long_period}")
 
-    ema_short_period = exponential_moving_average(prices[prices_length - short_period:])
-    ema_long_period = exponential_moving_average(prices[prices_length - long_period:])
-    macd = ema_short_period - ema_long_period
+    if ma_model in ma:
+        ma_short_period = moving_average(prices[prices_length - short_period:])
+        ma_long_period = moving_average(prices[prices_length - long_period:])
+    elif ma_model in sma:
+        ma_short_period = smoothed_moving_average(prices[prices_length - short_period:])
+        ma_long_period = smoothed_moving_average(prices[prices_length - long_period:])
+    elif ma_model in ema:
+        ma_short_period = exponential_moving_average(prices[prices_length - short_period:])
+        ma_long_period = exponential_moving_average(prices[prices_length - long_period:])
+    else:
+        ma_short_period = exponential_moving_average(prices[prices_length - short_period:])
+        ma_long_period = exponential_moving_average(prices[prices_length - long_period:])
+
+    macd = ma_short_period - ma_long_period
 
     return macd
 
 
-def personalised_signal_line(macd):
+def personalised_signal_line(macd, ma_model='ema'):
     # TODO: allow choice of the MA model
-    if len(macd) == 0:
-        raise Exception("Submitted MACD array is too short needs to be greater than 0")
+    if len(macd) == 1:
+        raise Exception("Submitted MACD array is too short needs to be greater than 1")
 
-    return exponential_moving_average(macd)
+    if ma_model in ma:
+        return moving_average(macd)
+    elif ma_model in sma:
+        return smoothed_moving_average(macd)
+    elif ma_model in ema:
+        return exponential_moving_average(macd)
+    else:
+        return exponential_moving_average(macd)

@@ -122,13 +122,89 @@ pma = moving_averages.personalised_moving_average(prices, 3, 2)
 
 #### moving_average_divergence_convergence(prices)
 
+The moving average divergence convergence (MACD) only returns the MACD line, to get the single line you will need to
+call signal_line (detailed below), the histogram is simply one minus the other, and isn't yet provided here.
 
+The moving_average_divergence_convergence **requires** the length of prices to be at least 26 as that is the number of
+periods taken into account, it accepts more, but discards the extra no passing them in will only impact your performance.
+
+If you want to pass in a smaller or bigger period see personalised_macd.
+
+__Parameters:__
+
+- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n, must be at least
+26 periods in length
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+macd = moving_averages.moving_average_divergence_convergence(prices)
+```
 
 #### **signal_line(macd)**
 
-#### **personalised_macd(prices, short_period, long_period)**
+The signal line returns the signal line that is complementary to moving_average_divergence_convergence, and is required
+to be 9 periods long, no more, no less. If you'd like to pass in a different amount see personalised_signal_line
 
-#### **personalised_signal_line(macd)**
+__Parameters:__
+
+- _macd:_ list of 9 macds retrieved from moving_average_divergence_convergence
+
+__Example:__
+```python
+macd = [1.2, 1.45, 0.98 ... ]
+
+signal = moving_averages.signal_line(macd[:-9])
+```
+
+#### **personalised_macd(prices, short_period, long_period, ma_model='ema')**
+
+The personalised macd allows you to determine what the short period and long period are for the macd calculation.
+Essentially the macd is the subsctraction of the EMA of the short period - the EMA of the long period, which are
+12 and 26 respectively in the traditional MACD. Here we allow you to determine what those periods are.
+We also allow you to chose you moving average model in the event where you would prefer something other than the EMA.
+
+__Parameters:__
+
+- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n, the length of prices
+must be at least as big as the value for your long_period
+- short_period: int, value strictly greater than 0 but smaller than your long_period.
+- long_period: int, value strictly greater than the short period but smaller or equal to the length of prices.
+- ma_model: _optional_ The moving average model of your choice (defaults to EMA):
+  - for moving average either of the following: 'ma', 'moving average', 'moving_average'
+  - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
+  - for exponential moving average either of the following: 'ema', 'exponential moving average', 'exponential_moving_average'
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+pers_macd = moving_averages.personalised_macd(prices, 10, 20, 'smoothed moving average')
+```
+
+#### **personalised_signal_line(macd, ma_model='ema')**
+
+The personalised signal line is similar to the personalised MACD in that it lets you decide of the length of the macds
+that you want to pass in, however is doesn't require you to insert a variable, it will instead just calculate it based
+on the length of the macd list provided.
+
+You can also choose the MA model you would like to run, it is normally just a EMA but you are free to choose your model.personalised
+
+- macd:_ list of macds can be either from a normal macd or a personalised one. The length of the list needs to be greater
+than 1 and can be as large as you like.
+- ma_model: _optional_ The moving average model of your choice (defaults to EMA):
+  - for moving average either of the following: 'ma', 'moving average', 'moving_average'
+  - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
+  - for exponential moving average either of the following: 'ema', 'exponential moving average', 'exponential_moving_average'
+
+__Example:__
+```python
+macd = [1.2, 1.45, 0.98 ... ]
+
+signal = moving_averages.personalised_signal_line(macd, 'moving_average')
+```
+
 ---
 
 ## Contributing
