@@ -38,7 +38,6 @@ By personalised variations we mean that we have allowed the user to determine ho
 For example, the RSI uses as smoothed MA to calculate the average gains, the personalised RSI allows you to choose your
 MA model. Each personalised function will have more detail on how to use it and why.
 
-
 ### Moving Averages
 
 Calling moving_averages
@@ -47,14 +46,12 @@ Calling moving_averages
 from PyTechnicalIndicators.Single import moving_averages
 ```
 
-
 #### moving_average(prices)
 
 The simple moving average of a series
 
 __Parameters:__
-
-    _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
+-_prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
 
 __Example:__
 ```python
@@ -63,13 +60,12 @@ prices = [100, 102, 101 ... ]
 ma = moving_averages.moving_average(prices)
 ```
 
-
 #### exponential_moving_average(prices)
 
 The exponential moving average (EMA), this is usually used when the latest prices are expected to have a greater impact
 
 __Parameters:__
-    _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
+-_prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
 
 _-Example:__
 ```python
@@ -78,15 +74,13 @@ prices = [100, 102, 101 ... ]
 ema = moving_averages.exponential_moving_average(prices)
 ```
 
-
 #### smoothed_moving_average(prices)
 
 The smoothed moving average (SMA) is similar to the exponential moving average, the calculation of the alpha varies
  slightly (see personalised_moving_average for a more detailed explanation of the alpha)
 
 __Parameters:__
-
-    _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
+-_prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
 
 __Example:__
 ```python
@@ -94,7 +88,6 @@ prices = [100, 102, 101 ... ]
 
 sma = moving_averages.smoothed_moving_average(prices)
 ```
-
 
 #### personalised_moving_average(prices, alpha_nominator, alpha_denominator)
 
@@ -112,20 +105,16 @@ The EMA used an alpha nominator of 2 and an alpha denominator of 1.
 The SMA used an alpha nominator of 1 and an alpha denominator of 0.
 
 __Parameters:__
+-_prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
+-_alpha_nominator:_ float or int, can be 0, but it isn't recommended.
+-_alpha_denominator:_ float or int, can be 0
 
-    _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
-
-    _alpha_nominator:_ float or int, can be 0, but it isn't recommended.
-
-    _alpha_denominator:_ float or int, can be 0
-
-__Example:_
+__Example:__
 ```python
 prices = [100, 102, 101 ... ]
 
 pma = moving_averages.personalised_moving_average(prices, 3, 2)
 ```
-
 
 #### moving_average_divergence_convergence(prices)
 
