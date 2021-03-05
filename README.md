@@ -212,6 +212,8 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
+If you need ideas on where to start go to [TODO](), there will always be something that needs to be done...
+
 ---
 
 ## License
