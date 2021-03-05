@@ -28,7 +28,7 @@ def ichimoku_cloud(highs, lows):
     return leading_span_a, leading_span_b
 
 
-def personalised_bollinger_bands(typical_price, ma_model=None):
+def personalised_bollinger_bands(typical_price, ma_model='ma'):
     if len(typical_price) < 1:
         raise Exception(f'There needs to be a price to do a bollinger band')
 

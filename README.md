@@ -2,6 +2,10 @@
 
 PyTechnicalIndicators is a Python library with a number of common technical indicators used to analyse financial data.
 
+This README will walk you through the Python functions used to calculate various technical indicators and how to call them.
+It will not explain what each one is and when or where to use them. If you need more information use Google, Wikipedia,
+or Investopedia.
+
 ## Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
@@ -142,9 +146,9 @@ prices = [100, 102, 101 ... ]
 macd = moving_averages.moving_average_divergence_convergence(prices)
 ```
 
-#### **signal_line(macd)**
+#### signal_line(macd)
 
-The signal line returns the signal line that is complementary to moving_average_divergence_convergence, and is required
+The signal line returns the line that is complementary to moving_average_divergence_convergence, and is required
 to be 9 periods long, no more, no less. If you'd like to pass in a different amount see personalised_signal_line
 
 __Parameters:__
@@ -158,7 +162,7 @@ macd = [1.2, 1.45, 0.98 ... ]
 signal = moving_averages.signal_line(macd[:-9])
 ```
 
-#### **personalised_macd(prices, short_period, long_period, ma_model='ema')**
+#### personalised_macd(prices, short_period, long_period, ma_model='ema')
 
 The personalised macd allows you to determine what the short period and long period are for the macd calculation.
 Essentially the macd is the subsctraction of the EMA of the short period - the EMA of the long period, which are
@@ -183,7 +187,7 @@ prices = [100, 102, 101 ... ]
 pers_macd = moving_averages.personalised_macd(prices, 10, 20, 'smoothed moving average')
 ```
 
-#### **personalised_signal_line(macd, ma_model='ema')**
+#### personalised_signal_line(macd, ma_model='ema')
 
 The personalised signal line is similar to the personalised MACD in that it lets you decide of the length of the macds
 that you want to pass in, however is doesn't require you to insert a variable, it will instead just calculate it based
@@ -191,9 +195,11 @@ on the length of the macd list provided.
 
 You can also choose the MA model you would like to run, it is normally just a EMA but you are free to choose your model.personalised
 
-- macd:_ list of macds can be either from a normal macd or a personalised one. The length of the list needs to be greater
+__Parameters:__
+
+- _macd:_ list of macds can be either from a normal macd or a personalised one. The length of the list needs to be greater
 than 1 and can be as large as you like.
-- ma_model: _optional_ The moving average model of your choice (defaults to EMA):
+- _ma_model:_ _optional_ The moving average model of your choice (defaults to EMA):
   - for moving average either of the following: 'ma', 'moving average', 'moving_average'
   - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
   - for exponential moving average either of the following: 'ema', 'exponential moving average', 'exponential_moving_average'
@@ -205,8 +211,166 @@ macd = [1.2, 1.45, 0.98 ... ]
 signal = moving_averages.personalised_signal_line(macd, 'moving_average')
 ```
 
----
+### Strength Indicators
 
+Calling stength indicators
+
+```python
+from PyTechnicalIndicators.Single import strength_indicators
+```
+
+#### relative_strength_index(prices)
+
+Returns the relative strength index (RSI) of submitted prices, the length of prices needs to be 14 periods long, no more,
+no less.
+
+__Parameters:__
+
+- _prices:_ list of floats or ints of prices that needs to be exactly 14 periods long.
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+rsi = strength_indicators.relative_strength_index(prices)
+```
+
+#### personalised_rsi(prices, ma_model='sma')
+
+The personalised RSI allows you to choose which MA model to use as well as the number of periods. The traditional RSI 
+uses 14 periods and a SMA model.
+
+__Parameters__:
+
+- _prices:_ list of floats or int, the length of prices needs to be exactly of length of the period that you want to evaluate.
+than 1 and can be as large as you like.
+- _ma_model:_ _optional_ The moving average model of your choice (defaults to SMA):
+  - for moving average either of the following: 'ma', 'moving average', 'moving_average'
+  - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
+  - for exponential moving average either of the following: 'ema', 'exponential moving average', 'exponential_moving_average'
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+pers_rsi = strength_indicators.personalised_rsi(prices, 'ema')
+```
+
+#### stochastic_oscillator(close_prices)
+
+Returns the stochastic oscillator (SO) for submitted close prices which need to be 14 periods long, no more, no less.
+
+__Parameters:__
+
+- _close_prices:_ list of floats or ints of closing prices that needs to be exactly 14 periods long.
+
+__Example:__
+```python
+close = [99, 103, 96 ... ]
+
+so = strength_indicators.stochastic_oscillator(close)
+```
+
+#### personalised_stochastic_oscillator(close_prices)
+
+The personalised version of the stochastic oscillator allows you to submit close prices of any length.
+
+__Parameters:__
+
+- _close_prices:_ list of floats or ints of closing prices, the length is of your choosing.
+
+__Example:__
+```python
+close = [99, 103, 96 ... ]
+
+pers_so = strength_indicators.personalised_stochastic_oscillator(close)
+```
+
+### Candle Indicators
+
+Calling candle indicators
+
+```python
+from PyTechnicalIndicators.Single import candle_indicators 
+```
+
+#### bollinger_bands(typical_prices)
+
+Returns the upper and lower Bollinger Band for a submitted typical prices, which need to be 20 periods long, no more, no
+less.
+
+The typical price is calculated by taking the average of the High, Low, and Close ( (High + Low + Close) / 3 ).
+
+__Parameters:__
+
+- _typical_prices:_ a list of floats or ints of exactly 20 periods long.
+
+__Example:__
+```python
+typical_prices = [100, 102, 101 ... ]
+
+bband = candle_indicators.bollinger_bands(typical_prices)
+```
+
+#### personalised_bollinger_bands(typical_price, ma_model='ma')
+
+The personalised version allows you to choose the length of typical prices to submit as well as the MA model to run.
+
+The traditional Bollinger Band model uses a MA and 20 periods.
+
+__Parameters:__
+
+- _typical_prices:_ a list of floats or ints of exactly 20 periods long.
+- _ma_model:_ _optional_ The moving average model of your choice (defaults to MA):
+  - for moving average either of the following: 'ma', 'moving average', 'moving_average'
+  - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
+  - for exponential moving average either of the following: 'ema', 'exponential moving average', 'exponential_moving_average'
+
+__Example:__
+```python
+typical_prices = [100, 102, 101 ... ]
+
+pers_bband = candle_indicators.personalised_bollinger_bands(typical_prices, 'ema')
+```
+
+#### ichimoku_cloud(highs, lows)
+
+Returns the leading span A and leading span B, using the highs and lows of a series, these need to be 52 periods long, no
+more, no less.
+
+__Parameters:__
+- _highs:_ list of floats or ints of the highs of a series, needs to be 52 periods long.
+- _lows:_ list of floats or ints of the lows of a series, needs to be 52 periods long.
+
+__Example:__
+```python
+typical_prices = [100, 102, 101 ... ]
+
+icloud = candle_indicators.ichimoku_cloud(highs, lows)
+```
+
+#### personalised_ichimoku_cloud(highs, lows, conversion_period, base_period, span_b_period)
+The personalised version of the Ichimoku Cloud allows you to play around with the variables of the Ichimoku Cloud. These
+are rather involved so don't play around with them if you don't know what you're doing, or do, I won't judge.
+
+__Parameters:__
+- _highs:_ list of floats or ints of the highs of a series, needs to be 52 periods long.
+- _lows:_ list of floats or ints of the lows of a series, needs to be 52 periods long.
+- _conversion_period:_ 
+- _base_period:_
+- _span_b_period:_
+
+__Example:__
+```python
+typical_prices = [100, 102, 101 ... ]
+
+pers_icloud = candle_indicators.personalised_ichimoku_cloud(highs, lows, , , )
+```
+
+---
+## Bulk
+
+---
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
