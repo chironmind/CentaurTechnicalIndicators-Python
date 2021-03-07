@@ -303,7 +303,7 @@ The typical price is calculated by taking the average of the High, Low, and Clos
 
 __Parameters:__
 
-- _typical_prices:_ a list of floats or ints of exactly 20 periods long.
+- _typical_prices:_ list of floats or ints of exactly 20 periods long.
 
 __Example:__
 ```python
@@ -389,8 +389,118 @@ MA model. Each personalised function will have more detail on how to use it.
 Calling basic_indicators
 
 ```python
-
+from PyTechnicalIndicators.Bulk import basic_indicators
 ```
+
+#### log(prices)
+
+Returns a list of logs for the list of submitted prices. This is just the Python math log function wrapped in a loop to
+return a list of logs.
+
+__Parameters:__
+- _prices:_ list of floats or ints of prices that needs to be exactly 14 periods long.
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+logs = basic_indicators.log(prices)
+```
+
+#### log_difference(prices)
+
+Returns a list of log difference for the list of submitted prices. This substracts the log of t and t-1.
+
+__Parameters:__
+- _prices:_ list of floats or ints of prices that needs to be exactly 14 periods long.
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+log_diff = basic_indicators.log_diff(prices)
+```
+
+#### stddev(prices, period, fill_empty=False, fill_value=None)
+
+Returns a list of standard deviations for the list of submitted prices. This uses the Python statistics stdev wrapped in
+a loop. It expects a period to know how many prices to apply the stdev to. 
+
+__Parameters:__
+- _prices:_ list of floats or ints of prices that needs to be at least one in length.
+- _period:_ int, the number of prices that you would like taken into account to calculate the standard deviation.
+- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
+  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see 
+  (Example)[] )
+- _fill_value:_ The value that you want used to fill in the empty spaces.
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+std_devs = basic_indicators.stddev(prices, 10, True, 0)
+```
+
+#### mean(prices, period, fill_empty=False, fill_value=None)
+
+Returns a list of means for the list of submitted prices. This uses the Python statistics mean function wrapped in a 
+loop. It expects a period to know how many prices to apply the mean to.
+
+__Parameters:__
+- _prices:_ list of floats or ints of prices that needs to be at least 1.
+- _period:_ int, the number of prices that you would like taken into account to calculate the mean.
+- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
+  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see 
+  (Example)[] )
+- _fill_value:_ The value that you want used to fill in the empty spaces.
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+mean = basic_indicators.mean(prices, 5, True, None)
+```
+
+#### median(prices, period, fill_empty=False, fill_value=None)
+
+Returns a list of medians for the list of submitted prices. This uses the Python statistics median function wrapped in a 
+loop. It expects a period to know how many prices to apply the median to.
+
+__Parameters:__
+- _prices:_ list of floats or ints of prices that needs to be at least 1.
+- _period:_ int, the number of prices that you would like taken into account to calculate the median.
+- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
+  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see 
+  (Example)[] )
+- _fill_value:_ The value that you want used to fill in the empty spaces.
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+medians = basic_indicators.median(prices, 12)
+```
+
+#### variance(prices, period, fill_empty=False, fill_value=None)
+
+Returns a list of medians for the list of submitted prices. This uses the Python statistics variance function wrapped in a 
+loop. It expects a period to know how many prices to apply the variance to.
+
+__Parameters:__
+- _prices:_ list of floats or ints of prices that needs to be at least 1.
+- _period:_ int, the number of prices that you would like taken into account to calculate the variance.
+- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
+  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see 
+  (Example)[] )
+- _fill_value:_ The value that you want used to fill in the empty spaces.
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+variances = basic_indicators.variance(prices, 5)
+```
+
 
 ### Moving Averages
 
