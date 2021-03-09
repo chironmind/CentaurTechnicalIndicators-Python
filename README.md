@@ -371,7 +371,7 @@ pers_icloud = candle_indicators.personalised_ichimoku_cloud(highs, lows, , , )
 ## Bulk
 
 Bulk is broken down into 4 sections, in a very similar way to Single, the only difference is that these are meant to run
-against large datasets, and return a list of values as opposed to a single point like in Single.
+against large datasets, and return a **list** of values as opposed to a single point like in Single.
 
 - basic_indicators: These are a list of Python math and statistics functions that have been wrapped up in a loop to allow
   them to return a list. These are mostly to be used within the other functions.
@@ -510,37 +510,47 @@ Calling moving_averages
 from PyTechnicalIndicators.Bulk import moving_averages
 ```
 
-#### moving_average(prices)
+#### moving_average(prices, period, fill_empty=False, fill_value=None)
 
 The simple moving average of a series
 
 __Parameters:__
 
 - _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
+- _period:_ int, the number of prices that you would like taken into account to calculate the median.
+- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
+  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
+  (Example)[] )
+- _fill_value:_ The value that you want used to fill in the empty spaces.
 
 __Example:__
 ```python
 prices = [100, 102, 101 ... ]
 
-ma = moving_averages.moving_average(prices)
+ma = moving_averages.moving_average(prices, 5, True, 0)
 ```
 
-#### exponential_moving_average(prices)
+#### exponential_moving_average(prices, period, fill_empty=False, fill_value=None)
 
 The exponential moving average (EMA), this is usually used when the latest prices are expected to have a greater impact
 
 __Parameters:__
 
 - _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
+- _period:_ int, the number of prices that you would like taken into account to calculate the median.
+- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
+  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
+  (Example)[] )
+- _fill_value:_ The value that you want used to fill in the empty spaces.
 
 __Example:__
 ```python
 prices = [100, 102, 101 ... ]
 
-ema = moving_averages.exponential_moving_average(prices)
+ema = moving_averages.exponential_moving_average(prices, 25)
 ```
 
-#### smoothed_moving_average(prices)
+#### smoothed_moving_average(prices, period, fill_empty=False, fill_value=None)
 
 The smoothed moving average (SMA) is similar to the exponential moving average, the calculation of the alpha varies
  slightly (see personalised_moving_average for a more detailed explanation of the alpha)
@@ -553,10 +563,10 @@ __Example:__
 ```python
 prices = [100, 102, 101 ... ]
 
-sma = moving_averages.smoothed_moving_average(prices)
+sma = moving_averages.smoothed_moving_average(prices, 10, True)
 ```
 
-#### personalised_moving_average(prices, alpha_nominator, alpha_denominator)
+#### personalised_moving_average(prices, period, alpha_nominator, alpha_denominator, fill_empty=False, fill_value=None)
 
 The personalised moving average (PMA) allows you to determine your nominator and denominator values for the alpha.
 The alpha determines the impact of previous prices, the higher the alpha the lower past values have an impact. The
@@ -574,14 +584,19 @@ The SMA used an alpha nominator of 1 and an alpha denominator of 0.
 __Parameters:__
 
 - _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
+- _period:_ int, the number of prices that you would like taken into account to calculate the median.
 - _alpha_nominator:_ float or int, can be 0, but it isn't recommended.
 - _alpha_denominator:_ float or int, can be 0
+- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
+  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
+  (Example)[] )
+- _fill_value:_ The value that you want used to fill in the empty spaces.
 
 __Example:__
 ```python
 prices = [100, 102, 101 ... ]
 
-pma = moving_averages.personalised_moving_average(prices, 3, 2)
+pma = moving_averages.personalised_moving_average(prices, 15, 3, 2, True, prices[0])
 ```
 
 #### moving_average_divergence_convergence(prices)
@@ -647,7 +662,7 @@ prices = [100, 102, 101 ... ]
 pers_macd = moving_averages.personalised_macd(prices, 10, 20, 'smoothed moving average')
 ```
 
-#### personalised_signal_line(macd, ma_model='ema')
+#### personalised_signal_line(macd, period, ma_model='ema')
 
 The personalised signal line is similar to the personalised MACD in that it lets you decide of the length of the macds
 that you want to pass in, however is doesn't require you to insert a variable, it will instead just calculate it based
@@ -659,6 +674,7 @@ __Parameters:__
 
 - _macd:_ list of macds can be either from a normal macd or a personalised one. The length of the list needs to be greater
 than 1 and can be as large as you like.
+- _period:_ int, the number of prices that you would like taken into account to calculate the median.
 - _ma_model:_ _optional_ The moving average model of your choice (defaults to EMA):
   - for moving average either of the following: 'ma', 'moving average', 'moving_average'
   - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
@@ -668,7 +684,7 @@ __Example:__
 ```python
 macd = [1.2, 1.45, 0.98 ... ]
 
-signal = moving_averages.personalised_signal_line(macd, 'moving_average')
+signal = moving_averages.personalised_signal_line(macd, 20, 'moving_average')
 ```
 
 ### Strength Indicators
@@ -695,7 +711,7 @@ prices = [100, 102, 101 ... ]
 rsi = strength_indicators.relative_strength_index(prices)
 ```
 
-#### personalised_rsi(prices, ma_model='sma')
+#### personalised_rsi(prices, period, ma_model='sma')
 
 The personalised RSI allows you to choose which MA model to use as well as the number of periods. The traditional RSI 
 uses 14 periods and a SMA model.
@@ -704,6 +720,7 @@ __Parameters__:
 
 - _prices:_ list of floats or int, the length of prices needs to be exactly of length of the period that you want to evaluate.
 than 1 and can be as large as you like.
+- _period:_ int, the number of prices that you would like taken into account to calculate the median.
 - _ma_model:_ _optional_ The moving average model of your choice (defaults to SMA):
   - for moving average either of the following: 'ma', 'moving average', 'moving_average'
   - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
@@ -713,7 +730,7 @@ __Example:__
 ```python
 prices = [100, 102, 101 ... ]
 
-pers_rsi = strength_indicators.personalised_rsi(prices, 'ema')
+pers_rsi = strength_indicators.personalised_rsi(prices, 20,'ema')
 ```
 
 #### stochastic_oscillator(close_prices)
@@ -731,19 +748,20 @@ close = [99, 103, 96 ... ]
 so = strength_indicators.stochastic_oscillator(close)
 ```
 
-#### personalised_stochastic_oscillator(close_prices)
+#### personalised_stochastic_oscillator(close_prices, period)
 
 The personalised version of the stochastic oscillator allows you to submit close prices of any length.
 
 __Parameters:__
 
 - _close_prices:_ list of floats or ints of closing prices, the length is of your choosing.
+- _period:_ int, the number of prices that you would like taken into account to calculate the median.
 
 __Example:__
 ```python
 close = [99, 103, 96 ... ]
 
-pers_so = strength_indicators.personalised_stochastic_oscillator(close)
+pers_so = strength_indicators.personalised_stochastic_oscillator(close, 5)
 ```
 
 ### Candle Indicators
@@ -754,7 +772,7 @@ Calling candle indicators
 from PyTechnicalIndicators.Single import candle_indicators 
 ```
 
-#### bollinger_bands(typical_prices)
+#### bollinger_bands(typical_prices, fill_empty=False, fill_value=None)
 
 Returns the upper and lower Bollinger Band for a submitted typical prices, which need to be 20 periods long, no more, no
 less.
@@ -764,15 +782,19 @@ The typical price is calculated by taking the average of the High, Low, and Clos
 __Parameters:__
 
 - _typical_prices:_ a list of floats or ints of exactly 20 periods long.
+- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
+  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
+  (Example)[] )
+- _fill_value:_ The value that you want used to fill in the empty spaces.
 
 __Example:__
 ```python
 typical_prices = [100, 102, 101 ... ]
 
-bband = candle_indicators.bollinger_bands(typical_prices)
+bband = candle_indicators.bollinger_bands(typical_prices, True, 0)
 ```
 
-#### personalised_bollinger_bands(typical_price, ma_model='ma')
+#### personalised_bollinger_bands(typical_price, period, ma_model='ma', stddev_multiplier=2, fill_empty=False, fill_value=None)
 
 The personalised version allows you to choose the length of typical prices to submit as well as the MA model to run.
 

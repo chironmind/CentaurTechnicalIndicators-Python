@@ -53,7 +53,7 @@ def stochastic_oscillator(close_prices):
     return so
 
 
-def personalised_rsi(prices, period, ma_model=None):
+def personalised_rsi(prices, period, ma_model='sma'):
     # TODO: allow pma
     if len(prices) < period:
         raise Exception(f'Submitted prices needs to be greater than submitted period of {period}')

@@ -1,4 +1,10 @@
 from ..Single.moving_averages import exponential_moving_average as single_ema
+from ..Single.moving_averages import moving_average as single_ma
+from ..Single.moving_averages import smoothed_moving_average as single_sma
+
+ma = ['ma', 'moving average', 'moving_average']
+sma = ['sma', 'smoothed moving average', 'smoothed_moving_average']
+ema = ['ema', 'exponential moving average', 'exponential_moving_average']
 
 
 def moving_average(prices, period, fill_empty=False, fill_value=None):
@@ -123,7 +129,7 @@ def signal_line(macd):
     return signal_lines
 
 
-def personalised_macd(prices, short_period, long_period):
+def personalised_macd(prices, short_period, long_period, ma_model='ema'):
     if short_period <= 0 or long_period <= 0:
         raise Exception('Period needs to be at least 1')
 
@@ -132,14 +138,25 @@ def personalised_macd(prices, short_period, long_period):
 
     macd = []
     for i in range(long_period, len(prices)):
-        ema_short_period = single_ema(prices[i-short_period:i])
-        ema_long_period = single_ema(prices[i-long_period:i])
-        macd.append(ema_short_period - ema_long_period)
+        if ma_model in ma:
+            ma_short_period = single_ma(prices[i - short_period:i])
+            ma_long_period = single_ma(prices[i - short_period:i])
+        elif ma_model in sma:
+            ma_short_period = single_sma(prices[i - short_period:i])
+            ma_long_period = single_sma(prices[i - short_period:i])
+        elif ma_model in ema:
+            ma_short_period = single_ema(prices[i-short_period:i])
+            ma_long_period = single_ema(prices[i-short_period:i])
+        else:
+            ma_short_period = single_ema(prices[i-short_period:i])
+            ma_long_period = single_ema(prices[i-short_period:i])
+
+        macd.append(ma_short_period - ma_long_period)
 
     return macd
 
 
-def personalised_signal_line(macd, period):
+def personalised_signal_line(macd, period, ma_model='ema'):
     if period <= 0:
         raise Exception('Period needs to be at least 1')
 
@@ -148,6 +165,15 @@ def personalised_signal_line(macd, period):
 
     signal_lines = []
     for i in range(period, len(macd)):
+        if ma_model in ma:
+            signal_lines.append(single_ma(macd[i-period: i]))
+        elif ma_model in sma:
+            signal_lines.append(single_sma(macd[i-period: i]))
+        elif ma_model in ema:
+            signal_lines.append(single_ema(macd[i-period: i]))
+        else:
+            signal_lines.append(single_ema(macd[i-period: i]))
+
         signal_lines.append(single_ema(macd[i-period: i]))
 
     return signal_lines

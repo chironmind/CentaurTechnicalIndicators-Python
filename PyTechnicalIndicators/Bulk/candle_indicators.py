@@ -48,7 +48,7 @@ def ichimoku_cloud(highs, lows, fill_empty=False, fill_value=None):
     return senkou_span_a, senkou_span_b
 
 
-def personalised_bollinger_bands(typical_price, period, ma_model=None, stddev_multiplier=2, fill_empty=False, fill_value=None):
+def personalised_bollinger_bands(typical_price, period, ma_model='ma', stddev_multiplier=2, fill_empty=False, fill_value=None):
     if len(typical_price) < period:
         raise Exception(f'Submitted price is shorter than submitted period of {period}')
 

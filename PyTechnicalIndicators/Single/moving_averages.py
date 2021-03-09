@@ -109,7 +109,6 @@ def personalised_macd(prices, short_period, long_period, ma_model='ema'):
 
 
 def personalised_signal_line(macd, ma_model='ema'):
-    # TODO: allow choice of the MA model
     if len(macd) == 1:
         raise Exception("Submitted MACD array is too short needs to be greater than 1")
 
