@@ -92,14 +92,14 @@ def break_down_trend(outlier_list, typical_prices):
     return trends
 
 
-def break_down_trends(typical_prices, min_period=2, peaks_only=False, pits_only=False):
-    peaks_list = get_peaks(typical_prices, min_period)
-    pits_list = get_pits(typical_prices, min_period)
+def break_down_trends(prices, min_period=2, peaks_only=False, pits_only=False):
+    peaks_list = get_peaks(prices, min_period)
+    pits_list = get_pits(prices, min_period)
 
     if not pits_only:
-        peak_trends = break_down_trend(peaks_list, typical_prices)
+        peak_trends = break_down_trend(peaks_list, prices)
     if not peaks_only:
-        pit_trends = break_down_trend(pits_list, typical_prices)
+        pit_trends = break_down_trend(pits_list, prices)
 
     if peaks_only:
         return peak_trends

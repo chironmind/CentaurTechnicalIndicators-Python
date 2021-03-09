@@ -312,7 +312,7 @@ typical_prices = [100, 102, 101 ... ]
 bband = candle_indicators.bollinger_bands(typical_prices)
 ```
 
-#### personalised_bollinger_bands(typical_price, ma_model='ma')
+#### personalised_bollinger_bands(typical_price, ma_model='ma', stddev_multiplier=2)
 
 The personalised version allows you to choose the length of typical prices to submit as well as the MA model to run.
 
@@ -325,6 +325,7 @@ __Parameters:__
   - for moving average either of the following: 'ma', 'moving average', 'moving_average'
   - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
   - for exponential moving average either of the following: 'ema', 'exponential moving average', 'exponential_moving_average'
+- _stddev_multiplier:_ int, number of standard deviations, defaults to 2.
 
 __Example:__
 ```python
@@ -802,20 +803,26 @@ The traditional Bollinger Band model uses a MA and 20 periods.
 
 __Parameters:__
 
-- _typical_prices:_ a list of floats or ints of exactly 20 periods long.
+- _typical_prices:_ a list of floats or ints of a chosen period period.
+- _period:_ int, the number of prices that you would like taken into account to calculate the median.
 - _ma_model:_ _optional_ The moving average model of your choice (defaults to MA):
   - for moving average either of the following: 'ma', 'moving average', 'moving_average'
   - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
   - for exponential moving average either of the following: 'ema', 'exponential moving average', 'exponential_moving_average'
+- _stddev_multiplier:_ int or float, number of standard deviations, defaults to 2.  
+- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
+  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
+  (Example)[] )
+- _fill_value:_ The value that you want used to fill in the empty spaces.  
 
 __Example:__
 ```python
 typical_prices = [100, 102, 101 ... ]
 
-pers_bband = candle_indicators.personalised_bollinger_bands(typical_prices, 'ema')
+pers_bband = candle_indicators.personalised_bollinger_bands(typical_prices, 10, 'ema', 1.5, True, None)
 ```
 
-#### ichimoku_cloud(highs, lows)
+#### ichimoku_cloud(highs, lows, fill_empty=False, fill_value=None)
 
 Returns the leading span A and leading span B, using the highs and lows of a series, these need to be 52 periods long, no
 more, no less.
@@ -823,15 +830,20 @@ more, no less.
 __Parameters:__
 - _highs:_ list of floats or ints of the highs of a series, needs to be 52 periods long.
 - _lows:_ list of floats or ints of the lows of a series, needs to be 52 periods long.
+- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
+  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
+  (Example)[] )
+- _fill_value:_ The value that you want used to fill in the empty spaces.  
 
 __Example:__
 ```python
-typical_prices = [100, 102, 101 ... ]
+highs = [100, 102, 101 ... ]
+lows = [90, 86, 92 ... ]
 
-icloud = candle_indicators.ichimoku_cloud(highs, lows)
+icloud = candle_indicators.ichimoku_cloud(highs, lows, True, 0)
 ```
 
-#### personalised_ichimoku_cloud(highs, lows, conversion_period, base_period, span_b_period)
+#### personalised_ichimoku_cloud(highs, lows, conversion_period, base_period, span_b_period, fill_empty=False, fill_value=None)
 The personalised version of the Ichimoku Cloud allows you to play around with the variables of the Ichimoku Cloud. These
 are rather involved so don't play around with them if you don't know what you're doing, or do, I won't judge.
 
@@ -841,12 +853,222 @@ __Parameters:__
 - _conversion_period:_ 
 - _base_period:_
 - _span_b_period:_
+- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
+  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
+  (Example)[] )
+- _fill_value:_ The value that you want used to fill in the empty spaces. 
+
+__Example:__
+```python
+highs = [100, 102, 101 ... ]
+lows = [91, 95, 95 ... ]
+
+pers_icloud = candle_indicators.personalised_ichimoku_cloud(highs, lows, , , )
+```
+
+---
+## Chart_Patterns
+Chart patterns is a collection of functions to help highlight and break down trends in the data. 
+
+It is broken down in three parts:
+- peaks: highlights the peaks (highs) of a series
+- pits: highlights the pits (lows) of a series
+- trends: a set of functions to retrieve the trend as an int, angle...
+
+### peaks
+
+Calling peaks
+
+```python
+from PyTechnicalIndicators.Chart_Patterns import peaks
+```
+
+#### get_peaks(prices, period=5)
+
+Gets the highest prices of a series within a predetermined period, and returns them as a list.
+
+__Parameters:__
+- _prices:_ list of floats or ints of the prices of a series.
+- _period:_ _optional_ int, number of prices before and after. 
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+peaks_list = peaks.get_peaks(prices, 2)
+```
+
+#### get_highest_peak(prices)
+
+Returns the max of the previous function
+
+__Parameters:__
+- _prices:_ list of floats or ints of the prices of a series.
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+max_pit = peaks.get_highest_peak(prices)
+```
+
+### pits
+
+Calling pits
+
+```python
+from PyTechnicalIndicators.Chart_Patterns import pits
+```
+
+#### get_pits(prices, period=5)
+
+Gets the lowest prices of a series within a predetermined period, and returns them as a list.
+
+__Parameters:__
+- _prices:_ list of floats or ints of the prices of a series.
+- _period:_ _optional_ int, number of prices before and after. 
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+pits_list = pits.get_pits(prices, 2)
+```
+
+#### get_lowest_pit(prices)
+
+Returns the min of the previous function
+
+__Parameters:__
+- _prices:_ list of floats or ints of the prices of a series.
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+min_pit = peaks.get_highest_peak(prices)
+```
+
+### trends
+
+Calling trends
+
+```python
+from PyTechnicalIndicators.Chart_Patterns import trends
+```
+
+#### get_trend(p)
+
+Gets the trend of a set of prices, mostly to be used by other functions in trends,
+but if you want to use it go for it. Returns a float.
+
+__Parameters:__
+- _p:_ list of floats or ints to retrieve a trend against.
+
+__Example:__
+```python
+# We wouldn't recommend using it like this...
+prices = [100, 102, 101 ... ]
+
+trend = trends.get_trend(prices)
+```
+
+#### get_peak_trend(prices)
+
+Gets the peaks and determines the trend of the peaks. Returns a float.
+
+__Parameters:__
+- _prices:_ list of floats or ints of prices.
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+peak_trend = trends.get_peak_trend(prices)
+```
+
+#### get_pit_trend(prices)
+
+Gets the pits and determines the trend of the pits. Returns a float.
+
+__Parameters:__
+- _prices:_ list of floats or ints of prices.
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+pit_trend = trends.get_pit_trend(prices)
+```
+
+#### get_overall_trend(prices)
+
+Gets the pits and peaks, gets the trend of each, then returns the average of the two. Returns a float.
+
+__Parameters:__
+- _prices:_ list of floats or ints of prices.
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+overall_trend = trends.get_overall_trend(prices)
+```
+
+#### get_trend_angle(price_a, index_a, price_b, index_b)
+
+Determines the angle between two prices, price a should be the price and the start of the period, price b shoul be the 
+price at the end of the period. Some people find this useful.
+
+__Parameters:__
+- _price_a:_ price a, needs to be before price b.
+- _index_a:_ index of price a.
+- _price_b:_ price b, needs to be after price a.
+- _index_b:_ index of price b.
+
+__Example:__
+```python
+angle = trends.get_trend_angle(100, 0, 105, 10)
+```
+
+#### break_down_trends(prices, min_period=2, peaks_only=False, pits_only=False)
+
+Breaks down the different trends in a series of prices into periods whose trends ressemble one anothers the most. Choosing
+peaks_only or pit_only will only return one otherwise the two will be returned by default. 
+
+Returns a list of tuples with (trend_start_index, trend_end_index, trend)
+
+The Example notebook will illustrate this in an obvious manner.
+
+__Parameters:__
+- _prices:_ price a, needs to be before price b.
+- _min_period:_ _optional_ number of periods either side of the evaluated price to determine a pit or peak.
+- _peaks_only:_ _optional_ whether or not you only want peaks returned.
+- _pits_only:_ _optional_ whether or not you only want pits returned.
+
+__Example:__
+```python
+prices = [100, 102, 101 ... ]
+
+angle = trends.break_down_trends(prices, 5)
+```
+
+#### merge_trends(typical_prices, min_period=2)
+
+This breaks down the price series into different sections when their trends differ. It is similar to the above but takes
+into account both highs and lows and treats them as one.
+
+Returns a list of tuples with (trend_start_index, trend_end_index, trend)
+
+__Parameters:__
+- _typical_prices:_ 
+- _min_period:_ _optional_ number of periods either side of the evaluated price to determine a pit or peak
 
 __Example:__
 ```python
 typical_prices = [100, 102, 101 ... ]
 
-pers_icloud = candle_indicators.personalised_ichimoku_cloud(highs, lows, , , )
+merge_trends = trends.merge_trends(prices, 1)
 ```
 
 ---

@@ -1,6 +1,7 @@
 
 
 def get_peaks(prices, period=5):
+    # TODO: make periods a total not something you add before or after, makes it confusing
     peaks = []
     for price_index in range(len(prices)):
         if price_index < period:

@@ -1,14 +1,15 @@
 
 
-def get_pits(prices, scope=5):
+def get_pits(prices, period=5):
+    # TODO: make periods a total not something you add before or after, makes it confusing
     pits = []
     for price_index in range(len(prices)):
-        if price_index < scope:
-            sub_prices = prices[:price_index + scope]
-        elif price_index > len(prices) - scope:
-            sub_prices = prices[price_index - scope:]
+        if price_index < period:
+            sub_prices = prices[:price_index + period]
+        elif price_index > len(prices) - period:
+            sub_prices = prices[price_index - period:]
         else:
-            sub_prices = prices[price_index - scope:price_index + scope]
+            sub_prices = prices[price_index - period:price_index + period]
 
         pit = min(sub_prices)
         if prices[price_index] == pit and sub_prices.count(pit) == 1:
