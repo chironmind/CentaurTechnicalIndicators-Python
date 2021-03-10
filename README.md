@@ -6,6 +6,74 @@ This README will walk you through the Python functions used to calculate various
 It will not explain what each one is and when or where to use them. If you need more information use Google, Wikipedia,
 or Investopedia.
 
+
+## Table of Contents
+- [Installation](https://github.com/0100101001010000/PyTechnicalIndicators#installation)
+- [Usage](https://github.com/0100101001010000/PyTechnicalIndicators#usage)
+- [Single](https://github.com/0100101001010000/PyTechnicalIndicators#single)
+    -[Moving Averages](https://github.com/0100101001010000/PyTechnicalIndicators#moving-averages)
+        -[moving_average(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#moving_averageprices)
+        -[exponential_moving_average(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#exponential_moving_averageprices)
+        -[smoothed_moving_average(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#smoothed_moving_averageprices)
+        -[personalised_moving_average(prices, alpha_nominator, alpha_denominator)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_moving_averageprices)
+        -[moving_average_divergence_convergence(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#moving_average_divergence_convergenceprices)
+        -[signal_line(macd)](https://github.com/0100101001010000/PyTechnicalIndicators#signal_linemacd)
+        -[personalised_macd(prices, short_period, long_period, ma_model='ema')](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_macdprices)
+        -[personalised_signal_line(macd, ma_model='ema')](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_signal_linemacd)
+    -[Strength Indicators](https://github.com/0100101001010000/PyTechnicalIndicators#strength-indicators)
+        -[relative_strength_index(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#relative_strength_indexprices)
+        -[personalised_rsi(prices, ma_model='sma')](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_rsiprices-ma_modelsma)
+        -[stochastic_oscillator(close_prices)](https://github.com/0100101001010000/PyTechnicalIndicators#stochastic_oscillatorclose_prices)
+        -[personalised_stochastic_oscillator(close_prices)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_stochastic_oscillatorclose_prices)
+    -[Candle Indicators](https://github.com/0100101001010000/PyTechnicalIndicators#candle-indicators)
+        -[bollinger_bands(typical_prices)](https://github.com/0100101001010000/PyTechnicalIndicators#bollinger_bandstypical_prices)
+        -[personalised_bollinger_bands(typical_price, ma_model='ma', stddev_multiplier=2)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_bollinger_bandstypical_price-ma_modelma-stddev_multiplier2)
+        -[ichimoku_cloud(highs, lows)](https://github.com/0100101001010000/PyTechnicalIndicators#ichimoku_cloudhighs)
+        -[personalised_ichimoku_cloud(highs, lows, conversion_period, base_period, span_b_period)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_ichimoku_cloudhighs)
+- [Bulk](https://github.com/0100101001010000/PyTechnicalIndicators#bulk)
+    -[Basic Indicators](https://github.com/0100101001010000/PyTechnicalIndicators#basic-indicators)
+        -[log(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#logprices)
+        -[log_difference(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#log_differenceprices)
+        -[stddev(prices, period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#stddevprices-period-fill_emptyfalse-fill_valuenone)
+        -[mean(prices, period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#meanprices-period-fill_emptyfalse-fill_valuenone)
+        -[median(prices, period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#medianprices-period-fill_emptyfalse-fill_valuenone)
+        -[variance(prices, period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#varianceprices-period-fill_emptyfalse-fill_valuenone)
+    -[Moving Averages](https://github.com/0100101001010000/PyTechnicalIndicators#moving-averages-1)
+        -[moving_average(prices, period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#moving_averageprices-period-fill_emptyfalse-fill_valuenone)
+        -[exponential_moving_average(prices, period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#exponential_moving_averageprices-period-fill_emptyfalse-fill_valuenone)
+        -[smoothed_moving_average(prices, period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#smoothed_moving_averageprices-period-fill_emptyfalse-fill_valuenone)
+        -[personalised_moving_average(prices, period, alpha_nominator, alpha_denominator, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_moving_averageprices-period-alpha_nominator-alpha_denominator-fill_emptyfalse-fill_valuenone)
+        -[moving_average_divergence_convergence(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#moving_average_divergence_convergenceprices-1)
+        -[signal_line(macd)](https://github.com/0100101001010000/PyTechnicalIndicators#signal_linemacd-1)
+        -[personalised_macd(prices, short_period, long_period, ma_model='ema')](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_macdprices-1)
+        -[personalised_signal_line(macd, ma_model='ema')](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_signal_linemacd-1)
+    -[Strength Indicators-1](https://github.com/0100101001010000/PyTechnicalIndicators#strength-indicators)
+        -[relative_strength_index(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#relative_strength_indexprices-1)
+        -[personalised_rsi(prices, period, ma_model='sma')](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_rsiprices-period-ma_modelsma)
+        -[stochastic_oscillator(close_prices)](https://github.com/0100101001010000/PyTechnicalIndicators#stochastic_oscillatorclose_prices-1)
+        -[personalised_stochastic_oscillator(close_prices, period)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_stochastic_oscillatorclose_prices-period)
+    -[Candle Indicators](https://github.com/0100101001010000/PyTechnicalIndicators#candle-indicators-1)
+        -[bollinger_bands(typical_prices, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#bollinger_bandstypical_prices-fill_emptyfalse-fill_valuenone)
+        -[personalised_bollinger_bands(typical_price, period, ma_model='ma', stddev_multiplier=2, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_bollinger_bandstypical_price-period-ma_modelma-stddev_multiplier2-fill_emptyfalse-fill_valuenone)
+        -[ichimoku_cloud(highs, lows, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#ichimoku_cloudhighs-lows-fill_emptyfalse-fill_valuenone)
+        -[personalised_ichimoku_cloud(highs, lows, conversion_period, base_period, span_b_period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_ichimoku_cloudhighs-lows-conversion_period-base_period-span_b_period-fill_emptyfalse-fill_valuenone)
+-[Chart_Patterns](https://github.com/0100101001010000/PyTechnicalIndicators#chart_patterns)
+    -[peaks](https://github.com/0100101001010000/PyTechnicalIndicators#peaks)
+        -[get_peaks(prices, period=5)](https://github.com/0100101001010000/PyTechnicalIndicators#get_peaksprices-period5)
+        -[get_highest_peak(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#get_highest_peakprices)
+    -[pits](https://github.com/0100101001010000/PyTechnicalIndicators#pits)
+        -[get_pits(prices, period=5)](https://github.com/0100101001010000/PyTechnicalIndicators#get_pitsprices-period5)
+        -[get_lowest_pit(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#get_lowest_pitprices)
+    -[trends](https://github.com/0100101001010000/PyTechnicalIndicators#trends)
+        -[get_trend(p)](https://github.com/0100101001010000/PyTechnicalIndicators#get_trendp)
+        -[get_peak_trend(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#get_peak_trendprices)
+        -[get_pit_trend(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#get_peak_trendprices)
+        -[get_overall_trend(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#get_overall_trendprices)
+        -[get_trend_angle(price_a, index_a, price_b, index_b)](https://github.com/0100101001010000/PyTechnicalIndicators#get_trend_angleprice_a-index_a-price_b-index_b)
+        -[break_down_trends(prices, min_period=2, peaks_only=False, pits_only=False)](https://github.com/0100101001010000/PyTechnicalIndicators#break_down_trendsprices-min_period2-peaks_onlyfalse-pits_onlyfalse)
+        -[merge_trends(typical_prices, min_period=2)](https://github.com/0100101001010000/PyTechnicalIndicators#merge_trendstypical_prices-min_period2)
+
+---
 ## Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
@@ -13,7 +81,7 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
 ```bash
 pip install PyTechnicalIndicators
 ```
-
+---
 ## Usage
 
 The below is a break down of the various functions in the package, for a detailed example see the [Example]().
