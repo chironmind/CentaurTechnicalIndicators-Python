@@ -47,7 +47,7 @@ or Investopedia.
         - [signal_line(macd)](https://github.com/0100101001010000/PyTechnicalIndicators#signal_linemacd-1)
         - [personalised_macd(prices, short_period, long_period, ma_model='ema')](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_macdprices-1)
         - [personalised_signal_line(macd, ma_model='ema')](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_signal_linemacd-1)
-    - [Strength Indicators-1](https://github.com/0100101001010000/PyTechnicalIndicators#strength-indicators)
+    - [Strength Indicators](https://github.com/0100101001010000/PyTechnicalIndicators#strength-indicators-1)
         - [relative_strength_index(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#relative_strength_indexprices-1)
         - [personalised_rsi(prices, period, ma_model='sma')](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_rsiprices-period-ma_modelsma)
         - [stochastic_oscillator(close_prices)](https://github.com/0100101001010000/PyTechnicalIndicators#stochastic_oscillatorclose_prices-1)
@@ -76,7 +76,7 @@ or Investopedia.
 ---
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install PyTechnicalIndicators.
 
 ```bash
 pip install PyTechnicalIndicators
