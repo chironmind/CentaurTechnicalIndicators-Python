@@ -72,7 +72,8 @@ or Investopedia.
         - [get_trend_angle(price_a, index_a, price_b, index_b)](https://github.com/0100101001010000/PyTechnicalIndicators#get_trend_angleprice_a-index_a-price_b-index_b)
         - [break_down_trends(prices, min_period=2, peaks_only=False, pits_only=False)](https://github.com/0100101001010000/PyTechnicalIndicators#break_down_trendsprices-min_period2-peaks_onlyfalse-pits_onlyfalse)
         - [merge_trends(typical_prices, min_period=2)](https://github.com/0100101001010000/PyTechnicalIndicators#merge_trendstypical_prices-min_period2)
-
+- [Contributing](https://github.com/0100101001010000/PyTechnicalIndicators#contributing)
+- [License](https://github.com/0100101001010000/PyTechnicalIndicators#license)
 ---
 ## Installation
 
