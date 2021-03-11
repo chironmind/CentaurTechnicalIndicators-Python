@@ -85,7 +85,7 @@ pip install PyTechnicalIndicators
 ---
 ## Usage
 
-The below is a break down of the various functions in the package, for a detailed example see the [Example]().
+The below is a break down of the various functions in the package, for a detailed example see the [Example](https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example).
 
 The library is split into three sections Single, Bulk and Chart_Patterns.
 
@@ -94,7 +94,7 @@ time if you only a single value returned for you series, or to avoid looping a c
 
 It is important to note that the functions expect a list of prices to work, with the oldest value at the beginning of the
  list and the most recent price at the end. An indexed Pandas DF will not work, you will have to `list()` before your variables
- you pass it into these functions, the [Example]() has more details.
+ you pass it into these functions, the [Example](https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example) has more details.
 
 ---
 
@@ -561,7 +561,7 @@ __Parameters:__
 - _period:_ int, the number of prices that you would like taken into account to calculate the variance.
 - _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
   is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see 
-  (Example)[] )
+  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
 - _fill_value:_ The value that you want used to fill in the empty spaces.
 
 __Example:__
@@ -590,7 +590,7 @@ __Parameters:__
 - _period:_ int, the number of prices that you would like taken into account to calculate the median.
 - _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
   is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
-  (Example)[] )
+  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
 - _fill_value:_ The value that you want used to fill in the empty spaces.
 
 __Example:__
@@ -610,7 +610,7 @@ __Parameters:__
 - _period:_ int, the number of prices that you would like taken into account to calculate the median.
 - _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
   is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
-  (Example)[] )
+  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
 - _fill_value:_ The value that you want used to fill in the empty spaces.
 
 __Example:__
@@ -659,7 +659,7 @@ __Parameters:__
 - _alpha_denominator:_ float or int, can be 0
 - _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
   is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
-  (Example)[] )
+  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
 - _fill_value:_ The value that you want used to fill in the empty spaces.
 
 __Example:__
@@ -854,7 +854,7 @@ __Parameters:__
 - _typical_prices:_ a list of floats or ints of exactly 20 periods long.
 - _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
   is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
-  (Example)[] )
+  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
 - _fill_value:_ The value that you want used to fill in the empty spaces.
 
 __Example:__
@@ -881,7 +881,7 @@ __Parameters:__
 - _stddev_multiplier:_ int or float, number of standard deviations, defaults to 2.  
 - _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
   is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
-  (Example)[] )
+  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
 - _fill_value:_ The value that you want used to fill in the empty spaces.  
 
 __Example:__
@@ -901,7 +901,7 @@ __Parameters:__
 - _lows:_ list of floats or ints of the lows of a series, needs to be 52 periods long.
 - _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
   is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
-  (Example)[] )
+  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
 - _fill_value:_ The value that you want used to fill in the empty spaces.  
 
 __Example:__
@@ -924,7 +924,7 @@ __Parameters:__
 - _span_b_period:_
 - _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
   is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
-  (Example)[] )
+  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
 - _fill_value:_ The value that you want used to fill in the empty spaces. 
 
 __Example:__
