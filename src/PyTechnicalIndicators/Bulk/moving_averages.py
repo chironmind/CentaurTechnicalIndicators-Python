@@ -33,11 +33,11 @@ def exponential_moving_average(prices, period, fill_empty=False, fill_value=None
         raise Exception('Length of prices needs to be greater than 0')
 
     ema = []
+    alpha = 2 / (period + 1)
     if fill_empty:
         for i in range(period):
             ema.append(fill_value)
     for i in range(period, len(prices)):
-        alpha = 2 / (period + 1)
         price_sum = 0
         denominator_sum = 0
 
@@ -59,11 +59,11 @@ def smoothed_moving_average(prices, period, fill_empty=False, fill_value=None):
         raise Exception('Length of prices needs to be greater than 0')
 
     sma = []
+    alpha = 1 / period
     if fill_empty:
         for i in range(period):
             sma.append(fill_value)
     for i in range(period, len(prices)):
-        alpha = 1 / len(prices)
         price_sum = 0
         denominator_sum = 0
 
@@ -86,11 +86,11 @@ def personalised_moving_average(prices, period, alpha_nominator, alpha_denominat
         raise Exception('Length of prices needs to be greater than 0')
 
     pma = []
+    alpha = alpha_nominator / (period + alpha_denominator)
     if fill_empty:
         for i in range(period):
             pma.append(fill_value)
     for i in range(period, len(prices)):
-        alpha = alpha_nominator / (len(prices) + alpha_denominator)
         price_sum = 0
         denominator_sum = 0
 
@@ -105,31 +105,35 @@ def personalised_moving_average(prices, period, alpha_nominator, alpha_denominat
     return pma
 
 
-def moving_average_convergence_divergence(prices):
+def moving_average_convergence_divergence(prices, fill_empty=False, fill_value=None):
     if len(prices) < 26:
         raise Exception('The minimum length of prices needs to be 24 to calculate the MACD')
-
     macd = []
-    for i in range(25, len(prices)):
+    if fill_empty:
+        for i in range(26):
+            macd.append(fill_value)
+    for i in range(26, len(prices)):
         ema_12_periods = single_ema(prices[i-12:i])
         ema_26_periods = single_ema(prices[i-25:i])
         macd.append(ema_12_periods - ema_26_periods)
-
     return macd
 
 
-def signal_line(macd):
+def signal_line(macd, fill_empty=False, fill_value=None):
     if len(macd) < 9:
         raise Exception("Submitted MACD needs to be greater 9 lags long")
 
     signal_lines = []
+    if fill_empty:
+        for i in range(9):
+            signal_lines.append(fill_value)
     for i in range(9, len(macd)):
         signal_lines.append(single_ema(macd[i-9: i]))
 
     return signal_lines
 
 
-def personalised_macd(prices, short_period, long_period, ma_model='ema'):
+def personalised_macd(prices, short_period, long_period, ma_model='ema', fill_empty=False, fill_value=None):
     if short_period <= 0 or long_period <= 0:
         raise Exception('Period needs to be at least 1')
 
@@ -137,6 +141,9 @@ def personalised_macd(prices, short_period, long_period, ma_model='ema'):
         raise Exception(f'The minimum length of prices needs to be {long_period} to calculate the MACD')
 
     macd = []
+    if fill_empty:
+        for i in range(long_period):
+            macd.append(fill_value)
     for i in range(long_period, len(prices)):
         if ma_model in ma:
             ma_short_period = single_ma(prices[i - short_period:i])
@@ -156,15 +163,20 @@ def personalised_macd(prices, short_period, long_period, ma_model='ema'):
     return macd
 
 
-def personalised_signal_line(macd, period, ma_model='ema'):
+def personalised_signal_line(macd, period, ma_model='ema', fill_empty=False, fill_value=None):
     if period <= 0:
         raise Exception('Period needs to be at least 1')
 
-    if len(macd) == 0:
+    macd_len = len(macd)
+    if macd_len == 0:
         raise Exception("Submitted MACD array is too short to calculate singal line")
 
     signal_lines = []
-    for i in range(period, len(macd)):
+    if fill_empty:
+        for i in range(period):
+            signal_lines.append(fill_value)
+
+    for i in range(period, macd_len):
         if ma_model in ma:
             signal_lines.append(single_ma(macd[i-period: i]))
         elif ma_model in sma:
@@ -173,7 +185,5 @@ def personalised_signal_line(macd, period, ma_model='ema'):
             signal_lines.append(single_ema(macd[i-period: i]))
         else:
             signal_lines.append(single_ema(macd[i-period: i]))
-
-        signal_lines.append(single_ema(macd[i-period: i]))
 
     return signal_lines
