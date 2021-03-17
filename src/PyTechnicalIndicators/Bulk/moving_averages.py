@@ -93,6 +93,6 @@ def personalised_signal_line(macd, period, ma_model='ema', fill_empty=False, fil
             signal_lines.append(fill_value)
     for i in range(period, macd_len):
         macd_set = macd[i-period: i]
-        signal_line = MAs.signal_line( macd_set )
+        signal_line = MAs.personalised_signal_line( macd_set, ma_model )
         signal_lines.append( signal_line )
     return signal_lines
