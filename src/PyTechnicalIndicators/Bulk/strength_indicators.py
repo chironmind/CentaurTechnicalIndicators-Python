@@ -34,7 +34,7 @@ def relative_strength_index(prices, fill_empty=False, fill_value=None):
             previous_average_gains = 0
         if previous_loss:
             if len(previous_loss) == 1:
-                previous_average_loss = previous_gains
+                previous_average_loss = previous_loss
             else:
                 previous_average_loss = smoothed_moving_average(previous_loss)
         else:
