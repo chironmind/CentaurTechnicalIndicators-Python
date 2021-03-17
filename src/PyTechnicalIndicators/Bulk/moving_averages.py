@@ -147,16 +147,16 @@ def personalised_macd(prices, short_period, long_period, ma_model='ema', fill_em
     for i in range(long_period, len(prices)):
         if ma_model in ma:
             ma_short_period = single_ma(prices[i - short_period:i])
-            ma_long_period = single_ma(prices[i - short_period:i])
+            ma_long_period = single_ma(prices[i - long_period:i])
         elif ma_model in sma:
             ma_short_period = single_sma(prices[i - short_period:i])
-            ma_long_period = single_sma(prices[i - short_period:i])
+            ma_long_period = single_sma(prices[i - long_period:i])
         elif ma_model in ema:
             ma_short_period = single_ema(prices[i-short_period:i])
-            ma_long_period = single_ema(prices[i-short_period:i])
+            ma_long_period = single_ema(prices[i-long_period:i])
         else:
             ma_short_period = single_ema(prices[i-short_period:i])
-            ma_long_period = single_ema(prices[i-short_period:i])
+            ma_long_period = single_ema(prices[i-long_period:i])
 
         macd.append(ma_short_period - ma_long_period)
 
