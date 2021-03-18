@@ -63,7 +63,7 @@ def personalised_moving_average(prices, alpha_nominator, alpha_denominator):
     return price_sum / denominator_sum
 
 
-def moving_average_divergence_convergence(prices):
+def moving_average_convergence_divergence(prices):
     prices_length = len(prices)
     if prices_length < 26:
         raise Exception("Submitted prices is too short to calculate MACD")

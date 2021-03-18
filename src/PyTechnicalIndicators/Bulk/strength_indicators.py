@@ -27,14 +27,14 @@ def relative_strength_index(prices, fill_empty=False, fill_value=None):
 
         if previous_gains:
             if len(previous_gains) == 1:
-                previous_average_gains = previous_gains
+                previous_average_gains = previous_gains[0]
             else:
                 previous_average_gains = smoothed_moving_average(previous_gains)
         else:
             previous_average_gains = 0
         if previous_loss:
             if len(previous_loss) == 1:
-                previous_average_loss = previous_loss
+                previous_average_loss = previous_loss[0]
             else:
                 previous_average_loss = smoothed_moving_average(previous_loss)
         else:
@@ -101,14 +101,14 @@ def personalised_rsi(prices, period, ma_model='sma', fill_empty=False, fill_valu
         if ma_model in ma:
             if previous_gains:
                 if len(previous_gains) == 1:
-                    previous_average_gains = previous_gains
+                    previous_average_gains = previous_gains[0]
                 else:
                     previous_average_gains = moving_average(previous_gains)
             else:
                 previous_average_gains = 0
             if previous_loss:
                 if len(previous_loss) == 1:
-                    previous_average_loss = previous_loss
+                    previous_average_loss = previous_loss[0]
                 else:
                     previous_average_loss = moving_average(previous_loss)
             else:
@@ -116,7 +116,7 @@ def personalised_rsi(prices, period, ma_model='sma', fill_empty=False, fill_valu
         elif ma_model in sma:
             if previous_gains:
                 if len(previous_gains) == 1:
-                    previous_average_gains = previous_gains
+                    previous_average_gains = previous_gains[0]
                 else:
                     previous_average_gains = smoothed_moving_average(previous_gains)
             else:
@@ -124,7 +124,7 @@ def personalised_rsi(prices, period, ma_model='sma', fill_empty=False, fill_valu
 
             if previous_loss:
                 if len(previous_loss) == 1:
-                    previous_average_loss = previous_loss
+                    previous_average_loss = previous_loss[0]
                 else:
                     previous_average_loss = smoothed_moving_average(previous_loss)
             else:
@@ -133,7 +133,7 @@ def personalised_rsi(prices, period, ma_model='sma', fill_empty=False, fill_valu
         elif ma_model in ema:
             if previous_gains:
                 if len(previous_gains) == 1:
-                    previous_average_gains = previous_gains
+                    previous_average_gains = previous_gains[0]
                 else:
                     previous_average_gains = exponential_moving_average(previous_gains)
             else:
@@ -141,7 +141,7 @@ def personalised_rsi(prices, period, ma_model='sma', fill_empty=False, fill_valu
 
             if previous_loss:
                 if len(previous_loss) == 1:
-                    previous_average_loss = previous_loss
+                    previous_average_loss = previous_loss[0]
                 else:
                     previous_average_loss = exponential_moving_average(previous_loss)
             else:
@@ -150,7 +150,7 @@ def personalised_rsi(prices, period, ma_model='sma', fill_empty=False, fill_valu
         else:
             if previous_gains:
                 if len(previous_gains) == 1:
-                    previous_average_gains = previous_gains
+                    previous_average_gains = previous_gains[0]
                 else:
                     previous_average_gains = smoothed_moving_average(previous_gains)
             else:
@@ -158,7 +158,7 @@ def personalised_rsi(prices, period, ma_model='sma', fill_empty=False, fill_valu
 
             if previous_loss:
                 if len(previous_loss) == 1:
-                    previous_average_loss = previous_loss
+                    previous_average_loss = previous_loss[0]
                 else:
                     previous_average_loss = smoothed_moving_average(previous_loss)
             else:
