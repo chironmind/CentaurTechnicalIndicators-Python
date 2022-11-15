@@ -74,7 +74,7 @@ def personalised_macd(prices, short_period, long_period, ma_model='ema', fill_em
             macd.append(fill_value)
     for i in range(long_period, len(prices)):
         price_set = prices[i - long_period: i]
-        single_macd = MAs.personalised_macd( price_set, short_period, long_period, ma_model, fill_empty, fill_value )
+        single_macd = MAs.personalised_macd( price_set, short_period, long_period, ma_model)
         macd.append( single_macd )
     return macd
 
