@@ -1,6 +1,27 @@
 [build-system]
 requires = [
-    "setuptools>=42",
+    "setuptools>=61.0",
     "wheel"
 ]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "PyTechnicalIndicators"
+version = "1.0.11"
+authors = [
+    { name="0100101001010000", email="mind@your.business"}
+]
+description = "A simple technical indicators package for financial technical Analysis"
+readme = "README.md"
+requires-python = ">3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Financial and Insurance Industry"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/0100101001010000/PyTechnicalIndicators"
+"Issues" = "https://github.com/0100101001010000/PyTechnicalIndicators/issues"
