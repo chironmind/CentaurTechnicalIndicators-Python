@@ -2,7 +2,12 @@ import math
 import statistics
 
 
-def log(prices):
+def log(prices: list[float]) -> list[float]:
+    """
+    Calculates the log of a list of prices
+    :param prices: -- list of floats
+    :return: list of logs (floats)
+    """
     if len(prices) < 0:
         raise Exception('Length of prices needs to be greater than 0')
 
@@ -13,7 +18,12 @@ def log(prices):
     return logs
 
 
-def log_diff(prices):
+def log_diff(prices: list[float]) -> list[float]:
+    """
+    Calculates the difference between the log a price and the log of the previous price
+    :param prices: list of prices as floats
+    :return: Returns a list of log differences (floats) the length of the list will be one shorter than the input prices list
+    """
     if len(prices) < 0:
         raise Exception('Length of prices needs to be greater than 0')
 
@@ -28,8 +38,16 @@ def log_diff(prices):
     return logdiffs
 
 
-def stddev(prices, period, fill_empty=False, fill_value=None):
-    # period is the the timeframe that you want it calculate it for throughout time
+def stddev(prices: list[float], period: int, fill_empty: bool = False, fill_value: any = None) -> list[float]:
+    """
+    Calculates the standard deviation of a list of prices
+    :param prices: list[float] - list of prices
+    :param period: int - timeframe for which the standard deviation needs to be calculated for. For example period=20 would calculate the standard deviation for 20 periods
+    :param fill_empty: bool - (Optional) Whether empty values should be filled with the fill_value (default False)
+    :param fill_value: any - (Optional) The fill value to fill empty values with if fill_empty is True (default None)
+    :return: Returns a list (floats) of standard deviations
+    """
+    # period is the timeframe that you want it calculate it for throughout time
     if period <= 0:
         raise Exception('Period needs to be at least 1')
 
@@ -46,7 +64,15 @@ def stddev(prices, period, fill_empty=False, fill_value=None):
     return stddevs
 
 
-def mean(prices, period, fill_empty=False, fill_value=None):
+def mean(prices: list[float], period: int, fill_empty: bool = False, fill_value: str = None) -> list[float]:
+    """
+    Calculates the mean, or average, of a list of prices over a certain period and returns a list of means
+    :param prices: list[float] - list of prices
+    :param period: int - timeframe for which the mean needs to be calculated for. For example period=20 would calculate the mean for 20 periods
+    :param fill_empty: bool - (Optional) Whether empty values should be filled with the fill_value (default False)
+    :param fill_value: any - (Optional) The fill value to fill empty values with if fill_empty is True (default None)
+    :return: Returns a list (floats) of means
+    """
     if period <= 0:
         raise Exception('Period needs to be at least 1')
 
@@ -63,7 +89,18 @@ def mean(prices, period, fill_empty=False, fill_value=None):
     return means
 
 
-def median(prices, period, fill_empty=False, fill_value=None):
+def median(prices: list[float], period: int, fill_empty: bool = False, fill_value: any = None) -> list[float]:
+    """
+    Calculates the median for a list of prices over a certain period and returns them as a list
+
+    Setting the period will determine timeframe for which the median gets calculated for. For example when calculating the
+    median for a period of 20 it will iterate through the list of prices and return a list of medians for 20 periods
+    :param prices: list[float] - list of prices
+    :param period: int - timeframe for which the median needs to be calculated for. For example period=20 would calculate the median for 20 periods
+    :param fill_empty: bool - (Optional) Whether empty values should be filled with the fill_value (default False)
+    :param fill_value: any - (Optional) The fill value to fill empty values with if fill_empty is True (default None)
+    :return: Returns a list (floats) of medians
+    """
     if period <= 0:
         raise Exception('Period needs to be at least 1')
 
@@ -80,7 +117,18 @@ def median(prices, period, fill_empty=False, fill_value=None):
     return medians
 
 
-def variance(prices, period, fill_empty=False, fill_value=None):
+def variance(prices: list[float], period: int, fill_empty: bool = False, fill_value: any = None) -> list[float]:
+    """
+    Calculates the variance for a list of prices for a certain period of time and returns a list of variances
+
+    When calculating the variance you can choose the number of periods that you want the variance that you want to be
+    calculated for.
+    :param prices: list[float] - list of prices
+    :param period: int - timeframe for which the variance needs to be calculated for. For example period=20 would calculate the variance for 20 periods
+    :param fill_empty: bool - (Optional) Whether empty values should be filled with the fill_value (default False)
+    :param fill_value: any - (Optional) The fill value to fill empty values with if fill_empty is True (default None)
+    :return: Returns a list (floats) of variances
+    """
     if period <= 0:
         raise Exception('Period needs to be at least 1')
 

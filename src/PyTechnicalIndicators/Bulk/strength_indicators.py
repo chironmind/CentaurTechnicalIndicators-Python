@@ -1,7 +1,14 @@
 from ..Single.moving_averages import moving_average, smoothed_moving_average, exponential_moving_average
 
-
-def relative_strength_index(prices, fill_empty=False, fill_value=None):
+# TODO: Call single RSI to avoid dup lines of code
+def relative_strength_index(prices: list[float], fill_empty: bool = False, fill_value: any = None) -> list[float]:
+    """
+    Calculates the RSI from a list of prices
+    :param prices: List of prices
+    :param fill_empty: (Optional) Whether empty values should be filled with the fill_value (default False)
+    :param fill_value: (Optional) The fill value to fill empty values with if fill_empty is True (default None)
+    :return: Returns the RSI as a list
+    """
     if len(prices) < 14:
         raise Exception(f'14 periods are needed to calculate RSI {len(prices)} have been provided')
 
@@ -51,7 +58,14 @@ def relative_strength_index(prices, fill_empty=False, fill_value=None):
     return rsi
 
 
-def stochastic_oscillator(close_prices, fill_empty=False, fill_value=None):
+def stochastic_oscillator(close_prices: list[float], fill_empty: bool = False, fill_value: any = None) -> list[float]:
+    """
+    Calculates the SO from a list of closing prices
+    :param close_prices: List of closing prices
+    :param fill_empty: (Optional) Whether empty values should be filled with the fill_value (default False)
+    :param fill_value: (Optional) The fill value to fill empty values with if fill_empty is True (default None)
+    :return: Returns a list of SO
+    """
     if len(close_prices) < 14:
         raise Exception(f'14 periods are needed to calculate RSI {len(close_prices)} have been provided')
 
@@ -69,8 +83,22 @@ def stochastic_oscillator(close_prices, fill_empty=False, fill_value=None):
     return so
 
 
-def personalised_rsi(prices, period, ma_model='sma', fill_empty=False, fill_value=None):
-    # TODO: allow pma
+# TODO: allow pma using kwargs
+def personalised_rsi(prices: list[float], period: int, ma_model: str = 'sma', fill_empty: bool = False, fill_value: any = None) -> list[float]:
+    """
+    Calculates a personalised RSI
+
+    The default RSI uses a period of 14 and a Smoothed Moving Average model to calculate the RSI. This functions allows
+    any period of MA model to be used to calculate the RSI
+    :param prices: List of prices
+    :param period: Number of periods for which the moving average should be calculated for
+    :param ma_model: Name of the moving average that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'sma'
+    :param fill_empty: (Optional) Whether empty values should be filled with the fill_value (default False)
+    :param fill_value: (Optional) The fill value to fill empty values with if fill_empty is True (default None)
+    :return: Returns a list of personalised RSI
+    """
     if len(prices) < period:
         raise Exception(f'Submitted prices needs to be greater than submitted period of {period}')
 
@@ -175,7 +203,17 @@ def personalised_rsi(prices, period, ma_model='sma', fill_empty=False, fill_valu
     return rsi
 
 
-def personalised_stochastic_oscillator(close_prices, period, fill_empty=False, fill_value=None):
+def personalised_stochastic_oscillator(close_prices: list[float], period: int, fill_empty: bool = False, fill_value: any = None) -> list[float]:
+    """
+    Calculates a personalised SO
+
+    The normal period that the SO uses is 14 periods, this functions allows for any period to be used
+    :param close_prices: list of close prices
+    :param period: Number of periods for which the moving average should be calculated for
+    :param fill_empty: (Optional) Whether empty values should be filled with the fill_value (default False)
+    :param fill_value: (Optional) The fill value to fill empty values with if fill_empty is True (default None)
+    :return: Returns a list of personalised SO
+    """
     if len(close_prices) < period:
         raise Exception(f'Submitted prices needs to be greater than submitted period of {period}')
 

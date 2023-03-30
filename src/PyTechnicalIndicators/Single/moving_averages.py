@@ -2,13 +2,25 @@ ma = ['ma', 'moving average', 'moving_average']
 sma = ['sma', 'smoothed moving average', 'smoothed_moving_average']
 ema = ['ema', 'exponential moving average', 'exponential_moving_average']
 
-def moving_average(prices):
+
+def moving_average(prices: list[float]) -> float:
+    """
+    Calculates the moving average
+    :param prices: List of prices
+    :return: Returns the moving average as a float
+    """
     if len(prices) == 0:
         raise Exception('There needs to be prices to be able to do a moving average')
     return sum(prices) / len(prices)
 
 
-def exponential_moving_average(prices):
+# TODO: these could just call the personalised MA
+def exponential_moving_average(prices: list[float]) -> float:
+    """
+    Calculates the exponential moving average
+    :param prices: List of prices
+    :return: Returns the EMA as a float
+    """
     length_prices = len(prices)
     if length_prices <= 1:
         raise Exception('There needs to be prices to be able to do an exponential moving average')
@@ -24,7 +36,12 @@ def exponential_moving_average(prices):
     return price_sum / denominator_sum
 
 
-def smoothed_moving_average(prices):
+def smoothed_moving_average(prices: list[float]) -> float:
+    """
+    Calculates the smoothed moving average
+    :param prices: List of prices
+    :return: Returns the SMA as a float
+    """
     # SmoothedMA is same as EMA but alpha = 1 / len(prices)
     length_prices = len(prices)
     if length_prices <= 1:
@@ -43,7 +60,14 @@ def smoothed_moving_average(prices):
     return price_sum / denominator_sum
 
 
-def personalised_moving_average(prices, alpha_nominator, alpha_denominator):
+def personalised_moving_average(prices: list[float], alpha_nominator: int, alpha_denominator: int) -> float:
+    """
+
+    :param prices:
+    :param alpha_nominator:
+    :param alpha_denominator:
+    :return:
+    """
     length_prices = len(prices)
     if length_prices == 0:
         raise Exception('There needs to be prices to be able to do personalised moving average')
@@ -63,7 +87,14 @@ def personalised_moving_average(prices, alpha_nominator, alpha_denominator):
     return price_sum / denominator_sum
 
 
-def moving_average_convergence_divergence(prices):
+# TODO: MACD should probably be one function that gets called and returns everything (macd, signal, diff)
+#  and rename below to macd line
+def moving_average_convergence_divergence(prices: list[float]) -> float:
+    """
+    Calculates the MACD line
+    :param prices: List of prices
+    :return: Returns the MACD as a float
+    """
     prices_length = len(prices)
     if prices_length < 26:
         raise Exception("Submitted prices is too short to calculate MACD")
@@ -75,14 +106,32 @@ def moving_average_convergence_divergence(prices):
     return macd
 
 
-def signal_line(macd):
+def signal_line(macd: list[float]) -> float:
+    """
+    Calculates the signal line
+    :param macd: list of MACDs
+    :return: Returns the signal line as a float
+    """
     if len(macd) != 9:
         raise Exception("Submitted MACD array needs to be 9 lags long")
 
     return exponential_moving_average(macd)
 
+# TODO: PMA
+def personalised_macd(prices: list[float], short_period: int, long_period: int, ma_model: str = 'ema') -> float:
+    """
+    Calculates the personalised MACD
 
-def personalised_macd(prices, short_period, long_period, ma_model='ema'):
+    The default MACD uses a short period of 12, a long period of 26, and uses an Exponential Moving Average model to calculate
+    the MACD. This function allows for the MACD to match any markets that may trade on a different time frame
+    :param prices: list of prices
+    :param short_period: Number for the short period
+    :param long_period: Number for the long period
+    :param ma_model: Name of the moving average that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'ema'
+    :return: Returns the MACD as a float
+    """
     if short_period <= 0 or long_period <= short_period:
         raise Exception('Period needs to be at least 1')
 
@@ -107,8 +156,16 @@ def personalised_macd(prices, short_period, long_period, ma_model='ema'):
 
     return macd
 
-
-def personalised_signal_line(macd, ma_model='ema'):
+# TODO: Support PMA
+def personalised_signal_line(macd: list[float], ma_model: str = 'ema') -> float:
+    """
+    Calculates a personalised version of the signal line
+    :param macd: List of MACDs
+    :param ma_model: Name of the moving average that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'ema'
+    :return: Returns the Signal line as a float
+    """
     if len(macd) == 1:
         raise Exception("Submitted MACD array is too short needs to be greater than 1")
 
@@ -120,3 +177,5 @@ def personalised_signal_line(macd, ma_model='ema'):
         return exponential_moving_average(macd)
     else:
         return exponential_moving_average(macd)
+
+# TODO: moving median

@@ -5,7 +5,14 @@ from .peaks import get_peaks
 from .pits import get_pits
 
 
-def get_trend(p):
+def get_trend(p: list[tuple[float, int]]) -> float:
+    """
+    Gets the trend of a list of prices
+
+    It is intended for internal use for the functions in trend.py
+    :param p: list of tuples with price and index
+    :return: Returns the trend as a float
+    """
     p_diff = []
     for p_index in range(len(p)):
         if p_index != len(p)-1:
@@ -15,24 +22,52 @@ def get_trend(p):
     return trend
 
 
-def get_peak_trend(prices):
+def get_peak_trend(prices: list[float]) -> float:
+    """
+    Get the trend of peaks (highs) from a list of prices
+    :param prices: list of prices
+    :return: Returns the trend as a float
+    """
     peaks_list = get_peaks(prices)
     return get_trend(peaks_list)
 
 
-def get_pit_trend(prices):
+def get_pit_trend(prices: list[float]) -> float:
+    """
+    Get the trend of pits (lows) from a list of prices
+    :param prices: list of prices
+    :return: Returns the trend as a float
+    """
     pits_list = get_pits(prices)
     return get_trend(pits_list)
 
 
-def get_overall_trend(prices):
+# TODO: Revisit this, should probably just be the trend of a list of typical prices
+def get_overall_trend(prices: list[float]) -> float:
+    """
+    Get the overall trend from a list of prices
+
+    This function calculates the peak and the pit trend then takes the average from the two
+    :param prices: List of prices
+    :return: Returns the trend as a float
+    """
     peaks_trend = get_peak_trend(prices)
     pits_trend = get_pit_trend(prices)
 
     return (peaks_trend + pits_trend) / 2
 
 
-def get_trend_angle(price_a, index_a, price_b, index_b):
+def get_trend_angle(price_a: float, index_a: int, price_b: float, index_b: int) -> float:
+    """
+    Gets the angle of the trend
+
+    To calculate the angle of the trend, the function needs the price and index of two different prices
+    :param price_a: Price of the first price
+    :param index_a: Location of the first price
+    :param price_b: Price of the second price
+    :param index_b: Location of the second price
+    :return: Returns the angle as a float
+    """
     adjacent = index_b - index_a
     opposite = price_b - price_a
     unknown_side = math.sqrt(math.pow(adjacent, 2) + math.pow(opposite, 2))
@@ -42,7 +77,15 @@ def get_trend_angle(price_a, index_a, price_b, index_b):
     return math.degrees(angle)
 
 
-def break_down_trend(outlier_list, typical_prices):
+# TODO: the doc string needs way more information
+def break_down_trend(outlier_list: list[tuple[float, int]], typical_prices: list[float]) -> list[tuple[int, int, float]]:
+    """
+    Breaks down the trend for a list of pits or peaks
+    :param outlier_list: List of peaks or pits
+    :param typical_prices: list of typical prices
+    :return: Returns a list of tuples where the first item is the index where the trend starts, the second item is the
+    previous index, and the third item is the previous trend
+    """
     trends = []
 
     previous_tuple = outlier_list[1]
@@ -92,7 +135,18 @@ def break_down_trend(outlier_list, typical_prices):
     return trends
 
 
-def break_down_trends(prices, min_period=2, peaks_only=False, pits_only=False):
+def break_down_trends(prices: list[float], min_period: int = 5, peaks_only: bool = False, pits_only: bool = False) -> list[tuple[int, int, float]]:
+    """
+    Get the trend for a list of prices
+
+    Gets the peak and pit trends for a given list of prices.
+    :param prices: list of prices
+    :param min_period: Period in which the peaks and pits should be calculated for
+    :param peaks_only: Return only peaks
+    :param pits_only: Return only pits
+    :return: Returns a list of f tuples where the first item is the index where the trend starts, the second item is the
+    previous index, and the third item is the previous trend
+    """
     peaks_list = get_peaks(prices, min_period)
     pits_list = get_pits(prices, min_period)
 
@@ -106,10 +160,18 @@ def break_down_trends(prices, min_period=2, peaks_only=False, pits_only=False):
     if pits_only:
         return pit_trends
 
+    # TODO: Shouldn't overall be used here instead of peak and pit?
     return peak_trends, pit_trends
 
 
-def merge_trends(typical_prices, min_period=2):
+# TODO: Figure out what this does???
+def merge_trends(typical_prices: list[float], min_period: int = 2) -> list[tuple[int, int, float]]:
+    """
+
+    :param typical_prices:
+    :param min_period:
+    :return:
+    """
     peaks_list = get_peaks(typical_prices, min_period)
     pits_list = get_pits(typical_prices, min_period)
     outlier_list = peaks_list
@@ -127,8 +189,8 @@ def merge_trends(typical_prices, min_period=2):
 
     return break_down_trend(outlier_list, typical_prices)
 
-# todo: create bands for the stddev to graph
+# TODO: create bands for the stddev to graph
 
-# todo: fibonacci retractment, get a peak and pit, and then do the retractement based on that
-# todo: take into account volume to determine support and resistance, volume will need to be transformed into a series,
+# TODO: fibonacci retractment, get a peak and pit, and then do the retractement based on that
+# TODO: take into account volume to determine support and resistance, volume will need to be transformed into a series,
 #   use the first value as 100, and change accordingly
