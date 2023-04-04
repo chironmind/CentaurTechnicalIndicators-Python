@@ -1,5 +1,7 @@
 from ..Single.moving_averages import moving_average, smoothed_moving_average, exponential_moving_average
 
+from src.PyTechnicalIndicators.Single.strength_indicators import accumulation_distribution_indicator as adi
+
 # TODO: Call single RSI to avoid dup lines of code
 def relative_strength_index(prices: list[float], fill_empty: bool = False, fill_value: any = None) -> list[float]:
     """
@@ -229,3 +231,17 @@ def personalised_stochastic_oscillator(close_prices: list[float], period: int, f
         so.append(((previous_close - lowest_closing) / (highest_closing - lowest_closing))*100)
 
     return so
+
+
+def accumulation_distribution_indicator(high: list[float], low: list[float], close: list[float], volume: list[int]) -> list[float]:
+    if len(high) != len(low) or len(high) != len(close) or len(high) != len(volume):
+        raise Exception(f'lengths needs to match, high: {len(high)}, low: {len(low)}, close {len(close)}, volume{len(volume)}')
+
+    adi_list = []
+    for i in range(len(high)):
+        if adi_list:
+            adi_list.append(adi(high[i], low[i], close[i], volume[i], adi_list[-1]))
+        else:
+            adi_list.append(adi(high[i], low[i], close[i], volume[i], 0))
+
+    return adi_list

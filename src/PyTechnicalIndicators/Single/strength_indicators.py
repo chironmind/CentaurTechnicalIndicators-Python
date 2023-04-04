@@ -1,5 +1,5 @@
 from .moving_averages import moving_average, smoothed_moving_average, exponential_moving_average
-
+from src.PyTechnicalIndicators.Single.volatility import average_true_range
 
 def relative_strength_index(prices: list[float]) -> float:
     """
@@ -123,3 +123,83 @@ def personalised_stochastic_oscillator(close_prices: list[float]) -> float:
 
     so = ((previous_close - lowest_closing) / (highest_closing - lowest_closing)) * 100
     return so
+
+
+def accumulation_distribution_indicator(high: float, low: float, close: float, volume: float, previous_adi: float) -> float:
+    """
+    Calculates the accumulation distribution indicator
+
+    :param high: High price
+    :param low: Low price
+    :param close: Closing price
+    :param volume: Volume
+    :param previous_adi: Previous accumulation distribution indicator
+    :return: Returns the accumulation distribution indicator as a float
+    """
+    money_flow_multiplier = ((close - low) - (high - close)) / (high - low)
+    money_flow_volume = money_flow_multiplier * volume
+    return previous_adi + money_flow_volume
+
+
+def average_directional_index(current_high: float, previous_high: float, current_low: float, previous_low: float) -> float:
+    """
+
+    :param current_high:
+    :param previous_high:
+    :param current_low:
+    :param previous_low:
+    :return:
+    """
+    pass
+
+
+def personalised_average_directional_index(high: list[float], low: list[float], close: list[float]) -> float:
+    """
+
+    :param high:
+    :param low:
+    :param close:
+    :return:
+    """
+
+    if len(high) != len(low) or len(high) != len(close):
+        raise Exception(f'lengths needs to match, high: {len(high)}, low: {len(low)}, close {len(close)}')
+
+    positive_directional_movement = high[-1] - high[-2]
+    negative_directional_movement = low[-2] - low[-1]
+    if positive_directional_movement > negative_directional_movement:
+        current_directional_movement = positive_directional_movement
+    else:
+        current_directional_movement = negative_directional_movement
+
+    true_range_high_low = high[-1] - low[-1]
+    true_range_high_close = high[-1] - close[-2]
+    true_range_low_close = low[-1] - close[-2]
+
+    if true_range_high_low > true_range_high_close and true_range_high_low > true_range_low_close:
+        true_range = true_range_high_low
+    elif true_range_high_close > true_range_low_close:
+        true_range = true_range_high_close
+    else:
+        true_range = true_range_low_close
+
+    sum_positive_directional_movement = 0
+    for i in range(1, len(high)):
+        sum_positive_directional_movement += high[i] - high[i-1]
+    positive_directional_movement_average = sum_positive_directional_movement / len(high)
+    smoothed_positive_directional_movement = (sum_positive_directional_movement - positive_directional_movement_average) + current_directional_movement
+
+    sum_negative_directional_movement = 0
+    for i in range(1, len(low)):
+        sum_negative_directional_movement += low[i-1] - low[i]
+    negative_directional_movement_average = sum_negative_directional_movement / len(low)
+    smoothed_negative_directional_movement = (sum_negative_directional_movement - negative_directional_movement_average) + current_directional_movement
+
+    atr = average_true_range(high, low, close, 0)
+
+    positive_directional_index = (smoothed_positive_directional_movement / atr) * 100
+    negative_directional_index = (smoothed_negative_directional_movement / atr) * 100
+    directional_movement_index = (abs(positive_directional_index - negative_directional_index) / abs(positive_directional_index + negative_directional_index)) * 100
+
+
+

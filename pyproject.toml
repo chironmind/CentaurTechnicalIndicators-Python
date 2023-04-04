@@ -25,3 +25,8 @@ classifiers = [
 [project.urls]
 "Homepage" = "https://github.com/0100101001010000/PyTechnicalIndicators"
 "Issues" = "https://github.com/0100101001010000/PyTechnicalIndicators/issues"
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "."
+]

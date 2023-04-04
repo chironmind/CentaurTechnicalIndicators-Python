@@ -13,6 +13,9 @@
   - McGinley Dynamic https://www.investopedia.com/articles/forex/09/mcginley-dynamic-indicator.asp
   - Ulcer Index https://www.investopedia.com/terms/u/ulcerindex.asp
   - VAMI (calc the return on investment of $1000 over a month) https://www.investopedia.com/terms/v/vami.asp
-- docstring: The docstring for a function or method should summarize its behavior and document its arguments, return value(s), side effects, exceptions raised, and restrictions on when it can be called (all if applicable). Optional arguments should be indicated. It should be documented whether keyword arguments are part of the interface.
+  - Correlation stuff done in the chart code
+- Optional arguments should be indicated. It should be documented whether keyword arguments are part of the interface.
 - examples in docstrings
 - GH actions to run the tests (once they've been built) and maybe package to confirm it works? could even do the upload there
+- add indicators to correct folders (RSI SO MACD should be in momentum?)
+- logging
