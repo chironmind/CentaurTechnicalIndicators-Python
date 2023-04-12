@@ -1,6 +1,6 @@
 import pytest
 
-from src.PyTechnicalIndicators.Bulk.strength_indicators import accumulation_distribution_indicator
+from src.PyTechnicalIndicators.Bulk.strength_indicators import accumulation_distribution_indicator, personalised_average_directional_index
 
 
 def test_accumulation_distribution_indicator():
@@ -47,3 +47,13 @@ def test_accumulation_distribution_indicator_length_exception():
         accumulation_distribution_indicator(high, low, close, volume)
 
     assert str(e.value) == f'lengths needs to match, high: {len(high)}, low: {len(low)}, close {len(close)}, volume{len(volume)}'
+
+
+def test_average_directional_index():
+    high = [130, 145, 156, 139, 140, 166, 152, 156, 148, 143, 139, 135]
+    low = [109, 105, 123, 118, 122, 135, 136, 140, 132, 128, 133, 125]
+    close = [125, 120, 137, 128, 125, 142, 139, 152, 139, 140, 135, 120]
+
+    adi = personalised_average_directional_index(high, low, close, 3)
+
+    assert adi == [0]

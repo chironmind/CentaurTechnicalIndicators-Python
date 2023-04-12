@@ -153,7 +153,39 @@ def average_directional_index(current_high: float, previous_high: float, current
     pass
 
 
-def personalised_average_directional_index(high: list[float], low: list[float], close: list[float]) -> float:
+# TODO: Check math by hand
+def personalised_average_directional_index(high: list[float], low: list[float], close: list[float], previous_adi: float, period: int) -> float:
+    """
+    Calculates the average directional index and returns it as a float
+
+    Calculated according to "New concepts in technical trading systems" (1978) - Wilder, J. Welles https://archive.org/details/newconceptsintec00wild/page/43/mode/2up
+    The personalised version allows for any period to be used
+    :param high:
+    :param low:
+    :param close:
+    :param previous_adi:
+    :param period:
+    :return:
+    """
+    length = len(high)
+    if length != len(low) or len(high) != len(close):
+        raise Exception(f'Lengths needs to match, high: {length}, low: {len(low)}, close {len(close)}')
+
+    if period > length:
+        raise Exception(f'Period ({period}) needs to be smaller or equal length of lists ({length})')
+
+    if previous_adi != 0:
+        dmi = directional_movement_index(high[-period:], low[-period:], close[-period:])
+        return ((previous_adi * period - 1) + dmi) / period
+    else:
+        
+        dmi_list = []
+        for i in range(length - period):
+            dmi_list.append(directional_movement_index(high[i:i+period], low[i:i+period], close[i:i+period]))
+        return sum(dmi_list) / len(dmi_list)
+
+
+def directional_movement_index(high: list[float], low: list[float], close: list[float]) -> float:
     """
 
     :param high:
@@ -161,45 +193,27 @@ def personalised_average_directional_index(high: list[float], low: list[float], 
     :param close:
     :return:
     """
-
-    if len(high) != len(low) or len(high) != len(close):
-        raise Exception(f'lengths needs to match, high: {len(high)}, low: {len(low)}, close {len(close)}')
-
     positive_directional_movement = high[-1] - high[-2]
     negative_directional_movement = low[-2] - low[-1]
+
     if positive_directional_movement > negative_directional_movement:
-        current_directional_movement = positive_directional_movement
+        negative_directional_movement = 0
     else:
-        current_directional_movement = negative_directional_movement
-
-    true_range_high_low = high[-1] - low[-1]
-    true_range_high_close = high[-1] - close[-2]
-    true_range_low_close = low[-1] - close[-2]
-
-    if true_range_high_low > true_range_high_close and true_range_high_low > true_range_low_close:
-        true_range = true_range_high_low
-    elif true_range_high_close > true_range_low_close:
-        true_range = true_range_high_close
-    else:
-        true_range = true_range_low_close
-
+        positive_directional_movement = 0
     sum_positive_directional_movement = 0
-    for i in range(1, len(high)):
-        sum_positive_directional_movement += high[i] - high[i-1]
-    positive_directional_movement_average = sum_positive_directional_movement / len(high)
-    smoothed_positive_directional_movement = (sum_positive_directional_movement - positive_directional_movement_average) + current_directional_movement
 
+    for i in range(1, len(high)):
+        sum_positive_directional_movement += high[i] - high[i - 1]
+    positive_directional_movement_average = sum_positive_directional_movement / len(high)
+    smoothed_positive_directional_movement = (sum_positive_directional_movement - positive_directional_movement_average) + positive_directional_movement
     sum_negative_directional_movement = 0
+
     for i in range(1, len(low)):
-        sum_negative_directional_movement += low[i-1] - low[i]
+        sum_negative_directional_movement += low[i - 1] - low[i]
     negative_directional_movement_average = sum_negative_directional_movement / len(low)
-    smoothed_negative_directional_movement = (sum_negative_directional_movement - negative_directional_movement_average) + current_directional_movement
+    smoothed_negative_directional_movement = (sum_negative_directional_movement - negative_directional_movement_average) + negative_directional_movement
 
     atr = average_true_range(high, low, close, 0)
-
     positive_directional_index = (smoothed_positive_directional_movement / atr) * 100
     negative_directional_index = (smoothed_negative_directional_movement / atr) * 100
-    directional_movement_index = (abs(positive_directional_index - negative_directional_index) / abs(positive_directional_index + negative_directional_index)) * 100
-
-
-
+    return (abs(positive_directional_index - negative_directional_index) / abs(positive_directional_index + negative_directional_index)) * 100

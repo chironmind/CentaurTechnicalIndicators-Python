@@ -1,6 +1,7 @@
 from ..Single.moving_averages import moving_average, smoothed_moving_average, exponential_moving_average
 
 from src.PyTechnicalIndicators.Single.strength_indicators import accumulation_distribution_indicator as adi
+from src.PyTechnicalIndicators.Single.strength_indicators import personalised_average_directional_index as adx
 
 # TODO: Call single RSI to avoid dup lines of code
 def relative_strength_index(prices: list[float], fill_empty: bool = False, fill_value: any = None) -> list[float]:
@@ -245,3 +246,28 @@ def accumulation_distribution_indicator(high: list[float], low: list[float], clo
             adi_list.append(adi(high[i], low[i], close[i], volume[i], 0))
 
     return adi_list
+
+
+def personalised_average_directional_index(high: list[float], low: list[float], close: list[float], period: int) -> list[float]:
+    """
+
+    :return:
+    """
+    # TODO: have an input period, then slice up the provided lists and go through the list, on first iteration provide
+    #   enough information for it to go through and do the adx without a prior one (adx * 2) then use the adx returned
+    #   and for the other iterations just provide the adx
+    length = len(high)
+    if length != len(low) or len(high) != len(close):
+        raise Exception(f'Lengths needs to match, high: {length}, low: {len(low)}, close {len(close)}')
+
+    minimum_initial_period = 2 * period
+    if minimum_initial_period > length:
+        raise Exception(f'Period ({period}) needs to be greater or equal length of lists ({length})')
+
+    initial_adx = adx(high[:minimum_initial_period], low[:minimum_initial_period], close[:minimum_initial_period], 0, period)
+
+    adx_list = [initial_adx]
+    for i in range(minimum_initial_period, length - period):
+        adx_list.append(adx(high[i:i+period], low[i:i+period], close[i:i+period], adx_list[-1], period))
+
+    return adx_list

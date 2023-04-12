@@ -181,3 +181,19 @@ def personalised_signal_line(macd: list[float], period: int, ma_model: str = 'em
     return signal_lines
 
 # TODO: Moving Median
+
+
+def mcginley_dynamic(prices: list[float], period: int) -> list[float]:
+    """
+    The McGinley Dynamic offers an alternative to the moving average, the idea is that it should be more resilient to
+    shocks than moving average models
+    :param prices: List of prices
+    :param period: The period works in a similar manner to the period for moving average models, the higher the period,
+    the smoother the line
+    :return: Returns a list of McGinley Dynamics
+    """
+    initial_mcginley_dynamic = MAs.mcginley_dynamic(prices[0], period)
+    mcginley_dynamic_list = [initial_mcginley_dynamic]
+    for price in prices[1:]:
+        mcginley_dynamic_list.append(MAs.mcginley_dynamic(price, period, mcginley_dynamic_list[-1]))
+    return mcginley_dynamic_list

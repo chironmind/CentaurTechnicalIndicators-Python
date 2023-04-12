@@ -179,3 +179,20 @@ def personalised_signal_line(macd: list[float], ma_model: str = 'ema') -> float:
         return exponential_moving_average(macd)
 
 # TODO: moving median
+
+
+# TODO: Not convinced about what to do when there is no previous dynamic
+def mcginley_dynamic(price: float, period: int, previous_mcginley_dynamic: float = 0) -> float:
+    """
+    The McGinley Dynamic offers an alternative to the moving average, the idea is that it should be more resilient to
+    shocks than moving average models
+    :param price: Current price
+    :param period: The period works in a similar manner to the period for moving average models, the higher the period,
+    the smoother the line
+    :param previous_mcginley_dynamic: (Optional) The previous value of the McGinley Dynamic
+    :return: Returns the McGinley dynamic as a float
+    """
+    if previous_mcginley_dynamic == 0:
+        return price
+    base = price / previous_mcginley_dynamic
+    return previous_mcginley_dynamic + ((price - previous_mcginley_dynamic) / (period * pow(base, 4)))
