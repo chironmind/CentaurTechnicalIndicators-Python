@@ -1,3 +1,4 @@
+import math
 
 
 def average_true_range(high: list[float], low: list[float], close: list[float], previous_atr: float = 0) -> float:
@@ -42,3 +43,20 @@ def average_true_range(high: list[float], low: list[float], close: list[float], 
         true_range = true_range_low_close
 
     return ((previous_atr * (len(high) - 1)) + true_range) / len(high)
+
+
+def ulcer_index(close_prices: list[float]) -> float:
+    """
+    Calculates the ulcer index based on a list of close prices.
+
+    The period and max price get determined based on the list of prices
+    :param close_prices: List of closing prices
+    :return: Returns the Ulcer Index as a float
+    """
+    squared_percentage_drawdown = [0]
+    for i in range(1, len(close_prices)):
+        period_high = max(close_prices[:i+1])
+        percentage_drawdown = ((close_prices[i] - period_high) / period_high) * 100
+        squared_percentage_drawdown.append(pow(percentage_drawdown, 2))
+    squared_average = sum(squared_percentage_drawdown) / len(close_prices)
+    return math.sqrt(squared_average)

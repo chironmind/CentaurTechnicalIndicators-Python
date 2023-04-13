@@ -1,4 +1,4 @@
-from src.PyTechnicalIndicators.Single.volatility import average_true_range as atr
+from src.PyTechnicalIndicators.Single.volatility import average_true_range as atr, ulcer_index as ui
 
 
 def average_true_range(high: list[float], low: list[float], close: list[float], period: int) -> list[float]:
@@ -27,3 +27,18 @@ def average_true_range(high: list[float], low: list[float], close: list[float], 
 
     return atr_list
 
+
+def ulcer_index(close_prices: list[float], period: int) -> list[float]:
+    """
+    Calculates the ulcer index from a list of closing prices. The period determines how many period to calculate each
+    ulcer index for
+    :param close_prices: List of closing prices
+    :param period: ow many period to calculate each ulcer index for
+    :return: Returns a list of ulcer index
+    """
+    if period > len(close_prices):
+        raise Exception(f'length of close_prices ({close_prices}) needs to be greater or equal to the period ({period})')
+    ulcer_index_list = []
+    for i in range(len(close_prices)-period+1):
+        ulcer_index_list.append(ui(close_prices[i:i+period]))
+    return ulcer_index_list

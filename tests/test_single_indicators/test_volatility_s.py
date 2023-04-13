@@ -1,6 +1,6 @@
 import pytest
 
-from src.PyTechnicalIndicators.Single.volatility import average_true_range
+from src.PyTechnicalIndicators.Single.volatility import average_true_range, ulcer_index
 
 
 def test_average_true_range():
@@ -38,3 +38,9 @@ def test_average_true_range_length_exception():
     with pytest.raises(Exception) as e:
         average_true_range(high, low, close, 0)
     assert str(e.value) == f'lengths needs to match, high: {len(high)}, low: {len(low)}, close {len(close)}'
+
+
+def test_ulcer_index():
+    close_prices = [103, 105, 106, 104, 101]
+    ui = ulcer_index(close_prices)
+    assert ui == 2.2719989771306217
