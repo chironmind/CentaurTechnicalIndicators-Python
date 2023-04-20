@@ -125,7 +125,7 @@ def personalised_stochastic_oscillator(close_prices: list[float]) -> float:
     return so
 
 
-def accumulation_distribution_indicator(high: float, low: float, close: float, volume: float, previous_adi: float) -> float:
+def accumulation_distribution_indicator(high: float, low: float, close: float, volume: float, previous_adi: float = 0) -> float:
     """
     Calculates the accumulation distribution indicator
 

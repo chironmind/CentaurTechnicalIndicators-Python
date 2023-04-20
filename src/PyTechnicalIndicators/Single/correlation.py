@@ -1,7 +1,6 @@
 import statistics
 
 
-# TODO: Check this, results seem odd, does it need to be done on a point by point basis?
 def correlate_asset_prices(price_asset_a: list[float], price_asset_b: list[float]) -> float:
     """
     Calculate the correlation between two prices for a given period. Period is determined by the length of the list of prices
@@ -13,19 +12,15 @@ def correlate_asset_prices(price_asset_a: list[float], price_asset_b: list[float
         raise Exception(f'length of price_a ({len(price_asset_a)}) needs to equal length of price_b ({len(price_asset_b)})')
 
     asset_a_avg_price = statistics.mean(price_asset_a)
-    print(asset_a_avg_price)
     asset_b_avg_price = statistics.mean(price_asset_b)
-    print(asset_b_avg_price)
 
-    asset_a_avg_return = 0
-    for price in price_asset_a:
-        asset_a_avg_return += price - asset_a_avg_price
+    joint_avg_return = 0
+    for i in range(len(price_asset_a)):
+        asset_a_avg_return = price_asset_a[i] - asset_a_avg_price
+        asset_b_avg_return = price_asset_b[i] - asset_b_avg_price
+        joint_avg_return += asset_a_avg_return * asset_b_avg_return
 
-    asset_b_avg_return = 0
-    for price in price_asset_b:
-        asset_b_avg_return += price - asset_b_avg_price
-
-    covariance = (asset_a_avg_return * asset_b_avg_return) / (len(price_asset_a) - 1)
+    covariance = joint_avg_return / (len(price_asset_a) - 1)
     asset_a_std_dev = statistics.stdev(price_asset_a)
     asset_b_std_dev = statistics.stdev(price_asset_b)
 

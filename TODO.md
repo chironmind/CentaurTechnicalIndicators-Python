@@ -4,7 +4,6 @@
 - add pma to personalised indicators that allow to input the ma model
 - make period clearer that it is in peaks and pits
 - add more indicators (pdf has even more)
-  - Correlation stuff done in the chart code
   - investopedia has loads of oscilators but probably do pdf first
 - Optional arguments should be indicated. It should be documented whether keyword arguments are part of the interface.
 - examples in docstrings

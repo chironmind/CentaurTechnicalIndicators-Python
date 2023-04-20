@@ -1,4 +1,4 @@
-from src.PyTechnicalIndicators.Single.oscillators import personalised_money_flow_index as mfi
+from src.PyTechnicalIndicators.Single.oscillators import personalised_money_flow_index as mfi, personalised_chaikin_oscillator as co
 
 
 def money_flow_index(typical_prices: list[float], volume: list[int]) -> list[float]:
@@ -35,3 +35,39 @@ def personalised_money_flow_index(typical_prices: list[float], volume: list[int]
 
     return money_flow_index_list
 
+
+def chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float]) -> list[float]:
+    pass
+
+
+def personalised_chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float], short_period: int, long_period: int, moving_average: str = 'ma') -> list[float]:
+    """
+    A personalised verion of the Chaikin Oscillator, allows the caller to choose the long and short period, rather than
+    having it set to 3 and 10 periods. The long period will be assumed to be the length of the lists provided. The function
+    also allows for the caller to choose the moving average model
+    :param high: List of high prices
+    :param low: List of low prices
+    :param close: List of closing prices
+    :param volume: List of traded volume
+    :param short_period: Number of periods for the short period
+    :param long_period: Number of period for the long period
+    :param moving_average: (Optional)  Name of the moving average that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'ma'
+    :return: Returns the Chaikin Oscillators as a list of float
+    """
+    length = len(high)
+    if length != len(low) or length != len(close) or length != len(volume):
+        raise Exception(
+            f'length of lists need to match. high ({length}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})')
+    if short_period >= length:
+        raise Exception(f'short_period ({short_period}) needs to be smaller than the length of lists ({length})')
+    if long_period > length:
+        raise Exception(f'long_period ({long_period}) needs to be less or equal to length of lists ({length})')
+    if short_period >= long_period:
+        raise Exception(f'long_period ({long_period}) needs to be longer than short_period ({short_period})')
+    chaikin_oscillator_list = []
+    for i in range(length-long_period+1):
+        j = i+long_period
+        chaikin_oscillator_list.append(co(high[i:j], low[i:j], close[i:j], volume[i:j], short_period, moving_average))
+    return chaikin_oscillator_list

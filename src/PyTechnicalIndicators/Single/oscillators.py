@@ -1,4 +1,9 @@
+from src.PyTechnicalIndicators.Single.strength_indicators import accumulation_distribution_indicator
+from src.PyTechnicalIndicators.Single import moving_averages as mam
 
+ma = ['ma', 'moving average', 'moving_average']
+sma = ['sma', 'smoothed moving average', 'smoothed_moving_average']
+ema = ['ema', 'exponential moving average', 'exponential_moving_average']
 
 def money_flow_index(typical_prices: list[float], volume: list[int]) -> float:
     """
@@ -55,3 +60,64 @@ def personalised_money_flow_index(typical_prices: list[float], volume: list[int]
     mfi = 100 - (100 / (1 + money_flow_ratio))
 
     return mfi
+
+
+def chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float]) -> float:
+    """
+    Calculates the Chaikin Oscillator
+    :param high: List of high prices
+    :param low: List of low prices
+    :param close: List of closing prices
+    :param volume: List of traded volume
+    :return: Returns the Chaikin Oscillator as a float
+    """
+    if len(high) != 10:
+        raise Exception('The Chaikin Oscillator expects there to be a maximum of 10 periods')
+    return personalised_chaikin_oscillator(high, low, close, volume, 3)
+
+
+# TODO: Add PMA and McGinley to accepted MA models
+def personalised_chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float], short_period: int, moving_average: str = 'ma') -> float:
+    """
+    A personalised verion of the Chaikin Oscillator, allows the caller to choose the long and short period, rather than
+    having it set to 3 and 10 periods. The long period will be assumed to be the length of the lists provided. The function
+    also allows for the caller to choose the moving average model
+    :param high: List of high prices
+    :param low: List of low prices
+    :param close: List of closing prices
+    :param volume: List of traded volume
+    :param short_period: Number of periods for the short period
+    :param moving_average: (Optional)  Name of the moving average that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'ma'
+    :return: Returns the Chaikin Oscillator as a float
+    """
+    length = len(high)
+    if length != len(low) or length != len(close) or length != len(volume):
+        raise Exception(f'length of lists need to match. high ({length}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})')
+    if short_period >= length:
+        raise Exception(f'short_period ({short_period}) needs to be smaller than the length of lists ({length})')
+
+    accumulation_distribution = accumulation_distribution_indicator(high[0], low[0], close[0], volume[0])
+    short_period_accumulation_distribution = []
+    long_period_accumulation_distribution = [accumulation_distribution]
+
+    for i in range(1, length):
+        accumulation_distribution = accumulation_distribution_indicator(high[i], low[i], close[i], volume[i], long_period_accumulation_distribution[-1])
+        long_period_accumulation_distribution.append(accumulation_distribution)
+        if i >= length - short_period:
+            short_period_accumulation_distribution.append(accumulation_distribution)
+
+    if moving_average in ma:
+        short_period_ma = mam.moving_average(short_period_accumulation_distribution)
+        long_period_ma = mam.moving_average(long_period_accumulation_distribution)
+    elif moving_average in sma:
+        short_period_ma = mam.smoothed_moving_average(short_period_accumulation_distribution)
+        long_period_ma = mam.smoothed_moving_average(long_period_accumulation_distribution)
+    elif moving_average in ema:
+        short_period_ma = mam.exponential_moving_average(short_period_accumulation_distribution)
+        long_period_ma = mam.exponential_moving_average(long_period_accumulation_distribution)
+    else:
+        raise Exception(f'{moving_average} is not an accepted MA model, please use either {ma}, {sma}, or {ema}')
+
+    return short_period_ma - long_period_ma

@@ -1,7 +1,6 @@
 import pytest
 
-from src.PyTechnicalIndicators.Bulk.oscillators import personalised_money_flow_index
-# No need to test money_flow_index as it just calls the personalised function with a period of 14
+from src.PyTechnicalIndicators.Bulk.oscillators import personalised_money_flow_index, personalised_chaikin_oscillator
 
 
 def test_standard_money_flow_index():
@@ -42,3 +41,78 @@ def test_money_flow_index_mismatch_list_error():
         personalised_money_flow_index(typical_prices, volume, 3)
 
     assert str(e.value) == f"typical_prices ({len(typical_prices)}) and volume ({len(volume)}) need to be of same length"
+
+
+def test_chaikin_oscillator():
+    high = [150, 157, 163, 152, 155, 160, 158, 153, 148, 144, 145, 143]
+    low = [132, 143, 153, 148, 145, 151, 142, 138, 132, 135, 137, 132]
+    close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137, 140, 138]
+    volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800, 1700, 1500]
+    co = personalised_chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
+    assert co == [697.480158730159, 542.0138888888889, 95.15151515151518]
+
+
+def test_chaikin_oscillator_mismatch_list_length():
+    high = [150, 157, 163, 152, 155, 160, 158, 153, 148]
+    low = [132, 143, 153, 148, 145, 151, 142, 138, 132, 135]
+    close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137]
+    volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800]
+    with pytest.raises(Exception) as e:
+        personalised_chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
+    assert str(e.value) == f'length of lists need to match. high ({len(high)}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})'
+
+    high = [150, 157, 163, 152, 155, 160, 158, 153, 148, 144]
+    low = [132, 143, 153, 148, 145, 151, 142, 138, 132]
+    close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137]
+    volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800]
+    with pytest.raises(Exception) as e:
+        personalised_chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
+    assert str(
+        e.value) == f'length of lists need to match. high ({len(high)}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})'
+
+    high = [150, 157, 163, 152, 155, 160, 158, 153, 148, 144]
+    low = [132, 143, 153, 148, 145, 151, 142, 138, 132, 135]
+    close = [148, 155, 157, 150, 148, 158, 155, 142, 145]
+    volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800]
+    with pytest.raises(Exception) as e:
+        personalised_chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
+    assert str(
+        e.value) == f'length of lists need to match. high ({len(high)}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})'
+
+    high = [150, 157, 163, 152, 155, 160, 158, 153, 148, 144]
+    low = [132, 143, 153, 148, 145, 151, 142, 138, 132, 135]
+    close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137]
+    volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100]
+    with pytest.raises(Exception) as e:
+        personalised_chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
+    assert str(e.value) == f'length of lists need to match. high ({len(high)}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})'
+
+
+def test_chaikin_oscillator_short_period_exception():
+    high = [150, 157, 163]
+    low = [132, 143, 153]
+    close = [148, 155, 157]
+    volume = [1500, 1600, 1800]
+    with pytest.raises(Exception) as e:
+        personalised_chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
+    assert str(e.value) == str(f'short_period (3) needs to be smaller than the length of lists ({len(high)})')
+
+
+def test_chaikin_oscillator_long_period_exception():
+    high = [150, 157, 163]
+    low = [132, 143, 153]
+    close = [148, 155, 157]
+    volume = [1500, 1600, 1800]
+    with pytest.raises(Exception) as e:
+        personalised_chaikin_oscillator(high, low, close, volume, 1, 10, 'ma')
+    assert str(e.value) == str(f'long_period (10) needs to be less or equal to length of lists ({len(high)})')
+
+
+def test_chaikin_oscillator_short_greater_long_exception():
+    high = [150, 157, 163, 152, 155, 160, 158, 153, 148, 144, 145, 143]
+    low = [132, 143, 153, 148, 145, 151, 142, 138, 132, 135, 137, 132]
+    close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137, 140, 138]
+    volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800, 1700, 1500]
+    with pytest.raises(Exception) as e:
+        personalised_chaikin_oscillator(high, low, close, volume, 11, 10, 'ma')
+    assert str(e.value) == str(f'long_period (10) needs to be longer than short_period (11)')

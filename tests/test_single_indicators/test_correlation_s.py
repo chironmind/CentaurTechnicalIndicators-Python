@@ -7,7 +7,7 @@ def test_correlate_asset_prices():
     asset_a_price = [120, 110, 105, 112, 114]
     asset_b_price = [150, 155, 162, 165, 159]
     correlation = correlate_asset_prices(asset_a_price, asset_b_price)
-    assert correlation == -6.2383852361787784e-30
+    assert correlation == -0.65025528597848
 
 
 def test_correlate_asset_prices_exception():
