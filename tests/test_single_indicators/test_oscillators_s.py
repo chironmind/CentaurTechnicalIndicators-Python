@@ -1,7 +1,7 @@
 import pytest
 
-from src.PyTechnicalIndicators.Single.oscillators import money_flow_index, personalised_money_flow_index, personalised_chaikin_oscillator, ma, sma, ema
-
+from src.PyTechnicalIndicators.Single.oscillators import money_flow_index, personalised_money_flow_index, personalised_chaikin_oscillator
+from src.PyTechnicalIndicators.Single.moving_averages import ma, sma, ema
 
 def test_money_flow_index():
     typical_prices = [101, 100, 102, 103, 105, 106, 107, 110, 108, 109, 107, 106, 105, 108]

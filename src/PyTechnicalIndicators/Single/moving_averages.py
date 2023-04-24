@@ -196,3 +196,29 @@ def mcginley_dynamic(price: float, period: int, previous_mcginley_dynamic: float
         return price
     base = price / previous_mcginley_dynamic
     return previous_mcginley_dynamic + ((price - previous_mcginley_dynamic) / (period * pow(base, 4)))
+
+
+def moving_average_envelopes(prices: list[float], ma_model: str = 'ma', difference: int = 3) -> tuple[float, float, float]:
+    """
+    Calculates the moving average envelope for a list of prices.
+    The period used for the moving average will be the length of the price list.
+    :param prices: List of prices
+    :param ma_model: (Optional) Name of the moving average that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'ma'
+    :param difference: (Optional) The percent difference for the envelope from the calculated.
+        The default of 3 means +- 3% from the calculated MA from the list of prices
+    :return: Returns a tuple with the upper envelope, moving average, and lower envelope
+    """
+    if ma_model in ma:
+        m_average = moving_average(prices)
+    elif ma_model in sma:
+        m_average = smoothed_moving_average(prices)
+    elif ma_model in ema:
+        m_average = exponential_moving_average(prices)
+    else:
+        raise Exception(f'{ma_model} is not an accepted model, accepted models are: {ma}, {sma}, {ema}')
+
+    upper_envelope = m_average * (1 + (difference/100))
+    lower_envelope = m_average * (1 - (difference/100))
+    return upper_envelope, m_average, lower_envelope

@@ -1,9 +1,6 @@
 from src.PyTechnicalIndicators.Single.strength_indicators import accumulation_distribution_indicator
 from src.PyTechnicalIndicators.Single import moving_averages as mam
 
-ma = ['ma', 'moving average', 'moving_average']
-sma = ['sma', 'smoothed moving average', 'smoothed_moving_average']
-ema = ['ema', 'exponential moving average', 'exponential_moving_average']
 
 def money_flow_index(typical_prices: list[float], volume: list[int]) -> float:
     """
@@ -72,12 +69,12 @@ def chaikin_oscillator(high: list[float], low: list[float], close: list[float], 
     :return: Returns the Chaikin Oscillator as a float
     """
     if len(high) != 10:
-        raise Exception('The Chaikin Oscillator expects there to be a maximum of 10 periods')
+        raise Exception('The Chaikin Oscillator expects there to be a maximum of 10 periods, , for a personalised version use personalised_chaikin_oscillator')
     return personalised_chaikin_oscillator(high, low, close, volume, 3)
 
 
 # TODO: Add PMA and McGinley to accepted MA models
-def personalised_chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float], short_period: int, moving_average: str = 'ma') -> float:
+def personalised_chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float], short_period: int, ma_model: str = 'ma') -> float:
     """
     A personalised verion of the Chaikin Oscillator, allows the caller to choose the long and short period, rather than
     having it set to 3 and 10 periods. The long period will be assumed to be the length of the lists provided. The function
@@ -87,7 +84,7 @@ def personalised_chaikin_oscillator(high: list[float], low: list[float], close: 
     :param close: List of closing prices
     :param volume: List of traded volume
     :param short_period: Number of periods for the short period
-    :param moving_average: (Optional)  Name of the moving average that should be used. Supported models are:
+    :param ma_model: (Optional)  Name of the moving average that should be used. Supported models are:
         'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
         Defaults to 'ma'
     :return: Returns the Chaikin Oscillator as a float
@@ -108,16 +105,16 @@ def personalised_chaikin_oscillator(high: list[float], low: list[float], close: 
         if i >= length - short_period:
             short_period_accumulation_distribution.append(accumulation_distribution)
 
-    if moving_average in ma:
+    if ma_model in mam.ma:
         short_period_ma = mam.moving_average(short_period_accumulation_distribution)
         long_period_ma = mam.moving_average(long_period_accumulation_distribution)
-    elif moving_average in sma:
+    elif ma_model in mam.sma:
         short_period_ma = mam.smoothed_moving_average(short_period_accumulation_distribution)
         long_period_ma = mam.smoothed_moving_average(long_period_accumulation_distribution)
-    elif moving_average in ema:
+    elif ma_model in mam.ema:
         short_period_ma = mam.exponential_moving_average(short_period_accumulation_distribution)
         long_period_ma = mam.exponential_moving_average(long_period_accumulation_distribution)
     else:
-        raise Exception(f'{moving_average} is not an accepted MA model, please use either {ma}, {sma}, or {ema}')
+        raise Exception(f'{ma_model} is not an accepted MA model, please use either {mam.ma}, {mam.sma}, or {mam.ema}')
 
     return short_period_ma - long_period_ma

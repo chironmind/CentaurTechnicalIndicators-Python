@@ -1,6 +1,6 @@
 import pytest
 
-from src.PyTechnicalIndicators.Bulk.momentum_indicators import rate_of_change, on_balance_volume
+from src.PyTechnicalIndicators.Bulk.momentum_indicators import rate_of_change, on_balance_volume, personalised_commodity_channel_index
 
 
 def test_rate_of_change():
@@ -35,3 +35,16 @@ def test_on_balance_volume_length_exception():
         on_balance_volume(closing_prices, volume)
 
     assert str(e.value) == f'Length closing_prices ({len(closing_prices)}) has to equal length volume ({len(volume)})'
+
+
+def test_commodity_channel_index():
+    prices = [103, 106, 111, 113, 111, 102, 98, 99, 95]
+    cci = personalised_commodity_channel_index(prices, 7)
+    assert cci == [-119.7640117994101, -86.35170603674531, -94.51476793248943]
+
+
+def test_commodity_channel_index_size_exception():
+    prices = [103, 106, 111, 113, 111, 102, 98, 99, 95]
+    with pytest.raises(Exception) as e:
+        personalised_commodity_channel_index(prices, 11)
+    assert str(e.value) == f'typical_prices ({len(prices)}) needs to be greater or equal to the period (11)'

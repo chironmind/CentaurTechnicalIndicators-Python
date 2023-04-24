@@ -37,8 +37,22 @@ def personalised_money_flow_index(typical_prices: list[float], volume: list[int]
 
 
 def chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float]) -> list[float]:
-    pass
+    """
+    Calculates the Chaikin Oscillator
+    :param high: List of high prices
+    :param low: List of low prices
+    :param close: List of closing prices
+    :param volume: List of traded volume
+    :return: Returns the Chaikin Oscillators as a list of floats
+    """
+    length = len(high)
+    if length != len(low) or length != len(close) or length != len(volume):
+        raise Exception(
+            f'length of lists need to match. high ({length}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})')
+    if length < 10:
+        raise Exception('The Chaikin Oscillator expects there to be a maximum of 10 periods, for a personalised version use personalised_chaikin_oscillator')
 
+    return personalised_chaikin_oscillator(high, low, close, volume, 3, 10)
 
 def personalised_chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float], short_period: int, long_period: int, moving_average: str = 'ma') -> list[float]:
     """

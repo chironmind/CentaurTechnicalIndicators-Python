@@ -1,5 +1,6 @@
 from src.PyTechnicalIndicators.Single.momentum_indicators import rate_of_change as roc
 from src.PyTechnicalIndicators.Single.momentum_indicators import on_balance_volume as obv
+from src.PyTechnicalIndicators.Single.momentum_indicators import personalised_commodity_channel_index as cci
 
 def rate_of_change(closing_prices: list[float], period: int) -> list[float]:
     """
@@ -41,3 +42,20 @@ def on_balance_volume(closing_prices: list[float], volume: list[int]) -> list[fl
         obv_list.append(obv(closing_prices[i], closing_prices[i-1], volume[i], obv_list[-1]))
 
     return obv_list
+
+
+def personalised_commodity_channel_index(typical_prices: list[float], period: int, ma_model: str = 'ma', absolute_deviation_model: str = 'mean') -> list[float]:
+    """
+
+    :param typical_prices:
+    :param period:
+    :param ma_model:
+    :param absolute_deviation_model:
+    :return:
+    """
+    if len(typical_prices) < period:
+        raise Exception(f'typical_prices ({len(typical_prices)}) needs to be greater or equal to the period ({period})')
+    cci_list = []
+    for i in range(len(typical_prices)-period+1):
+        cci_list.append(cci(typical_prices[i:i+period], ma_model, absolute_deviation_model))
+    return cci_list

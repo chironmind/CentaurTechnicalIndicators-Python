@@ -147,6 +147,7 @@ def personalised_macd(prices: list[float], short_period: int, long_period: int, 
         macd.append( single_macd )
     return macd
 
+
 # TODO: Support PMA
 def personalised_signal_line(macd: list[float], period: int, ma_model: str = 'ema', fill_empty: bool = False, fill_value: any = None):
     """
@@ -197,3 +198,24 @@ def mcginley_dynamic(prices: list[float], period: int) -> list[float]:
     for price in prices[1:]:
         mcginley_dynamic_list.append(MAs.mcginley_dynamic(price, period, mcginley_dynamic_list[-1]))
     return mcginley_dynamic_list
+
+
+def moving_average_envelopes(prices: list[float], period: int, ma_model: str = 'ma', difference: int = 3) -> list[tuple[float, float, float]]:
+    """
+    Calculates the moving average envelopes for a list of prices
+    :param prices: List of prices
+    :param period: Moving Average period
+    :param ma_model: (Optional) Name of the moving average that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'ma'
+    :param difference: (Optional) The percent difference for the envelope from the calculated.
+        The default of 3 means +- 3% from the calculated MA from the list of prices
+    :return: Returns a list of tuples with the upper envelope, moving average, and lower envelope
+    """
+    if period > len(prices):
+        raise Exception(f'Period ({period}) cannot be longer than length of prices ({len(prices)})')
+
+    ma_envelope_list = []
+    for i in range(len(prices) - period + 1):
+        ma_envelope_list.append(MAs.moving_average_envelopes(prices[i:i+period], ma_model, difference))
+    return ma_envelope_list
