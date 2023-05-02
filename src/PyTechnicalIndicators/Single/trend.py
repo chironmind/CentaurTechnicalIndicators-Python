@@ -66,3 +66,51 @@ def personalised_aroon_oscillator(period: int, period_since_high: int, period_si
     :return: Returns the Aroon oscillator as a float
     """
     return personalised_aroon_up(period, period_since_high) - personalised_aroon_down(period, period_since_low)
+
+
+def parabolic_sar(high: list[float], low: list[float], close: list[float], previous_psar: float = 0, acceleration_factor: float = 0.02, previous_extreme_point: float = 0) -> float:
+    """
+    Calculates the Parabolic Stop and Reverse and returns it as a float
+    :param high: List of price highs
+    :param low: List of price lows
+    :param close: List of closes
+    :param previous_psar: (Optional) Previous Parabolic SAR if one is available. Defaults to 0, and if defaulted will
+     be calculated by in function
+    :param acceleration_factor: (Optional) Acceleration factor. Defaults to 0.02. Assumption is that if a previous_psar
+     is provided then a acceleration_factor will be provided.
+    :param previous_extreme_point: (Optional) Previous extreme point. Defaults to 0, and if defaulted will be calculated
+     in function. Assumption is that if a previous_psar is provided then a previous_extreme_point will be provided.
+    :return: Returns the parabolic SAR as a float
+    """
+    if len(high) != len(low) or len(high) != len(close):
+        raise Exception(f'Length of lists need to match, high ({len(high)}), low ({len(low)}), close ({len(close)})')
+    if previous_psar == 0:
+        if close[0] > close[-1]:
+            if previous_psar == 0:
+                previous_psar = max(high)
+            if previous_extreme_point == 0:
+                previous_extreme_point = min(low)
+            return previous_psar - (acceleration_factor * (previous_psar - previous_extreme_point))
+        elif close[0] < close[-1]:
+            if previous_psar == 0:
+                previous_psar = min(low)
+            if previous_extreme_point == 0:
+                previous_extreme_point = max(high)
+            return previous_psar + (acceleration_factor * (previous_extreme_point - previous_psar))
+        else:
+            if previous_psar == 0:
+                previous_psar = close[-1]
+            if previous_extreme_point == 0:
+                previous_extreme_point = (max(high) + min(low)) / 2
+            rpsar = previous_psar + (acceleration_factor * (previous_extreme_point - previous_psar))
+            fpsar = previous_psar - (acceleration_factor * (previous_psar - previous_extreme_point))
+            return (rpsar + fpsar) / 2
+    else:
+        if close[-1] > previous_psar:
+            return previous_psar + (acceleration_factor * (previous_extreme_point - previous_psar))
+        elif close[-1] < previous_psar:
+            return previous_psar - (acceleration_factor * (previous_psar - previous_extreme_point))
+        else:
+            rpsar = previous_psar + (acceleration_factor * (previous_extreme_point - previous_psar))
+            fpsar = previous_psar - (acceleration_factor * (previous_psar - previous_extreme_point))
+            return (rpsar + fpsar) / 2

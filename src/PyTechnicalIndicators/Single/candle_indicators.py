@@ -50,8 +50,7 @@ def personalised_bollinger_bands(typical_prices: list[float], ma_model: str = 'm
     be looking at hourly data, or at a market that is traded 7 days a week (crypto) as opposed to 5 days a week. The same goes
     with the multiplier, the default is that the bands should be put at a distance of 2x the standard deviation away from
     the moving average line, but someone may want a tighter or looser band.
-    :param typical_price: list[float] - list of typical prices
-    :param period: int - timeframe for which the variance needs to be calculated for. For example period=20 would calculate the variance for 20 periods (default 20)
+    :param typical_prices: list[float] - list of typical prices
     :param ma_model: str - the name of the moving average that should be used. Supported models are:
         'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
         Defaults to 'ma'

@@ -1,7 +1,7 @@
 from src.PyTechnicalIndicators.Single.strength_indicators import accumulation_distribution_indicator
 from src.PyTechnicalIndicators.Single import moving_averages as mam
 
-
+# TODO: Stochastics and williams oscillator
 def money_flow_index(typical_prices: list[float], volume: list[int]) -> float:
     """
     Calculates the money flow index from the typical price and volume
