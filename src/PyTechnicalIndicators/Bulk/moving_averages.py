@@ -1,4 +1,4 @@
-from ..Single import moving_averages as MAs
+from src.PyTechnicalIndicators.Single import moving_averages as MAs
 
 ma = ['ma', 'moving average', 'moving_average']
 sma = ['sma', 'smoothed moving average', 'smoothed_moving_average']
@@ -25,7 +25,7 @@ def moving_average(prices: list[float], period: int, fill_empty: bool = False, f
     if fill_empty:
         for i in range(period):
             moving_averages.append(fill_value)
-    for i in range(period, len(prices)):
+    for i in range(period, len(prices)+1):
         price_set = prices[i - period:i]
         moving_averages.append(MAs.moving_average(price_set))
     return moving_averages

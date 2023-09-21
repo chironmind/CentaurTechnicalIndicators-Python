@@ -36,23 +36,6 @@ def relative_strength_index(prices: list[float]) -> float:
     return rsi
 
 
-def stochastic_oscillator(close_prices: list[float]) -> float:
-    """
-    Calculates the SO for a list of closing prices
-    :param close_prices: list of closing prices
-    :return: Returns the SO as a float
-    """
-    if len(close_prices) != 14:
-        raise Exception(f'14 periods are needed to calculate SO, {len(close_prices)} have been provided')
-
-    lowest_closing = min(close_prices)
-    highest_closing = max(close_prices)
-    previous_close = close_prices[-1]
-
-    so = ((previous_close - lowest_closing) / (highest_closing - lowest_closing)) * 100
-    return so
-
-
 def personalised_rsi(prices: list[float], ma_model: str = 'sma') -> float:
     """
     Calculates a personalised RSI based on the price and a chose MA model
@@ -103,26 +86,6 @@ def personalised_rsi(prices: list[float], ma_model: str = 'sma') -> float:
 
     rsi = (100 - (100 / (1 + relative_strength)))
     return rsi
-
-
-def personalised_stochastic_oscillator(close_prices: list[float]) -> float:
-    """
-    Calculates a personalised version of the SO
-
-    Main difference is that in normal SO the length of the input list has to be 14, however this function accepts anything
-    :param close_prices: list of close prices
-    :return: Returns the SO as a float
-    """
-    # Let used input own length
-    if len(close_prices) < 1:
-        raise Exception(f'Submitted prices needs to be greater than 0')
-
-    lowest_closing = min(close_prices)
-    highest_closing = max(close_prices)
-    previous_close = close_prices[-1]
-
-    so = ((previous_close - lowest_closing) / (highest_closing - lowest_closing)) * 100
-    return so
 
 
 def accumulation_distribution_indicator(high: float, low: float, close: float, volume: float, previous_adi: float = 0) -> float:

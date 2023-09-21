@@ -1,4 +1,4 @@
-from src.PyTechnicalIndicators.Single.oscillators import personalised_money_flow_index as mfi, personalised_chaikin_oscillator as co
+from src.PyTechnicalIndicators.Single import oscillators
 
 
 def money_flow_index(typical_prices: list[float], volume: list[int]) -> list[float]:
@@ -31,7 +31,7 @@ def personalised_money_flow_index(typical_prices: list[float], volume: list[int]
     money_flow_index_list = []
 
     for i in range(len_typical_prices - period + 1):
-        money_flow_index_list.append(mfi(typical_prices[i:i+period], volume[i:i+period]))
+        money_flow_index_list.append(oscillators.money_flow_index(typical_prices[i:i+period], volume[i:i+period]))
 
     return money_flow_index_list
 
@@ -53,6 +53,7 @@ def chaikin_oscillator(high: list[float], low: list[float], close: list[float], 
         raise Exception('The Chaikin Oscillator expects there to be a maximum of 10 periods, for a personalised version use personalised_chaikin_oscillator')
 
     return personalised_chaikin_oscillator(high, low, close, volume, 3, 10)
+
 
 def personalised_chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float], short_period: int, long_period: int, moving_average: str = 'ma') -> list[float]:
     """
@@ -83,5 +84,67 @@ def personalised_chaikin_oscillator(high: list[float], low: list[float], close: 
     chaikin_oscillator_list = []
     for i in range(length-long_period+1):
         j = i+long_period
-        chaikin_oscillator_list.append(co(high[i:j], low[i:j], close[i:j], volume[i:j], short_period, moving_average))
+        chaikin_oscillator_list.append(oscillators.chaikin_oscillator(high[i:j], low[i:j], close[i:j], volume[i:j], short_period, moving_average))
     return chaikin_oscillator_list
+
+
+def fast_stochastic(close_prices: list[float], period: int, ma_period: int, ma_model: str = 'ma') -> tuple[list[float], list[float]]:
+    """
+    Calculates the fast stochastics from a list of closing prices for a given period
+    :param close_prices: List of closing prices
+    :param period: Period to calculate the fast stochastic
+    :param ma_period: Moving average period to use when calculating the moving average of the stochastic oscillator
+    :param ma_model: (Optional) Name of the moving average that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'ma'
+    :return: Returns the fast stochastic as a tuple of floats
+    """
+    stochastic_oscillators = []
+    for i in range(len(close_prices)-period+1):
+        stochastic_oscillators.append(oscillators.personalised_stochastic_oscillator(close_prices[i:i+period]))
+    fast_stochastics = []
+    for i in range(len(stochastic_oscillators)-ma_period+1):
+        fast_stochastics.append(oscillators.fast_stochastic_d(stochastic_oscillators[i:i+ma_period], ma_model))
+    return stochastic_oscillators, fast_stochastics
+
+
+def slow_stochastic(fast_stochastic_d: list[float], d_ma_period: int, ds_ma_period: int, ma_model: str = 'ma') -> tuple[list[float], list[float]]:
+    """
+    Calculates the slow stochastics from a list of fast stochastics for a given period
+    :param fast_stochastic_d: List of fast stochastics (%D)
+    :param d_ma_period: Period used to calculate the MA of the fast stochastic
+    :param ds_ma_period: Period used to calculate the MA of the %D-Slow
+    :param ma_model: (Optional) Name of the moving average that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'ma'
+    :return: Returns the fast stochastic as a tuple of floats
+    """
+    slow_stochastics_d = []
+    for i in range(len(fast_stochastic_d)-d_ma_period+1):
+        slow_stochastics_d.append(oscillators.slow_stochastic_d(fast_stochastic_d[i:i+d_ma_period], ma_model))
+    slow_stochastics_ds = []
+    for i in range(len(slow_stochastics_d)-ds_ma_period+1):
+        slow_stochastics_ds.append(oscillators.slow_stochastic_ds(slow_stochastics_d[i:i+ds_ma_period], ma_model))
+    return slow_stochastics_d, slow_stochastics_ds
+
+
+def williams_percent_r(high: list[float], low: list[float], close: list[float], period: int) -> list[float]:
+    """
+    Calculate the Williams %R from a list of highs, lows, and closing prices.
+    :param high: List of high prices
+    :param low: List of low prices
+    :param close: List of closing prices
+    :param period: Period used to calculate Williams %R
+    :return: Returns the Williams %R as a list of floats
+    """
+    length = len(high)
+    if length != len(low) or length != len(close):
+        raise Exception(f'length of lists need to match. high ({length}), low ({len(low)}), close ({len(close)})')
+    if length < period:
+        raise Exception(f'length of lists ({length}) needs to be smaller or equal to the period ({period})')
+
+    williams_r = []
+    for i in range(len(close)-period+1):
+        j = i + period
+        williams_r.append(oscillators.willams_percent_r(max(high[i:j]), min(low[i:j]), close[j-1]))
+    return williams_r

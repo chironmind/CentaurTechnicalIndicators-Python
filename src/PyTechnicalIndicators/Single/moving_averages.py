@@ -28,7 +28,7 @@ def exponential_moving_average(prices: list[float]) -> float:
     price_sum = 0
     denominator_sum = 0
 
-    for i in range(length_prices - 1, 0, -1):
+    for i in range(length_prices - 1, -1, -1):
         power = length_prices - i
         denominator_sum += pow(1 - alpha, power)
         price_sum += prices[i] * pow(1 - alpha, power)
@@ -51,7 +51,7 @@ def smoothed_moving_average(prices: list[float]) -> float:
     price_sum = 0
     denominator_sum = 0
 
-    for i in range(length_prices - 1, 0, -1):
+    for i in range(length_prices - 1, -1, -1):
         # the most recent value would need to have a 0 pow and it would get the highest
         power = length_prices - i
         denominator_sum += pow(1 - alpha, power)
@@ -60,6 +60,7 @@ def smoothed_moving_average(prices: list[float]) -> float:
     return price_sum / denominator_sum
 
 
+# TODO: have exp and smoothed call this with their hardcoded params once it passes tests
 def personalised_moving_average(prices: list[float], alpha_nominator: int, alpha_denominator: int) -> float:
     """
 
@@ -79,7 +80,7 @@ def personalised_moving_average(prices: list[float], alpha_nominator: int, alpha
     price_sum = 0
     denominator_sum = 0
 
-    for i in range(length_prices - 1, 0, -1):
+    for i in range(length_prices - 1, -1, -1):
         power = length_prices - i
         denominator_sum += pow(1 - alpha, power)
         price_sum += prices[i] * pow(1 - alpha, power)

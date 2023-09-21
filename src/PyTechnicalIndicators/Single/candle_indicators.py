@@ -5,8 +5,8 @@ from .moving_averages import moving_average, smoothed_moving_average, exponentia
 def bollinger_bands(typical_prices: list[float]) -> tuple[float, float]:
     """
     Calculates the Bollinger bands from a list of typical prices and returns a tuple for the upper and lower band
-    :param typical_price: list[float] - list of typical prices
-    :return: Returns a tuple the first item is the upper Bollinger Band and the second item is the lower Bollinger Band
+    :param typical_prices: list[float] - list of typical prices
+    :return: Returns a tuple the first item is the lower Bollinger Band and the second item is the upper Bollinger Band
     """
     if len(typical_prices) != 20:
         raise Exception('Submitted price needs to be at least 20 periods long')
@@ -14,10 +14,10 @@ def bollinger_bands(typical_prices: list[float]) -> tuple[float, float]:
     ma = moving_average(typical_prices)
     stddev = statistics.stdev(typical_prices)
 
-    upper_band = ma + 2 * stddev
-    lower_band = ma - 2 * stddev
+    upper_band = ma + (2 * stddev)
+    lower_band = ma - (2 * stddev)
 
-    return upper_band, lower_band
+    return lower_band, upper_band
 
 
 def ichimoku_cloud(highs: list[float], lows: list[float]) -> tuple[float, float]:

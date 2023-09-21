@@ -118,3 +118,100 @@ def personalised_chaikin_oscillator(high: list[float], low: list[float], close: 
         raise Exception(f'{ma_model} is not an accepted MA model, please use either {mam.ma}, {mam.sma}, or {mam.ema}')
 
     return short_period_ma - long_period_ma
+
+
+def stochastic_oscillator(close_prices: list[float]) -> float:
+    """
+    Calculates the SO for a list of closing prices
+    :param close_prices: list of closing prices
+    :return: Returns the SO as a float
+    """
+    if len(close_prices) != 14:
+        raise Exception(f'14 periods are needed to calculate SO, {len(close_prices)} have been provided')
+
+    return personalised_stochastic_oscillator(close_prices)
+
+
+def personalised_stochastic_oscillator(close_prices: list[float]) -> float:
+    """
+    Calculates a personalised version of the SO
+
+    Main difference is that in normal SO the length of the input list has to be 14, however this function accepts anything
+    :param close_prices: list of close prices
+    :return: Returns the SO as a float
+    """
+    if len(close_prices) < 1:
+        raise Exception(f'Submitted prices needs to be greater than 0')
+
+    lowest_closing = min(close_prices)
+    highest_closing = max(close_prices)
+    previous_close = close_prices[-1]
+    return ((previous_close - lowest_closing) / (highest_closing - lowest_closing)) * 100
+
+
+def fast_stochastic_d(stochastic_oscillators: list[float], ma_model: str = 'ma') -> float:
+    """
+    Calculates the fast stochastic from the stochastic oscillator, the length of the list will determine the period.
+    :param stochastic_oscillators: List of stochastic oscillators
+    :param ma_model: (Optional) Name of the moving average that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'ma'
+    :return: Returns the fast stochastic as a float
+    """
+    if ma_model in mam.ma:
+        return mam.moving_average(stochastic_oscillators)
+    elif ma_model in mam.sma:
+        return mam.smoothed_moving_average(stochastic_oscillators)
+    elif ma_model in mam.ema:
+        return mam.exponential_moving_average(stochastic_oscillators)
+    else:
+        raise Exception(f'{ma_model} is not an accepted MA model, please use either {mam.ma}, {mam.sma}, or {mam.ema}')
+
+
+def slow_stochastic_d(fast_stochastic_d: list[float], ma_model: str = 'ma') -> float:
+    """
+    Calculates the %D-Slow for the slow stochastic
+    :param fast_stochastic_d: List of fast stochastic %D
+    :param ma_model: (Optional) Name of the moving average model that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'ma'
+    :return: Returns the %D-Slow as a float
+    """
+    if ma_model in mam.ma:
+        return mam.moving_average(fast_stochastic_d)
+    elif ma_model in mam.sma:
+        return mam.smoothed_moving_average(fast_stochastic_d)
+    elif ma_model in mam.ema:
+        return mam.exponential_moving_average(fast_stochastic_d)
+    else:
+        raise Exception(f'{ma_model} is not an accepted MA model, please use either {mam.ma}, {mam.sma}, or {mam.ema}')
+
+
+def slow_stochastic_ds(slow_stochastic_d: list[float], ma_model: str = 'ma') -> float:
+    """
+    Calculates the %DS-Slow for the slow stochastic
+    :param slow_stochastic_d: List of %D-Slow
+    :param ma_model: (Optional) Name of the moving average model that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'ma'
+    :return: Returns the %DS-Slow as a float
+    """
+    if ma_model in mam.ma:
+        return mam.moving_average(slow_stochastic_d)
+    elif ma_model in mam.sma:
+        return mam.smoothed_moving_average(slow_stochastic_d)
+    elif ma_model in mam.ema:
+        return mam.exponential_moving_average(slow_stochastic_d)
+    else:
+        raise Exception(f'{ma_model} is not an accepted MA model, please use either {mam.ma}, {mam.sma}, or {mam.ema}')
+
+
+def willams_percent_r(high: float, low: float, close: float) -> float:
+    """
+    Calculate the Williams %R for a maximum high, minimum low, and closing price
+    :param high: Highest high for the period studied
+    :param low: Lowest low for the period studied
+    :param close: Closing price for the period
+    :return: Returns the Williams %R as a float.
+    """
+    return ((high - close) * -100) / (high - low)
