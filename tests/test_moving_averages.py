@@ -4,7 +4,6 @@ from src.PyTechnicalIndicators.Single import moving_averages as single_moving_av
 from src.PyTechnicalIndicators.Bulk import moving_averages as bulk_moving_averages
 
 
-# TODO check errors
 def test_single_moving_average():
     prices = [110, 107, 108, 105, 103, 106, 107]
     ma = single_moving_averages.moving_average(prices)
@@ -29,16 +28,36 @@ def test_single_personalised_moving_average():
     assert pma == 106.13636683806438
 
 
+def test_single_personalised_moving_average_denominator_error():
+    prices = [110, 107, 108, 105, 103, 106, 107]
+    with pytest.raises(Exception) as e:
+        single_moving_averages.personalised_moving_average(prices, 3, -7)
+    assert str(e.value) == f'The length of prices 7 and the value of the alpha denominator -7 add up to 0, and division by 0 isn\'t possible'
+
 def test_single_macd():
     prices = [103, 105, 102, 107, 103, 111, 106, 104, 105, 108, 112, 120, 125, 110, 107, 108, 105, 103, 106, 107, 101, 99, 103, 106, 104, 102]
     macd = single_moving_averages.moving_average_convergence_divergence(prices)
     assert macd == -2.164962379494412
 
 
+def test_single_macd_length_error():
+    prices = [103, 105, 102, 107, 103, 111]
+    with pytest.raises(Exception) as e:
+        single_moving_averages.moving_average_convergence_divergence(prices)
+    assert str(e.value) == "Submitted prices is too short to calculate MACD. 26 expected, 6 received"
+
+
 def test_single_signal_line():
     macds = [-2, -1.8, -1, -0.3, 0.1, 0.6, 1.2, 2.4, 1.9]
     signal = single_moving_averages.signal_line(macds)
     assert signal == 0.8922983167758831
+
+
+def test_signal_line_length_error():
+    macds = [-2, -1.8, -1, -0.3, 0.1, 0.6, 1.2]
+    with pytest.raises(Exception) as e:
+        single_moving_averages.signal_line(macds)
+    assert str(e.value) == "Submitted MACD array needs to be 9 lags long, only 7 received"
 
 
 def test_single_personalised_macd():
@@ -86,6 +105,43 @@ def test_bulk_moving_average():
     prices = [110, 107, 108, 105, 103, 106, 107]
     mas = bulk_moving_averages.moving_average(prices, 5)
     assert mas == [106.6, 105.8, 105.8]
+
+
+def test_bulk_exponential_moving_average():
+    prices = [110, 107, 108, 105, 103, 106, 107]
+    emas = bulk_moving_averages.exponential_moving_average(prices, 5)
+    assert emas == [105.35071090047394, 105.36492890995261, 105.9099526066351]
+
+
+def test_bulk_smoothed_moving_average():
+    prices = [110, 107, 108, 105, 103, 106, 107]
+    smas = bulk_moving_averages.smoothed_moving_average(prices, 5)
+    assert smas == [105.89005235602093, 105.52213231794384, 105.81770585435507]
+
+
+def test_bulk_macd():
+    prices = [103, 105, 102, 107, 103, 111, 106, 104, 105, 108, 112, 120, 125, 110, 107, 108, 105, 103, 106, 107, 101,
+              99, 103, 106, 104, 102, 109, 116]
+    macd = bulk_moving_averages.moving_average_convergence_divergence(prices)
+    assert macd == [-2.164962379494412, -1.597159438916961, -0.4970353844502142]
+
+
+def test_bulk_signal_line():
+    macds = [-2, -1.8, -1, -0.3, 0.1, 0.6, 1.2, 2.4, 1.9, 1.8, 1.2]
+    signal = bulk_moving_averages.signal_line(macds)
+    assert signal == [0.8922983167758831, 1.1916575053179188, 1.2863408873310813]
+
+
+def test_bulk_personalised_macd():
+    prices = [110, 107, 108, 105, 103, 106, 107]
+    macd = bulk_moving_averages.personalised_macd(prices, 3, 5, 'ma')
+    assert macd == [-1.2666666666666657, -1.1333333333333258, -0.46666666666666856]
+
+
+def test_bulk_personalised_signal():
+    macds = [0.1, 0.6, 1.2, 2.4, 1.9]
+    signal = bulk_moving_averages.personalised_signal_line(macds, 3, 'ma')
+    assert signal == [0.6333333333333333, 1.3999999999999997, 1.8333333333333333]
 
 
 def test_bulk_mcginley_dynamic():

@@ -1,6 +1,5 @@
-from src.PyTechnicalIndicators.Single.momentum_indicators import rate_of_change as roc
-from src.PyTechnicalIndicators.Single.momentum_indicators import on_balance_volume as obv
-from src.PyTechnicalIndicators.Single.momentum_indicators import personalised_commodity_channel_index as cci
+from src.PyTechnicalIndicators.Single import momentum_indicators
+
 
 def rate_of_change(closing_prices: list[float], period: int) -> list[float]:
     """
@@ -28,22 +27,24 @@ def rate_of_change(closing_prices: list[float], period: int) -> list[float]:
 
     rates_of_change = []
     for i in range(len_closing - period):
-        rates_of_change.append(roc(current_close_price=closing_prices[i+period], previous_close_price=closing_prices[i]))
+        rates_of_change.append(momentum_indicators.rate_of_change(current_close_price=closing_prices[i+period], previous_close_price=closing_prices[i]))
 
     return rates_of_change
 
 
+# TODO: Doc string
 def on_balance_volume(closing_prices: list[float], volume: list[int]) -> list[float]:
     if len(closing_prices) != len(volume):
         raise Exception(f'Length closing_prices ({len(closing_prices)}) has to equal length volume ({len(volume)})')
 
     obv_list = [volume[0]]
     for i in range(1, len(closing_prices)):
-        obv_list.append(obv(closing_prices[i], closing_prices[i-1], volume[i], obv_list[-1]))
+        obv_list.append(momentum_indicators.on_balance_volume(closing_prices[i], closing_prices[i-1], volume[i], obv_list[-1]))
 
     return obv_list
 
 
+# TODO: Doc string
 def personalised_commodity_channel_index(typical_prices: list[float], period: int, ma_model: str = 'ma', absolute_deviation_model: str = 'mean') -> list[float]:
     """
 
@@ -57,5 +58,5 @@ def personalised_commodity_channel_index(typical_prices: list[float], period: in
         raise Exception(f'typical_prices ({len(typical_prices)}) needs to be greater or equal to the period ({period})')
     cci_list = []
     for i in range(len(typical_prices)-period+1):
-        cci_list.append(cci(typical_prices[i:i+period], ma_model, absolute_deviation_model))
+        cci_list.append(momentum_indicators.personalised_commodity_channel_index(typical_prices[i:i+period], ma_model, absolute_deviation_model))
     return cci_list

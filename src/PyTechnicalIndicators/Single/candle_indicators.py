@@ -1,5 +1,6 @@
 import statistics
-from .moving_averages import moving_average, smoothed_moving_average, exponential_moving_average
+
+from src.PyTechnicalIndicators.Single import moving_averages
 
 
 def bollinger_bands(typical_prices: list[float]) -> tuple[float, float]:
@@ -9,17 +10,16 @@ def bollinger_bands(typical_prices: list[float]) -> tuple[float, float]:
     :return: Returns a tuple the first item is the lower Bollinger Band and the second item is the upper Bollinger Band
     """
     if len(typical_prices) != 20:
-        raise Exception('Submitted price needs to be at least 20 periods long')
+        raise Exception(f'Submitted length of prices ({len(typical_prices)}) needs to be at least 20 periods long')
 
-    ma = moving_average(typical_prices)
+    ma = moving_averages.moving_average(typical_prices)
     stddev = statistics.stdev(typical_prices)
-
     upper_band = ma + (2 * stddev)
     lower_band = ma - (2 * stddev)
-
     return lower_band, upper_band
 
 
+# TODO: Just call personalised function with hard coded values
 def ichimoku_cloud(highs: list[float], lows: list[float]) -> tuple[float, float]:
     """
     Calculates Ichimoku cloud from a list of highs and lows and returns a tuple with Senkou Span A and Span B as lists
@@ -27,18 +27,20 @@ def ichimoku_cloud(highs: list[float], lows: list[float]) -> tuple[float, float]
     :param lows: list[floats]- list of lows
     :return: Returns a tuple with the Senkou Span A as the first itme and the Senkou Span B as the second item
     """
-    if len(highs) != 52:
-        raise Exception('Submitted price needs to be at least 52 periods long')
+    if len(highs) != 52 or len(lows) != 52:
+        raise Exception(f'Submitted highs ({len(highs)}) or lows ({len(lows)})  needs to be at least 52 periods long')
 
     # TODO: this doesn't work, needs to be looped or something
-    conversion_line = (max(highs) + min(lows)) / 2
-    base_line = (max(highs) + min(lows)) / 2
+    conversion_line = (max(highs[-9:]) + min(lows[-9:])) / 2
+    base_line = (max(highs[-26:]) + min(lows[-26:])) / 2
     leading_span_a = (conversion_line + base_line) / 2
     leading_span_b = (max(highs) + min(lows)) / 2
 
     return leading_span_a, leading_span_b
 
 
+# TODO: PMA and McGinley dynamic
+#  Refactor a little
 def personalised_bollinger_bands(typical_prices: list[float], ma_model: str = 'ma', stddev_multiplier: int = 2) -> tuple[float, float]:
     """
     Calculates the Bollinger bands from a list of typical prices and returns a tuple with for the upper and lower band
@@ -55,34 +57,29 @@ def personalised_bollinger_bands(typical_prices: list[float], ma_model: str = 'm
         'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
         Defaults to 'ma'
     :param stddev_multiplier: int - How much to multiply the standard deviation by to get the upper or lower band. Defaults to 2.
-    :return: Returns a tuple where the first item is the upper Bollinger Band and the second item is the lower Bollinger Band
+    :return: Returns a tuple where the first item is the lower Bollinger Band and the second item is the upper Bollinger Band
     """
 
     if len(typical_prices) < 1:
         raise Exception(f'There needs to be a price to do a bollinger band')
 
-    ma = ['ma', 'moving average', 'moving_average']
-    sma = ['sma', 'smoothed moving average', 'smoothed_moving_average']
-    ema = ['ema', 'exponential moving average', 'exponential_moving_average']
-
-    if ma_model in ma:
-        ma = moving_average(typical_prices)
-    elif ma_model in sma:
-        ma = smoothed_moving_average(typical_prices)
-    elif ma_model in ema:
-        ma = exponential_moving_average(typical_prices)
+    if ma_model in moving_averages.ma:
+        ma = moving_averages.moving_average(typical_prices)
+    elif ma_model in moving_averages.sma:
+        ma = moving_averages.smoothed_moving_average(typical_prices)
+    elif ma_model in moving_averages.ema:
+        ma = moving_averages.exponential_moving_average(typical_prices)
     else:
-        ma = moving_average(typical_prices)
+        ma = moving_averages.moving_average(typical_prices)
 
     stddev = statistics.stdev(typical_prices)
-
     upper_band = ma + (stddev_multiplier*stddev)
     lower_band = ma - (stddev_multiplier*stddev)
 
-    return upper_band, lower_band
+    return lower_band, upper_band
 
 
-def personalised_ichimoku_cloud(highs: list[float], lows: list[float], conversion_period: int, base_period: int, span_b_period: int) -> tuple[float, float]:
+def personalised_ichimoku_cloud(highs: list[float], lows: list[float], conversion_period: int = 9, base_period: int = 26, span_b_period: int = 52) -> tuple[float, float]:
     """
     Calculates Ichimoku cloud from a list of highs and lows and returns a tuple with Senkou Span A and Span B as lists
 
@@ -98,12 +95,10 @@ def personalised_ichimoku_cloud(highs: list[float], lows: list[float], conversio
     :param fill_value: any - (Optional) The fill value to fill empty values with if fill_empty is True (default None)
     :return: Returns the Senkou Span A and Span B as a tuple with a list of floats for each
     """
-    # TODO: needs defaults
     highest_period = max(conversion_period, base_period, span_b_period)
     if len(highs) < highest_period:
         raise Exception('Submitted price shorter than submitted periods')
 
-    # TODO: this doesn't work, needs to be looped or something
     conversion_line = (max(highs[-conversion_period:]) + min(lows[-conversion_period:])) / 2
     base_line = (max(highs[-base_period:]) + min(lows[-base_period:])) / 2
     leading_span_a = (conversion_line + base_line) / 2

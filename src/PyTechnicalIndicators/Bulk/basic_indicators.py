@@ -109,7 +109,6 @@ def median(prices: list[float], period: int, fill_empty: bool = False, fill_valu
         for i in range(period):
             medians.append(fill_value)
     for i in range(period, len(prices)+1):
-        p = prices[i - period:i]
         medians.append(basic_indicators.median(prices[i - period:i]))
     return medians
 

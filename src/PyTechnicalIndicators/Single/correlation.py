@@ -1,6 +1,7 @@
 import statistics
 
 
+#  TODO: Other versions of the correlation https://en.wikipedia.org/wiki/Correlation
 def correlate_asset_prices(price_asset_a: list[float], price_asset_b: list[float]) -> float:
     """
     Calculate the correlation between two prices for a given period. Period is determined by the length of the list of prices
@@ -25,6 +26,3 @@ def correlate_asset_prices(price_asset_a: list[float], price_asset_b: list[float
     asset_b_std_dev = statistics.stdev(price_asset_b)
 
     return covariance / (asset_a_std_dev * asset_b_std_dev)
-
-
-#  TODO: Other versions of the correlation https://en.wikipedia.org/wiki/Correlation

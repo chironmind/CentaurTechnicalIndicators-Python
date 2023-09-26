@@ -3,6 +3,7 @@ sma = ['sma', 'smoothed moving average', 'smoothed_moving_average']
 ema = ['ema', 'exponential moving average', 'exponential_moving_average']
 
 
+# TODO: moving median and mode
 def moving_average(prices: list[float]) -> float:
     """
     Calculates the moving average
@@ -24,16 +25,7 @@ def exponential_moving_average(prices: list[float]) -> float:
     length_prices = len(prices)
     if length_prices <= 1:
         raise Exception('There needs to be prices to be able to do an exponential moving average')
-    alpha = 2 / (length_prices + 1)
-    price_sum = 0
-    denominator_sum = 0
-
-    for i in range(length_prices - 1, -1, -1):
-        power = length_prices - i
-        denominator_sum += pow(1 - alpha, power)
-        price_sum += prices[i] * pow(1 - alpha, power)
-
-    return price_sum / denominator_sum
+    return personalised_moving_average(prices, 2, 1)
 
 
 def smoothed_moving_average(prices: list[float]) -> float:
@@ -46,35 +38,24 @@ def smoothed_moving_average(prices: list[float]) -> float:
     length_prices = len(prices)
     if length_prices <= 1:
         raise Exception('There needs to be prices to be able to do an smoothed moving average')
-
-    alpha = 1 / length_prices
-    price_sum = 0
-    denominator_sum = 0
-
-    for i in range(length_prices - 1, -1, -1):
-        # the most recent value would need to have a 0 pow and it would get the highest
-        power = length_prices - i
-        denominator_sum += pow(1 - alpha, power)
-        price_sum += prices[i] * pow(1 - alpha, power)
-
-    return price_sum / denominator_sum
+    return personalised_moving_average(prices, 1, 0)
 
 
 # TODO: have exp and smoothed call this with their hardcoded params once it passes tests
 def personalised_moving_average(prices: list[float], alpha_nominator: int, alpha_denominator: int) -> float:
     """
-
-    :param prices:
-    :param alpha_nominator:
-    :param alpha_denominator:
-    :return:
+    A Personalised version of the moving average where the caller can determine the alpha numerator and denomiator
+    :param prices: List of prices
+    :param alpha_nominator: the nominator used to calculate the alpha (EMA has it set to 2, SMA is set to 1)
+    :param alpha_denominator: added to the length of prices to determine the denominator used to calculate the alpha (EMA is set to 1, SMA is set to 0)
+    :return: Returns the personalised moving average
     """
     length_prices = len(prices)
     if length_prices == 0:
         raise Exception('There needs to be prices to be able to do personalised moving average')
 
     if length_prices + alpha_denominator == 0:
-        raise Exception('The length of prices and the value of the alpha denominator add up to 0, and division by 0 isn\'t possible')
+        raise Exception(f'The length of prices {length_prices} and the value of the alpha denominator {alpha_denominator} add up to 0, and division by 0 isn\'t possible')
 
     alpha = alpha_nominator / (length_prices + alpha_denominator)
     price_sum = 0
@@ -88,8 +69,9 @@ def personalised_moving_average(prices: list[float], alpha_nominator: int, alpha
     return price_sum / denominator_sum
 
 
-# TODO: MACD should probably be one function that gets called and returns everything (macd, signal, diff)
-#  and rename below to macd line
+# TODO: have a high level function that gets called and returns everything (macd, signal, diff)
+#  called macd line
+# TODO: Just call personalised mcad with hardoced values
 def moving_average_convergence_divergence(prices: list[float]) -> float:
     """
     Calculates the MACD line
@@ -98,7 +80,7 @@ def moving_average_convergence_divergence(prices: list[float]) -> float:
     """
     prices_length = len(prices)
     if prices_length < 26:
-        raise Exception("Submitted prices is too short to calculate MACD")
+        raise Exception(f"Submitted prices is too short to calculate MACD. 26 expected, {prices_length} received")
 
     ema_12_periods = exponential_moving_average(prices[prices_length - 12:])
     ema_26_periods = exponential_moving_average(prices[prices_length - 26:])
@@ -107,6 +89,7 @@ def moving_average_convergence_divergence(prices: list[float]) -> float:
     return macd
 
 
+# TODO: Just call personalised signal with hardoced values
 def signal_line(macd: list[float]) -> float:
     """
     Calculates the signal line
@@ -114,11 +97,12 @@ def signal_line(macd: list[float]) -> float:
     :return: Returns the signal line as a float
     """
     if len(macd) != 9:
-        raise Exception("Submitted MACD array needs to be 9 lags long")
+        raise Exception(f"Submitted MACD array needs to be 9 lags long, only {len(macd)} received")
 
     return exponential_moving_average(macd)
 
-# TODO: PMA
+
+# TODO: PMA, and McGinley dynamic
 def personalised_macd(prices: list[float], short_period: int, long_period: int, ma_model: str = 'ema') -> float:
     """
     Calculates the personalised MACD
@@ -157,7 +141,8 @@ def personalised_macd(prices: list[float], short_period: int, long_period: int, 
 
     return macd
 
-# TODO: Support PMA
+
+# TODO: Support PMA, and McGinley dynamic
 def personalised_signal_line(macd: list[float], ma_model: str = 'ema') -> float:
     """
     Calculates a personalised version of the signal line
@@ -179,10 +164,8 @@ def personalised_signal_line(macd: list[float], ma_model: str = 'ema') -> float:
     else:
         return exponential_moving_average(macd)
 
-# TODO: moving median
 
-
-# TODO: Not convinced about what to do when there is no previous dynamic
+# TODO: remove period and just do it for the length of price
 def mcginley_dynamic(price: float, period: int, previous_mcginley_dynamic: float = 0) -> float:
     """
     The McGinley Dynamic offers an alternative to the moving average, the idea is that it should be more resilient to

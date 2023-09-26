@@ -1,8 +1,4 @@
-from src.PyTechnicalIndicators.Single import moving_averages as MAs
-
-ma = ['ma', 'moving average', 'moving_average']
-sma = ['sma', 'smoothed moving average', 'smoothed_moving_average']
-ema = ['ema', 'exponential moving average', 'exponential_moving_average']
+from src.PyTechnicalIndicators.Single import moving_averages
 
 
 def moving_average(prices: list[float], period: int, fill_empty: bool = False, fill_value: any = None) -> list[float]:
@@ -21,14 +17,14 @@ def moving_average(prices: list[float], period: int, fill_empty: bool = False, f
     if len(prices) < 0:
         raise Exception('Length of prices needs to be greater than 0')
 
-    moving_averages = []
+    mas = []
     if fill_empty:
         for i in range(period):
-            moving_averages.append(fill_value)
+            mas.append(fill_value)
     for i in range(period, len(prices)+1):
         price_set = prices[i - period:i]
-        moving_averages.append(MAs.moving_average(price_set))
-    return moving_averages
+        mas.append(moving_averages.moving_average(price_set))
+    return mas
 
 
 def exponential_moving_average(prices: list[float], period: int, fill_empty: bool = False, fill_value: any = None) -> list[float]:
@@ -80,9 +76,9 @@ def personalised_moving_average(prices: list[float], period: int, alpha_nominato
     if fill_empty:
         for i in range(period):
             pma.append(fill_value)
-    for i in range(period, len(prices)):
+    for i in range(period, len(prices)+1):
         price_set = prices[i - period: i]
-        single_pma = MAs.personalised_moving_average(price_set, alpha_nominator, alpha_denominator)
+        single_pma = moving_averages.personalised_moving_average(price_set, alpha_nominator, alpha_denominator)
         pma.append(single_pma)
     return pma
 
@@ -114,6 +110,7 @@ def signal_line(macd: list[float], fill_empty: bool = False, fill_value: any = N
         raise Exception("Submitted MACD needs to be greater 9 lags long")
     return personalised_signal_line(macd, 9, 'ema', fill_empty, fill_value)
 
+
 # TODO: Allow for PMA
 def personalised_macd(prices: list[float], short_period: int, long_period: int, ma_model: str = 'ema', fill_empty: bool = False, fill_value: bool = None):
     """
@@ -133,7 +130,6 @@ def personalised_macd(prices: list[float], short_period: int, long_period: int, 
     """
     if short_period <= 0 or long_period <= 0:
         raise Exception('Period needs to be at least 1')
-
     if len(prices) < long_period:
         raise Exception(f'The minimum length of prices needs to be {long_period} to calculate the MACD')
 
@@ -141,10 +137,10 @@ def personalised_macd(prices: list[float], short_period: int, long_period: int, 
     if fill_empty:
         for i in range(long_period):
             macd.append(fill_value)
-    for i in range(long_period, len(prices)):
+    for i in range(long_period, len(prices)+1):
         price_set = prices[i - long_period: i]
-        single_macd = MAs.personalised_macd( price_set, short_period, long_period, ma_model)
-        macd.append( single_macd )
+        single_macd = moving_averages.personalised_macd(price_set, short_period, long_period, ma_model)
+        macd.append(single_macd)
     return macd
 
 
@@ -166,7 +162,6 @@ def personalised_signal_line(macd: list[float], period: int, ma_model: str = 'em
     """
     if period <= 0:
         raise Exception('Period needs to be at least 1')
-
     macd_len = len(macd)
     if macd_len == 0:
         raise Exception("Submitted MACD array is too short to calculate singal line")
@@ -175,9 +170,9 @@ def personalised_signal_line(macd: list[float], period: int, ma_model: str = 'em
     if fill_empty:
         for i in range(period):
             signal_lines.append(fill_value)
-    for i in range(period, macd_len):
+    for i in range(period, macd_len+1):
         macd_set = macd[i-period: i]
-        signal_line = MAs.personalised_signal_line(macd_set, ma_model)
+        signal_line = moving_averages.personalised_signal_line(macd_set, ma_model)
         signal_lines.append(signal_line)
     return signal_lines
 
@@ -193,10 +188,10 @@ def mcginley_dynamic(prices: list[float], period: int) -> list[float]:
     the smoother the line
     :return: Returns a list of McGinley Dynamics
     """
-    initial_mcginley_dynamic = MAs.mcginley_dynamic(prices[0], period)
+    initial_mcginley_dynamic = moving_averages.mcginley_dynamic(prices[0], period)
     mcginley_dynamic_list = [initial_mcginley_dynamic]
     for price in prices[1:]:
-        mcginley_dynamic_list.append(MAs.mcginley_dynamic(price, period, mcginley_dynamic_list[-1]))
+        mcginley_dynamic_list.append(moving_averages.mcginley_dynamic(price, period, mcginley_dynamic_list[-1]))
     return mcginley_dynamic_list
 
 
@@ -217,5 +212,5 @@ def moving_average_envelopes(prices: list[float], period: int, ma_model: str = '
 
     ma_envelope_list = []
     for i in range(len(prices) - period + 1):
-        ma_envelope_list.append(MAs.moving_average_envelopes(prices[i:i+period], ma_model, difference))
+        ma_envelope_list.append(moving_averages.moving_average_envelopes(prices[i:i+period], ma_model, difference))
     return ma_envelope_list
