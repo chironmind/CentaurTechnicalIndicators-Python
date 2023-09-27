@@ -1,6 +1,7 @@
 from src.PyTechnicalIndicators.Single.strength_indicators import accumulation_distribution_indicator
 from src.PyTechnicalIndicators.Single import moving_averages as mam
 
+
 # TODO: Stochastics and williams oscillator
 def money_flow_index(typical_prices: list[float], volume: list[int]) -> float:
     """
@@ -15,7 +16,6 @@ def money_flow_index(typical_prices: list[float], volume: list[int]) -> float:
 
     if len(typical_prices) != 14 or len(volume) != 14:
         raise Exception(f"typical_prices ({len(typical_prices)}) and volume ({len(volume)}) need to be 14 periods in length")
-
     return personalised_money_flow_index(typical_prices, volume)
 
 
@@ -128,7 +128,6 @@ def stochastic_oscillator(close_prices: list[float]) -> float:
     """
     if len(close_prices) != 14:
         raise Exception(f'14 periods are needed to calculate SO, {len(close_prices)} have been provided')
-
     return personalised_stochastic_oscillator(close_prices)
 
 

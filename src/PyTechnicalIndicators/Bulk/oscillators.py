@@ -18,7 +18,7 @@ def personalised_money_flow_index(typical_prices: list[float], volume: list[int]
     :param typical_prices: List of typical prices
     :param volume: List of volumes
     :param period: Period of time
-    :return:
+    :return: Returns a list of money flow index
     """
     len_typical_prices = len(typical_prices)
 
@@ -31,7 +31,7 @@ def personalised_money_flow_index(typical_prices: list[float], volume: list[int]
     money_flow_index_list = []
 
     for i in range(len_typical_prices - period + 1):
-        money_flow_index_list.append(oscillators.money_flow_index(typical_prices[i:i+period], volume[i:i+period]))
+        money_flow_index_list.append(oscillators.personalised_money_flow_index(typical_prices[i:i+period], volume[i:i+period]))
 
     return money_flow_index_list
 
@@ -84,7 +84,7 @@ def personalised_chaikin_oscillator(high: list[float], low: list[float], close: 
     chaikin_oscillator_list = []
     for i in range(length-long_period+1):
         j = i+long_period
-        chaikin_oscillator_list.append(oscillators.chaikin_oscillator(high[i:j], low[i:j], close[i:j], volume[i:j], short_period, moving_average))
+        chaikin_oscillator_list.append(oscillators.personalised_chaikin_oscillator(high[i:j], low[i:j], close[i:j], volume[i:j], short_period, moving_average))
     return chaikin_oscillator_list
 
 
@@ -108,6 +108,8 @@ def fast_stochastic(close_prices: list[float], period: int, ma_period: int, ma_m
     return stochastic_oscillators, fast_stochastics
 
 
+# TODO: Return of tuple of lists is crap, should be list of tuples
+#  This function is missing from the single... Should it be added
 def slow_stochastic(fast_stochastic_d: list[float], d_ma_period: int, ds_ma_period: int, ma_model: str = 'ma') -> tuple[list[float], list[float]]:
     """
     Calculates the slow stochastics from a list of fast stochastics for a given period
