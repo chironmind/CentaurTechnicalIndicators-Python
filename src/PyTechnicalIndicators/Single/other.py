@@ -24,3 +24,47 @@ def value_added_personalised_index(start_price: float, end_price: float, previou
     :return: Returns the value add personalised index as a float
     """
     return previous_vapi * (1 + (end_price - start_price))
+
+
+def true_range(high: float, low: float, close: float) -> float:
+    """
+    Calculates the true range which is the greatest distance between current high and low, or previous close and high, or previous close and low
+    :param high: Current high
+    :param low: Current low
+    :param close: Previous close
+    :return: Returns the true range as a float
+    """
+    high_low = high - low
+    high_close = high - close
+    close_low = close - low
+
+    if high_low >= high_close and high_low >= close_low:
+        return high_low
+    elif high_close >= close_low:
+        return high_close
+    else:
+        return close_low
+
+
+def average_range_constant(average_true_range: float, constant: float = 3.0) -> float:
+    """
+    Calculates the average range constant for an average true range
+    :param average_true_range: the average true range
+    :param constant: The constant to multiply it by. Defaults to 3
+    :return: Returns the average range constant
+    """
+    return average_true_range * constant
+
+
+def significant_close(close: list[float]) -> float:
+    """
+    Returns the most significant close for a list of prices
+    :param close: List of closing prices
+    :return: Returns the most significant close
+    """
+    return max(close)
+
+
+# TODO: For stop and reverse points, have it be calculated as a single point from a list of points, based on the various functions
+
+# average range constant

@@ -1,7 +1,7 @@
 from ..Single.moving_averages import moving_average, smoothed_moving_average, exponential_moving_average
 
-from src.PyTechnicalIndicators.Single.strength_indicators import accumulation_distribution_indicator as adi
-from src.PyTechnicalIndicators.Single.strength_indicators import personalised_average_directional_index as adx
+from src.PyTechnicalIndicators.Single import strength_indicators
+
 
 # TODO: Call single RSI to avoid dup lines of code
 def relative_strength_index(prices: list[float], fill_empty: bool = False, fill_value: any = None) -> list[float]:
@@ -241,9 +241,9 @@ def accumulation_distribution_indicator(high: list[float], low: list[float], clo
     adi_list = []
     for i in range(len(high)):
         if adi_list:
-            adi_list.append(adi(high[i], low[i], close[i], volume[i], adi_list[-1]))
+            adi_list.append(strength_indicators.accumulation_distribution_indicator(high[i], low[i], close[i], volume[i], adi_list[-1]))
         else:
-            adi_list.append(adi(high[i], low[i], close[i], volume[i], 0))
+            adi_list.append(strength_indicators.accumulation_distribution_indicator(high[i], low[i], close[i], volume[i], 0))
 
     return adi_list
 
@@ -264,10 +264,10 @@ def personalised_average_directional_index(high: list[float], low: list[float], 
     if minimum_initial_period > length:
         raise Exception(f'Period ({period}) needs to be greater or equal length of lists ({length})')
 
-    initial_adx = adx(high[:minimum_initial_period], low[:minimum_initial_period], close[:minimum_initial_period], 0, period)
+    initial_adx = strength_indicators.personalised_average_directional_index(high[:minimum_initial_period], low[:minimum_initial_period], close[:minimum_initial_period], 0, period)
 
     adx_list = [initial_adx]
     for i in range(minimum_initial_period, length - period):
-        adx_list.append(adx(high[i:i+period], low[i:i+period], close[i:i+period], adx_list[-1], period))
+        adx_list.append(strength_indicators.personalised_average_directional_index(high[i:i+period], low[i:i+period], close[i:i+period], adx_list[-1], period))
 
     return adx_list

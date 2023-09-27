@@ -1,5 +1,6 @@
-from .moving_averages import moving_average, smoothed_moving_average, exponential_moving_average
+from src.PyTechnicalIndicators.Single import moving_averages
 from src.PyTechnicalIndicators.Single.volatility import average_true_range
+
 
 def relative_strength_index(prices: list[float]) -> float:
     """
@@ -23,9 +24,8 @@ def relative_strength_index(prices: list[float]) -> float:
         elif prices[i] < prices[i - 1]:
             previous_loss.append(prices[i - 1] - prices[i])
 
-    # TODO: deal with no loss scenario
-    previous_average_gains = smoothed_moving_average(previous_gains)
-    previous_average_loss = smoothed_moving_average(previous_loss)
+    previous_average_gains = moving_averages.smoothed_moving_average(previous_gains)
+    previous_average_loss = moving_averages.smoothed_moving_average(previous_loss)
 
     if previous_average_loss == 0:
         return 100
@@ -62,22 +62,18 @@ def personalised_rsi(prices: list[float], ma_model: str = 'sma') -> float:
         elif prices[i] < prices[i - 1]:
             previous_loss.append(prices[i - 1] - prices[i])
 
-    ma = ['ma', 'moving average', 'moving_average']
-    sma = ['sma', 'smoothed moving average', 'smoothed_moving_average']
-    ema = ['ema', 'exponential moving average', 'exponential_moving_average']
-
-    if ma_model in ma:
-        previous_average_gains = moving_average(previous_gains)
-        previous_average_loss = moving_average(previous_loss)
-    elif ma_model in sma:
-        previous_average_gains = smoothed_moving_average(previous_gains)
-        previous_average_loss = smoothed_moving_average(previous_loss)
-    elif ma_model in ema:
-        previous_average_gains = exponential_moving_average(previous_gains)
-        previous_average_loss = exponential_moving_average(previous_loss)
+    if ma_model in moving_averages.ma:
+        previous_average_gains = moving_averages.moving_average(previous_gains)
+        previous_average_loss = moving_averages.moving_average(previous_loss)
+    elif ma_model in moving_averages.sma:
+        previous_average_gains = moving_averages.smoothed_moving_average(previous_gains)
+        previous_average_loss = moving_averages.smoothed_moving_average(previous_loss)
+    elif ma_model in moving_averages.ema:
+        previous_average_gains = moving_averages.exponential_moving_average(previous_gains)
+        previous_average_loss = moving_averages.exponential_moving_average(previous_loss)
     else:
-        previous_average_gains = smoothed_moving_average(previous_gains)
-        previous_average_loss = smoothed_moving_average(previous_loss)
+        previous_average_gains = moving_averages.smoothed_moving_average(previous_gains)
+        previous_average_loss = moving_averages.smoothed_moving_average(previous_loss)
 
     if previous_average_loss == 0:
         return 100
@@ -115,35 +111,33 @@ def average_directional_index(current_high: float, previous_high: float, current
     """
     pass
 
-
+# True range is the greatest of the following (take abs value):
+#     distance from todays high to todays low
+#     distance from yesterdays to todays high
+#     distance from yesterdays close to todays low
 # TODO: Check math by hand
-def personalised_average_directional_index(high: list[float], low: list[float], close: list[float], previous_adi: float, period: int) -> float:
+def personalised_average_directional_index(high: list[float], low: list[float], close: list[float], previous_adi: float) -> float:
     """
     Calculates the average directional index and returns it as a float
 
     Calculated according to "New concepts in technical trading systems" (1978) - Wilder, J. Welles https://archive.org/details/newconceptsintec00wild/page/43/mode/2up
     The personalised version allows for any period to be used
-    :param high:
-    :param low:
-    :param close:
-    :param previous_adi:
-    :param period:
+    :param high: List of high prices
+    :param low: List of low prices
+    :param close: List of closing prices
+    :param previous_adi: Previous Average Directional Index value
     :return:
     """
     length = len(high)
     if length != len(low) or len(high) != len(close):
         raise Exception(f'Lengths needs to match, high: {length}, low: {len(low)}, close {len(close)}')
 
-    if period > length:
-        raise Exception(f'Period ({period}) needs to be smaller or equal length of lists ({length})')
-
     if previous_adi != 0:
-        dmi = directional_movement_index(high[-period:], low[-period:], close[-period:])
-        return ((previous_adi * period - 1) + dmi) / period
+        dmi = directional_movement_index(high, low, close)
+        return ((previous_adi * length - 1) + dmi) / length
     else:
-        
         dmi_list = []
-        for i in range(length - period):
+        for i in range(length):
             dmi_list.append(directional_movement_index(high[i:i+period], low[i:i+period], close[i:i+period]))
         return sum(dmi_list) / len(dmi_list)
 
