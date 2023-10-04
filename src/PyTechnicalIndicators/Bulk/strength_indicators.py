@@ -1,5 +1,5 @@
-from ..Single.moving_averages import moving_average, smoothed_moving_average, exponential_moving_average
-
+from src.PyTechnicalIndicators.Single import moving_averages
+from src.PyTechnicalIndicators.Single import other
 from src.PyTechnicalIndicators.Single import strength_indicators
 
 
@@ -248,26 +248,40 @@ def accumulation_distribution_indicator(high: list[float], low: list[float], clo
     return adi_list
 
 
-def personalised_average_directional_index(high: list[float], low: list[float], close: list[float], period: int) -> list[float]:
+def directional_indicator(high: list[float], low: list[float], previous_close: list[float], period: int) -> list[tuple[float, float, float]]:
     """
-
-    :return:
+    Calculates the directional indicator for a list of highs, lows, previous close for a given period
+    :param high: List of highs
+    :param low: List of lows
+    :param previous_close: List of previous closes
+    :param period: Period to calculate the period
+    :return: Returns the positive, negative directional indicator, and the true range a list of tuples of floats
     """
-    # TODO: have an input period, then slice up the provided lists and go through the list, on first iteration provide
-    #   enough information for it to go through and do the adx without a prior one (adx * 2) then use the adx returned
-    #   and for the other iterations just provide the adx
     length = len(high)
-    if length != len(low) or len(high) != len(close):
-        raise Exception(f'Lengths needs to match, high: {length}, low: {len(low)}, close {len(close)}')
+    if length != len(low) or length != len(previous_close):
+        raise Exception(f'lengths of high ({len(high)}), low ({len(low)}), and previous_close ({len(previous_close)}) need to match')
+    if period > length:
+        raise Exception(f'Period ({period}) needs to be at least equal to the length of lists ({length})')
 
-    minimum_initial_period = 2 * period
-    if minimum_initial_period > length:
-        raise Exception(f'Period ({period}) needs to be greater or equal length of lists ({length})')
+    initial_di = strength_indicators.period_directional_indicator(high[:period], low[:period], previous_close[:period])
+    di = [(initial_di[0], initial_di[1], initial_di[2])]
+    positive_dm = initial_di[3]
+    negative_dm = initial_di[4]
+    for i in range(period, length):
+        loop_di = strength_indicators.period_directional_indicator_known_previous(high[i], high[i-1], low[i], low[i-1], previous_close[i], di[-1][2], positive_dm, negative_dm)
+        di.append((loop_di[0], loop_di[1], loop_di[2]))
+        positive_dm += loop_di[3]
+        negative_dm += loop_di[4]
+    return di
 
-    initial_adx = strength_indicators.personalised_average_directional_index(high[:minimum_initial_period], low[:minimum_initial_period], close[:minimum_initial_period], 0, period)
 
-    adx_list = [initial_adx]
-    for i in range(minimum_initial_period, length - period):
-        adx_list.append(strength_indicators.personalised_average_directional_index(high[i:i+period], low[i:i+period], close[i:i+period], adx_list[-1], period))
+def directional_index():
+    raise Exception(NotImplementedError)
 
-    return adx_list
+
+def average_directional_index():
+    raise Exception(NotImplementedError)
+
+
+def average_directional_index_rating():
+    raise Exception(NotImplementedError)

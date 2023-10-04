@@ -18,6 +18,21 @@ def test_single_true_range():
     assert other_single.true_range(150, 120, 190 == 70)
 
 
+def test_single_average_range_constant():
+    assert other_single.average_range_constant(10) == 30
+    assert other_single.average_range_constant(10, 2) == 20
+
+
+def test_single_significant_close():
+    close = [100, 105, 109, 106]
+    assert other_single.significant_close(close) == 109
+
+
+def test_single_stop_and_reverse():
+    assert other_single.stop_and_reverse(100, 110, 10) == 100
+    assert other_single.stop_and_reverse(100, 110, 10, 110) == 110
+
+
 def test_bulk_value_added_personalised_index():
     prices = [100, 210, 270, 250, 180, 220]
     vapi = other_bulk.value_added_personalised_index(prices)
@@ -29,11 +44,6 @@ def test_bulk_true_range():
     low = [120, 150, 120]
     close = [150, 120, 190]
     assert other_bulk.true_range(high, low, close) == [70, 70, 70]
-
-
-def test_single_significant_close():
-    close = [100, 105, 109, 106]
-    assert other_single.significant_close(close) == 109
 
 
 def test_bulk_significant_close():

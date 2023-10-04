@@ -26,17 +26,17 @@ def value_added_personalised_index(start_price: float, end_price: float, previou
     return previous_vapi * (1 + (end_price - start_price))
 
 
-def true_range(high: float, low: float, close: float) -> float:
+def true_range(high: float, low: float, previous_close: float) -> float:
     """
     Calculates the true range which is the greatest distance between current high and low, or previous close and high, or previous close and low
     :param high: Current high
     :param low: Current low
-    :param close: Previous close
+    :param previous_close: Previous close
     :return: Returns the true range as a float
     """
     high_low = high - low
-    high_close = high - close
-    close_low = close - low
+    high_close = high - previous_close
+    close_low = previous_close - low
 
     if high_low >= high_close and high_low >= close_low:
         return high_low
@@ -65,6 +65,15 @@ def significant_close(close: list[float]) -> float:
     return max(close)
 
 
-# TODO: For stop and reverse points, have it be calculated as a single point from a list of points, based on the various functions
+def stop_and_reverse(close: float, significant_close: float, average_range_constant: float, previous_stop_and_reverse: float = 0) -> float:
+    """
+    Calculates Welles stop and reverse point
+    :param close: current close price
+    :param significant_close: the significant close of the observed period
+    :param average_range_constant: the average range constant
+    :return: Returns the stop and reverse point
+    """
+    if close < previous_stop_and_reverse:
+        return close + average_range_constant
+    return significant_close - average_range_constant
 
-# average range constant

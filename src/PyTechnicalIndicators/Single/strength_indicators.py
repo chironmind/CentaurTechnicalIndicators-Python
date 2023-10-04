@@ -1,7 +1,8 @@
 from src.PyTechnicalIndicators.Single import moving_averages
-from src.PyTechnicalIndicators.Single.volatility import average_true_range
+from src.PyTechnicalIndicators.Single import other
 
 
+# TODO: just call personalised with hardcoded values
 def relative_strength_index(prices: list[float]) -> float:
     """
     Calculate the RSI for a list of prices
@@ -36,6 +37,7 @@ def relative_strength_index(prices: list[float]) -> float:
     return rsi
 
 
+# TODO: support pma
 def personalised_rsi(prices: list[float], ma_model: str = 'sma') -> float:
     """
     Calculates a personalised RSI based on the price and a chose MA model
@@ -72,6 +74,7 @@ def personalised_rsi(prices: list[float], ma_model: str = 'sma') -> float:
         previous_average_gains = moving_averages.exponential_moving_average(previous_gains)
         previous_average_loss = moving_averages.exponential_moving_average(previous_loss)
     else:
+        # TODO: raise exception
         previous_average_gains = moving_averages.smoothed_moving_average(previous_gains)
         previous_average_loss = moving_averages.smoothed_moving_average(previous_loss)
 
@@ -100,77 +103,149 @@ def accumulation_distribution_indicator(high: float, low: float, close: float, v
     return previous_adi + money_flow_volume
 
 
-def average_directional_index(current_high: float, previous_high: float, current_low: float, previous_low: float) -> float:
+def period_directional_indicator(high: list[float], low: list[float], previous_close: list[float]) -> tuple[float, float, float, float, float]:
     """
-
-    :param current_high:
-    :param previous_high:
-    :param current_low:
-    :param previous_low:
-    :return:
-    """
-    pass
-
-# True range is the greatest of the following (take abs value):
-#     distance from todays high to todays low
-#     distance from yesterdays to todays high
-#     distance from yesterdays close to todays low
-# TODO: Check math by hand
-def personalised_average_directional_index(high: list[float], low: list[float], close: list[float], previous_adi: float) -> float:
-    """
-    Calculates the average directional index and returns it as a float
-
-    Calculated according to "New concepts in technical trading systems" (1978) - Wilder, J. Welles https://archive.org/details/newconceptsintec00wild/page/43/mode/2up
-    The personalised version allows for any period to be used
+    Calculates the positive and negative directional index for the length of the submitted lists
     :param high: List of high prices
     :param low: List of low prices
-    :param close: List of closing prices
-    :param previous_adi: Previous Average Directional Index value
-    :return:
+    :param previous_close: List of previous closing prices
+    :return: Returns the positive, negative directional indicators, true range, positive, and negative directional movement as a tuple of floats
     """
     length = len(high)
-    if length != len(low) or len(high) != len(close):
-        raise Exception(f'Lengths needs to match, high: {length}, low: {len(low)}, close {len(close)}')
+    if length != len(low) or len(previous_close) != length:
+        raise Exception(f'Length of high ({length}), low ({len(low)}), and previous_close ({len(previous_close)}), need to match')
 
-    if previous_adi != 0:
-        dmi = directional_movement_index(high, low, close)
-        return ((previous_adi * length - 1) + dmi) / length
-    else:
-        dmi_list = []
-        for i in range(length):
-            dmi_list.append(directional_movement_index(high[i:i+period], low[i:i+period], close[i:i+period]))
-        return sum(dmi_list) / len(dmi_list)
+    positive_dm_sum = 0
+    negative_dm_sum = 0
+    tr = other.true_range(high[0], low[0], previous_close[0])
+    for i in range(1, length):
+        dm = directional_movement(high[i], high[i-1], low[i], low[i-1])
+        if dm[1] == 'positive':
+            positive_dm_sum += dm[0]
+        elif dm[1] == 'negative':
+            negative_dm_sum += dm[0]
+        tr += other.true_range(high[i], low[i], previous_close[i])
+    positive_di = (positive_dm_sum / tr) * 100
+    negative_di = (negative_dm_sum / tr) * 100
+    return positive_di, negative_di, tr, positive_dm_sum, negative_dm_sum
 
 
-def directional_movement_index(high: list[float], low: list[float], close: list[float]) -> float:
+def period_directional_indicator_known_previous(current_high: float, previous_high: float, current_low: float, previous_low: float, previous_close: float, previous_true_range: float, previous_positive_dm: float, previous_negative_dm: float, period: int) -> tuple[float, float, float, float, float]:
     """
+    Calculates the directional indicator for a period when the previous directional indicators are known
+    :param current_high: Current high
+    :param previous_high: Previous high
+    :param current_low: Current low
+    :param previous_low: Previous low
+    :param previous_close: Previous close
+    :param previous_directional_movement: Tuple of the previous positive, negative directional indicators, and true range
+    :param period: Period directional indicator is being calculated for
+    :return: Returns the positive, negative directional indicator, and true range as a tuple of floats
+    """
+    current_tr = other.true_range(current_high, current_low, previous_close)
+    current_dm = directional_movement(current_high, previous_high, current_low, previous_low)
+    if current_dm[1] == 'positive':
+        current_positive_dm = known_previous_directional_indicator(current_dm[0], previous_positive_dm, period)
+        current_negative_dm = known_previous_directional_indicator(0, previous_negative_dm, period)
+    elif current_dm[1] == 'negative':
+        current_positive_dm = known_previous_directional_indicator(0, previous_positive_dm, period)
+        current_negative_dm = known_previous_directional_indicator(current_dm[0], previous_negative_dm, period)
+    elif current_dm[1] == 'none':
+        current_positive_dm = known_previous_directional_indicator(0, previous_positive_dm, period)
+        current_negative_dm = known_previous_directional_indicator(0, previous_negative_dm, period)
+    else:
+        raise Exception(f'Unknown directional movement {current_dm[1]}')
+    tr = known_previous_directional_indicator(current_tr, previous_true_range, period)
+    return current_positive_dm/tr, current_negative_dm/tr, tr, current_positive_dm, current_negative_dm
 
-    :param high:
-    :param low:
-    :param close:
+
+def known_previous_directional_indicator(current_value: float, previous_value: float, period: int) -> float:
+    """
+    Used to calculate the directional indicator (or true range) when the previous value is known
+    :param current_value: Current directional movement or true range
+    :param previous_value: Previous directional indicator or true range
+    :param period: The period that the directional indicator is being calculated for
+    :return: Returns the directional indicator (or true range) as a float
+    """
+    return previous_value - (previous_value/period) + current_value
+
+
+def directional_indicator(current_high: float, previous_high: float, current_low: float, previous_low: float, previous_close: float) -> tuple[float, str]:
+    """
+    Calculates the directional indicator according to Welles https://archive.org/details/newconceptsintec00wild/page/35/mode/2up
+    :param current_high: Current high
+    :param previous_high: Previous high
+    :param current_low: Current low
+    :param previous_low: Previous low
+    :param previous_close: Previous close
+    :return: Returns the directional indicator as a float with a string to note if it is "positive", "negative", or "none"
+    """
+    dm = directional_movement(current_high, previous_high, current_low, previous_low)
+    tr = other.true_range(current_high, current_low, previous_close)
+    return dm[0]/tr, dm[1]
+
+
+def directional_movement(current_high: float, previous_high: float, current_low: float, previous_low: float) -> tuple[float, str]:
+    """
+    Calculates the directional movement according to Welles https://archive.org/details/newconceptsintec00wild/page/35/mode/2up
+    :param current_high: Current high
+    :param previous_high: Previous high
+    :param current_low: Current low
+    :param previous_low: Previous low
+    :return: Returns the directional movement as a float with a string to note if it is "positive", "negative", or "none"
+    """
+    positive_directional_movement = current_high - previous_high
+    negative_directional_movement = previous_low - current_low
+
+    if positive_directional_movement > negative_directional_movement and positive_directional_movement > 0:
+        return positive_directional_movement, 'positive'
+    elif negative_directional_movement > positive_directional_movement and negative_directional_movement > 0:
+        return negative_directional_movement, 'negative'
+    else:
+        return 0, 'none'
+
+
+def directional_index(positive_directional_indicator: float, negative_directional_indicator: float) -> float:
+    """
+    Calculates the directional index according to Welles https://archive.org/details/newconceptsintec00wild/page/43/mode/2up
+    :param positive_directional_indicator: Positive directional index
+    :param negative_directional_indicator: Negative directional index
     :return:
     """
-    positive_directional_movement = high[-1] - high[-2]
-    negative_directional_movement = low[-2] - low[-1]
-
-    if positive_directional_movement > negative_directional_movement:
-        negative_directional_movement = 0
+    if positive_directional_indicator >= negative_directional_indicator:
+        nominator = positive_directional_indicator - negative_directional_indicator
     else:
-        positive_directional_movement = 0
-    sum_positive_directional_movement = 0
+        nominator = negative_directional_indicator - positive_directional_indicator
+    denominator = positive_directional_indicator + negative_directional_indicator
+    return nominator / denominator
 
-    for i in range(1, len(high)):
-        sum_positive_directional_movement += high[i] - high[i - 1]
-    positive_directional_movement_average = sum_positive_directional_movement / len(high)
-    smoothed_positive_directional_movement = (sum_positive_directional_movement - positive_directional_movement_average) + positive_directional_movement
-    sum_negative_directional_movement = 0
 
-    for i in range(1, len(low)):
-        sum_negative_directional_movement += low[i - 1] - low[i]
-    negative_directional_movement_average = sum_negative_directional_movement / len(low)
-    smoothed_negative_directional_movement = (sum_negative_directional_movement - negative_directional_movement_average) + negative_directional_movement
+# TODO: support pma
+def average_directional_index(directional_index: list[float], moving_average_model: str = 'ma') -> float:
+    """
+    Calculates the average directional index for a list of directional indices
+    :param directional_index: List of directional index
+    :param moving_average_model: Name of the moving average that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'sma'
+    :return:
+    """
 
-    atr = average_true_range(high, low, close, 0)
-    positive_directional_index = (smoothed_positive_directional_movement / atr) * 100
-    negative_directional_index = (smoothed_negative_directional_movement / atr) * 100
-    return (abs(positive_directional_index - negative_directional_index) / abs(positive_directional_index + negative_directional_index)) * 100
+    if moving_average_model in moving_averages.ma:
+        return moving_averages.moving_average(directional_index)
+    elif moving_average_model in moving_averages.sma:
+        return moving_averages.smoothed_moving_average(directional_index)
+    elif moving_average_model in moving_averages.ema:
+        return moving_averages.exponential_moving_average(directional_index)
+    else:
+        raise Exception(f'moving_average_model: {moving_average_model} is not an accepted moving average model')
+
+
+def average_directional_index_rating(current_average_directional_index: float, previous_average_directional_index: float) -> float:
+    """
+    Calculates the average directoinal index rating according to Welles https://archive.org/details/newconceptsintec00wild/page/43/mode/2up
+    :param current_average_directional_index: The current average directional index
+    :param previous_average_directional_index: The average directional index from a predetermined period ago, normally 14
+    :return: Returns the average directional index rating as a float
+    """
+    return (current_average_directional_index + previous_average_directional_index) / 2

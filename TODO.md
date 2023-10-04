@@ -10,3 +10,4 @@
 - GH actions to run the tests (once they've been built) and maybe package to confirm it works? could even do the upload there
 - add indicators to correct folders (RSI SO MACD should be in momentum?)
 - logging
+- go throuhg the rest of Welles book https://archive.org/details/newconceptsintec00wild/page/25/mode/2up

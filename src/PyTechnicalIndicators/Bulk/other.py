@@ -35,21 +35,6 @@ def true_range(high: list[float], low: list[float], close: list[float]) -> list[
     return tr
 
 
-def significant_close(close: list[float], period: int):
-    """
-    Returns the significant closes from a list of closes over a period of time
-    :param close: Closing prices
-    :param period: Observed period
-    :return: Returns a list of significant closes
-    """
-    if len(close) < period:
-        raise Exception(f'Length of close prices ({len(close)}) needs to be greater than the period ({period})')
-    sc = []
-    for i in range(len(close) - period + 1):
-        sc.append(other.significant_close(close[i:i+period]))
-    return sc
-
-
 def average_range_constant(average_true_range: list[float], constant: float = 3.0) -> list[float]:
     """
     Calculates the average range constant
@@ -64,4 +49,16 @@ def average_range_constant(average_true_range: list[float], constant: float = 3.
     return arc
 
 
-# TODO: For stop and reverse points, have it be calculated as a single point from a list of points, based on the various functions
+def significant_close(close: list[float], period: int):
+    """
+    Returns the significant closes from a list of closes over a period of time
+    :param close: Closing prices
+    :param period: Observed period
+    :return: Returns a list of significant closes
+    """
+    if len(close) < period:
+        raise Exception(f'Length of close prices ({len(close)}) needs to be greater than the period ({period})')
+    sc = []
+    for i in range(len(close) - period + 1):
+        sc.append(other.significant_close(close[i:i+period]))
+    return sc
