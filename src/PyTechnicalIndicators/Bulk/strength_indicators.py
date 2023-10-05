@@ -61,6 +61,7 @@ def relative_strength_index(prices: list[float], fill_empty: bool = False, fill_
     return rsi
 
 
+# TODO: Move to oscillator
 def stochastic_oscillator(close_prices: list[float], fill_empty: bool = False, fill_value: any = None) -> list[float]:
     """
     Calculates the SO from a list of closing prices
@@ -86,7 +87,7 @@ def stochastic_oscillator(close_prices: list[float], fill_empty: bool = False, f
     return so
 
 
-# TODO: allow pma using kwargs
+# TODO: allow pma using kwargs and call single
 def personalised_rsi(prices: list[float], period: int, ma_model: str = 'sma', fill_empty: bool = False, fill_value: any = None) -> list[float]:
     """
     Calculates a personalised RSI
@@ -206,6 +207,7 @@ def personalised_rsi(prices: list[float], period: int, ma_model: str = 'sma', fi
     return rsi
 
 
+# Move to oscillators and test
 def personalised_stochastic_oscillator(close_prices: list[float], period: int, fill_empty: bool = False, fill_value: any = None) -> list[float]:
     """
     Calculates a personalised SO
@@ -268,20 +270,59 @@ def directional_indicator(high: list[float], low: list[float], previous_close: l
     positive_dm = initial_di[3]
     negative_dm = initial_di[4]
     for i in range(period, length):
-        loop_di = strength_indicators.period_directional_indicator_known_previous(high[i], high[i-1], low[i], low[i-1], previous_close[i], di[-1][2], positive_dm, negative_dm)
+        loop_di = strength_indicators.period_directional_indicator_known_previous(high[i], high[i-1], low[i], low[i-1], previous_close[i], di[-1][2], positive_dm, negative_dm, period)
         di.append((loop_di[0], loop_di[1], loop_di[2]))
-        positive_dm += loop_di[3]
-        negative_dm += loop_di[4]
+        positive_dm = loop_di[3]
+        negative_dm = loop_di[4]
     return di
 
 
-def directional_index():
-    raise Exception(NotImplementedError)
+def directional_index(positive_directional_indicator: list[float], negative_directional_indicator: list[float]) -> list[float]:
+    """
+    Calculates the directional index for a list of positive and negative directional indicators
+    :param positive_directional_indicator: List of positive directional indicators
+    :param negative_directional_indicator: List of negative directional indicators
+    :return: Returns a list of directional indexes
+    """
+    length = len(positive_directional_indicator)
+    if len(negative_directional_indicator) != length:
+        raise Exception(f'Length of positive_directional_indicator ({length}) and negative_directional_indicator ({len(negative_directional_indicator)}) need to match')
+    dx = []
+    for i in range(length):
+        dx.append(strength_indicators.directional_index(positive_directional_indicator[i], negative_directional_indicator[i]))
+    return dx
 
 
-def average_directional_index():
-    raise Exception(NotImplementedError)
+def average_directional_index(directional_index: list[float], period: int, moving_average_model: str = 'ma') -> list[float]:
+    """
+    Calculates the average directional index from a list of directional indexes
+    :param directional_index: List of directional indexes
+    :param moving_average_model: Name of the moving average that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'sma'
+    :return: Returns a list of average directional indexes
+    """
+    length = len(directional_index)
+    if length < period:
+        raise Exception(f'Length of ({directional_index}) needs to be at least equal to period ({period})')
+    adx = []
+    for i in range(length - period + 1):
+        adx.append(strength_indicators.average_directional_index(directional_index[i:i+period], moving_average_model))
+    return adx
 
 
-def average_directional_index_rating():
-    raise Exception(NotImplementedError)
+def average_directional_index_rating(average_directional_index: list[float], period: int) -> list[float]:
+    """
+    Calculates the average directional index rating for a list of average directional indexes. The period is used to
+    determine which past index to use to calculate the rating, Welles suggest 14 days.
+    :param average_directional_index: List of average directional indexes
+    :param period: Period to use
+    :return: Returns a list of average directional index ratings as floats
+    """
+    length = len(average_directional_index)
+    if length < period:
+        raise Exception(f'Length of ({average_directional_index}) needs to be at least equal to period ({period})')
+    adxr = []
+    for i in range(period, length + 1):
+        adxr.append(strength_indicators.average_directional_index_rating(average_directional_index[i-1], average_directional_index[i-period]))
+    return adxr

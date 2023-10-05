@@ -145,21 +145,23 @@ def period_directional_indicator_known_previous(current_high: float, previous_hi
     current_tr = other.true_range(current_high, current_low, previous_close)
     current_dm = directional_movement(current_high, previous_high, current_low, previous_low)
     if current_dm[1] == 'positive':
-        current_positive_dm = known_previous_directional_indicator(current_dm[0], previous_positive_dm, period)
-        current_negative_dm = known_previous_directional_indicator(0, previous_negative_dm, period)
+        current_positive_dm = known_previous_directional_movement(current_dm[0], previous_positive_dm, period)
+        current_negative_dm = known_previous_directional_movement(0, previous_negative_dm, period)
     elif current_dm[1] == 'negative':
-        current_positive_dm = known_previous_directional_indicator(0, previous_positive_dm, period)
-        current_negative_dm = known_previous_directional_indicator(current_dm[0], previous_negative_dm, period)
+        current_positive_dm = known_previous_directional_movement(0, previous_positive_dm, period)
+        current_negative_dm = known_previous_directional_movement(current_dm[0], previous_negative_dm, period)
     elif current_dm[1] == 'none':
-        current_positive_dm = known_previous_directional_indicator(0, previous_positive_dm, period)
-        current_negative_dm = known_previous_directional_indicator(0, previous_negative_dm, period)
+        current_positive_dm = known_previous_directional_movement(0, previous_positive_dm, period)
+        current_negative_dm = known_previous_directional_movement(0, previous_negative_dm, period)
     else:
         raise Exception(f'Unknown directional movement {current_dm[1]}')
-    tr = known_previous_directional_indicator(current_tr, previous_true_range, period)
-    return current_positive_dm/tr, current_negative_dm/tr, tr, current_positive_dm, current_negative_dm
+    tr = known_previous_directional_movement(current_tr, previous_true_range, period)
+    positive_di = (current_positive_dm/tr) * 100
+    negative_di = (current_negative_dm/tr) * 100
+    return positive_di, negative_di, tr, current_positive_dm, current_negative_dm
 
 
-def known_previous_directional_indicator(current_value: float, previous_value: float, period: int) -> float:
+def known_previous_directional_movement(current_value: float, previous_value: float, period: int) -> float:
     """
     Used to calculate the directional indicator (or true range) when the previous value is known
     :param current_value: Current directional movement or true range
