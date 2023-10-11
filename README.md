@@ -998,10 +998,11 @@ __Parameters:__
 - _period:_ _optional_ int, number of prices before and after. 
 
 __Example:__
-```python
-prices = [100, 102, 101 ... ]
 
-pits_list = pits.get_pits(prices, 2)
+```python
+prices = [100, 102, 101...]
+
+pits_list = pits.get_valleys(prices, 2)
 ```
 
 #### get_lowest_pit(prices)

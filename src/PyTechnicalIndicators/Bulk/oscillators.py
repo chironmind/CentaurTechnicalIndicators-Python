@@ -21,18 +21,14 @@ def personalised_money_flow_index(typical_prices: list[float], volume: list[int]
     :return: Returns a list of money flow index
     """
     len_typical_prices = len(typical_prices)
-
     if len_typical_prices < period or len(volume) < period:
         raise Exception(f'typical_prices ({len_typical_prices}) and volume ({len(volume)}) need to be at least {period} periods in length')
-
     if len_typical_prices != len(volume):
         raise Exception(f"typical_prices ({len_typical_prices}) and volume ({len(volume)}) need to be of same length")
 
     money_flow_index_list = []
-
     for i in range(len_typical_prices - period + 1):
         money_flow_index_list.append(oscillators.personalised_money_flow_index(typical_prices[i:i+period], volume[i:i+period]))
-
     return money_flow_index_list
 
 
@@ -51,7 +47,6 @@ def chaikin_oscillator(high: list[float], low: list[float], close: list[float], 
             f'length of lists need to match. high ({length}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})')
     if length < 10:
         raise Exception('The Chaikin Oscillator expects there to be a maximum of 10 periods, for a personalised version use personalised_chaikin_oscillator')
-
     return personalised_chaikin_oscillator(high, low, close, volume, 3, 10)
 
 
@@ -88,46 +83,90 @@ def personalised_chaikin_oscillator(high: list[float], low: list[float], close: 
     return chaikin_oscillator_list
 
 
-def fast_stochastic(close_prices: list[float], period: int, ma_period: int, ma_model: str = 'ma') -> tuple[list[float], list[float]]:
+def stochastic_oscillator(close_prices: list[float]) -> list[float]:
     """
-    Calculates the fast stochastics from a list of closing prices for a given period
+    Calculates the SO from a list of closing prices
     :param close_prices: List of closing prices
+    :return: Returns a list of SO
+    """
+    if len(close_prices) < 14:
+        raise Exception(f'14 periods are needed to calculate RSI {len(close_prices)} have been provided')
+    for i in range(14, len(close_prices)):
+        return personalised_stochastic_oscillator(close_prices, 14)
+
+
+def personalised_stochastic_oscillator(close_prices: list[float], period: int) -> list[float]:
+    """
+    Calculates a personalised SO
+
+    The normal period that the SO uses is 14 periods, this functions allows for any period to be used
+    :param close_prices: list of close prices
+    :param period: Number of periods for which the moving average should be calculated for
+    :return: Returns a list of personalised SO
+    """
+    if len(close_prices) < period:
+        raise Exception(f'Submitted prices needs to be greater than submitted period of {period}')
+    so = []
+    for i in range(period, len(close_prices)+1):
+        so.append(oscillators.personalised_stochastic_oscillator(close_prices[i-period:i]))
+    return so
+
+
+def fast_stochastic(stochastic_oscillators: list[float], period: int, ma_model: str = 'ma') -> list[float]:
+    """
+    Calculates the fast stochastics from a list of stochastic oscillators for a given period
+    :param stochastic_oscillators: List of closing prices
     :param period: Period to calculate the fast stochastic
-    :param ma_period: Moving average period to use when calculating the moving average of the stochastic oscillator
     :param ma_model: (Optional) Name of the moving average that should be used. Supported models are:
         'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
         Defaults to 'ma'
     :return: Returns the fast stochastic as a tuple of floats
     """
-    stochastic_oscillators = []
-    for i in range(len(close_prices)-period+1):
-        stochastic_oscillators.append(oscillators.personalised_stochastic_oscillator(close_prices[i:i+period]))
+    length = len(stochastic_oscillators)
+    if length < period:
+        raise Exception(f'Period ({period}) needs to be at least equal to length of stochastic_oscillators ({length})')
     fast_stochastics = []
-    for i in range(len(stochastic_oscillators)-ma_period+1):
-        fast_stochastics.append(oscillators.fast_stochastic_d(stochastic_oscillators[i:i+ma_period], ma_model))
-    return stochastic_oscillators, fast_stochastics
+    for i in range(period, length+1):
+        fast_stochastics.append(oscillators.fast_stochastic(stochastic_oscillators[i - period:i], ma_model))
+    return fast_stochastics
 
 
-# TODO: Return of tuple of lists is crap, should be list of tuples
-#  This function is missing from the single... Should it be added
-def slow_stochastic(fast_stochastic_d: list[float], d_ma_period: int, ds_ma_period: int, ma_model: str = 'ma') -> tuple[list[float], list[float]]:
+def slow_stochastic(fast_stochastic: list[float], period: int, ma_model: str = 'ma') -> list[float]:
     """
     Calculates the slow stochastics from a list of fast stochastics for a given period
-    :param fast_stochastic_d: List of fast stochastics (%D)
-    :param d_ma_period: Period used to calculate the MA of the fast stochastic
-    :param ds_ma_period: Period used to calculate the MA of the %D-Slow
+    :param fast_stochastic: List of fast stochastics (%D)
+    :param period: Period used to calculate the MA of the fast stochastic
     :param ma_model: (Optional) Name of the moving average that should be used. Supported models are:
         'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
         Defaults to 'ma'
     :return: Returns the fast stochastic as a tuple of floats
     """
-    slow_stochastics_d = []
-    for i in range(len(fast_stochastic_d)-d_ma_period+1):
-        slow_stochastics_d.append(oscillators.slow_stochastic_d(fast_stochastic_d[i:i+d_ma_period], ma_model))
+    length = len(fast_stochastic)
+    if length < period:
+        raise Exception(f'Period ({period}) needs to be at least equal to length of stochastic_oscillators ({length})')
+    slow_stochastics = []
+    for i in range(period, length+1):
+        slow_stochastics.append(oscillators.slow_stochastic(fast_stochastic[i - period:i], ma_model))
+    return slow_stochastics
+
+
+def slow_stochastic_ds(slow_stochastic: list[float], period: int, ma_model: str = 'ma') -> list[float]:
+    """
+    Calculates the %DS-Slow for the slow stochastic for a given period
+    :param slow_stochastic: List of slow stochastics (%D-Slow)
+    :param period: Period used to calculate the MA of the %DS-Slow
+    :param ma_model: (Optional) Name of the moving average that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'ma'
+    :return: Returns the fast stochastic as a tuple of floats
+    """
+    length = len(slow_stochastic)
+    if length < period:
+        raise Exception(f'Period ({period}) needs to be at least equal to length of stochastic_oscillators ({length})')
     slow_stochastics_ds = []
-    for i in range(len(slow_stochastics_d)-ds_ma_period+1):
-        slow_stochastics_ds.append(oscillators.slow_stochastic_ds(slow_stochastics_d[i:i+ds_ma_period], ma_model))
-    return slow_stochastics_d, slow_stochastics_ds
+    for i in range(period, length+1):
+        slow_stochastics_ds.append(oscillators.slow_stochastic_ds(slow_stochastic[i - period:i], ma_model))
+    return slow_stochastics_ds
 
 
 def williams_percent_r(high: list[float], low: list[float], close: list[float], period: int) -> list[float]:
@@ -148,5 +187,5 @@ def williams_percent_r(high: list[float], low: list[float], close: list[float], 
     williams_r = []
     for i in range(len(close)-period+1):
         j = i + period
-        williams_r.append(oscillators.willams_percent_r(max(high[i:j]), min(low[i:j]), close[j-1]))
+        williams_r.append(oscillators.williams_percent_r(max(high[i:j]), min(low[i:j]), close[j-1]))
     return williams_r

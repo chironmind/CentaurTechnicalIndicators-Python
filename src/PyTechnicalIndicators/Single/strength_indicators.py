@@ -12,29 +12,7 @@ def relative_strength_index(prices: list[float]) -> float:
     prices_length = len(prices)
     if prices_length != 14:
         raise Exception(f'14 periods are needed to calculate RSI, {prices_length} have been provided')
-
-    previous_gains = []
-    previous_loss = []
-
-    for i in range(prices_length - 1, 0, -1):
-        if i == 0:
-            continue
-
-        if prices[i] > prices[i - 1]:
-            previous_gains.append(prices[i] - prices[i - 1])
-        elif prices[i] < prices[i - 1]:
-            previous_loss.append(prices[i - 1] - prices[i])
-
-    previous_average_gains = moving_averages.smoothed_moving_average(previous_gains)
-    previous_average_loss = moving_averages.smoothed_moving_average(previous_loss)
-
-    if previous_average_loss == 0:
-        return 100
-
-    relative_strength = previous_average_gains / previous_average_loss
-
-    rsi = (100 - (100 / (1 + relative_strength)))
-    return rsi
+    return personalised_rsi(prices)
 
 
 # TODO: support pma
@@ -55,14 +33,16 @@ def personalised_rsi(prices: list[float], ma_model: str = 'sma') -> float:
     previous_gains = []
     previous_loss = []
 
-    for i in range(prices_length - 1, 0, -1):
-        if i == 0:
-            continue
-
+    for i in range(1, prices_length):
         if prices[i] > prices[i - 1]:
             previous_gains.append(prices[i] - prices[i - 1])
         elif prices[i] < prices[i - 1]:
             previous_loss.append(prices[i - 1] - prices[i])
+
+    if not previous_loss:
+        return 100
+    if not previous_gains:
+        return 0
 
     if ma_model in moving_averages.ma:
         previous_average_gains = moving_averages.moving_average(previous_gains)
@@ -74,15 +54,9 @@ def personalised_rsi(prices: list[float], ma_model: str = 'sma') -> float:
         previous_average_gains = moving_averages.exponential_moving_average(previous_gains)
         previous_average_loss = moving_averages.exponential_moving_average(previous_loss)
     else:
-        # TODO: raise exception
-        previous_average_gains = moving_averages.smoothed_moving_average(previous_gains)
-        previous_average_loss = moving_averages.smoothed_moving_average(previous_loss)
-
-    if previous_average_loss == 0:
-        return 100
+        raise Exception(f'{ma_model} is not a supported moving average model')
 
     relative_strength = previous_average_gains / previous_average_loss
-
     rsi = (100 - (100 / (1 + relative_strength)))
     return rsi
 
@@ -101,6 +75,21 @@ def accumulation_distribution_indicator(high: float, low: float, close: float, v
     money_flow_multiplier = ((close - low) - (high - close)) / (high - low)
     money_flow_volume = money_flow_multiplier * volume
     return previous_adi + money_flow_volume
+
+
+def directional_indicator(current_high: float, previous_high: float, current_low: float, previous_low: float, previous_close: float) -> tuple[float, str]:
+    """
+    Calculates the directional indicator according to Welles https://archive.org/details/newconceptsintec00wild/page/35/mode/2up
+    :param current_high: Current high
+    :param previous_high: Previous high
+    :param current_low: Current low
+    :param previous_low: Previous low
+    :param previous_close: Previous close
+    :return: Returns the directional indicator as a float with a string to note if it is "positive", "negative", or "none"
+    """
+    dm = directional_movement(current_high, previous_high, current_low, previous_low)
+    tr = other.true_range(current_high, current_low, previous_close)
+    return dm[0]/tr, dm[1]
 
 
 def period_directional_indicator(high: list[float], low: list[float], previous_close: list[float]) -> tuple[float, float, float, float, float]:
@@ -170,21 +159,6 @@ def known_previous_directional_movement(current_value: float, previous_value: fl
     :return: Returns the directional indicator (or true range) as a float
     """
     return previous_value - (previous_value/period) + current_value
-
-
-def directional_indicator(current_high: float, previous_high: float, current_low: float, previous_low: float, previous_close: float) -> tuple[float, str]:
-    """
-    Calculates the directional indicator according to Welles https://archive.org/details/newconceptsintec00wild/page/35/mode/2up
-    :param current_high: Current high
-    :param previous_high: Previous high
-    :param current_low: Current low
-    :param previous_low: Previous low
-    :param previous_close: Previous close
-    :return: Returns the directional indicator as a float with a string to note if it is "positive", "negative", or "none"
-    """
-    dm = directional_movement(current_high, previous_high, current_low, previous_low)
-    tr = other.true_range(current_high, current_low, previous_close)
-    return dm[0]/tr, dm[1]
 
 
 def directional_movement(current_high: float, previous_high: float, current_low: float, previous_low: float) -> tuple[float, str]:

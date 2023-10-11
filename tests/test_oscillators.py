@@ -118,6 +118,41 @@ def test_single_chaikin_oscillator_wrong_model():
     assert str(e.value) == str(f'zzz is not an accepted MA model, please use either {ma}, {sma}, or {ema}')
 
 
+def test_single_stochastic_oscillator():
+    close = [100, 92, 88, 82, 75, 68, 74, 76, 84, 84, 83, 89, 95, 89]
+    so = single_oscillators.stochastic_oscillator(close)
+    assert so == 65.625
+
+
+def test_single_personalised_stochastic_oscillator():
+    close = [84, 83, 89, 95, 89]
+    so = single_oscillators.personalised_stochastic_oscillator(close)
+    assert so == 50
+
+
+def test_single_fast_stochastic():
+    stochastic_oscillators = [65.625, 100, 100]
+    fs = single_oscillators.fast_stochastic(stochastic_oscillators)
+    assert fs == 88.54166666666667
+
+
+def test_single_slow_stochastic():
+    fast_stochastics = [58.13134732566012, 77.14285714285714, 85.9783344617468, 94.19092755585648, 98.29383886255926, 79.66824644549763]
+    ss = single_oscillators.slow_stochastic(fast_stochastics)
+    assert ss == 82.23425863236291
+
+
+def test_single_slow_stochastic_ds():
+    slow_stochastics = [89.69128533244347, 87.43902556418001]
+    ssds = single_oscillators.slow_stochastic_ds(slow_stochastics)
+    assert ssds == 88.56515544831174
+
+
+def test_single_williams_percent_r():
+    wr = single_oscillators.williams_percent_r(143, 132, 138)
+    assert wr == -45.45454545454545
+
+
 def test_bulk_standard_money_flow_index():
     typical_prices = [100, 105, 103, 104, 106, 109, 104, 107, 111, 115, 109, 108, 107, 106, 105, 108]
     volume = [1200, 1200, 1300, 1200, 1600, 1400, 2000, 1800, 1600, 1500, 1200, 1100, 1500, 1400, 1200, 1300]
@@ -233,25 +268,39 @@ def test_bulk_chaikin_oscillator_short_greater_long_exception():
     assert str(e.value) == str(f'long_period (10) needs to be longer than short_period (11)')
 
 
+def test_bulk_stochastic_oscillator():
+    close = [100, 92, 88, 82, 75, 68, 74, 76, 84, 84, 83, 89, 95, 89, 97, 104]
+    so = oscillators_bulk.stochastic_oscillator(close)
+    assert so == [65.625, 100, 100]
+
+
+def test_bulk_personalised_stochastic_oscillator():
+    close = [100, 92, 88, 82, 75, 68, 74, 76, 84, 84, 83, 89, 95, 89]
+    so = oscillators_bulk.personalised_stochastic_oscillator(close, 5)
+    assert so == [0.0, 0.0, 30.0, 57.14285714285714, 100.0, 100.0, 90.0, 100.0, 100.0, 50.0]
+
+
 def test_bulk_fast_stochastic():
-    close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137, 140, 138]
-    fs = oscillators_bulk.fast_stochastic(close, 3, 3, 'ma')
-    assert fs == (
-        [100.0, 0.0, 0.0, 100.0, 70.0, 0.0, 23.076923076923077, 0.0, 37.5, 33.33333333333333],
-        [33.333333333333336, 33.333333333333336, 56.666666666666664, 56.666666666666664, 31.025641025641026, 7.6923076923076925, 20.192307692307693, 23.61111111111111]
-    )
+    stochastic_oscillators = [0.0, 0.0, 30.0, 57.14285714285714, 100.0, 100.0, 90.0, 100.0, 100.0, 50.0]
+    fs = oscillators_bulk.fast_stochastic(stochastic_oscillators, 5, 'ema')
+    assert fs == [58.13134732566012, 77.14285714285714, 85.9783344617468, 94.19092755585648, 98.29383886255926, 79.66824644549763]
 
 
 def test_bulk_slow_stochastic():
-    fast_stochastics = [33.333333333333336, 33.333333333333336, 56.666666666666664, 56.666666666666664, 31.025641025641026, 7.6923076923076925, 20.192307692307693, 23.61111111111111]
-    ss = oscillators_bulk.slow_stochastic(fast_stochastics, 3, 3, 'ma')
-    assert ss == ([41.111111111111114, 48.888888888888886, 48.11965811965812, 31.794871794871796, 19.636752136752136, 17.165242165242166], [46.039886039886035, 42.93447293447293, 33.18376068376068, 22.865622032288698])
+    fast_stochastics = [58.13134732566012, 77.14285714285714, 85.9783344617468, 94.19092755585648, 98.29383886255926, 79.66824644549763]
+    ss = oscillators_bulk.slow_stochastic(fast_stochastics, 5, 'ema')
+    assert ss == [89.69128533244347, 87.43902556418001]
+
+
+def test_bulk_slow_stochastic_ds():
+    slow_stochastics = [89, 87, 88, 83, 82]
+    ssds = oscillators_bulk.slow_stochastic_ds(slow_stochastics, 3, 'ma')
+    assert ssds == [88, 86, 84.33333333333333]
 
 
 def test_bulk_williams_percent_r():
     high = [150, 157, 163, 152, 155, 160, 158, 153, 148, 144, 145, 143]
     low = [132, 143, 153, 148, 145, 151, 142, 138, 132, 135, 137, 132]
     close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137, 140, 138]
-
     wr = oscillators_bulk.williams_percent_r(high, low, close, 3)
     assert wr == [-19.35483870967742, -65.0, -83.33333333333333, -13.333333333333334, -27.77777777777778, -81.81818181818181, -50.0, -76.19047619047619, -50.0, -53.84615384615385]

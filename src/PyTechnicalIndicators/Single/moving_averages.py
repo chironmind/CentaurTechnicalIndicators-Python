@@ -15,7 +15,6 @@ def moving_average(prices: list[float]) -> float:
     return sum(prices) / len(prices)
 
 
-# TODO: these could just call the personalised MA
 def exponential_moving_average(prices: list[float]) -> float:
     """
     Calculates the exponential moving average
@@ -41,7 +40,6 @@ def smoothed_moving_average(prices: list[float]) -> float:
     return personalised_moving_average(prices, 1, 0)
 
 
-# TODO: have exp and smoothed call this with their hardcoded params once it passes tests
 def personalised_moving_average(prices: list[float], alpha_nominator: int, alpha_denominator: int) -> float:
     """
     A Personalised version of the moving average where the caller can determine the alpha numerator and denomiator
@@ -53,24 +51,21 @@ def personalised_moving_average(prices: list[float], alpha_nominator: int, alpha
     length_prices = len(prices)
     if length_prices == 0:
         raise Exception('There needs to be prices to be able to do personalised moving average')
-
     if length_prices + alpha_denominator == 0:
         raise Exception(f'The length of prices {length_prices} and the value of the alpha denominator {alpha_denominator} add up to 0, and division by 0 isn\'t possible')
 
     alpha = alpha_nominator / (length_prices + alpha_denominator)
     price_sum = 0
     denominator_sum = 0
-
+    # TODO: Make the loop clearer
     for i in range(length_prices - 1, -1, -1):
         power = length_prices - i
-        denominator_sum += pow(1 - alpha, power)
-        price_sum += prices[i] * pow(1 - alpha, power)
-
+        alpha_power = pow(1 - alpha, power)
+        denominator_sum += alpha_power
+        price_sum += prices[i] * alpha_power
     return price_sum / denominator_sum
 
 
-# TODO: have a high level function that gets called and returns everything (macd, signal, diff)
-#  called macd line
 # TODO: Just call personalised mcad with hardoced values
 def moving_average_convergence_divergence(prices: list[float]) -> float:
     """
