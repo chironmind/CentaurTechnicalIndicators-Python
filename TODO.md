@@ -10,3 +10,4 @@
 - go through the rest of Welles book https://archive.org/details/newconceptsintec00wild/page/25/mode/2up
 - do hand calcs for chart_trends.py break_down_trends
 - move docs to sphinx and readthedocs
+- check what gets installed in reqs, doubt most of it is needed
