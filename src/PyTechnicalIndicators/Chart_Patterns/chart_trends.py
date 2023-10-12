@@ -73,11 +73,6 @@ def break_down_trends(prices: list[float], standard_deviation_multiplier: int = 
     previous_intercept = 0
     previous_trend_points = [(prices[0], 0)]
     for i in range(1, len(prices)):
-        # figure out the trend for the first two ponits, save it down into a variable, then compare it to the trend of the
-        # next two points of the loop to confirm if the trend is within the std deviation if it it, the trend of the three
-        # points need to be calculated and saved down to be compared to the next trend. If it is outside, then it's a new trend
-        # the previous trend needs to be saved into a tuple, and the new trend needs to be saved as for the others so that it
-        # can be compared
         current_trend_points = previous_trend_points + [(prices[i], i)]
         current_trend = get_trend_line(current_trend_points)
         if len(previous_trend_points) > 1:
