@@ -1,12 +1,16 @@
-name: Upload PyTechnicalIndicators
+name: Publish PyTechnicalIndicators
 
 on:
   release:
     types: [published]
 
 jobs:
-  deploy:
+  pypi-publish:
+    name: upload release to PyPI
     runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
@@ -20,5 +24,3 @@ jobs:
         run: python -m build
       - name: Publish Package
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
