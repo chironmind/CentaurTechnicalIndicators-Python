@@ -30,5 +30,5 @@ def test_get_overall_trend():
 def test_break_down_trends():
     prices = [100, 103, 95, 90, 81, 99, 113, 99, 113, 95, 87, 92, 86, 94, 86, 82, 97, 77, 90, 107]
     trend_breakdown = chart_trends.break_down_trends(prices, 1)
-    assert trend_breakdown == 0
+    assert trend_breakdown == [(0, 1, 3.0, 100.0), (2, 4, -7.0, 109.66666666666667), (5, 6, 14.0, 29.0), (7, 8, 14.0, 1.0), (9, 10, -8.0, 167.0), (11, 12, -6.0, 158.0), (13, 15, -6.0, 171.33333333333334), (16, 17, -20.0, 417.0), (18, 19, 17.0, -216.0)]
 
