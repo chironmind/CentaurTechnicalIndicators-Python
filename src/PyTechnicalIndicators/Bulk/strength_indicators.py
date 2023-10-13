@@ -1,4 +1,4 @@
-from src.PyTechnicalIndicators.Single import strength_indicators
+from ..Single import (strength_indicators)
 
 
 def relative_strength_index(prices: list[float]) -> list[float]:

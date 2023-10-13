@@ -1,4 +1,4 @@
-from src.PyTechnicalIndicators.Single import oscillators
+from ..Single import oscillators
 
 
 def money_flow_index(typical_prices: list[float], volume: list[int]) -> list[float]:

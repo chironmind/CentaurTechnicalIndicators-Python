@@ -1,5 +1,4 @@
-import statistics
-from src.PyTechnicalIndicators.Single import candle_indicators
+from ..Single import candle_indicators
 
 
 def bollinger_bands(typical_price: list[float], fill_empty: bool = False, fill_value: any = None) -> list[tuple[float, float]]:

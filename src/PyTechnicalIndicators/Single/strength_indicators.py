@@ -1,5 +1,5 @@
-from src.PyTechnicalIndicators.Single import moving_averages
-from src.PyTechnicalIndicators.Single import other
+from . import moving_averages
+from . import other
 
 
 # TODO: just call personalised with hardcoded values

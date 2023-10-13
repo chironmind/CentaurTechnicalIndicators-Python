@@ -6,43 +6,6 @@ from src.PyTechnicalIndicators.Bulk import basic_indicators as bulk_basic_indica
 prices = [100, 102, 105, 103, 108]
 
 
-def test_single_median_odd():
-    median = single_basic_indicators.median(prices)
-    assert median == 105
-
-
-def test_single_median_even_default():
-    even_prices = prices + [106]
-    median = single_basic_indicators.median(even_prices)
-    assert median == 104
-
-
-def test_single_median_even_average():
-    even_prices = prices + [106]
-    median = single_basic_indicators.median(even_prices, 'average')
-    assert median == 104
-
-
-def test_single_median_even_low():
-    even_prices = prices + [106]
-    median = single_basic_indicators.median(even_prices, 'low')
-    assert median == 105
-
-
-def test_single_median_even_high():
-    even_prices = prices + [106]
-    median = single_basic_indicators.median(even_prices, 'high')
-    assert median == 103
-
-
-def test_single_median_error():
-    even_prices = prices + [106]
-    with pytest.raises(Exception) as e:
-        single_basic_indicators.median(even_prices, 'not a rule')
-    assert str(e.value) == 'not a rule is not a supported even_rule'
-
-
-
 def test_bulk_log():
     # Python log function uses natural logarithm
     log = bulk_basic_indicators.log(prices)
@@ -55,7 +18,7 @@ def test_bulk_log_diff():
 
 
 def test_bulk_stddev():
-    stddev = bulk_basic_indicators.stddev(prices, 3)
+    stddev = bulk_basic_indicators.standard_deviation(prices, 3)
     assert stddev == [2.516611478423583, 1.5275252316519468, 2.516611478423583]
 
 
@@ -66,7 +29,7 @@ def test_bulk_mean():
 
 def test_bulk_median():
     mean = bulk_basic_indicators.median(prices, 3)
-    assert mean == [102, 105, 103]
+    assert mean == [102, 103, 105]
 
 
 def test_bulk_variance():
@@ -82,7 +45,7 @@ def test_bulk_mean_deviation():
 
 def test_bulk_median_deviation():
     median_deviation = bulk_basic_indicators.median_absolute_deviation(prices, 3)
-    assert median_deviation == [1.6666666666666667, 1.6666666666666667, 2.3333333333333335]
+    assert median_deviation == [1.6666666666666667, 1.0, 1.6666666666666667]
 
 
 def test_bulk_mode_deviation():

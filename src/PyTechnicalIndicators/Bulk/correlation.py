@@ -1,4 +1,4 @@
-from src.PyTechnicalIndicators.Single import correlation
+from ..Single import correlation
 
 
 def correlate_asset_prices(asset_a_prices: list[float], asset_b_prices: list[float], period: int) -> list[float]:

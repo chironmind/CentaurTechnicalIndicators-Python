@@ -1,5 +1,5 @@
-from src.PyTechnicalIndicators.Single import moving_averages
-from src.PyTechnicalIndicators.Single import basic_indicators
+from . import moving_averages
+from . import basic_indicators
 
 
 def rate_of_change(current_close_price: float, previous_close_price: float) -> float:

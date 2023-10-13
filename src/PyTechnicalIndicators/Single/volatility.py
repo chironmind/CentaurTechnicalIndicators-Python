@@ -1,6 +1,6 @@
 import math
 
-from src.PyTechnicalIndicators.Single import other
+from . import other
 
 
 def average_true_range_initial(high: list[float], low: list[float], previous_close: list[float]) -> float:

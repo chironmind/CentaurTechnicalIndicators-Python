@@ -1,4 +1,4 @@
-from src.PyTechnicalIndicators.Single import moving_averages
+from ..Single import moving_averages
 
 
 def moving_average(prices: list[float], period: int, fill_empty: bool = False, fill_value: any = None) -> list[float]:
