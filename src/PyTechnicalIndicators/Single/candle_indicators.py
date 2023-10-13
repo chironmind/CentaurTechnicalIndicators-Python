@@ -1,6 +1,6 @@
 import statistics
 
-from src.PyTechnicalIndicators.Single import moving_averages
+from . import moving_averages
 
 
 def bollinger_bands(typical_prices: list[float]) -> tuple[float, float]:

@@ -1,7 +1,7 @@
 import math
 import statistics
 
-from src.PyTechnicalIndicators.Single import basic_indicators
+from ..Single import basic_indicators
 
 
 def log(prices: list[float]) -> list[float]:
@@ -40,7 +40,7 @@ def log_diff(prices: list[float]) -> list[float]:
     return logdiffs
 
 
-def stddev(prices: list[float], period: int, fill_empty: bool = False, fill_value: any = None) -> list[float]:
+def standard_deviation(prices: list[float], period: int, fill_empty: bool = False, fill_value: any = None) -> list[float]:
     """
     Calculates the standard deviation of a list of prices
     :param prices: list[float] - list of prices
@@ -109,7 +109,7 @@ def median(prices: list[float], period: int, fill_empty: bool = False, fill_valu
         for i in range(period):
             medians.append(fill_value)
     for i in range(period, len(prices)+1):
-        medians.append(basic_indicators.median(prices[i - period:i]))
+        medians.append(statistics.median(prices[i - period:i]))
     return medians
 
 
@@ -141,7 +141,6 @@ def variance(prices: list[float], period: int, fill_empty: bool = False, fill_va
     return vars
 
 
-# TODO: Mean, medain and mode absolute deviations missing
 def mean_absolute_deviation(prices: list[float], period: int) -> list[float]:
     """
     Calculates the mean absolute deviation for a list of prices

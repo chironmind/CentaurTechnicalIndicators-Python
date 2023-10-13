@@ -1,4 +1,4 @@
-from src.PyTechnicalIndicators.Single.trend import personalised_aroon_up as pau, personalised_aroon_down as pad, personalised_aroon_oscillator as pao, parabolic_sar as psar
+from ..Single import trend
 
 
 def personalised_aroon_up(period: int, period_since_high: list[int]) -> list[float]:
@@ -10,7 +10,7 @@ def personalised_aroon_up(period: int, period_since_high: list[int]) -> list[flo
     """
     aroon_up_list = []
     for p in period_since_high:
-        aroon_up_list.append(pau(period, p))
+        aroon_up_list.append(trend.personalised_aroon_up(period, p))
     return aroon_up_list
 
 
@@ -32,7 +32,7 @@ def personalised_aroon_down(period: int, period_since_low: list[int]) -> list[fl
     """
     aroon_down_list = []
     for p in period_since_low:
-        aroon_down_list.append(pad(period, p))
+        aroon_down_list.append(trend.personalised_aroon_down(period, p))
     return aroon_down_list
 
 
@@ -71,9 +71,8 @@ def aroon_oscillator(period_since_high: list[int], period_since_low: list[int]) 
     """
     return personalised_aroon_oscillator(25, period_since_high, period_since_low)
 
-# TODO: A function that gets prices a determines the highs and lows instead of having to pass them in?
 
-
+# TODO: This could use the Chart pattern functions to determine highs and low
 def parabolic_sar(high: list[float], low: list[float], close: list[float], period: int) -> list[float]:
     """
     Calculates the Parabolic Stop and Reverse and returns it as a float
@@ -89,7 +88,7 @@ def parabolic_sar(high: list[float], low: list[float], close: list[float], perio
     if period > len(high):
         raise Exception(f'Length of lists ({len(high)}) needs to be greater or equal to period ({period})')
 
-    psar_list = [psar(high[:period], low[:period], close[:period])]
+    psar_list = [trend.parabolic_sar(high[:period], low[:period], close[:period])]
     acceleration_factor = 0.02
     if close[0] > close[period + 1]:
         previous_extreme = min(low[:period])
@@ -123,5 +122,5 @@ def parabolic_sar(high: list[float], low: list[float], close: list[float], perio
             else:
                 previous_extreme = new_extreme
             previous_state = 'rising'
-        psar_list.append(psar(high[i:j], low[i:j], close[i:j], psar_list[-1], acceleration_factor, previous_extreme))
+        psar_list.append(trend.parabolic_sar(high[i:j], low[i:j], close[i:j], psar_list[-1], acceleration_factor, previous_extreme))
     return psar_list

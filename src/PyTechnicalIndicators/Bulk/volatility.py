@@ -1,4 +1,4 @@
-from src.PyTechnicalIndicators.Single import volatility
+from ..Single import volatility
 
 
 def average_true_range(high: list[float], low: list[float], close: list[float], period: int) -> list[float]:

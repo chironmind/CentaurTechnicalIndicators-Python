@@ -1,5 +1,5 @@
-from src.PyTechnicalIndicators.Single.strength_indicators import accumulation_distribution_indicator
-from src.PyTechnicalIndicators.Single import moving_averages as mam
+from .strength_indicators import accumulation_distribution_indicator
+from . import moving_averages as mam
 
 
 def money_flow_index(typical_prices: list[float], volume: list[int]) -> float:

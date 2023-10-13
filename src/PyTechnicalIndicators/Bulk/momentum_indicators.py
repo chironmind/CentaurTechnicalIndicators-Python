@@ -1,4 +1,4 @@
-from src.PyTechnicalIndicators.Single import momentum_indicators
+from ..Single import momentum_indicators
 
 
 def rate_of_change(closing_prices: list[float], period: int) -> list[float]:

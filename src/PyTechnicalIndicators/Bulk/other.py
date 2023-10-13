@@ -1,4 +1,4 @@
-from src.PyTechnicalIndicators.Single import other
+from ..Single import other
 
 
 def value_added_personalised_index(prices: list[float], starting_investment: int = 1000) -> list[float]:
