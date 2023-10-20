@@ -8,7 +8,7 @@ def get_trend_line(p: list[tuple[float, int]]) -> tuple[float, float]:
     """
     Gets the trend line of a list of prices and their indexes
 
-    It is intended for internal use for the functions in trend.py
+    It is intended for internal use for the functions in trend_indicators.py
     :param p: list of tuples with price and index
     :return: Returns the slope and intercept as a tuple of floats
     """

@@ -1,19 +1,8 @@
 from ..Single import (strength_indicators)
 
 
-def relative_strength_index(prices: list[float]) -> list[float]:
-    """
-    Calculates the RSI from a list of prices
-    :param prices: List of prices
-    :return: Returns the RSI as a list
-    """
-    if len(prices) < 14:
-        raise Exception(f'14 periods are needed to calculate RSI {len(prices)} have been provided')
-    return personalised_rsi(prices, 14)
-
-
 # TODO: allow pma using kwargs
-def personalised_rsi(prices: list[float], period: int, ma_model: str = 'sma') -> list[float]:
+def relative_strength_index(prices: list[float], period: int = 14, ma_model: str = 'sma') -> list[float]:
     """
     Calculates a personalised RSI
 
@@ -35,16 +24,19 @@ def personalised_rsi(prices: list[float], period: int, ma_model: str = 'sma') ->
 
 
 def accumulation_distribution_indicator(high: list[float], low: list[float], close: list[float], volume: list[int]) -> list[float]:
+    """
+    Calculates the accumulation distribution indicator
+    :param high: List of highs
+    :param low: List of lows
+    :param close: List of closing prices
+    :param volume: List of volumes
+    :return:
+    """
     if len(high) != len(low) or len(high) != len(close) or len(high) != len(volume):
         raise Exception(f'lengths needs to match, high: {len(high)}, low: {len(low)}, close {len(close)}, volume{len(volume)}')
-
-    adi_list = []
+    adi_list = [strength_indicators.accumulation_distribution_indicator(high[0], low[0], close[0], volume[0], 0)]
     for i in range(len(high)):
-        if adi_list:
-            adi_list.append(strength_indicators.accumulation_distribution_indicator(high[i], low[i], close[i], volume[i], adi_list[-1]))
-        else:
-            adi_list.append(strength_indicators.accumulation_distribution_indicator(high[i], low[i], close[i], volume[i], 0))
-
+        adi_list.append(strength_indicators.accumulation_distribution_indicator(high[i], low[i], close[i], volume[i], adi_list[-1]))
     return adi_list
 
 
@@ -63,12 +55,12 @@ def directional_indicator(high: list[float], low: list[float], previous_close: l
     if period > length:
         raise Exception(f'Period ({period}) needs to be at least equal to the length of lists ({length})')
 
-    initial_di = strength_indicators.period_directional_indicator(high[:period], low[:period], previous_close[:period])
+    initial_di = strength_indicators.directional_indicator(high[:period], low[:period], previous_close[:period])
     di = [(initial_di[0], initial_di[1], initial_di[2])]
     positive_dm = initial_di[3]
     negative_dm = initial_di[4]
     for i in range(period, length):
-        loop_di = strength_indicators.period_directional_indicator_known_previous(high[i], high[i-1], low[i], low[i-1], previous_close[i], di[-1][2], positive_dm, negative_dm, period)
+        loop_di = strength_indicators.directional_indicator_known_previous(high[i], high[i-1], low[i], low[i-1], previous_close[i], di[-1][2], positive_dm, negative_dm, period)
         di.append((loop_di[0], loop_di[1], loop_di[2]))
         positive_dm = loop_di[3]
         negative_dm = loop_di[4]

@@ -66,39 +66,8 @@ def personalised_moving_average(prices: list[float], alpha_nominator: int, alpha
     return price_sum / denominator_sum
 
 
-# TODO: Just call personalised mcad with hardoced values
-def moving_average_convergence_divergence(prices: list[float]) -> float:
-    """
-    Calculates the MACD line
-    :param prices: List of prices
-    :return: Returns the MACD as a float
-    """
-    prices_length = len(prices)
-    if prices_length < 26:
-        raise Exception(f"Submitted prices is too short to calculate MACD. 26 expected, {prices_length} received")
-
-    ema_12_periods = exponential_moving_average(prices[prices_length - 12:])
-    ema_26_periods = exponential_moving_average(prices[prices_length - 26:])
-    macd = ema_12_periods - ema_26_periods
-
-    return macd
-
-
-# TODO: Just call personalised signal with hardoced values
-def signal_line(macd: list[float]) -> float:
-    """
-    Calculates the signal line
-    :param macd: list of MACDs
-    :return: Returns the signal line as a float
-    """
-    if len(macd) != 9:
-        raise Exception(f"Submitted MACD array needs to be 9 lags long, only {len(macd)} received")
-
-    return exponential_moving_average(macd)
-
-
 # TODO: PMA, and McGinley dynamic
-def personalised_macd(prices: list[float], short_period: int, long_period: int, ma_model: str = 'ema') -> float:
+def personalised_macd(prices: list[float], short_period: int = 12, long_period: int = 26, ma_model: str = 'ema') -> float:
     """
     Calculates the personalised MACD
 
@@ -138,7 +107,7 @@ def personalised_macd(prices: list[float], short_period: int, long_period: int, 
 
 
 # TODO: Support PMA, and McGinley dynamic
-def personalised_signal_line(macd: list[float], ma_model: str = 'ema') -> float:
+def signal_line(macd: list[float], ma_model: str = 'ema') -> float:
     """
     Calculates a personalised version of the signal line
     :param macd: List of MACDs

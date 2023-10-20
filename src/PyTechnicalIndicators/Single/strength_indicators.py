@@ -1,24 +1,12 @@
 from . import moving_averages
-from . import other
-
-
-# TODO: just call personalised with hardcoded values
-def relative_strength_index(prices: list[float]) -> float:
-    """
-    Calculate the RSI for a list of prices
-    :param prices: list of prices
-    :return: Returns the RSI as a float
-    """
-    prices_length = len(prices)
-    if prices_length != 14:
-        raise Exception(f'14 periods are needed to calculate RSI, {prices_length} have been provided')
-    return personalised_rsi(prices)
+from . import other_indicators
 
 
 # TODO: support pma
 def personalised_rsi(prices: list[float], ma_model: str = 'sma') -> float:
     """
-    Calculates a personalised RSI based on the price and a chose MA model
+    Calculates the RSI based on the price and a chose MA model.
+    The default model has 14 observations in the list of prices
     :param prices: list of prices
     :param ma_model: Name of the moving average that should be used. Supported models are:
         'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
@@ -64,7 +52,6 @@ def personalised_rsi(prices: list[float], ma_model: str = 'sma') -> float:
 def accumulation_distribution_indicator(high: float, low: float, close: float, volume: float, previous_adi: float = 0) -> float:
     """
     Calculates the accumulation distribution indicator
-
     :param high: High price
     :param low: Low price
     :param close: Closing price
@@ -77,22 +64,7 @@ def accumulation_distribution_indicator(high: float, low: float, close: float, v
     return previous_adi + money_flow_volume
 
 
-def directional_indicator(current_high: float, previous_high: float, current_low: float, previous_low: float, previous_close: float) -> tuple[float, str]:
-    """
-    Calculates the directional indicator according to Welles https://archive.org/details/newconceptsintec00wild/page/35/mode/2up
-    :param current_high: Current high
-    :param previous_high: Previous high
-    :param current_low: Current low
-    :param previous_low: Previous low
-    :param previous_close: Previous close
-    :return: Returns the directional indicator as a float with a string to note if it is "positive", "negative", or "none"
-    """
-    dm = directional_movement(current_high, previous_high, current_low, previous_low)
-    tr = other.true_range(current_high, current_low, previous_close)
-    return dm[0]/tr, dm[1]
-
-
-def period_directional_indicator(high: list[float], low: list[float], previous_close: list[float]) -> tuple[float, float, float, float, float]:
+def directional_indicator(high: list[float], low: list[float], previous_close: list[float]) -> tuple[float, float, float, float, float]:
     """
     Calculates the positive and negative directional index for the length of the submitted lists
     :param high: List of high prices
@@ -106,20 +78,20 @@ def period_directional_indicator(high: list[float], low: list[float], previous_c
 
     positive_dm_sum = 0
     negative_dm_sum = 0
-    tr = other.true_range(high[0], low[0], previous_close[0])
+    tr = other_indicators.true_range(high[0], low[0], previous_close[0])
     for i in range(1, length):
         dm = directional_movement(high[i], high[i-1], low[i], low[i-1])
         if dm[1] == 'positive':
             positive_dm_sum += dm[0]
         elif dm[1] == 'negative':
             negative_dm_sum += dm[0]
-        tr += other.true_range(high[i], low[i], previous_close[i])
+        tr += other_indicators.true_range(high[i], low[i], previous_close[i])
     positive_di = (positive_dm_sum / tr) * 100
     negative_di = (negative_dm_sum / tr) * 100
     return positive_di, negative_di, tr, positive_dm_sum, negative_dm_sum
 
 
-def period_directional_indicator_known_previous(current_high: float, previous_high: float, current_low: float, previous_low: float, previous_close: float, previous_true_range: float, previous_positive_dm: float, previous_negative_dm: float, period: int) -> tuple[float, float, float, float, float]:
+def directional_indicator_known_previous(current_high: float, previous_high: float, current_low: float, previous_low: float, previous_close: float, previous_true_range: float, previous_positive_dm: float, previous_negative_dm: float, period: int) -> tuple[float, float, float, float, float]:
     """
     Calculates the directional indicator for a period when the previous directional indicators are known
     :param current_high: Current high
@@ -131,7 +103,7 @@ def period_directional_indicator_known_previous(current_high: float, previous_hi
     :param period: Period directional indicator is being calculated for
     :return: Returns the positive, negative directional indicator, and true range as a tuple of floats
     """
-    current_tr = other.true_range(current_high, current_low, previous_close)
+    current_tr = other_indicators.true_range(current_high, current_low, previous_close)
     current_dm = directional_movement(current_high, previous_high, current_low, previous_low)
     if current_dm[1] == 'positive':
         current_positive_dm = known_previous_directional_movement(current_dm[0], previous_positive_dm, period)

@@ -1,7 +1,7 @@
 import pytest
 
-from src.PyTechnicalIndicators.Single import trend as trend_single
-from src.PyTechnicalIndicators.Bulk import trend as trend_bulk
+from src.PyTechnicalIndicators.Single import trend_indicators as trend_single
+from src.PyTechnicalIndicators.Bulk import trend_indicators as trend_bulk
 
 
 def test_single_aroon_up():

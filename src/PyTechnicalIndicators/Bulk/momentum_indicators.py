@@ -4,7 +4,6 @@ from ..Single import momentum_indicators
 def rate_of_change(closing_prices: list[float], period: int) -> list[float]:
     """
     Calculates and returns the rate of change of a list of closing prices for a provided period
-
     This function will calculate the rate of change based on the following formula:
         rate_of_change = ((closing_prices[t] - closing_prices[t-n]) / closing_prices[t-period]) * 100
     The period will determine where the function will fetch the previous close price from. For example if you provide the
@@ -21,38 +20,39 @@ def rate_of_change(closing_prices: list[float], period: int) -> list[float]:
     :return: Returns a list of rates of change
     """
     len_closing = len(closing_prices)
-
     if period > len_closing:
         raise Exception('Period has to be greater or equal to the length of closing prices')
-
     rates_of_change = []
     for i in range(len_closing - period):
         rates_of_change.append(momentum_indicators.rate_of_change(current_close_price=closing_prices[i+period], previous_close_price=closing_prices[i]))
-
     return rates_of_change
 
 
-# TODO: Doc string
 def on_balance_volume(closing_prices: list[float], volume: list[int]) -> list[float]:
+    """
+    Calculates the on balance volume
+    :param closing_prices: List of closing prices
+    :param volume: List of traded volumes
+    :return: Returns the on balance volume as a list of floats
+    """
     if len(closing_prices) != len(volume):
         raise Exception(f'Length closing_prices ({len(closing_prices)}) has to equal length volume ({len(volume)})')
-
     obv_list = [volume[0]]
     for i in range(1, len(closing_prices)):
         obv_list.append(momentum_indicators.on_balance_volume(closing_prices[i], closing_prices[i-1], volume[i], obv_list[-1]))
-
     return obv_list
 
 
-# TODO: Doc string
-def personalised_commodity_channel_index(typical_prices: list[float], period: int, ma_model: str = 'ma', absolute_deviation_model: str = 'mean') -> list[float]:
+def commodity_channel_index(typical_prices: list[float], period: int, ma_model: str = 'ma', absolute_deviation_model: str = 'mean') -> list[float]:
     """
-
-    :param typical_prices:
-    :param period:
-    :param ma_model:
-    :param absolute_deviation_model:
-    :return:
+    Calculates the commodity channel index
+    :param typical_prices: List of typical prices
+    :param period: Period to calculate CCI
+    :param ma_model: Name of the moving average that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'ma'
+    :param absolute_deviation_model: Absolute deviation mode, can be either mean, median, or mode. Defaults to mean
+    :return: Returns the Commodity Channel Index as a list of floats
     """
     if len(typical_prices) < period:
         raise Exception(f'typical_prices ({len(typical_prices)}) needs to be greater or equal to the period ({period})')

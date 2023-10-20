@@ -20,7 +20,15 @@ def rate_of_change(current_close_price: float, previous_close_price: float) -> f
     return ((current_close_price - previous_close_price) / previous_close_price) * 100
 
 
-def on_balance_volume(current_close: float, previous_close: float, current_volume: float, previous_obv: float) -> float:
+def on_balance_volume(current_close: float, previous_close: float, current_volume: float, previous_obv: float = 0) -> float:
+    """
+    Calculates the on balance volume
+    :param current_close: Current close
+    :param previous_close: Previous close
+    :param current_volume: Current trading volume
+    :param previous_obv: Previous on balance volume if available. Defaults to 0
+    :return:
+    """
     if current_close > previous_close:
         volume = current_volume
     elif current_close == previous_close:
@@ -30,13 +38,9 @@ def on_balance_volume(current_close: float, previous_close: float, current_volum
     return previous_obv + volume
 
 
-def commodity_channel_index(typical_prices: list[float]):
-    return personalised_commodity_channel_index(typical_prices)
-
-
-def personalised_commodity_channel_index(typical_prices: list[float], ma_model: str = 'ma', absolute_deviation_model: str = 'mean') -> float:
+def commodity_channel_index(typical_prices: list[float], ma_model: str = 'ma', absolute_deviation_model: str = 'mean') -> float:
     """
-    A personalised version of the Commodity Channel Index
+    Calculates the Commodity Channel Index
     :param typical_prices: List of typical prices
     :param ma_model: (Optional) Name of the moving average model that should be used. Supported models are:
         'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'

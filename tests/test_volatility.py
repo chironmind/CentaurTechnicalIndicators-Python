@@ -1,7 +1,7 @@
 import pytest
 
-from src.PyTechnicalIndicators.Single import volatility as volatility_single
-from src.PyTechnicalIndicators.Bulk import volatility as volatility_bulk
+from src.PyTechnicalIndicators.Single import volatility_indicators as volatility_single
+from src.PyTechnicalIndicators.Bulk import volatility_indicators as volatility_bulk
 
 
 def test_single_average_true_range():

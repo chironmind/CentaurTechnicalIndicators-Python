@@ -1,5 +1,5 @@
-from src.PyTechnicalIndicators.Single import other as other_single
-from src.PyTechnicalIndicators.Bulk import other as other_bulk
+from src.PyTechnicalIndicators.Single import other_indicators as other_single
+from src.PyTechnicalIndicators.Bulk import other_indicators as other_bulk
 
 
 def test_single_value_added_personalised_index_no_previous():

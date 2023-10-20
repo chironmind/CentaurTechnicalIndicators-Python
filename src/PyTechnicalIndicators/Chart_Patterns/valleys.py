@@ -2,15 +2,15 @@
 
 def get_valleys(prices: list[float], period: int = 5) -> list[tuple[float, int]]:
     """
-    Gets a list of pits (low) prices for a given period
+    Gets a list of valleys (low) prices for a given period
 
-    Calculates the pits for a list of prices and a period. Returns a list of tuples, with the first item is the pit
+    Calculates the valleys for a list of prices and a period. Returns a list of tuples, with the first item is the valley
     price, and the second item is the index at which the price was found.
 
     For example, for the list of prices [100, 102, 101] would return [(100, 0)]
     :param prices: List of prices
-    :param period: (Optional) Period in which the pit should be searched for (defaults to 5)
-    :return: Returns a list of tuples, where the first item is the pit price, and the second item is the index
+    :param period: (Optional) Period in which the valley should be searched for (defaults to 5)
+    :return: Returns a list of tuples, where the first item is the valley price, and the second item is the index
     """
     valleys = []
     for price_index in range(period, len(prices)+1):

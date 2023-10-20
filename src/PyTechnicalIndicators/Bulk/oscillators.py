@@ -1,23 +1,12 @@
 from ..Single import oscillators
 
 
-def money_flow_index(typical_prices: list[float], volume: list[int]) -> list[float]:
-    """
-    Calculates the money flow index from the typical price and volume, it uses a period of 14 to make the calculations.
-    To choose a different period use the personalised_money_flow_index function
-    :param typical_prices: list of typical prices
-    :param volume: list of volumes
-    :return: Returns a list of money flow index
-    """
-    return personalised_money_flow_index(typical_prices, volume, 14)
-
-
-def personalised_money_flow_index(typical_prices: list[float], volume: list[int], period: int) -> list[float]:
+def money_flow_index(typical_prices: list[float], volume: list[int], period: int = 14) -> list[float]:
     """
     Calculates the money flow index from the typical price and volume for a given period.
     :param typical_prices: List of typical prices
     :param volume: List of volumes
-    :param period: Period of time
+    :param period: Period of time. Defaults to 14
     :return: Returns a list of money flow index
     """
     len_typical_prices = len(typical_prices)
@@ -32,27 +21,9 @@ def personalised_money_flow_index(typical_prices: list[float], volume: list[int]
     return money_flow_index_list
 
 
-def chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float]) -> list[float]:
+def chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float], short_period: int = 3, long_period: int = 10, moving_average: str = 'ema') -> list[float]:
     """
-    Calculates the Chaikin Oscillator
-    :param high: List of high prices
-    :param low: List of low prices
-    :param close: List of closing prices
-    :param volume: List of traded volume
-    :return: Returns the Chaikin Oscillators as a list of floats
-    """
-    length = len(high)
-    if length != len(low) or length != len(close) or length != len(volume):
-        raise Exception(
-            f'length of lists need to match. high ({length}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})')
-    if length < 10:
-        raise Exception('The Chaikin Oscillator expects there to be a maximum of 10 periods, for a personalised version use personalised_chaikin_oscillator')
-    return personalised_chaikin_oscillator(high, low, close, volume, 3, 10)
-
-
-def personalised_chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float], short_period: int, long_period: int, moving_average: str = 'ma') -> list[float]:
-    """
-    A personalised verion of the Chaikin Oscillator, allows the caller to choose the long and short period, rather than
+    Calculates the Chaikin Oscillator, allows the caller to choose the long and short period, rather than
     having it set to 3 and 10 periods. The long period will be assumed to be the length of the lists provided. The function
     also allows for the caller to choose the moving average model
     :param high: List of high prices
@@ -83,25 +54,12 @@ def personalised_chaikin_oscillator(high: list[float], low: list[float], close: 
     return chaikin_oscillator_list
 
 
-def stochastic_oscillator(close_prices: list[float]) -> list[float]:
+def stochastic_oscillator(close_prices: list[float], period: int = 14) -> list[float]:
     """
-    Calculates the SO from a list of closing prices
-    :param close_prices: List of closing prices
-    :return: Returns a list of SO
-    """
-    if len(close_prices) < 14:
-        raise Exception(f'14 periods are needed to calculate RSI {len(close_prices)} have been provided')
-    for i in range(14, len(close_prices)):
-        return personalised_stochastic_oscillator(close_prices, 14)
-
-
-def personalised_stochastic_oscillator(close_prices: list[float], period: int) -> list[float]:
-    """
-    Calculates a personalised SO
-
-    The normal period that the SO uses is 14 periods, this functions allows for any period to be used
+    Calculates the stochastic oscillator.
+    The default period is 14 periods, this functions allows for any period to be used.
     :param close_prices: list of close prices
-    :param period: Number of periods for which the moving average should be calculated for
+    :param period: Number of periods, defaults to 14
     :return: Returns a list of personalised SO
     """
     if len(close_prices) < period:

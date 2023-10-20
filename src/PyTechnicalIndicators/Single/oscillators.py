@@ -6,47 +6,27 @@ def money_flow_index(typical_prices: list[float], volume: list[int]) -> float:
     """
     Calculates the money flow index from the typical price and volume
 
-    The length of typical prices and volume has to be 14 periods in length, if a custom period is wanted,
-    personalised_money_flow_index should be used
-    :param typical_prices: List of typical prices
-    :param volume: List of volumes
-    :return: Returns the money flow index as a float
-    """
-
-    if len(typical_prices) != 14 or len(volume) != 14:
-        raise Exception(f"typical_prices ({len(typical_prices)}) and volume ({len(volume)}) need to be 14 periods in length")
-    return personalised_money_flow_index(typical_prices, volume)
-
-
-def personalised_money_flow_index(typical_prices: list[float], volume: list[int]) -> float:
-    """
-    Calculates the money flow index from the typical price and volume
-
     There are no limitation on the period, the period that will be choosen will be that of the length of the lists
     :param typical_prices: List of typical prices
     :param volume: List of volumes
     :return: Returns the money flow index as a float
     """
     typical_price_len = len(typical_prices)
-
     if typical_price_len != len(volume):
         raise Exception(f"typical_prices ({typical_price_len}) and volume({len(volume)})  need to be of same length")
 
     raw_money_flow = []
-
     for i in range(typical_price_len):
         raw_money_flow.append(typical_prices[i] * volume[i])
 
     positive_money_flow = 0
     negative_money_flow = 0
-
     for j in range(1, len(raw_money_flow)):
         if raw_money_flow[j] > raw_money_flow[j-1]:
             positive_money_flow += raw_money_flow[j]
         elif raw_money_flow[j] < raw_money_flow[j-1]:
             negative_money_flow += raw_money_flow[j]
         else:
-            # TODO: Check if this is correct behaviour
             continue
 
     if negative_money_flow == 0:
@@ -54,28 +34,13 @@ def personalised_money_flow_index(typical_prices: list[float], volume: list[int]
     else:
         money_flow_ratio = positive_money_flow / negative_money_flow
     mfi = 100 - (100 / (1 + money_flow_ratio))
-
     return mfi
 
 
-def chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float]) -> float:
-    """
-    Calculates the Chaikin Oscillator
-    :param high: List of high prices
-    :param low: List of low prices
-    :param close: List of closing prices
-    :param volume: List of traded volume
-    :return: Returns the Chaikin Oscillator as a float
-    """
-    if len(high) != 10:
-        raise Exception('The Chaikin Oscillator expects there to be a maximum of 10 periods, , for a personalised version use personalised_chaikin_oscillator')
-    return personalised_chaikin_oscillator(high, low, close, volume, 3)
-
-
 # TODO: Add PMA and McGinley to accepted MA models
-def personalised_chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float], short_period: int, ma_model: str = 'ma') -> float:
+def personalised_chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float], short_period: int = 3, ma_model: str = 'ma') -> float:
     """
-    A personalised verion of the Chaikin Oscillator, allows the caller to choose the long and short period, rather than
+    Calculates the Chaikin Oscillator, allows the caller to choose the long and short period, rather than
     having it set to 3 and 10 periods. The long period will be assumed to be the length of the lists provided. The function
     also allows for the caller to choose the moving average model
     :param high: List of high prices
@@ -121,20 +86,9 @@ def personalised_chaikin_oscillator(high: list[float], low: list[float], close: 
 
 def stochastic_oscillator(close_prices: list[float]) -> float:
     """
-    Calculates the SO for a list of closing prices
-    :param close_prices: list of closing prices
-    :return: Returns the SO as a float
-    """
-    if len(close_prices) != 14:
-        raise Exception(f'14 periods are needed to calculate SO, {len(close_prices)} have been provided')
-    return personalised_stochastic_oscillator(close_prices)
+    Calculates a the Stochastic Oscillator.
+    The standard number of periods to use (the length of the list) is 14.
 
-
-def personalised_stochastic_oscillator(close_prices: list[float]) -> float:
-    """
-    Calculates a personalised version of the SO
-
-    Main difference is that in normal SO the length of the input list has to be 14, however this function accepts anything
     :param close_prices: list of close prices
     :return: Returns the SO as a float
     """

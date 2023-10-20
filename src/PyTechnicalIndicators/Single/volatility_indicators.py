@@ -1,6 +1,6 @@
 import math
 
-from . import other
+from . import other_indicators
 
 
 def average_true_range_initial(high: list[float], low: list[float], previous_close: list[float]) -> float:
@@ -17,7 +17,7 @@ def average_true_range_initial(high: list[float], low: list[float], previous_clo
         raise Exception(f'lengths needs to match, high: {len(high)}, low: {len(low)}, close {len(previous_close)}')
     sum_true_range = 0
     for i in range(length):
-        sum_true_range += other.true_range(high[i], low[i], previous_close[i])
+        sum_true_range += other_indicators.true_range(high[i], low[i], previous_close[i])
     return sum_true_range / length
 
 
@@ -31,7 +31,7 @@ def average_true_range(high: float, low: float, previous_close: float, previous_
     :param period: The period for which the true range is being observed
     :return: Returns the average true range as a float
     """
-    current_true_range = other.true_range(high, low, previous_close)
+    current_true_range = other_indicators.true_range(high, low, previous_close)
     return ((previous_average_true_range * (period - 1)) + current_true_range) / period
 
 
@@ -62,7 +62,7 @@ def volatility_index(high: float, low: float, close: float, period: int, previou
     :param previous_volatility_index: Previous volatility index value
     :return: Returns the volatility index as a float
     """
-    tr = other.true_range(high, low, close)
+    tr = other_indicators.true_range(high, low, close)
     vi = (((period - 1) * previous_volatility_index) + tr) / period
     return vi
 
@@ -95,8 +95,8 @@ def volatility_system(high: list[float], low: list[float], close: list[float], p
         atr = average_true_range(high[-1], low[-1], close[-1], atr_initial, period)
     else:
         atr = average_true_range(high[-1], low[-1], close[-1], previous_average_true_range, period)
-    arc = other.average_range_constant(atr, average_true_range_constant)
-    sic = other.significant_close(close)
+    arc = other_indicators.average_range_constant(atr, average_true_range_constant)
+    sic = other_indicators.significant_close(close)
     if sic < previous_significant_close:
         sic = previous_significant_close
     if previous_stop_and_reverse and close[-1] < previous_stop_and_reverse:

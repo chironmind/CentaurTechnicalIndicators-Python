@@ -1,7 +1,8 @@
-from ..Single import trend
+from ..Single import trend_indicators
 
 
-def personalised_aroon_up(period: int, period_since_high: list[int]) -> list[float]:
+# TODO: have aroon functions figure out high and lows, and get rid of non pers
+def personalised_aroon_up(period: int) -> list[float]:
     """
     A personalised version of the aroon_up function. Allows for the period to be chosen rather than set to 25.
     :param period: Maximum number of periods to study
@@ -10,7 +11,7 @@ def personalised_aroon_up(period: int, period_since_high: list[int]) -> list[flo
     """
     aroon_up_list = []
     for p in period_since_high:
-        aroon_up_list.append(trend.personalised_aroon_up(period, p))
+        aroon_up_list.append(trend_indicators.personalised_aroon_up(period, p))
     return aroon_up_list
 
 
@@ -32,7 +33,7 @@ def personalised_aroon_down(period: int, period_since_low: list[int]) -> list[fl
     """
     aroon_down_list = []
     for p in period_since_low:
-        aroon_down_list.append(trend.personalised_aroon_down(period, p))
+        aroon_down_list.append(trend_indicators.personalised_aroon_down(period, p))
     return aroon_down_list
 
 
@@ -88,7 +89,7 @@ def parabolic_sar(high: list[float], low: list[float], close: list[float], perio
     if period > len(high):
         raise Exception(f'Length of lists ({len(high)}) needs to be greater or equal to period ({period})')
 
-    psar_list = [trend.parabolic_sar(high[:period], low[:period], close[:period])]
+    psar_list = [trend_indicators.parabolic_sar(high[:period], low[:period], close[:period])]
     acceleration_factor = 0.02
     if close[0] > close[period + 1]:
         previous_extreme = min(low[:period])
@@ -122,5 +123,5 @@ def parabolic_sar(high: list[float], low: list[float], close: list[float], perio
             else:
                 previous_extreme = new_extreme
             previous_state = 'rising'
-        psar_list.append(trend.parabolic_sar(high[i:j], low[i:j], close[i:j], psar_list[-1], acceleration_factor, previous_extreme))
+        psar_list.append(trend_indicators.parabolic_sar(high[i:j], low[i:j], close[i:j], psar_list[-1], acceleration_factor, previous_extreme))
     return psar_list
