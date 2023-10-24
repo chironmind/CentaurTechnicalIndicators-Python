@@ -1,4 +1,4 @@
-from ..Single import volatility
+from ..Single import volatility_indicators
 
 
 def average_true_range(high: list[float], low: list[float], close: list[float], period: int) -> list[float]:
@@ -19,9 +19,9 @@ def average_true_range(high: list[float], low: list[float], close: list[float], 
     atr_list = []
     for i in range(length - period + 1):
         if not atr_list:
-            atr_list.append(volatility.average_true_range_initial(high[i:i + period], low[i:i + period], close[i:i + period]))
+            atr_list.append(volatility_indicators.average_true_range_initial(high[i:i + period], low[i:i + period], close[i:i + period]))
         else:
-            atr_list.append(volatility.average_true_range(high[i + period - 1], low[i + period - 1], close[i + period - 1], atr_list[-1], period))
+            atr_list.append(volatility_indicators.average_true_range(high[i + period - 1], low[i + period - 1], close[i + period - 1], atr_list[-1], period))
     return atr_list
 
 
@@ -37,7 +37,7 @@ def ulcer_index(close_prices: list[float], period: int) -> list[float]:
         raise Exception(f'length of close_prices ({close_prices}) needs to be greater or equal to the period ({period})')
     ulcer_index_list = []
     for i in range(len(close_prices)-period+1):
-        ulcer_index_list.append(volatility.ulcer_index(close_prices[i:i+period]))
+        ulcer_index_list.append(volatility_indicators.ulcer_index(close_prices[i:i+period]))
     return ulcer_index_list
 
 
@@ -57,9 +57,9 @@ def volatility_index(high: list[float], low: list[float], close: list[float], pe
     vi = []
     for i in range(length):
         if not vi:
-            vi.append(volatility.volatility_index(high[i], low[i], close[i], period, 0))
+            vi.append(volatility_indicators.volatility_index(high[i], low[i], close[i], period, 0))
         else:
-            vi.append(volatility.volatility_index(high[i], low[i], close[i], period, vi[-1]))
+            vi.append(volatility_indicators.volatility_index(high[i], low[i], close[i], period, vi[-1]))
     return vi
 
 
@@ -83,7 +83,7 @@ def volatility_system(high: list[float], low: list[float], close: list[float], p
     vs = []
     for i in range(length-period):
         if not vs:
-            vs.append(volatility.volatility_system(high[i:i+period+1], low[i:i+period+1], close[i:i+period+1], period, average_true_range_constant))
+            vs.append(volatility_indicators.volatility_system(high[i:i+period+1], low[i:i+period+1], close[i:i+period+1], period, average_true_range_constant))
         else:
-            vs.append(volatility.volatility_system(high[i+1:i+period+1], low[i+1:i+period+1], close[i+1:i+period+1], period, average_true_range_constant, vs[-1]))
+            vs.append(volatility_indicators.volatility_system(high[i+1:i+period+1], low[i+1:i+period+1], close[i+1:i+period+1], period, average_true_range_constant, vs[-1]))
     return vs

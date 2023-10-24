@@ -40,35 +40,21 @@ def test_single_macd():
     assert macd == -2.164962379494412
 
 
-def test_single_macd_length_error():
-    prices = [103, 105, 102, 107, 103, 111]
-    with pytest.raises(Exception) as e:
-        single_moving_averages.moving_average_convergence_divergence(prices)
-    assert str(e.value) == "Submitted prices is too short to calculate MACD. 26 expected, 6 received"
-
-
 def test_single_signal_line():
     macds = [-2, -1.8, -1, -0.3, 0.1, 0.6, 1.2, 2.4, 1.9]
     signal = single_moving_averages.signal_line(macds)
     assert signal == 0.8922983167758831
 
 
-def test_signal_line_length_error():
-    macds = [-2, -1.8, -1, -0.3, 0.1, 0.6, 1.2]
-    with pytest.raises(Exception) as e:
-        single_moving_averages.signal_line(macds)
-    assert str(e.value) == "Submitted MACD array needs to be 9 lags long, only 7 received"
-
-
 def test_single_personalised_macd():
     prices = [110, 107, 108, 105, 103, 106, 107]
-    macd = single_moving_averages.personalised_macd(prices, 3, 7, 'ma')
+    macd = single_moving_averages.moving_average_convergence_divergence(prices, 3, 7, 'ma')
     assert macd == -1.2380952380952408
 
 
 def test_single_personalised_signal():
     macds = [0.1, 0.6, 1.2, 2.4, 1.9]
-    signal = single_moving_averages.personalised_signal_line(macds, 'ma')
+    signal = single_moving_averages.signal_line(macds, 'ma')
     assert signal == 1.2399999999999998
 
 
@@ -134,13 +120,13 @@ def test_bulk_signal_line():
 
 def test_bulk_personalised_macd():
     prices = [110, 107, 108, 105, 103, 106, 107]
-    macd = bulk_moving_averages.personalised_macd(prices, 3, 5, 'ma')
+    macd = bulk_moving_averages.moving_average_convergence_divergence(prices, 3, 5, 'ma')
     assert macd == [-1.2666666666666657, -1.1333333333333258, -0.46666666666666856]
 
 
 def test_bulk_personalised_signal():
     macds = [0.1, 0.6, 1.2, 2.4, 1.9]
-    signal = bulk_moving_averages.personalised_signal_line(macds, 3, 'ma')
+    signal = bulk_moving_averages.signal_line(macds, 3, 'ma')
     assert signal == [0.6333333333333333, 1.3999999999999997, 1.8333333333333333]
 
 

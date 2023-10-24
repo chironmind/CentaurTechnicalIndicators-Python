@@ -83,39 +83,10 @@ def personalised_moving_average(prices: list[float], period: int, alpha_nominato
     return pma
 
 
-def moving_average_convergence_divergence(prices: list[float], fill_empty: bool = False, fill_value: any = None) -> list[float]:
-    """
-    Calculates the MACD line
-
-    :param prices: list of prices
-    :param fill_empty: Optional) Whether empty values should be filled with the fill_value (default False)
-    :param fill_value: (Optional) The fill value to fill empty values with if fill_empty is True (default None)
-    :return: Returns a list of MACD points
-    """
-    if len(prices) < 26:
-        raise Exception('The minimum length of prices needs to be 26 to calculate the MACD')
-    return personalised_macd(prices, 12, 26, 'ema', fill_empty, fill_value)
-
-
-def signal_line(macd: list[float], fill_empty: bool = False, fill_value: any = None):
-    """
-    Calculates the Signal line for the MACD
-
-    :param macd: List of MACD points
-    :param fill_empty: (Optional) Whether empty values should be filled with the fill_value (default False)
-    :param fill_value: (Optional) The fill value to fill empty values with if fill_empty is True (default None)
-    :return: Returns a list of Signal line points
-    """
-    if len(macd) < 9:
-        raise Exception("Submitted MACD needs to be greater 9 lags long")
-    return personalised_signal_line(macd, 9, 'ema', fill_empty, fill_value)
-
-
 # TODO: Allow for PMA
-def personalised_macd(prices: list[float], short_period: int, long_period: int, ma_model: str = 'ema', fill_empty: bool = False, fill_value: bool = None):
+def moving_average_convergence_divergence(prices: list[float], short_period: int = 12, long_period: int = 26, ma_model: str = 'ema', fill_empty: bool = False, fill_value: bool = None):
     """
-    Calculates a personalised MACD.
-
+    Calculates the MACD.
     The default MACD uses a short period of 12, a long period of 26, and uses an Exponential Moving Average model to calculate
     the MACD. This function allows for the MACD to match any markets that may trade on a different time frame.
     :param prices: List of prices
@@ -139,18 +110,17 @@ def personalised_macd(prices: list[float], short_period: int, long_period: int, 
             macd.append(fill_value)
     for i in range(long_period, len(prices)+1):
         price_set = prices[i - long_period: i]
-        single_macd = moving_averages.personalised_macd(price_set, short_period, long_period, ma_model)
+        single_macd = moving_averages.moving_average_convergence_divergence(price_set, short_period, long_period, ma_model)
         macd.append(single_macd)
     return macd
 
 
 # TODO: Support PMA
-def personalised_signal_line(macd: list[float], period: int, ma_model: str = 'ema', fill_empty: bool = False, fill_value: any = None):
+def signal_line(macd: list[float], period: int = 9, ma_model: str = 'ema', fill_empty: bool = False, fill_value: any = None):
     """
-    Calculates a personalised Signal line
-
-    The default signal line calculation uses a period of 9 and an Exponential Moving Average model. This function allows
-    the signal line calculation to be more in line with the market.
+    Calculates the Signal line
+    The default signal line calculation uses a period of 9 and an Exponential Moving Average model. The caller of the
+    function can decide the values if needed.
     :param macd: List of MACDs
     :param period: Number of periods for which the moving average should be calculated for
     :param ma_model: Name of the moving average that should be used. Supported models are:
@@ -172,7 +142,7 @@ def personalised_signal_line(macd: list[float], period: int, ma_model: str = 'em
             signal_lines.append(fill_value)
     for i in range(period, macd_len+1):
         macd_set = macd[i-period: i]
-        signal_line = moving_averages.personalised_signal_line(macd_set, ma_model)
+        signal_line = moving_averages.signal_line(macd_set, ma_model)
         signal_lines.append(signal_line)
     return signal_lines
 

@@ -29,18 +29,10 @@ def test_single_money_flow_index_all_negative():
     assert mfi == 0
 
 
-def test_single_money_flow_index_exception():
-    typical_prices = [100, 101, 102]
-    volume = [1000, 1100, 1200]
-    with pytest.raises(Exception) as e:
-        single_oscillators.money_flow_index(typical_prices=typical_prices, volume=volume)
-    assert str(e.value) == f"typical_prices ({len(typical_prices)}) and volume ({len(volume)}) need to be 14 periods in length"
-
-
 def test_single_personalised_money_flow_index():
     typical_prices = [100, 101, 100, 90, 103]
     volume = [1000, 1100, 1200, 1050, 1100]
-    mfi = single_oscillators.personalised_money_flow_index(typical_prices=typical_prices, volume=volume)
+    mfi = single_oscillators.money_flow_index(typical_prices=typical_prices, volume=volume)
     assert mfi == 78.4688995215311
 
 
@@ -48,7 +40,7 @@ def test_single_personalised_money_flow_index_exception():
     typical_prices = [100, 101, 100, 90, 103]
     volume = [1000, 1100, 1200, 1050]
     with pytest.raises(Exception) as e:
-        single_oscillators.personalised_money_flow_index(typical_prices=typical_prices, volume=volume)
+        single_oscillators.money_flow_index(typical_prices=typical_prices, volume=volume)
     assert str(e.value) == f"typical_prices ({len(typical_prices)}) and volume({len(volume)})  need to be of same length"
 
 
@@ -126,7 +118,7 @@ def test_single_stochastic_oscillator():
 
 def test_single_personalised_stochastic_oscillator():
     close = [84, 83, 89, 95, 89]
-    so = single_oscillators.personalised_stochastic_oscillator(close)
+    so = single_oscillators.stochastic_oscillator(close)
     assert so == 50
 
 
@@ -167,7 +159,7 @@ def test_bulk_personalised_money_flow_index():
     typical_prices = [100, 105, 103, 104, 106, 109, 104, 107, 111, 115, 109, 108, 107, 106, 105, 108]
     volume = [1200, 1200, 1300, 1200, 1600, 1400, 2000, 1800, 1600, 1500, 1200, 1100, 1500, 1400, 1200, 1300]
 
-    mfi = oscillators_bulk.personalised_money_flow_index(typical_prices, volume, 3)
+    mfi = oscillators_bulk.money_flow_index(typical_prices, volume, 3)
 
     assert len(mfi) == 14
     assert mfi == [99.00990099009901, 51.75879396984925, 57.608695652173914, 52.6381129733085, 57.681641708264, 51.92211682476285, 0, 0, 0, 0, 57.465091299677766, 51.958562641631595, 0, 52.7027027027027]
@@ -178,7 +170,7 @@ def test_bulk_money_flow_index_incorrect_size():
     volume = [1200, 1200, 1300, 1200, 1600, 1400, 2000, 1800, 1600, 1500, 1200, 1100, 1500, 1400, 1200]
 
     with pytest.raises(Exception) as e:
-        oscillators_bulk.personalised_money_flow_index(typical_prices, volume, 20)
+        oscillators_bulk.money_flow_index(typical_prices, volume, 20)
 
     assert str(e.value) == f"typical_prices ({len(typical_prices)}) and volume ({len(volume)}) need to be at least 20 periods in length"
 
@@ -188,7 +180,7 @@ def test_bulk_money_flow_index_mismatch_list_error():
     volume = [1200, 1200, 1300, 1200, 1600, 1400, 2000, 1800, 1600, 1500, 1200, 1100, 1500, 1400, 1200]
 
     with pytest.raises(Exception) as e:
-        oscillators_bulk.personalised_money_flow_index(typical_prices, volume, 3)
+        oscillators_bulk.money_flow_index(typical_prices, volume, 3)
 
     assert str(e.value) == f"typical_prices ({len(typical_prices)}) and volume ({len(volume)}) need to be of same length"
 
@@ -198,7 +190,7 @@ def test_bulk_chaikin_oscillator():
     low = [132, 143, 153, 148, 145, 151, 142, 138, 132, 135, 137, 132]
     close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137, 140, 138]
     volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800, 1700, 1500]
-    co = oscillators_bulk.personalised_chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
+    co = oscillators_bulk.chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
     assert co == [697.480158730159, 542.0138888888889, 95.15151515151518]
 
 
@@ -208,7 +200,7 @@ def test_bulk_chaikin_oscillator_mismatch_list_length():
     close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137]
     volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800]
     with pytest.raises(Exception) as e:
-        oscillators_bulk.personalised_chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
+        oscillators_bulk.chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
     assert str(e.value) == f'length of lists need to match. high ({len(high)}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})'
 
     high = [150, 157, 163, 152, 155, 160, 158, 153, 148, 144]
@@ -216,7 +208,7 @@ def test_bulk_chaikin_oscillator_mismatch_list_length():
     close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137]
     volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800]
     with pytest.raises(Exception) as e:
-        oscillators_bulk.personalised_chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
+        oscillators_bulk.chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
     assert str(
         e.value) == f'length of lists need to match. high ({len(high)}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})'
 
@@ -225,7 +217,7 @@ def test_bulk_chaikin_oscillator_mismatch_list_length():
     close = [148, 155, 157, 150, 148, 158, 155, 142, 145]
     volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800]
     with pytest.raises(Exception) as e:
-        oscillators_bulk.personalised_chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
+        oscillators_bulk.chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
     assert str(
         e.value) == f'length of lists need to match. high ({len(high)}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})'
 
@@ -234,7 +226,7 @@ def test_bulk_chaikin_oscillator_mismatch_list_length():
     close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137]
     volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100]
     with pytest.raises(Exception) as e:
-        oscillators_bulk.personalised_chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
+        oscillators_bulk.chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
     assert str(e.value) == f'length of lists need to match. high ({len(high)}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})'
 
 
@@ -244,7 +236,7 @@ def test_bulk_chaikin_oscillator_short_period_exception():
     close = [148, 155, 157]
     volume = [1500, 1600, 1800]
     with pytest.raises(Exception) as e:
-        oscillators_bulk.personalised_chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
+        oscillators_bulk.chaikin_oscillator(high, low, close, volume, 3, 10, 'ma')
     assert str(e.value) == str(f'short_period (3) needs to be smaller than the length of lists ({len(high)})')
 
 
@@ -254,7 +246,7 @@ def test_bulk_chaikin_oscillator_long_period_exception():
     close = [148, 155, 157]
     volume = [1500, 1600, 1800]
     with pytest.raises(Exception) as e:
-        oscillators_bulk.personalised_chaikin_oscillator(high, low, close, volume, 1, 10, 'ma')
+        oscillators_bulk.chaikin_oscillator(high, low, close, volume, 1, 10, 'ma')
     assert str(e.value) == str(f'long_period (10) needs to be less or equal to length of lists ({len(high)})')
 
 
@@ -264,7 +256,7 @@ def test_bulk_chaikin_oscillator_short_greater_long_exception():
     close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137, 140, 138]
     volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800, 1700, 1500]
     with pytest.raises(Exception) as e:
-        oscillators_bulk.personalised_chaikin_oscillator(high, low, close, volume, 11, 10, 'ma')
+        oscillators_bulk.chaikin_oscillator(high, low, close, volume, 11, 10, 'ma')
     assert str(e.value) == str(f'long_period (10) needs to be longer than short_period (11)')
 
 
@@ -276,7 +268,7 @@ def test_bulk_stochastic_oscillator():
 
 def test_bulk_personalised_stochastic_oscillator():
     close = [100, 92, 88, 82, 75, 68, 74, 76, 84, 84, 83, 89, 95, 89]
-    so = oscillators_bulk.personalised_stochastic_oscillator(close, 5)
+    so = oscillators_bulk.stochastic_oscillator(close, 5)
     assert so == [0.0, 0.0, 30.0, 57.14285714285714, 100.0, 100.0, 90.0, 100.0, 100.0, 50.0]
 
 

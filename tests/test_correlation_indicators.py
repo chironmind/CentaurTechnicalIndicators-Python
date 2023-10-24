@@ -1,7 +1,7 @@
 import pytest
 
-from src.PyTechnicalIndicators.Single import correlation as single_correlation
-from src.PyTechnicalIndicators.Bulk import correlation as bulk_correlation
+from src.PyTechnicalIndicators.Single import correlation_indicators as single_correlation
+from src.PyTechnicalIndicators.Bulk import correlation_indicators as bulk_correlation
 
 
 # TODO: Test perfectly correlated, opposing...

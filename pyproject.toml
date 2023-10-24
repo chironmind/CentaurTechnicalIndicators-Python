@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "PyTechnicalIndicators"
-version = "2.0.1"
+version = "2.0.2"
 authors = [
     { name="0100101001010000", email="mind@your.business"}
 ]

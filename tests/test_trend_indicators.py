@@ -1,33 +1,33 @@
 import pytest
 
-from src.PyTechnicalIndicators.Single import trend as trend_single
-from src.PyTechnicalIndicators.Bulk import trend as trend_bulk
+from src.PyTechnicalIndicators.Single import trend_indicators as trend_single
+from src.PyTechnicalIndicators.Bulk import trend_indicators as trend_bulk
 
 
 def test_single_aroon_up():
-    aroon_up = trend_single.personalised_aroon_up(10, 5)
+    aroon_up = trend_single.aroon_up(5, 10)
     assert aroon_up == 50
 
 
 def test_single_aroon_excpetion():
     with pytest.raises(Exception) as e:
-        trend_single.personalised_aroon_up(10, 50)
+        trend_single.aroon_up(50, 10)
     assert str(e.value) == 'period_since_high (50) needs to be less than input period (10)'
 
 
 def test_single_aroon_down():
-    aroon_down = trend_single.personalised_aroon_down(10, 8)
+    aroon_down = trend_single.aroon_down(8, 10)
     assert aroon_down == 20
 
 
 def test_single_aroon_down_excpetion():
     with pytest.raises(Exception) as e:
-        trend_single.personalised_aroon_down(10, 80)
+        trend_single.aroon_down(80, 10)
     assert str(e.value) == 'period_since_low (80) needs to be less than input period (10)'
 
 
 def test_single_aroon_oscillator():
-    aroon_oscillator = trend_single.personalised_aroon_oscillator(10, 5, 8)
+    aroon_oscillator = trend_single.aroon_oscillator(5, 8, 10)
     assert aroon_oscillator == 30
 
 
@@ -79,22 +79,22 @@ def test_single_parabolic_sar_length_exception():
 
 
 def test_bulk_aroon_up():
-    period_from_high = [5, 6, 0, 1, 2]
-    aroon_up = trend_bulk.personalised_aroon_up(10, period_from_high)
-    assert aroon_up == [50, 40, 100, 90, 80]
+    period_from_high = [117, 107, 115, 114, 116, 110, 108, 103, 100, 100, 100, 116, 115, 118, 121]
+    aroon_up = trend_bulk.aroon_up(period_from_high, 10)
+    assert aroon_up == [0.0, 100.0, 90.0, 100.0, 100.0]
 
 
 def test_bulk_aroon_down():
-    period_from_low = [8, 9, 10, 10, 0]
-    aroon_down = trend_bulk.personalised_aroon_down(10, period_from_low)
-    assert aroon_down == [20, 10, 0, 0, 100]
+    period_from_low = [96, 100, 102, 109, 113, 109, 108, 95, 95, 98, 94, 104, 98, 95, 92]
+    aroon_down = trend_bulk.aroon_down(period_from_low, 10)
+    assert aroon_down == [100.0, 90.0, 80.0, 70.0, 100.0]
 
 
 def test_bulk_aroon_oscillator():
-    period_from_high = [5, 6, 0, 1, 2]
-    period_from_low = [8, 9, 10, 10, 0]
-    aroon_oscillator = trend_bulk.personalised_aroon_oscillator(10, period_from_high, period_from_low)
-    assert aroon_oscillator == [30, 30, 100, 90, -20]
+    period_from_high = [117, 107, 115, 114, 116, 110, 108, 103, 100, 100, 100, 116, 115, 118, 121]
+    period_from_low = [96, 100, 102, 109, 113, 109, 108, 95, 95, 98, 94, 104, 98, 95, 92]
+    aroon_oscillator = trend_bulk.aroon_oscillator(period_from_high, period_from_low, 10)
+    assert aroon_oscillator == [-100.0, 10.0, 10.0, 30.0, 0.0]
 
 
 def test_bulk_parabolic_sar_rising():

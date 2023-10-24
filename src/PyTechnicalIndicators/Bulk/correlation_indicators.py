@@ -1,4 +1,4 @@
-from ..Single import correlation
+from ..Single import correlation_indicators
 
 
 def correlate_asset_prices(asset_a_prices: list[float], asset_b_prices: list[float], period: int) -> list[float]:
@@ -16,5 +16,5 @@ def correlate_asset_prices(asset_a_prices: list[float], asset_b_prices: list[flo
 
     correlation_list = []
     for i in range(len(asset_a_prices)-period+1):
-        correlation_list.append(correlation.correlate_asset_prices(asset_a_prices[i:i+period], asset_b_prices[i:i+period]))
+        correlation_list.append(correlation_indicators.correlate_asset_prices(asset_a_prices[i:i+period], asset_b_prices[i:i+period]))
     return correlation_list
