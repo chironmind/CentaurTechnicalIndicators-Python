@@ -19,7 +19,7 @@ def relative_strength_index(prices: list[float], period: int = 14, ma_model: str
         raise Exception(f'Submitted prices needs to be greater than submitted period of {period}')
     rsi = []
     for i in range(period, len(prices) + 1):
-        rsi.append(strength_indicators.personalised_rsi(prices[i-period:i], ma_model))
+        rsi.append(strength_indicators.relative_strength_index(prices[i-period:i], ma_model))
     return rsi
 
 
@@ -35,7 +35,7 @@ def accumulation_distribution_indicator(high: list[float], low: list[float], clo
     if len(high) != len(low) or len(high) != len(close) or len(high) != len(volume):
         raise Exception(f'lengths needs to match, high: {len(high)}, low: {len(low)}, close {len(close)}, volume{len(volume)}')
     adi_list = [strength_indicators.accumulation_distribution_indicator(high[0], low[0], close[0], volume[0], 0)]
-    for i in range(len(high)):
+    for i in range(1, len(high)):
         adi_list.append(strength_indicators.accumulation_distribution_indicator(high[i], low[i], close[i], volume[i], adi_list[-1]))
     return adi_list
 

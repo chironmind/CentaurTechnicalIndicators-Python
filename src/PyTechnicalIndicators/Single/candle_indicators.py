@@ -39,21 +39,22 @@ def bollinger_bands(typical_prices: list[float], ma_model: str = 'ma', stddev_mu
     return lower_band, upper_band
 
 
-def ichimoku_cloud(highs: list[float], lows: list[float], conversion_period: int = 9, base_period: int = 26, span_b_period: int = 52) -> tuple[float, float]:
+def ichimoku_cloud(highs: list[float], lows: list[float], close: list[float], conversion_period: int = 9, base_period: int = 26, span_b_period: int = 52) -> tuple[float, float, float, float, float]:
     """
     Calculates Ichimoku cloud from a list of highs and lows and returns a tuple with Senkou Span A and Span B as lists
 
     The personalised ichimoku cloud allows for fine tuning of ichimoku cloud but change the conversion period, based period and span b period.
     The default conversion period is 9, the default base period is 26, the default Span B period is 52, adjusting these
     to fit the current market will yield a more precise cloud
-    :param highs: list[float] - list of highs
-    :param lows: list[float] - list of lows
-    :param conversion_period: int -
+    :param highs: List of highs
+    :param lows: List of lows
+    :param close: List of closing prices
+    :param conversion_period:
     :param base_period:
     :param span_b_period:
     :param fill_empty: bool - (Optional) Whether empty values should be filled with the fill_value (default False)
     :param fill_value: any - (Optional) The fill value to fill empty values with if fill_empty is True (default None)
-    :return: Returns the Senkou Span A and Span B as a tuple with a list of floats for each
+    :return: Returns the Senkou Span A and Span B, Base Line, Conversion Line, and the Lagged close price as a tuple with a list of floats for each
     """
     highest_period = max(conversion_period, base_period, span_b_period)
     if len(highs) < highest_period:
@@ -62,4 +63,4 @@ def ichimoku_cloud(highs: list[float], lows: list[float], conversion_period: int
     base_line = (max(highs[-base_period:]) + min(lows[-base_period:])) / 2
     leading_span_a = (conversion_line + base_line) / 2
     leading_span_b = (max(highs[-span_b_period:]) + min(lows[-span_b_period:])) / 2
-    return leading_span_a, leading_span_b
+    return leading_span_a, leading_span_b, base_line, conversion_line, close[-base_period]

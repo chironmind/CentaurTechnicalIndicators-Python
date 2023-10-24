@@ -1,76 +1,77 @@
 from ..Single import trend_indicators
 
 
-# TODO: have aroon functions figure out high and lows, and get rid of non pers
-def personalised_aroon_up(period: int) -> list[float]:
+def aroon_up(highs: list[float], period: int = 25) -> list[float]:
     """
     A personalised version of the aroon_up function. Allows for the period to be chosen rather than set to 25.
-    :param period: Maximum number of periods to study
-    :param period_since_high: Number of periods since the last high
+    :param highs: List of high prices
+    :param period: Time period
     :return: Returns a list of Aroon ups
     """
+    # Insanely the calculation is done on the previous x periods + the current period, others the oscillator would only
+    #  fluctuate between 0 and 90, and the most recent period would be t-1 aka period 1 so
+    #  100 * ( (period - 1) / period ) = 90 to get to 100 you would need to have a period 0, so the default period
+    #  actually looks at a total of 26 periods... so the period needs to be increased by 1
+    actual_period = period + 1
+    length = len(highs)
+    if length < actual_period:
+        raise Exception(f'Length of prices ({length}) needs to be at least equal to period ({period} + 1)')
+    periods_since_high = []
+    for i in range(actual_period, length+1):
+        sub_high = highs[i-actual_period:i]
+        local_max = max(sub_high)
+    #   list.index(x) returns first occurrence in the list, for two identical highs we want most recent
+        for j in range(len(sub_high)-1, -1, -1):
+            if sub_high[j] == local_max:
+                periods_since_high.append(period-j)
+                break
     aroon_up_list = []
-    for p in period_since_high:
-        aroon_up_list.append(trend_indicators.personalised_aroon_up(period, p))
+    for p in periods_since_high:
+        aroon_up_list.append(trend_indicators.aroon_up(p, period))
     return aroon_up_list
 
 
-def aroon_up(period_since_high: list[int]) -> list[float]:
-    """
-    The aroon up provides an indicator to measure the time since the last high. The Aroon calculations assumes a maximum period of 25.
-    :param period_since_high: Number of periods since the last high
-    :return: Returns a list of Aroon ups
-    """
-    return personalised_aroon_up(25, period_since_high)
-
-
-def personalised_aroon_down(period: int, period_since_low: list[int]) -> list[float]:
+def aroon_down(lows: list[float], period: int = 25) -> list[float]:
     """
     A personalised verion of the Aroon down. Allows for the period to be chosen rather than set to 25.
-    :param period: Maximum number of periods to study
-    :param period_since_low: Number of periods since the last low
+    :param lows: List of lows
+    :param period: Time period
     :return: Returns a list of Aroon downs
     """
+    # see explanation in aroon up for actual period
+    actual_period = period + 1
+    length = len(lows)
+    if length < period:
+        raise Exception(f'Length of prices ({length}) needs to be at least equal to period ({period}+1)')
+    period_since_low = []
+    for i in range(actual_period, length+1):
+        sub_low = lows[i-actual_period:i]
+        local_min = min(sub_low)
+    #   list.index(x) returns first occurrence in the list, for two identical highs we want most recent
+        for j in range(len(sub_low)-1, -1, -1):
+            if sub_low[j] == local_min:
+                period_since_low.append(period-j)
+                break
     aroon_down_list = []
     for p in period_since_low:
-        aroon_down_list.append(trend_indicators.personalised_aroon_down(period, p))
+        aroon_down_list.append(trend_indicators.aroon_down(p, period))
     return aroon_down_list
 
 
-def aroon_down(period_since_low: list[int]) -> list[float]:
-    """
-    The Aroon down provides an indicator that measure the time since the last low. The Aroon calculations assumes a maximum period of 25.
-    :param period_since_low: Number of periods since the last low
-    :return: Returns a list of Aroon downs
-    """
-    return personalised_aroon_down(25, period_since_low)
-
-
-def personalised_aroon_oscillator(period: int, period_since_high: list[int], period_since_low: list[int]) -> list[float]:
+def aroon_oscillator(highs: list[float], lows: list[float], period: int = 25) -> list[float]:
     """
     A personalised version of the Aroon oscillator. Should be used in conjunction with the Aroon up and down.
-    :param period: Maximum number of periods to study
-    :param period_since_high: Number of periods since the last high
-    :param period_since_low: Number of periods since the last low
-    :return: Returns a list of Aroon oscillators
+    :param highs: List of high prices
+    :param lows: List of low prices
+    :param period: Period to study
+    :return: Returns the Aroon oscillator as a list of floats
     """
-    au = personalised_aroon_up(period, period_since_high)
-    ad = personalised_aroon_down(period, period_since_low)
+    au = aroon_up(highs, period)
+    ad = aroon_down(lows, period)
     aroon_oscillator_list = []
     for i in range(len(au)):
         aroon_oscillator_list.append(au[i] - ad[i])
     return aroon_oscillator_list
-
-
-def aroon_oscillator(period_since_high: list[int], period_since_low: list[int]) -> list[float]:
-    """
-    The Aroon oscillator uses the Aroon up and the Aroon down to provide signals on changes in trend. Should be used in
-    conjunction with the Aroon up and down.
-    :param period_since_high: Number of periods since the last high
-    :param period_since_low: Number of periods since the last low
-    :return: Returns a list of Aroon oscillators
-    """
-    return personalised_aroon_oscillator(25, period_since_high, period_since_low)
 
 
 # TODO: This could use the Chart pattern functions to determine highs and low

@@ -46,29 +46,27 @@ def test_single_on_balance_volume_previous_price_greater():
 
 def test_single_commodity_channel_index():
     prices = [103, 106, 111, 113, 111, 102, 98]
-    cci = single_momentum_indicators.personalised_commodity_channel_index(prices)
+    cci = single_momentum_indicators.commodity_channel_index(prices)
     assert cci == -119.7640117994101
 
 
 def test_single_commodity_channel_index_ma_model_exception():
     prices = [103, 106, 111, 113, 111, 102, 98]
     with pytest.raises(Exception) as e:
-        single_momentum_indicators.personalised_commodity_channel_index(prices, ma_model='zzz')
+        single_momentum_indicators.commodity_channel_index(prices, ma_model='zzz')
     assert str(e.value) == f'zzz is not an accepted MA model, please use either {ma}, {sma}, or {ema}'
 
 
 def test_single_commodity_channel_index_ad_model_exception():
     prices = [103, 106, 111, 113, 111, 102, 98]
     with pytest.raises(Exception) as e:
-        single_momentum_indicators.personalised_commodity_channel_index(prices, absolute_deviation_model='zzz')
+        single_momentum_indicators.commodity_channel_index(prices, absolute_deviation_model='zzz')
     assert str(e.value) == f'zzz is not an accepted absolute deviation model'
 
 
 def test_bulk_rate_of_change():
     closing_prices = [100, 101, 105, 103, 99, 80, 85, 100, 90, 85]
     roc = bulk_momentum_indicators.rate_of_change(closing_prices=closing_prices, period=3)
-    # This should calculate the roc for the following pairs (current, previous):
-    #   (103, 100), (99, 101), (80, 105), (85, 103), (100, 99), (90, 80), (85, 85)
     assert roc == [3.0, -1.9801980198019802, -23.809523809523807, -17.475728155339805, 1.0101010101010102, 12.5, 0]
 
 
@@ -100,12 +98,12 @@ def test_bulk_on_balance_volume_length_exception():
 
 def test_bulk_commodity_channel_index():
     prices = [103, 106, 111, 113, 111, 102, 98, 99, 95]
-    cci = bulk_momentum_indicators.personalised_commodity_channel_index(prices, 7)
+    cci = bulk_momentum_indicators.commodity_channel_index(prices, 7)
     assert cci == [-119.7640117994101, -86.35170603674531, -94.51476793248943]
 
 
 def test_bulk_commodity_channel_index_size_exception():
     prices = [103, 106, 111, 113, 111, 102, 98, 99, 95]
     with pytest.raises(Exception) as e:
-        bulk_momentum_indicators.personalised_commodity_channel_index(prices, 11)
+        bulk_momentum_indicators.commodity_channel_index(prices, 11)
     assert str(e.value) == f'typical_prices ({len(prices)}) needs to be greater or equal to the period (11)'

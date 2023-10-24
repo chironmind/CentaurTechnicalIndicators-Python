@@ -17,7 +17,7 @@ def money_flow_index(typical_prices: list[float], volume: list[int], period: int
 
     money_flow_index_list = []
     for i in range(len_typical_prices - period + 1):
-        money_flow_index_list.append(oscillators.personalised_money_flow_index(typical_prices[i:i+period], volume[i:i+period]))
+        money_flow_index_list.append(oscillators.money_flow_index(typical_prices[i:i+period], volume[i:i+period]))
     return money_flow_index_list
 
 
@@ -66,7 +66,7 @@ def stochastic_oscillator(close_prices: list[float], period: int = 14) -> list[f
         raise Exception(f'Submitted prices needs to be greater than submitted period of {period}')
     so = []
     for i in range(period, len(close_prices)+1):
-        so.append(oscillators.personalised_stochastic_oscillator(close_prices[i-period:i]))
+        so.append(oscillators.stochastic_oscillator(close_prices[i-period:i]))
     return so
 
 

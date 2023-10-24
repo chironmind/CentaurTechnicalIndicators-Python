@@ -1,7 +1,4 @@
-from typing import Tuple
 
-
-# TODO: Bulk for the below
 def fibonacci_retracement(price: float) -> tuple[float, float, float, float, float, float, float]:
     """
     Calculates the Fibonacci retracement for a given price

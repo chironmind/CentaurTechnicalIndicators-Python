@@ -1,6 +1,6 @@
 
 
-def value_added_personalised_index(start_price: float, end_price: float, previous_vapi: float = 1000) -> float:
+def value_added_index(start_price: float, end_price: float, previous_vai: float = 1000) -> float:
     """
     Calculates and returns a personalised version of the VAMI where the period is determined by the called
 
@@ -8,10 +8,10 @@ def value_added_personalised_index(start_price: float, end_price: float, previou
     want as the first previous_vapi instead of leaving it to default to 1000
     :param start_price: The price at the start of the period
     :param end_price: The price at the end of the period
-    :param previous_vapi: (Optional) The previous Value Added Monthly Index (Default = 1000)
+    :param previous_vai: (Optional) The previous Value Added Monthly Index (Default = 1000)
     :return: Returns the value add personalised index as a float
     """
-    return previous_vapi * (1 + (end_price - start_price))
+    return previous_vai * (1 + (end_price - start_price))
 
 
 def true_range(high: float, low: float, previous_close: float) -> float:

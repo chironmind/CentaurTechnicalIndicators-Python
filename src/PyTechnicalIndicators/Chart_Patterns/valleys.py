@@ -12,8 +12,11 @@ def get_valleys(prices: list[float], period: int = 5) -> list[tuple[float, int]]
     :param period: (Optional) Period in which the valley should be searched for (defaults to 5)
     :return: Returns a list of tuples, where the first item is the valley price, and the second item is the index
     """
+    length = len(prices)
+    if length < period:
+        raise Exception(f'Length of prices ({length}) needs to be at least equal to period ({period})')
     valleys = []
-    for price_index in range(period, len(prices)+1):
+    for price_index in range(period, length+1):
         index = price_index - period
         sub_prices = prices[index:price_index]
         valley = min(sub_prices)

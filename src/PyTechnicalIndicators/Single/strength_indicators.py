@@ -3,7 +3,7 @@ from . import other_indicators
 
 
 # TODO: support pma
-def personalised_rsi(prices: list[float], ma_model: str = 'sma') -> float:
+def relative_strength_index(prices: list[float], ma_model: str = 'sma') -> float:
     """
     Calculates the RSI based on the price and a chose MA model.
     The default model has 14 observations in the list of prices

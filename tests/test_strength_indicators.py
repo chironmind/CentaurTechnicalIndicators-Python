@@ -14,13 +14,13 @@ def test_single_rsi():
 
 def test_single_personalised_rsi_no_negative():
     prices = [106, 116, 116, 126, 130]
-    rsi = strength_indicators_single.personalised_rsi(prices)
+    rsi = strength_indicators_single.relative_strength_index(prices)
     assert rsi == 100
 
 
 def test_single_personalised_rsi():
     prices = [112, 110, 106, 116, 116, 126, 130]
-    rsi = strength_indicators_single.personalised_rsi(prices)
+    rsi = strength_indicators_single.relative_strength_index(prices)
     assert rsi == 68.22742474916387
 
 
@@ -81,22 +81,16 @@ def test_single_directional_movement():
     assert strength_indicators_single.directional_movement(103, 103, 93, 93) == (0, 'none')
 
 
-def test_single_directional_indicator():
-    assert strength_indicators_single.directional_indicator(103, 100, 93, 90, 95) == (0.3, 'positive')
-    assert strength_indicators_single.directional_indicator(100, 103, 90, 93, 95) == (0.3, 'negative')
-    assert strength_indicators_single.directional_indicator(103, 103, 93, 93, 95) == (0, 'none')
-
-
 def test_single_period_directional_indicator():
     high = [127, 107, 130, 109, 120]
     low = [87, 97, 85, 81, 80]
     close = [115, 106, 124, 90, 88]
-    pdi = strength_indicators_single.period_directional_indicator(high, low, close)
+    pdi = strength_indicators_single.directional_indicator(high, low, close)
     assert pdi == (20.858895705521473, 2.4539877300613497, 163, 34, 4)
 
 
 def test_single_period_directional_indicator_known_previous():
-    known_previous_di = strength_indicators_single.period_directional_indicator_known_previous(110, 120, 75, 80, 79, 163, 34, 4, 5)
+    known_previous_di = strength_indicators_single.directional_indicator_known_previous(110, 120, 75, 80, 79, 163, 34, 4, 5)
     assert known_previous_di == (16.444981862152358, 4.9576783555018135, 165.4, 27.2, 8.2)
 
 
@@ -157,5 +151,5 @@ def test_bulk_rsi():
 
 def test_bulk_personal_rsi():
     prices = [100, 103, 110, 115, 123, 115, 116, 112, 110, 106, 116, 116, 126, 130, 118]
-    rsi = strength_indicators_bulk.personalised_rsi(prices, 13, 'ma')
+    rsi = strength_indicators_bulk.relative_strength_index(prices, 13, 'ma')
     assert rsi == [58.27814569536424, 58.82352941176471, 51.35135135135135]

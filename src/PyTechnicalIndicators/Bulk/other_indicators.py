@@ -1,7 +1,7 @@
 from ..Single import other_indicators
 
 
-def value_added_personalised_index(prices: list[float], starting_investment: int = 1000) -> list[float]:
+def value_added_index(prices: list[float], starting_investment: int = 1000) -> list[float]:
     """
     Calculates and returns a personalised version of the VAMI where the period is determined by the called
 
@@ -12,10 +12,10 @@ def value_added_personalised_index(prices: list[float], starting_investment: int
     :param starting_investment: (Optional) Use if the starting investment should be different that $1000
     :return: Returns a list of Value Added Personalised Index
     """
-    vapi_list = [other_indicators.value_added_personalised_index(prices[0], prices[1], starting_investment)]
+    vai_list = [other_indicators.value_added_index(prices[0], prices[1], starting_investment)]
     for i in range(1, len(prices)-1):
-        vapi_list.append(other_indicators.value_added_personalised_index(prices[i], prices[i+1], vapi_list[-1]))
-    return vapi_list
+        vai_list.append(other_indicators.value_added_index(prices[i], prices[i+1], vai_list[-1]))
+    return vai_list
 
 
 def true_range(high: list[float], low: list[float], close: list[float]) -> list[float]:

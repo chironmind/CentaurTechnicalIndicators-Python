@@ -58,5 +58,5 @@ def commodity_channel_index(typical_prices: list[float], period: int, ma_model: 
         raise Exception(f'typical_prices ({len(typical_prices)}) needs to be greater or equal to the period ({period})')
     cci_list = []
     for i in range(len(typical_prices)-period+1):
-        cci_list.append(momentum_indicators.personalised_commodity_channel_index(typical_prices[i:i+period], ma_model, absolute_deviation_model))
+        cci_list.append(momentum_indicators.commodity_channel_index(typical_prices[i:i+period], ma_model, absolute_deviation_model))
     return cci_list

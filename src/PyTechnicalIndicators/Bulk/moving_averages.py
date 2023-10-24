@@ -110,7 +110,7 @@ def moving_average_convergence_divergence(prices: list[float], short_period: int
             macd.append(fill_value)
     for i in range(long_period, len(prices)+1):
         price_set = prices[i - long_period: i]
-        single_macd = moving_averages.personalised_macd(price_set, short_period, long_period, ma_model)
+        single_macd = moving_averages.moving_average_convergence_divergence(price_set, short_period, long_period, ma_model)
         macd.append(single_macd)
     return macd
 
@@ -142,7 +142,7 @@ def signal_line(macd: list[float], period: int = 9, ma_model: str = 'ema', fill_
             signal_lines.append(fill_value)
     for i in range(period, macd_len+1):
         macd_set = macd[i-period: i]
-        signal_line = moving_averages.personalised_signal_line(macd_set, ma_model)
+        signal_line = moving_averages.signal_line(macd_set, ma_model)
         signal_lines.append(signal_line)
     return signal_lines
 

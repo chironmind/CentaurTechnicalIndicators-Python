@@ -30,19 +30,20 @@ def bollinger_bands(typical_price: list[float], period: int = 20, ma_model: str 
             bbands.append((fill_value, fill_value))
 
     for i in range(period, len(typical_price)+1):
-        bbands.append(candle_indicators.personalised_bollinger_bands(typical_price[i-period:i], ma_model, stddev_multiplier))
+        bbands.append(candle_indicators.bollinger_bands(typical_price[i-period:i], ma_model, stddev_multiplier))
     return bbands
 
 
-def ichimoku_cloud(highs: list[float], lows: list[float], conversion_period: int = 9, base_period: int = 26, span_b_period: int = 52, fill_empty: bool = False, fill_value: any = None) -> list[tuple[float, float]]:
+def ichimoku_cloud(highs: list[float], lows: list[float], close: list[float], conversion_period: int = 9, base_period: int = 26, span_b_period: int = 52, fill_empty: bool = False, fill_value: any = None) -> list[tuple[float, float]]:
     """
     Calculates Ichimoku cloud from a list of highs and lows and returns a tuple with Senkou Span A and Span B as lists
 
     The function allows for fine-tuning of ichimoku cloud but change the conversion period, based period and span b period.
     The default conversion period is 9, the default base period is 26, the default Span B period is 52, adjusting these
     to fit the current market will yield a more precise cloud
-    :param highs: list[float] - list of highs
-    :param lows: list[float] - list of lows
+    :param highs: List of highs
+    :param lows: List of lows
+    :param close: List of closing prices
     :param conversion_period: int -
     :param base_period:
     :param span_b_period:
@@ -59,5 +60,5 @@ def ichimoku_cloud(highs: list[float], lows: list[float], conversion_period: int
             senkou_span.append((fill_value, fill_value))
 
     for i in range(highest_period, len(highs)+1):
-        senkou_span.append(candle_indicators.personalised_ichimoku_cloud(highs[i-highest_period:i], lows[i-highest_period:i], conversion_period, base_period, span_b_period))
+        senkou_span.append(candle_indicators.ichimoku_cloud(highs[i-highest_period:i], lows[i-highest_period:i], close[i-highest_period:i], conversion_period, base_period, span_b_period))
     return senkou_span
