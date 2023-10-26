@@ -16,8 +16,9 @@ requires-python = ">3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
-    "Development Stgit push --set-upstream origin more-notebook-changesatus :: 5 - Production/Stable",
-    "Intended Audience :: Financial and Insurance Industry"
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)"
 ]
 
 [project.urls]
