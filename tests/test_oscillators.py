@@ -49,7 +49,7 @@ def test_single_chaikin_oscillator():
     low = [132, 143, 153, 148, 145, 151, 142, 138, 132, 135]
     close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137]
     volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800]
-    co = single_oscillators.personalised_chaikin_oscillator(high, low, close, volume, 3, 'ma')
+    co = single_oscillators.chaikin_oscillator(high, low, close, volume, 3, 'ma')
     assert co == 697.480158730159
 
 
@@ -59,7 +59,7 @@ def test_single_chaikin_oscillator_mismatch_list_length():
     close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137]
     volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800]
     with pytest.raises(Exception) as e:
-        single_oscillators.personalised_chaikin_oscillator(high, low, close, volume, 3, 'ma')
+        single_oscillators.chaikin_oscillator(high, low, close, volume, 3, 'ma')
     assert str(e.value) == f'length of lists need to match. high ({len(high)}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})'
 
     high = [150, 157, 163, 152, 155, 160, 158, 153, 148, 144]
@@ -67,7 +67,7 @@ def test_single_chaikin_oscillator_mismatch_list_length():
     close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137]
     volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800]
     with pytest.raises(Exception) as e:
-        single_oscillators.personalised_chaikin_oscillator(high, low, close, volume, 3, 'ma')
+        single_oscillators.chaikin_oscillator(high, low, close, volume, 3, 'ma')
     assert str(
         e.value) == f'length of lists need to match. high ({len(high)}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})'
 
@@ -76,7 +76,7 @@ def test_single_chaikin_oscillator_mismatch_list_length():
     close = [148, 155, 157, 150, 148, 158, 155, 142, 145]
     volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800]
     with pytest.raises(Exception) as e:
-        single_oscillators.personalised_chaikin_oscillator(high, low, close, volume, 3, 'ma')
+        single_oscillators.chaikin_oscillator(high, low, close, volume, 3, 'ma')
     assert str(
         e.value) == f'length of lists need to match. high ({len(high)}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})'
 
@@ -85,7 +85,7 @@ def test_single_chaikin_oscillator_mismatch_list_length():
     close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137]
     volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100]
     with pytest.raises(Exception) as e:
-        single_oscillators.personalised_chaikin_oscillator(high, low, close, volume, 3, 'ma')
+        single_oscillators.chaikin_oscillator(high, low, close, volume, 3, 'ma')
     assert str(
         e.value) == f'length of lists need to match. high ({len(high)}), low ({len(low)}), close ({len(close)}), volume ({len(volume)})'
 
@@ -96,7 +96,7 @@ def test_single_chaikin_oscillator_short_period_exception():
     close = [148, 155, 157]
     volume = [1500, 1600, 1800]
     with pytest.raises(Exception) as e:
-        single_oscillators.personalised_chaikin_oscillator(high, low, close, volume, 3, 'ma')
+        single_oscillators.chaikin_oscillator(high, low, close, volume, 3, 'ma')
     assert str(f'short_period (3) needs to be smaller than the length of lists ({len(high)})')
 
 
@@ -106,7 +106,7 @@ def test_single_chaikin_oscillator_wrong_model():
     close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137]
     volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800]
     with pytest.raises(Exception) as e:
-        single_oscillators.personalised_chaikin_oscillator(high, low, close, volume, 3, 'zzz')
+        single_oscillators.chaikin_oscillator(high, low, close, volume, 3, 'zzz')
     assert str(e.value) == str(f'zzz is not an accepted MA model, please use either {ma}, {sma}, or {ema}')
 
 
