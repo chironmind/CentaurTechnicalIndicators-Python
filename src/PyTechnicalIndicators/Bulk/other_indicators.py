@@ -18,7 +18,7 @@ def value_added_index(prices: list[float], starting_investment: int = 1000) -> l
     return vai_list
 
 
-def true_range(high: list[float], low: list[float], close: list[float]) -> list[float]:
+def true_range(high: list[float], low: list[float], previous_close: list[float]) -> list[float]:
     """
     Calculates the true range which is the greatest distance between current high and low, or previous close and high, or previous close and low
     :param high: List of highs

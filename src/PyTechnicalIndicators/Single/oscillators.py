@@ -38,7 +38,7 @@ def money_flow_index(typical_prices: list[float], volume: list[int]) -> float:
 
 
 # TODO: Add PMA and McGinley to accepted MA models
-def personalised_chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float], short_period: int = 3, ma_model: str = 'ma') -> float:
+def chaikin_oscillator(high: list[float], low: list[float], close: list[float], volume: list[float], short_period: int = 3, ma_model: str = 'ma') -> float:
     """
     Calculates the Chaikin Oscillator, allows the caller to choose the long and short period, rather than
     having it set to 3 and 10 periods. The long period will be assumed to be the length of the lists provided. The function
