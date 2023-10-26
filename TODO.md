@@ -13,6 +13,4 @@
 - add moving mode, median, MCGin... 
 - as well as their envelopes
 - rename params to just be price, caller can put whatever price they want in there
-- arron up/down is the period at t 0 or 1. For a list of 10 prices, going back in reverse order to figure out the period
-    since high or low, the first occurence would be t would that count as 0 because you don't say that you're at period 1 at t?
-- single aroon up should be similar to the bulk, accepting a list of prices and figuring out the local max, or should be renamed. Essentially extract what the bulk function is doing.
+- logic in parabolic SAR seems correct but Welles has a way to be funky with his periods and overall logic, so double check from book directly

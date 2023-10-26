@@ -1,3 +1,10 @@
+/!\ WARNING /!\ 
+The ReadMe is a litle out of date, it is being updated but in the meantime the PyTechnicalIndicators_Examples repo
+has a branch with a working example that will be considerably more informative
+
+
+
+
 # PyTechnicalIndicators
 
 PyTechnicalIndicators is a Python library with a number of common technical indicators used to analyse financial data.

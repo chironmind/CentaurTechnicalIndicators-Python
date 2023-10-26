@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "PyTechnicalIndicators"
-version = "2.0.2"
+version = "2.0.3"
 authors = [
     { name="0100101001010000", email="mind@your.business"}
 ]
@@ -17,7 +17,8 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
     "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Financial and Insurance Industry"
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)"
 ]
 
 [project.urls]

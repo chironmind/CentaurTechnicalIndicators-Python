@@ -50,7 +50,7 @@ def chaikin_oscillator(high: list[float], low: list[float], close: list[float], 
     chaikin_oscillator_list = []
     for i in range(length-long_period+1):
         j = i+long_period
-        chaikin_oscillator_list.append(oscillators.personalised_chaikin_oscillator(high[i:j], low[i:j], close[i:j], volume[i:j], short_period, moving_average))
+        chaikin_oscillator_list.append(oscillators.chaikin_oscillator(high[i:j], low[i:j], close[i:j], volume[i:j], short_period, moving_average))
     return chaikin_oscillator_list
 
 
