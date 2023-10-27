@@ -22,8 +22,9 @@ def bollinger_bands(typical_price: list[float], period: int = 20, ma_model: str 
     :param fill_value: any - (Optional) The fill value to fill empty values with if fill_empty is True (default None)
     :return: Returns a list of tuples, the first one for the lower Bollinger Band and the second for the upper Bollinger Band
     """
-    if len(typical_price) < period:
-        raise Exception(f'Submitted price is shorter than submitted period of {period}')
+    length = len(typical_price)
+    if length < period:
+        raise Exception(f'Prices ({length}) needs to be equal or greater than ({period})')
     bbands = []
     if fill_empty:
         for i in range(period):
@@ -52,13 +53,16 @@ def ichimoku_cloud(highs: list[float], lows: list[float], close: list[float], co
     :return: Returns a list with Senkou Span A and Span B as a tuple
     """
     highest_period = max(conversion_period, base_period, span_b_period)
-    if len(highs) < highest_period:
-        raise Exception('Submitted price shorter than submitted periods')
+    length = len(highs)
+    if length != len(lows) or length != len(close):
+        raise Exception(f'Length of highs ({length}), lows ({len(lows)}), and close ({len(close)}) need to match')
+    if length < highest_period:
+        raise Exception(f'Prices ({length}) needs to be equal or greater that the highest period ({highest_period})')
     senkou_span = []
     if fill_empty:
         for i in range(highest_period):
             senkou_span.append((fill_value, fill_value))
 
-    for i in range(highest_period, len(highs)+1):
+    for i in range(highest_period, length+1):
         senkou_span.append(candle_indicators.ichimoku_cloud(highs[i-highest_period:i], lows[i-highest_period:i], close[i-highest_period:i], conversion_period, base_period, span_b_period))
     return senkou_span

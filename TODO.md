@@ -14,3 +14,6 @@
 - as well as their envelopes
 - rename params to just be price, caller can put whatever price they want in there
 - logic in parabolic SAR seems correct but Welles has a way to be funky with his periods and overall logic, so double check from book directly
+- standardize exceptions
+
+* in chart trends `from src.PyTechnicalIndicators.Chart_Patterns import peaks, valleys` needs to be changed to `..Chart_Patterns`

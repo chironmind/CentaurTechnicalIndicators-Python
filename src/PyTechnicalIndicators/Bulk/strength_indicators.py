@@ -15,10 +15,11 @@ def relative_strength_index(prices: list[float], period: int = 14, ma_model: str
         Defaults to 'sma'
     :return: Returns a list of personalised RSI
     """
-    if len(prices) < period:
-        raise Exception(f'Submitted prices needs to be greater than submitted period of {period}')
+    length = len(prices)
+    if length < period:
+        raise Exception(f'Prices ({length}) needs to be equal or greater than period ({period})')
     rsi = []
-    for i in range(period, len(prices) + 1):
+    for i in range(period, length + 1):
         rsi.append(strength_indicators.relative_strength_index(prices[i-period:i], ma_model))
     return rsi
 
