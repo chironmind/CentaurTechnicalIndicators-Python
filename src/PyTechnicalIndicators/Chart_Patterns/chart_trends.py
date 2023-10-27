@@ -1,7 +1,6 @@
 import statistics
-import math
 
-from src.PyTechnicalIndicators.Chart_Patterns import peaks, valleys
+from . import peaks, valleys
 
 
 def get_trend_line(p: list[tuple[float, int]]) -> tuple[float, float]:

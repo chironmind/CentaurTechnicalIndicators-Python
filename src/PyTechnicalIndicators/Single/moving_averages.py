@@ -21,9 +21,6 @@ def exponential_moving_average(prices: list[float]) -> float:
     :param prices: List of prices
     :return: Returns the EMA as a float
     """
-    length_prices = len(prices)
-    if length_prices <= 1:
-        raise Exception('There needs to be prices to be able to do an exponential moving average')
     return personalised_moving_average(prices, 2, 1)
 
 
@@ -33,10 +30,6 @@ def smoothed_moving_average(prices: list[float]) -> float:
     :param prices: List of prices
     :return: Returns the SMA as a float
     """
-    # SmoothedMA is same as EMA but alpha = 1 / len(prices)
-    length_prices = len(prices)
-    if length_prices <= 1:
-        raise Exception('There needs to be prices to be able to do an smoothed moving average')
     return personalised_moving_average(prices, 1, 0)
 
 
@@ -50,14 +43,12 @@ def personalised_moving_average(prices: list[float], alpha_nominator: int, alpha
     """
     length_prices = len(prices)
     if length_prices == 0:
-        raise Exception('There needs to be prices to be able to do personalised moving average')
+        raise Exception('There needs to be prices to be able to calculate the moving average')
     if length_prices + alpha_denominator == 0:
         raise Exception(f'The length of prices {length_prices} and the value of the alpha denominator {alpha_denominator} add up to 0, and division by 0 isn\'t possible')
-
     alpha = alpha_nominator / (length_prices + alpha_denominator)
     price_sum = 0
     denominator_sum = 0
-    # TODO: Make the loop clearer
     for i in range(length_prices - 1, -1, -1):
         power = length_prices - i
         alpha_power = pow(1 - alpha, power)

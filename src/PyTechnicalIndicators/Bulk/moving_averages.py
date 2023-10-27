@@ -10,13 +10,10 @@ def moving_average(prices: list[float], period: int, fill_empty: bool = False, f
     :param fill_value: (Optional) The fill value to fill empty values with if fill_empty is True (default None)
     :return: Returns a list of moving averages
     """
-    # MA gives an idea of the trend and whether it's going to switch bull/bear
     if period <= 0:
         raise Exception('Period needs to be at least 1')
-
-    if len(prices) < 0:
-        raise Exception('Length of prices needs to be greater than 0')
-
+    if len(prices) < period:
+        raise Exception(f'Length of prices ({prices}) needs to or equal to period ({period})')
     mas = []
     if fill_empty:
         for i in range(period):
@@ -69,8 +66,8 @@ def personalised_moving_average(prices: list[float], period: int, alpha_nominato
     if period <= 0:
         raise Exception('Period needs to be at least 1')
 
-    if len(prices) < 0:
-        raise Exception('Length of prices needs to be greater than 0')
+    if len(prices) < period:
+        raise Exception(f'Length of prices ({prices}) needs to or equal to period ({period})')
 
     pma = []
     if fill_empty:
@@ -99,16 +96,14 @@ def moving_average_convergence_divergence(prices: list[float], short_period: int
     :param fill_value: (Optional) The fill value to fill empty values with if fill_empty is True (default None)
     :return: Returns a list of MACD points
     """
-    if short_period <= 0 or long_period <= 0:
-        raise Exception('Period needs to be at least 1')
-    if len(prices) < long_period:
-        raise Exception(f'The minimum length of prices needs to be {long_period} to calculate the MACD')
-
+    length = len(prices)
+    if length < long_period:
+        raise Exception(f'Prices ({length}) needs to be equal or greater than long_period ({long_period})')
     macd = []
     if fill_empty:
         for i in range(long_period):
             macd.append(fill_value)
-    for i in range(long_period, len(prices)+1):
+    for i in range(long_period, length+1):
         price_set = prices[i - long_period: i]
         single_macd = moving_averages.moving_average_convergence_divergence(price_set, short_period, long_period, ma_model)
         macd.append(single_macd)
@@ -130,12 +125,9 @@ def signal_line(macd: list[float], period: int = 9, ma_model: str = 'ema', fill_
     :param fill_value: (Optional) The fill value to fill empty values with if fill_empty is True (default None)
     :return: Returns a list of Signal line points
     """
-    if period <= 0:
-        raise Exception('Period needs to be at least 1')
     macd_len = len(macd)
-    if macd_len == 0:
-        raise Exception("Submitted MACD array is too short to calculate singal line")
-
+    if macd_len < period:
+        raise Exception(f"Length of MACD ({macd_len}) needs to be equal or greater tjan period ({period})")
     signal_lines = []
     if fill_empty:
         for i in range(period):
