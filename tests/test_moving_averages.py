@@ -34,9 +34,10 @@ def test_single_personalised_moving_average_denominator_error():
         single_moving_averages.personalised_moving_average(prices, 3, -7)
     assert str(e.value) == f'The length of prices 7 and the value of the alpha denominator -7 add up to 0, and division by 0 isn\'t possible'
 
+
 def test_single_macd():
     prices = [103, 105, 102, 107, 103, 111, 106, 104, 105, 108, 112, 120, 125, 110, 107, 108, 105, 103, 106, 107, 101, 99, 103, 106, 104, 102]
-    macd = single_moving_averages.moving_average_convergence_divergence(prices)
+    macd = single_moving_averages.macd_line(prices)
     assert macd == -2.164962379494412
 
 
@@ -48,7 +49,7 @@ def test_single_signal_line():
 
 def test_single_personalised_macd():
     prices = [110, 107, 108, 105, 103, 106, 107]
-    macd = single_moving_averages.moving_average_convergence_divergence(prices, 3, 7, 'ma')
+    macd = single_moving_averages.macd_line(prices, 3, 7, 'ma')
     assert macd == -1.2380952380952408
 
 
@@ -108,7 +109,7 @@ def test_bulk_smoothed_moving_average():
 def test_bulk_macd():
     prices = [103, 105, 102, 107, 103, 111, 106, 104, 105, 108, 112, 120, 125, 110, 107, 108, 105, 103, 106, 107, 101,
               99, 103, 106, 104, 102, 109, 116]
-    macd = bulk_moving_averages.moving_average_convergence_divergence(prices)
+    macd = bulk_moving_averages.macd_line(prices)
     assert macd == [-2.164962379494412, -1.597159438916961, -0.4970353844502142]
 
 
@@ -120,7 +121,7 @@ def test_bulk_signal_line():
 
 def test_bulk_personalised_macd():
     prices = [110, 107, 108, 105, 103, 106, 107]
-    macd = bulk_moving_averages.moving_average_convergence_divergence(prices, 3, 5, 'ma')
+    macd = bulk_moving_averages.macd_line(prices, 3, 5, 'ma')
     assert macd == [-1.2666666666666657, -1.1333333333333258, -0.46666666666666856]
 
 

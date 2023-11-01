@@ -9,7 +9,6 @@ def test_single_money_flow_index():
     typical_prices = [101, 100, 102, 103, 105, 106, 107, 110, 108, 109, 107, 106, 105, 108]
     volume = [1250, 1000, 800, 900, 1100, 1500, 1600, 1800, 2000, 1750, 1800, 1500, 1000, 1100]
     mfi = single_oscillators.money_flow_index(typical_prices=typical_prices, volume=volume)
-    print(mfi)
     assert mfi == 66.51053864168618
 
 
@@ -148,20 +147,14 @@ def test_single_williams_percent_r():
 def test_bulk_standard_money_flow_index():
     typical_prices = [100, 105, 103, 104, 106, 109, 104, 107, 111, 115, 109, 108, 107, 106, 105, 108]
     volume = [1200, 1200, 1300, 1200, 1600, 1400, 2000, 1800, 1600, 1500, 1200, 1100, 1500, 1400, 1200, 1300]
-
     mfi = oscillators_bulk.money_flow_index(typical_prices, volume)
-
-    assert len(mfi) == 3
-    assert mfi == [39.58136997172759, 33.33167997619165,33.54593097992682]
+    assert mfi == [39.58136997172759, 33.33167997619165, 33.54593097992682]
 
 
 def test_bulk_personalised_money_flow_index():
     typical_prices = [100, 105, 103, 104, 106, 109, 104, 107, 111, 115, 109, 108, 107, 106, 105, 108]
     volume = [1200, 1200, 1300, 1200, 1600, 1400, 2000, 1800, 1600, 1500, 1200, 1100, 1500, 1400, 1200, 1300]
-
     mfi = oscillators_bulk.money_flow_index(typical_prices, volume, 3)
-
-    assert len(mfi) == 14
     assert mfi == [99.00990099009901, 51.75879396984925, 57.608695652173914, 52.6381129733085, 57.681641708264, 51.92211682476285, 0, 0, 0, 0, 57.465091299677766, 51.958562641631595, 0, 52.7027027027027]
 
 

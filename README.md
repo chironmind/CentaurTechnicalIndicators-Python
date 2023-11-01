@@ -1,1162 +1,407 @@
-/!\ WARNING /!\ 
-The ReadMe is a litle out of date, it is being updated but in the meantime the PyTechnicalIndicators_Examples repo
-has a branch with a working example that will be considerably more informative
-
-
-
-
 # PyTechnicalIndicators
 
-PyTechnicalIndicators is a Python library with a number of common technical indicators used to analyse financial data.
+A simple, lightweight package used to calculate Technical Indicators in Python.
 
-This README will walk you through the Python functions used to calculate various technical indicators and how to call them.
-It will not explain what each one is and when or where to use them. If you need more information use Google, Wikipedia,
-or Investopedia.
+This package only uses Python built in types, and the Python standard library.
 
-
-## Table of Contents
-- [Installation](https://github.com/0100101001010000/PyTechnicalIndicators#installation)
-- [Usage](https://github.com/0100101001010000/PyTechnicalIndicators#usage)
-- [Single](https://github.com/0100101001010000/PyTechnicalIndicators#single)
-    - [Moving Averages](https://github.com/0100101001010000/PyTechnicalIndicators#moving-averages)
-        - [moving_average(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#moving_averageprices)
-        - [exponential_moving_average(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#exponential_moving_averageprices)
-        - [smoothed_moving_average(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#smoothed_moving_averageprices)
-        - [personalised_moving_average(prices, alpha_nominator, alpha_denominator)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_moving_averageprices)
-        - [moving_average_divergence_convergence(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#moving_average_divergence_convergenceprices)
-        - [signal_line(macd)](https://github.com/0100101001010000/PyTechnicalIndicators#signal_linemacd)
-        - [personalised_macd(prices, short_period, long_period, ma_model='ema')](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_macdprices)
-        - [personalised_signal_line(macd, ma_model='ema')](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_signal_linemacd)
-    - [Strength Indicators](https://github.com/0100101001010000/PyTechnicalIndicators#strength-indicators)
-        - [relative_strength_index(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#relative_strength_indexprices)
-        - [personalised_rsi(prices, ma_model='sma')](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_rsiprices-ma_modelsma)
-        - [stochastic_oscillator(close_prices)](https://github.com/0100101001010000/PyTechnicalIndicators#stochastic_oscillatorclose_prices)
-        - [personalised_stochastic_oscillator(close_prices)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_stochastic_oscillatorclose_prices)
-    - [Candle Indicators](https://github.com/0100101001010000/PyTechnicalIndicators#candle-indicators)
-        - [bollinger_bands(typical_prices)](https://github.com/0100101001010000/PyTechnicalIndicators#bollinger_bandstypical_prices)
-        - [personalised_bollinger_bands(typical_price, ma_model='ma', stddev_multiplier=2)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_bollinger_bandstypical_price-ma_modelma-stddev_multiplier2)
-        - [ichimoku_cloud(highs, lows)](https://github.com/0100101001010000/PyTechnicalIndicators#ichimoku_cloudhighs)
-        - [personalised_ichimoku_cloud(highs, lows, conversion_period, base_period, span_b_period)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_ichimoku_cloudhighs)
-- [Bulk](https://github.com/0100101001010000/PyTechnicalIndicators#bulk)
-    - [Basic Indicators](https://github.com/0100101001010000/PyTechnicalIndicators#basic-indicators)
-        - [log(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#logprices)
-        - [log_difference(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#log_differenceprices)
-        - [stddev(prices, period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#stddevprices-period-fill_emptyfalse-fill_valuenone)
-        - [mean(prices, period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#meanprices-period-fill_emptyfalse-fill_valuenone)
-        - [median(prices, period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#medianprices-period-fill_emptyfalse-fill_valuenone)
-        - [variance(prices, period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#varianceprices-period-fill_emptyfalse-fill_valuenone)
-    - [Moving Averages](https://github.com/0100101001010000/PyTechnicalIndicators#moving-averages-1)
-        - [moving_average(prices, period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#moving_averageprices-period-fill_emptyfalse-fill_valuenone)
-        - [exponential_moving_average(prices, period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#exponential_moving_averageprices-period-fill_emptyfalse-fill_valuenone)
-        - [smoothed_moving_average(prices, period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#smoothed_moving_averageprices-period-fill_emptyfalse-fill_valuenone)
-        - [personalised_moving_average(prices, period, alpha_nominator, alpha_denominator, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_moving_averageprices-period-alpha_nominator-alpha_denominator-fill_emptyfalse-fill_valuenone)
-        - [moving_average_divergence_convergence(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#moving_average_divergence_convergenceprices-1)
-        - [signal_line(macd)](https://github.com/0100101001010000/PyTechnicalIndicators#signal_linemacd-1)
-        - [personalised_macd(prices, short_period, long_period, ma_model='ema')](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_macdprices-1)
-        - [personalised_signal_line(macd, ma_model='ema')](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_signal_linemacd-1)
-    - [Strength Indicators](https://github.com/0100101001010000/PyTechnicalIndicators#strength-indicators-1)
-        - [relative_strength_index(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#relative_strength_indexprices-1)
-        - [personalised_rsi(prices, period, ma_model='sma')](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_rsiprices-period-ma_modelsma)
-        - [stochastic_oscillator(close_prices)](https://github.com/0100101001010000/PyTechnicalIndicators#stochastic_oscillatorclose_prices-1)
-        - [personalised_stochastic_oscillator(close_prices, period)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_stochastic_oscillatorclose_prices-period)
-    - [Candle Indicators](https://github.com/0100101001010000/PyTechnicalIndicators#candle-indicators-1)
-        - [bollinger_bands(typical_prices, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#bollinger_bandstypical_prices-fill_emptyfalse-fill_valuenone)
-        - [personalised_bollinger_bands(typical_price, period, ma_model='ma', stddev_multiplier=2, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_bollinger_bandstypical_price-period-ma_modelma-stddev_multiplier2-fill_emptyfalse-fill_valuenone)
-        - [ichimoku_cloud(highs, lows, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#ichimoku_cloudhighs-lows-fill_emptyfalse-fill_valuenone)
-        - [personalised_ichimoku_cloud(highs, lows, conversion_period, base_period, span_b_period, fill_empty=False, fill_value=None)](https://github.com/0100101001010000/PyTechnicalIndicators#personalised_ichimoku_cloudhighs-lows-conversion_period-base_period-span_b_period-fill_emptyfalse-fill_valuenone)
-- [Chart_Patterns](https://github.com/0100101001010000/PyTechnicalIndicators#chart_patterns)
-    - [peaks](https://github.com/0100101001010000/PyTechnicalIndicators#peaks)
-        - [get_peaks(prices, period=5)](https://github.com/0100101001010000/PyTechnicalIndicators#get_peaksprices-period5)
-        - [get_highest_peak(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#get_highest_peakprices)
-    - [pits](https://github.com/0100101001010000/PyTechnicalIndicators#pits)
-        - [get_pits(prices, period=5)](https://github.com/0100101001010000/PyTechnicalIndicators#get_pitsprices-period5)
-        - [get_lowest_pit(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#get_lowest_pitprices)
-    - [trends](https://github.com/0100101001010000/PyTechnicalIndicators#trends)
-        - [get_trend(p)](https://github.com/0100101001010000/PyTechnicalIndicators#get_trendp)
-        - [get_peak_trend(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#get_peak_trendprices)
-        - [get_pit_trend(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#get_peak_trendprices)
-        - [get_overall_trend(prices)](https://github.com/0100101001010000/PyTechnicalIndicators#get_overall_trendprices)
-        - [get_trend_angle(price_a, index_a, price_b, index_b)](https://github.com/0100101001010000/PyTechnicalIndicators#get_trend_angleprice_a-index_a-price_b-index_b)
-        - [break_down_trends(prices, min_period=2, peaks_only=False, pits_only=False)](https://github.com/0100101001010000/PyTechnicalIndicators#break_down_trendsprices-min_period2-peaks_onlyfalse-pits_onlyfalse)
-        - [merge_trends(typical_prices, min_period=2)](https://github.com/0100101001010000/PyTechnicalIndicators#merge_trendstypical_prices-min_period2)
-- [Contributing](https://github.com/0100101001010000/PyTechnicalIndicators#contributing)
-- [License](https://github.com/0100101001010000/PyTechnicalIndicators#license)
----
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install PyTechnicalIndicators.
+Install using pip
 
-```bash
+```shell
 pip install PyTechnicalIndicators
 ```
----
+
 ## Usage
 
-The below is a break down of the various functions in the package, for a detailed example see the [Example](https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example).
+To see this package in use and explanations go to the [PyTechnicalIndicators Example Repo](www.github.com/0100101001010000/PyTechnicalIndicators_Examples),
+this README is specific to calling functions in the package.
 
-The library is split into three sections Single, Bulk and Chart_Patterns.
+The PyTechnicalIndicators package is split into three directories.
 
-Single and Bulk have identical functions, Single returns a single value, Bulk returns a list. This is to reduce compute
-time if you only a single value returned for you series, or to avoid looping a call if you have a lot of data to process.
+`Bulk` is used to calculate multiple Technical Indicators for a large list of prices.
 
-It is important to note that the functions expect a list of prices to work, with the oldest value at the beginning of the
- list and the most recent price at the end. An indexed Pandas DF will not work, you will have to `list()` before your variables
- you pass it into these functions, the [Example](https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example) has more details.
+`Single` is used to calculate a singe Technical Indicator for a price.
 
----
+`Chart Patterns` is used to calculate chart patterns to be displayed on OHLC charts.
 
-## Single
+### Bulk
+The `Bulk` directory has 11 files used to calculate different Technical Indicator areas.
 
-Single is broken down into 3 sections:
+#### Basic Indicators
+`basic_indicators` has functions native to the Python standard library that get calculated for a list of asset prices and
+returns a list of technical indicators.
 
-- moving_averages: contains the common moving averages (moving average, exponential ma, smoothed ma, macd),
-        as well as a personalised moving average.
-- strength_indicators: currently only has Relative Strength Index and Stochastic as well as their personalised variations.
-- candle_indicators: currently only has Bollinger Bands and the Ichimoku Cloud as well as their personalised variations.
-
-By personalised variations we mean that we have allowed the user to determine how certain calculations were done.
-For example, the RSI uses as smoothed MA to calculate the average gains, the personalised RSI allows you to choose your
-MA model. Each personalised function will have more detail on how to use it .
-
-### Moving Averages
-
-Calling moving_averages
-
+##### Log
+Calculates the log for a list of prices
 ```python
-from PyTechnicalIndicators.Single import moving_averages
+from PyTechnicalIndicators.Bulk.basic_indicators import log
+prices = [100, 102, 105, 103, 108]
+bulk_log = log(prices)
+print(bulk_log)
+# will print [4.605170185988092, 4.624972813284271, 4.653960350157523, 4.634728988229636, 4.68213122712422]
 ```
 
-#### moving_average(prices)
-
-The simple moving average of a series
-
-__Parameters:__
-
-- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
-
-__Example:__
+##### Log Differnce
+Calculates difference in log between a price at t and t-1
 ```python
-prices = [100, 102, 101 ... ]
+from PyTechnicalIndicators.Bulk.basic_indicators import log_diff
+prices = [100, 102, 105, 103, 108]
+bulk_log_diff = log_diff(prices)
+print(bulk_log_diff)
+# will print [0, 0.019802627296178876, 0.028987536873252395, -0.019231361927887214, 0.04740223889458406]
+```
+The first value will always be 0 because there is no other value to do the difference against.
 
-ma = moving_averages.moving_average(prices)
+##### Standard Deviation
+Calculates the standard deviation of a list of prices over a period. Period parameter that needs to be 
+determined by the caller
+```python
+from PyTechnicalIndicators.Bulk.basic_indicators import standard_deviation
+prices = [100, 102, 105, 103, 108]
+bulk_stddev = standard_deviation(prices, 3)
+print(bulk_stddev)
+# will print [2.516611478423583, 1.5275252316519468, 2.516611478423583]
 ```
 
-#### exponential_moving_average(prices)
-
-The exponential moving average (EMA), this is usually used when the latest prices are expected to have a greater impact
-
-__Parameters:__
-
-- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
-
-__Example:__
+##### Mean
+Calculates price average over a period. Period needs to be determined by the caller. 
 ```python
-prices = [100, 102, 101 ... ]
-
-ema = moving_averages.exponential_moving_average(prices)
+from PyTechnicalIndicators.Bulk.basic_indicators import mean
+prices = [100, 102, 105, 103, 108]
+bulk_mean = mean(prices, 3)
+print(bulk_mean)
+# will print [102.333333333333333, 103.3333333333333333, 105.333333333333333]
 ```
 
-#### smoothed_moving_average(prices)
-
-The smoothed moving average (SMA) is similar to the exponential moving average, the calculation of the alpha varies
- slightly (see personalised_moving_average for a more detailed explanation of the alpha)
-
-__Parameters:__
-
-- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
-
-__Example:__
+##### Median
+Calculates the price median over a period. Period needs to be determined by the caller.
 ```python
-prices = [100, 102, 101 ... ]
-
-sma = moving_averages.smoothed_moving_average(prices)
+from PyTechnicalIndicators.Bulk.basic_indicators import median
+prices = [100, 102, 105, 103, 108]
+bulk_median = median(prices, 3)
+print(bulk_median)
+# will print [102, 103, 105]
 ```
 
-#### personalised_moving_average(prices, alpha_nominator, alpha_denominator)
-
-The personalised moving average (PMA) allows you to determine your nominator and denominator values for the alpha.
-The alpha determines the impact of previous prices, the higher the alpha the lower past values have an impact. The
-calculation is as follows:
-
+##### Variance
+Calculates price variance over a period. Period needs to be determined by the caller.
 ```python
-alpha = alpha_nominator / (length_prices + alpha_denominator)
-```
-The alpha_denominator may be a little confusing as it isn't itself the entire denominator, it is a variable that gets
-added to the length of the submitted prices to form the actual alpha_denominator.
-
-The EMA used an alpha nominator of 2 and an alpha denominator of 1.
-The SMA used an alpha nominator of 1 and an alpha denominator of 0.
-
-__Parameters:__
-
-- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
-- _alpha_nominator:_ float or int, can be 0, but it isn't recommended.
-- _alpha_denominator:_ float or int, can be 0
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-pma = moving_averages.personalised_moving_average(prices, 3, 2)
+from PyTechnicalIndicators.Bulk.basic_indicators import variance
+prices = [100, 102, 105, 103, 108]
+bulk_variance = variance(prices, 3)
+print(bulk_variance)
+# will print [6.33333333333333333, 2.3333333333333333, 6.333333333333333]
 ```
 
-#### moving_average_divergence_convergence(prices)
-
-The moving average divergence convergence (MACD) only returns the MACD line, to get the single line you will need to
-call signal_line (detailed below), the histogram is simply one minus the other, and isn't yet provided here.
-
-The moving_average_divergence_convergence **requires** the length of prices to be at least 26 as that is the number of
-periods taken into account, it accepts more, but discards the extra no passing them in will only impact your performance.
-
-If you want to pass in a smaller or bigger period see personalised_macd.
-
-__Parameters:__
-
-- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n, must be at least
-26 periods in length
-
-__Example:__
+##### Mean Absolute Deviation
+Calculates the prices absolute deviation from the mean over a period. Period needs to be determined by the caller.
 ```python
-prices = [100, 102, 101 ... ]
-
-macd = moving_averages.moving_average_divergence_convergence(prices)
+from PyTechnicalIndicators.Bulk.basic_indicators import mean_absolute_deviation
+prices = [100, 102, 105, 103, 108]
+bulk_mean_absolute_deviation = mean_absolute_deviation(prices, 3)
+print(bulk_mean_absolute_deviation)
+# will print [1.7777777777777761, 1.1111111111111096, 1.7777777777777761]
 ```
 
-#### signal_line(macd)
-
-The signal line returns the line that is complementary to moving_average_divergence_convergence, and is required
-to be 9 periods long, no more, no less. If you'd like to pass in a different amount see personalised_signal_line
-
-__Parameters:__
-
-- _macd:_ list of 9 macds retrieved from moving_average_divergence_convergence
-
-__Example:__
+##### Median Absolute Deviation
+Calculates the prices absolute deviation from the median over a period. Period needs to be determined by the caller.
 ```python
-macd = [1.2, 1.45, 0.98 ... ]
-
-signal = moving_averages.signal_line(macd[:-9])
+from PyTechnicalIndicators.Bulk.basic_indicators import median_absolute_deviation
+prices = [100, 102, 105, 103, 108]
+bulk_median_absolute_deviation = median_absolute_deviation(prices, 3)
+print(bulk_median_absolute_deviation)
+# will print [1.6666666666666667, 1.0, 1.6666666666666667]
 ```
 
-#### personalised_macd(prices, short_period, long_period, ma_model='ema')
-
-The personalised macd allows you to determine what the short period and long period are for the macd calculation.
-Essentially the macd is the subsctraction of the EMA of the short period - the EMA of the long period, which are
-12 and 26 respectively in the traditional MACD. Here we allow you to determine what those periods are.
-We also allow you to chose you moving average model in the event where you would prefer something other than the EMA.
-
-__Parameters:__
-
-- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n, the length of prices
-must be at least as big as the value for your long_period
-- short_period: int, value strictly greater than 0 but smaller than your long_period.
-- long_period: int, value strictly greater than the short period but smaller or equal to the length of prices.
-- ma_model: _optional_ The moving average model of your choice (defaults to EMA):
-  - for moving average either of the following: 'ma', 'moving average', 'moving_average'
-  - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
-  - for exponential moving average either of the following: 'ema', 'exponential moving average', 'exponential_moving_average'
-
-__Example:__
+##### Mode Absolute Deviation
+Calculates the prices absolute deviation from the median over a period. Period needs to be determined by the caller.
 ```python
-prices = [100, 102, 101 ... ]
-
-pers_macd = moving_averages.personalised_macd(prices, 10, 20, 'smoothed moving average')
+from PyTechnicalIndicators.Bulk.basic_indicators import mode_absolute_deviation
+prices = [100, 102, 105, 103, 108]
+bulk_mode_absolute_deviation = mode_absolute_deviation(prices, 3)
+print(bulk_mode_absolute_deviation)
+# will print [2.3333333333333335, 1.3333333333333333, 1.6666666666666667]
 ```
 
-#### personalised_signal_line(macd, ma_model='ema')
+#### Candle Indicators
+`candle_indicators` has technical indicators intended to be used on OHLC charts.
 
-The personalised signal line is similar to the personalised MACD in that it lets you decide of the length of the macds
-that you want to pass in, however is doesn't require you to insert a variable, it will instead just calculate it based
-on the length of the macd list provided.
+##### Bollinger Bands
+Calculates the Bollinger Bands for typical prices. The period defaults to 20, moving average model defaults to 'ma' 
+(moving average), and the standard deviation multiplier defaults to 2. These can be changed by the caller.
 
-You can also choose the MA model you would like to run, it is normally just a EMA but you are free to choose your model.personalised
-
-__Parameters:__
-
-- _macd:_ list of macds can be either from a normal macd or a personalised one. The length of the list needs to be greater
-than 1 and can be as large as you like.
-- _ma_model:_ _optional_ The moving average model of your choice (defaults to EMA):
-  - for moving average either of the following: 'ma', 'moving average', 'moving_average'
-  - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
-  - for exponential moving average either of the following: 'ema', 'exponential moving average', 'exponential_moving_average'
-
-__Example:__
+The first item in the tuple is the lower band, the second item is the upper band.
 ```python
-macd = [1.2, 1.45, 0.98 ... ]
+from PyTechnicalIndicators.Bulk.candle_indicators import bollinger_bands
+# Default Bollinger Bands
+prices = [103, 105, 102, 107, 103, 111, 106, 104, 105, 108, 112, 120, 125, 110, 107, 108, 105, 103, 106, 107, 110, 108]
+bbands = bollinger_bands(prices)
+print(bbands)
+# will print [(96.36499833879442, 119.33500166120557), (96.91237286601877, 119.48762713398123), (97.16213062944371, 119.53786937055628)]
 
-signal = moving_averages.personalised_signal_line(macd, 'moving_average')
+# Personalised Bollinger Bands
+prices = [110, 107, 108, 105, 103, 106, 107, 110, 108]
+personalised_bbands = bollinger_bands(prices, period=7, ma_model='ema', stddev_multiplier=3)
+print(personalised_bbands) 
+# will print [(99.46018315489414, 112.81255052123461), (100.42609144537805, 113.77845881171852), (100.49915238054767, 114.23128362705957)]
 ```
 
-### Strength Indicators
+##### Ichimoku Cloud
+Calculates the Ichimoku Cloud from high, low, and closing prices. The conversion period defaults to 9, the base period
+defaults to 26, and the span B period defaults to 52. These can be changed by the caller.
 
-Calling stength indicators
-
+Returns the leading span A, leading span B, baseline, conversion line, and lagged close based on the base period, in that order.
 ```python
-from PyTechnicalIndicators.Single import strength_indicators
+from PyTechnicalIndicators.Bulk.candle_indicators import ichimoku_cloud
+# Default Ichimoku Cloud
+highs = [119, 117, 110, 100, 103, 104, 111, 103, 119, 120, 104, 111, 113, 114, 107, 102, 103, 111, 108, 107, 118,
+         106, 109, 118, 114, 108, 120, 103, 119, 119, 110, 100, 118, 111, 101, 105, 113, 112, 103, 117, 107, 115,
+         114, 116, 110, 108, 103, 100, 100, 100, 116, 115, 113, 119]
+lows = [114, 111, 103, 100, 103, 96, 100, 101, 91, 115, 93, 98, 107, 95, 104, 99, 95, 94, 96, 92, 114, 97, 108, 106,
+        107, 106, 97, 101, 92, 107, 110, 91, 101, 104, 93, 97, 92, 106, 102, 96, 100, 102, 109, 113, 109, 108, 95,
+        95, 98, 94, 104, 98, 99, 103]
+close = [114, 116, 108, 100, 103, 102, 106, 101, 103, 118, 102, 106, 112, 101, 107, 99, 101, 111, 103, 106, 116,
+         106, 108, 106, 113, 106, 109, 103, 106, 118, 110, 94, 109, 107, 93, 101, 103, 110, 102, 102, 102, 112, 111,
+         115, 110, 108, 103, 98, 98, 95, 113, 112, 109, 114]
+icloud = ichimoku_cloud(highs, lows, close)
+print(icloud) 
+# will print [(105.25, 105.5, 105.5, 105, 109), (105.0, 105.5, 105, 105, 103), (105.75, 105.5, 105, 106.5, 106)]
+
+# Personalised Ichimoku Cloud
+highs = [117, 107, 115, 114, 116, 110, 108, 103, 100, 100, 100, 116, 115, 118, 121]
+lows = [96, 100, 102, 109, 113, 109, 108, 95, 95, 98, 94, 104, 98, 95, 92]
+close = [99, 103, 108, 113, 115, 110, 108, 96, 95, 99, 99, 109, 108, 113, 116]
+icloud = ichimoku_cloud(highs, lows, close, conversion_period=5, base_period=3, span_b_period=13)
+print(icloud) 
+# will print [(105.0, 105.5, 105, 105, 99), (106.25, 106.0, 106.5, 106, 109), (106.5, 106.5, 106.5, 106.5, 108)]
 ```
 
-#### relative_strength_index(prices)
+#### Correlation Indicators
+`correlation_indicators` are indicators that calculate the correlation between two assets.
 
-Returns the relative strength index (RSI) of submitted prices, the length of prices needs to be 14 periods long, no more,
-no less.
-
-__Parameters:__
-
-- _prices:_ list of floats or ints of prices that needs to be exactly 14 periods long.
-
-__Example:__
+##### Correlate Asset Prices
+Calculates the price correlation between two asset prices over a given period. Period needs to be determined by caller.
 ```python
-prices = [100, 102, 101 ... ]
-
-rsi = strength_indicators.relative_strength_index(prices)
+from PyTechnicalIndicators.Bulk.correlation_indicators import correlate_asset_prices
+asset_a_price = [120, 110, 105, 112, 114, 116]
+asset_b_price = [150, 155, 162, 165, 159, 154]
+correlation = correlate_asset_prices(asset_a_price, asset_b_price, 5)
+print(correlation) 
+# will print [-0.65025528597848, -0.4217205045478597]
 ```
 
-#### personalised_rsi(prices, ma_model='sma')
+#### Momentum Indicators
+`momentum_indicators` are indicators that calculate price momentum of an asset.
 
-The personalised RSI allows you to choose which MA model to use as well as the number of periods. The traditional RSI 
-uses 14 periods and a SMA model.
-
-__Parameters__:
-
-- _prices:_ list of floats or int, the length of prices needs to be exactly of length of the period that you want to evaluate.
-than 1 and can be as large as you like.
-- _ma_model:_ _optional_ The moving average model of your choice (defaults to SMA):
-  - for moving average either of the following: 'ma', 'moving average', 'moving_average'
-  - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
-  - for exponential moving average either of the following: 'ema', 'exponential moving average', 'exponential_moving_average'
-
-__Example:__
+##### Rate of Change
+Calculates the rate of change of an asset over a period. Period needs to be determined by caller.
 ```python
-prices = [100, 102, 101 ... ]
-
-pers_rsi = strength_indicators.personalised_rsi(prices, 'ema')
+from PyTechnicalIndicators.Bulk.momentum_indicators import rate_of_change
+closing_prices = [100, 101, 105, 103, 99, 80, 85, 100, 90, 85]
+roc = rate_of_change(closing_prices, 3)
+print(roc) 
+# will print [3.0, -1.9801980198019802, -23.809523809523807, -17.475728155339805, 1.0101010101010102, 12.5, 0]
 ```
 
-#### stochastic_oscillator(close_prices)
-
-Returns the stochastic oscillator (SO) for submitted close prices which need to be 14 periods long, no more, no less.
-
-__Parameters:__
-
-- _close_prices:_ list of floats or ints of closing prices that needs to be exactly 14 periods long.
-
-__Example:__
+##### On Balance Volume
+Calculates the on balance volume from asset prices and volume.
 ```python
-close = [99, 103, 96 ... ]
-
-so = strength_indicators.stochastic_oscillator(close)
+from PyTechnicalIndicators.Bulk.momentum_indicators import on_balance_volume
+closing_prices = [100, 105, 111, 107, 108]
+volume = [1200, 1800, 1600, 1700, 1500]
+obv = on_balance_volume(closing_prices, volume)
+print(obv) 
+# will print [1200, 3000, 4600, 2900, 4400]
 ```
 
-#### personalised_stochastic_oscillator(close_prices)
-
-The personalised version of the stochastic oscillator allows you to submit close prices of any length.
-
-__Parameters:__
-
-- _close_prices:_ list of floats or ints of closing prices, the length is of your choosing.
-
-__Example:__
-```python
-close = [99, 103, 96 ... ]
-
-pers_so = strength_indicators.personalised_stochastic_oscillator(close)
-```
-
-### Candle Indicators
-
-Calling candle indicators
+##### Commodity Channel Index
+Calculates the commodity channel index from typical prices over a given period. Period needs to be determined by caller.
+Moving average model defaults to 'ma' (moving average) and absolute deviation model default to 'mean'. These can be
+changed by caller.
 
 ```python
-from PyTechnicalIndicators.Single import candle_indicators 
+from PyTechnicalIndicators.Bulk.momentum_indicators import commodity_channel_index
+# Default Commodity Channel Index
+prices = [103, 106, 111, 113, 111, 102, 98, 99, 95]
+cci = commodity_channel_index(prices, 7)
+print(cci) 
+# [-119.7640117994101, -86.35170603674531, -94.51476793248943]
+
+prices = [103, 106, 111, 113, 111, 102, 98, 99, 95]
+personalised_cci = commodity_channel_index(prices, period=7, ma_model='ema', absolute_deviation_model='median')
+print(cci) 
 ```
 
-#### bollinger_bands(typical_prices)
+#### Moving Averages
+`moving_averages` has indicators related to calculating and using moving averages.
 
-Returns the upper and lower Bollinger Band for a submitted typical prices, which need to be 20 periods long, no more, no
-less.
-
-The typical price is calculated by taking the average of the High, Low, and Close ( (High + Low + Close) / 3 ).
-
-__Parameters:__
-
-- _typical_prices:_ list of floats or ints of exactly 20 periods long.
-
-__Example:__
+##### Moving Average
+Calculates the moving average of an asset over a given period. Period needs to be determined by caller.
 ```python
-typical_prices = [100, 102, 101 ... ]
-
-bband = candle_indicators.bollinger_bands(typical_prices)
+from PyTechnicalIndicators.Bulk.moving_averages import moving_average
+prices = [110, 107, 108, 105, 103, 106, 107]
+mas = moving_average(prices, 5)
+print(mas) 
+# [106.6, 105.8, 105.8]
 ```
 
-#### personalised_bollinger_bands(typical_price, ma_model='ma', stddev_multiplier=2)
-
-The personalised version allows you to choose the length of typical prices to submit as well as the MA model to run.
-
-The traditional Bollinger Band model uses a MA and 20 periods.
-
-__Parameters:__
-
-- _typical_prices:_ a list of floats or ints of exactly 20 periods long.
-- _ma_model:_ _optional_ The moving average model of your choice (defaults to MA):
-  - for moving average either of the following: 'ma', 'moving average', 'moving_average'
-  - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
-  - for exponential moving average either of the following: 'ema', 'exponential moving average', 'exponential_moving_average'
-- _stddev_multiplier:_ int, number of standard deviations, defaults to 2.
-
-__Example:__
+##### Exponential Moving Average
+Calculates the exponential moving average of an asset over a given period. Period needs to be determined by caller.
 ```python
-typical_prices = [100, 102, 101 ... ]
-
-pers_bband = candle_indicators.personalised_bollinger_bands(typical_prices, 'ema')
+from PyTechnicalIndicators.Bulk.moving_averages import exponential_moving_average
+prices = [110, 107, 108, 105, 103, 106, 107]
+emas = exponential_moving_average(prices, 5)
+print(emas) 
+# [105.35071090047394, 105.36492890995261, 105.9099526066351]
 ```
 
-#### ichimoku_cloud(highs, lows)
-
-Returns the leading span A and leading span B, using the highs and lows of a series, these need to be 52 periods long, no
-more, no less.
-
-__Parameters:__
-- _highs:_ list of floats or ints of the highs of a series, needs to be 52 periods long.
-- _lows:_ list of floats or ints of the lows of a series, needs to be 52 periods long.
-
-__Example:__
+##### Smoothed Moving Average
+Calculates the smoothed moving average of an asset over a given period. Period needs to be determined by caller.
 ```python
-typical_prices = [100, 102, 101 ... ]
-
-icloud = candle_indicators.ichimoku_cloud(highs, lows)
+from PyTechnicalIndicators.Bulk.moving_averages import smoothed_moving_average
+prices = [110, 107, 108, 105, 103, 106, 107]
+smas = smoothed_moving_average(prices, 5)
+print(smas) 
+# [105.89005235602093, 105.52213231794384, 105.81770585435507]
 ```
 
-#### personalised_ichimoku_cloud(highs, lows, conversion_period, base_period, span_b_period)
-The personalised version of the Ichimoku Cloud allows you to play around with the variables of the Ichimoku Cloud. These
-are rather involved so don't play around with them if you don't know what you're doing, or do, I won't judge.
-
-__Parameters:__
-- _highs:_ list of floats or ints of the highs of a series, needs to be 52 periods long.
-- _lows:_ list of floats or ints of the lows of a series, needs to be 52 periods long.
-- _conversion_period:_ 
-- _base_period:_
-- _span_b_period:_
-
-__Example:__
+##### Personalised Moving Average
+The `personalised_moving_average` is an internal function used by the smoothed (nominator=1, denominator=0), and the
+exponential (nominator=2, denominator=1) moving average functions as the underlying logic is indentical with changes in
+the nominator and denominator of the alpha variables for each. This function is exposed in the event that the caller 
+knows what they're doing, or feel lucky, and wants to tweak the alpha when calculating the moving average.
 ```python
-typical_prices = [100, 102, 101 ... ]
-
-pers_icloud = candle_indicators.personalised_ichimoku_cloud(highs, lows, , , )
+from PyTechnicalIndicators.Bulk.moving_averages import personalised_moving_average
+prices = [110, 107, 108, 105, 103, 106, 107]
+pmas = personalised_moving_average(prices, period=5, alpha_nominator=5, alpha_denominator=3)
+print(pmas)
 ```
 
----
-## Bulk
+##### Moving Average Convergence Divergence
+Calculates the Moving Average Convergence Divergence (MACD). This is a high level function that calls `macd_line`, 
+`signal_line`, and does the difference of the two to allow a histogram to be charted. It returns the three in that 
+order.
 
-Bulk is broken down into 4 sections, in a very similar way to Single, the only difference is that these are meant to run
-against large datasets, and return a **list** of values as opposed to a single point like in Single.
-
-- basic_indicators: These are a list of Python math and statistics functions that have been wrapped up in a loop to allow
-  them to return a list. These are mostly to be used within the other functions.
-- moving_averages: contains the common moving averages (moving average, exponential ma, smoothed ma, macd),
-        as well as a personalised moving average.
-- strength_indicators: currently only has Relative Strength Index and Stochastic as well as their personalised variations.
-- candle_indicators: currently only has Bollinger Bands and the Ichimoku Cloud as well as their personalised variations.
-
-By personalised variations we mean that we have allowed the user to determine how certain calculations were done.
-For example, the RSI uses as smoothed MA to calculate the average gains, the personalised RSI allows you to choose your
-MA model. Each personalised function will have more detail on how to use it.
-
-### Basic Indicators
-
-Calling basic_indicators
-
+The `macd_line` and `signal_line` can be called independently and are covered below.
 ```python
-from PyTechnicalIndicators.Bulk import basic_indicators
+from PyTechnicalIndicators.Bulk.moving_averages import moving_average_convergence_divergence
+# Default MACD
+prices = [103, 105, 102, 107, 103, 111, 106, 104, 105, 108, 112, 120, 125, 110, 107, 108, 105, 103, 106, 107, 101,
+              99, 103, 106, 104, 102, 109, 116]
+macd = moving_average_convergence_divergence(prices)
+print(macd)
+
+# Personalised MACD
+personalised_macd = moving_average_convergence_divergence(prices, macd_short_period=3, macd_long_period=9, signal_period=3, ma_model='ma')
+print(personalised_macd)
 ```
 
-#### log(prices)
-
-Returns a list of logs for the list of submitted prices. This is just the Python math log function wrapped in a loop to
-return a list of logs.
-
-__Parameters:__
-- _prices:_ list of floats or ints of prices that needs to be exactly 14 periods long.
-
-__Example:__
+##### MACD Line
+Calculate the MACD line for `moving_average_convergence_divergence`. The short period defaults to 12, the long period
+defaults to 26, and the moving average model defaults to 'ema' (exponential moving average).
 ```python
-prices = [100, 102, 101 ... ]
+from PyTechnicalIndicators.Bulk.moving_averages import macd_line
+# Default MACD Line
+prices = [103, 105, 102, 107, 103, 111, 106, 104, 105, 108, 112, 120, 125, 110, 107, 108, 105, 103, 106, 107, 101,
+              99, 103, 106, 104, 102, 109, 116]
+macd = macd_line(prices)
+print(macd)
+# [-2.164962379494412, -1.597159438916961, -0.4970353844502142]
 
-logs = basic_indicators.log(prices)
+# Personalised MACD Line
+prices = [110, 107, 108, 105, 103, 106, 107]
+pers_macd = macd_line(prices, short_period=3, long_period=5, ma_model='ma')
+print(pers_macd) 
+# [-1.2666666666666657, -1.1333333333333258, -0.46666666666666856]
 ```
 
-#### log_difference(prices)
-
-Returns a list of log difference for the list of submitted prices. This substracts the log of t and t-1.
-
-__Parameters:__
-- _prices:_ list of floats or ints of prices that needs to be exactly 14 periods long.
-
-__Example:__
+##### Signal Line
+Calculates the signal line for `moving_average_convergence_divergence`. The period defaults to 9, nd the moving average
+model defaults to 'ema' (exponential moving average).
 ```python
-prices = [100, 102, 101 ... ]
+from PyTechnicalIndicators.Bulk.moving_averages import signal_line
+# Default Signal Line
+macds = [-2, -1.8, -1, -0.3, 0.1, 0.6, 1.2, 2.4, 1.9, 1.8, 1.2]
+signal = signal_line(macds)
+print(signal)
+# [0.8922983167758831, 1.1916575053179188, 1.2863408873310813]
 
-log_diff = basic_indicators.log_diff(prices)
+# Personalised Signal Line
+macds = [0.1, 0.6, 1.2, 2.4, 1.9]
+signal = signal_line(macds, period=3, ma_model='ma')
+print(signal)
+# [0.6333333333333333, 1.3999999999999997, 1.8333333333333333]
 ```
 
-#### stddev(prices, period, fill_empty=False, fill_value=None)
-
-Returns a list of standard deviations for the list of submitted prices. This uses the Python statistics stdev wrapped in
-a loop. It expects a period to know how many prices to apply the stdev to. 
-
-__Parameters:__
-- _prices:_ list of floats or ints of prices that needs to be at least one in length.
-- _period:_ int, the number of prices that you would like taken into account to calculate the standard deviation.
-- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
-  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see 
-  (Example)[] )
-- _fill_value:_ The value that you want used to fill in the empty spaces.
-
-__Example:__
+##### McGinley Dynamic
+Calculates the McGinely dynamic of an asset over a period. Period needs to be determined by the caller.
 ```python
-prices = [100, 102, 101 ... ]
-
-std_devs = basic_indicators.stddev(prices, 10, True, 0)
+from PyTechnicalIndicators.Bulk.moving_averages import mcginley_dynamic
+prices = [100, 110, 112, 115, 113, 111]
+md = mcginley_dynamic(prices, 10)
+print(md) 
+# [100, 100.68301345536507, 101.42207997889615, 102.24351258209249, 102.96445361554517, 103.55939307450244]
 ```
 
-#### mean(prices, period, fill_empty=False, fill_value=None)
-
-Returns a list of means for the list of submitted prices. This uses the Python statistics mean function wrapped in a 
-loop. It expects a period to know how many prices to apply the mean to.
-
-__Parameters:__
-- _prices:_ list of floats or ints of prices that needs to be at least 1.
-- _period:_ int, the number of prices that you would like taken into account to calculate the mean.
-- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
-  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see 
-  (Example)[] )
-- _fill_value:_ The value that you want used to fill in the empty spaces.
-
-__Example:__
+##### Moving Average Envelopes
+Calculates upper and lower envelopes for a list of prices over a given period. Moving average model defaults to 'ma'
+(moving average), the difference between the bands and the moving average defaults to 3%. These can be updated by the
+caller.
 ```python
-prices = [100, 102, 101 ... ]
+from PyTechnicalIndicators.Bulk.moving_averages import moving_average_envelopes
+# Default MA Envelopes
+prices = [202, 205, 208, 204, 201, 198, 202]
+mae = moving_average_envelopes(prices, 5)
+print(mae) 
+# [(210.12, 204, 197.88), (209.296, 203.2, 197.10399999999998), (208.678, 202.6, 196.522)]
 
-mean = basic_indicators.mean(prices, 5, True, None)
+# Personalied MA Envelopes
+prices = [202, 205, 208, 204, 201, 198, 202]
+pers_mae = moving_average_envelopes(prices, 5, 'ma', 3)
+print(pers_mae) 
+# [(210.12, 204, 197.88), (209.296, 203.2, 197.10399999999998), (208.678, 202.6, 196.522)]
 ```
 
-#### median(prices, period, fill_empty=False, fill_value=None)
+#### Oscillators
+Technical Indicators that oscillate
 
-Returns a list of medians for the list of submitted prices. This uses the Python statistics median function wrapped in a 
-loop. It expects a period to know how many prices to apply the median to.
-
-__Parameters:__
-- _prices:_ list of floats or ints of prices that needs to be at least 1.
-- _period:_ int, the number of prices that you would like taken into account to calculate the median.
-- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
-  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see 
-  (Example)[] )
-- _fill_value:_ The value that you want used to fill in the empty spaces.
-
-__Example:__
+##### Money Flow Index
+Calculates the money flow index for an asset. Period defaults to 14 but can be updated by caller.
 ```python
-prices = [100, 102, 101 ... ]
+from PyTechnicalIndicators.Bulk.oscillators import money_flow_index
+# Default MFI
+typical_prices = [100, 105, 103, 104, 106, 109, 104, 107, 111, 115, 109, 108, 107, 106, 105, 108]
+volume = [1200, 1200, 1300, 1200, 1600, 1400, 2000, 1800, 1600, 1500, 1200, 1100, 1500, 1400, 1200, 1300]
+mfi = money_flow_index(typical_prices, volume)
+print(mfi)
+# [39.58136997172759, 33.33167997619165, 33.54593097992682]
 
-medians = basic_indicators.median(prices, 12)
+# Personalised MFI
+pers_mfi = money_flow_index(typical_prices, volume, 3)
+print(pers_mfi) 
+# [99.00990099009901, 51.75879396984925, 57.608695652173914, 52.6381129733085, 57.681641708264, 51.92211682476285, 0, 0, 0, 0, 57.465091299677766, 51.958562641631595, 0, 52.7027027027027]
 ```
 
-#### variance(prices, period, fill_empty=False, fill_value=None)
-
-Returns a list of medians for the list of submitted prices. This uses the Python statistics variance function wrapped in a 
-loop. It expects a period to know how many prices to apply the variance to.
-
-__Parameters:__
-- _prices:_ list of floats or ints of prices that needs to be at least 1.
-- _period:_ int, the number of prices that you would like taken into account to calculate the variance.
-- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
-  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see 
-  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
-- _fill_value:_ The value that you want used to fill in the empty spaces.
-
-__Example:__
+##### Chaikin Oscillator
+Calculates the Chaikin ocillator for an asset. The short period defaults to 3, the long period to 10, the moving average
+model to 'ema' (exponential moving average).
 ```python
-prices = [100, 102, 101 ... ]
+from PyTechnicalIndicators.Bulk.oscillators import chaikin_oscillator
+# Default Chaikin Oscillator
+high = [150, 157, 163, 152, 155, 160, 158, 153, 148, 144, 145, 143]
+low = [132, 143, 153, 148, 145, 151, 142, 138, 132, 135, 137, 132]
+close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137, 140, 138]
+volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800, 1700, 1500]
+co = chaikin_oscillator(high, low, close, volume)
+print(co)
 
-variances = basic_indicators.variance(prices, 5)
+# Personalised Chaikin Oscillator
+pers_co = chaikin_oscillator(high, low, close, volume, 5, 20, 'ma')
+print(pers_co)
 ```
 
-
-### Moving Averages
-
-Calling moving_averages
-
-```python
-from PyTechnicalIndicators.Bulk import moving_averages
-```
-
-#### moving_average(prices, period, fill_empty=False, fill_value=None)
-
-The simple moving average of a series
-
-__Parameters:__
-
-- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
-- _period:_ int, the number of prices that you would like taken into account to calculate the median.
-- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
-  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
-  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
-- _fill_value:_ The value that you want used to fill in the empty spaces.
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-ma = moving_averages.moving_average(prices, 5, True, 0)
-```
-
-#### exponential_moving_average(prices, period, fill_empty=False, fill_value=None)
-
-The exponential moving average (EMA), this is usually used when the latest prices are expected to have a greater impact
-
-__Parameters:__
-
-- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
-- _period:_ int, the number of prices that you would like taken into account to calculate the median.
-- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
-  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
-  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
-- _fill_value:_ The value that you want used to fill in the empty spaces.
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-ema = moving_averages.exponential_moving_average(prices, 25)
-```
-
-#### smoothed_moving_average(prices, period, fill_empty=False, fill_value=None)
-
-The smoothed moving average (SMA) is similar to the exponential moving average, the calculation of the alpha varies
- slightly (see personalised_moving_average for a more detailed explanation of the alpha)
-
-__Parameters:__
-
-- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-sma = moving_averages.smoothed_moving_average(prices, 10, True)
-```
-
-#### personalised_moving_average(prices, period, alpha_nominator, alpha_denominator, fill_empty=False, fill_value=None)
-
-The personalised moving average (PMA) allows you to determine your nominator and denominator values for the alpha.
-The alpha determines the impact of previous prices, the higher the alpha the lower past values have an impact. The
-calculation is as follows:
-
-```python
-alpha = alpha_nominator / (length_prices + alpha_denominator)
-```
-The alpha_denominator may be a little confusing as it isn't itself the entire denominator, it is a variable that gets
-added to the length of the submitted prices to form the actual alpha_denominator.
-
-The EMA used an alpha nominator of 2 and an alpha denominator of 1.
-The SMA used an alpha nominator of 1 and an alpha denominator of 0.
-
-__Parameters:__
-
-- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n
-- _period:_ int, the number of prices that you would like taken into account to calculate the median.
-- _alpha_nominator:_ float or int, can be 0, but it isn't recommended.
-- _alpha_denominator:_ float or int, can be 0
-- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
-  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
-  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
-- _fill_value:_ The value that you want used to fill in the empty spaces.
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-pma = moving_averages.personalised_moving_average(prices, 15, 3, 2, True, prices[0])
-```
-
-#### moving_average_divergence_convergence(prices)
-
-The moving average divergence convergence (MACD) only returns the MACD line, to get the single line you will need to
-call signal_line (detailed below), the histogram is simply one minus the other, and isn't yet provided here.
-
-The moving_average_divergence_convergence **requires** the length of prices to be at least 26 as that is the number of
-periods taken into account, it accepts more, but discards the extra no passing them in will only impact your performance.
-
-If you want to pass in a smaller or bigger period see personalised_macd.
-
-__Parameters:__
-
-- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n, must be at least
-26 periods in length
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-macd = moving_averages.moving_average_divergence_convergence(prices)
-```
-
-#### signal_line(macd)
-
-The signal line returns the line that is complementary to moving_average_divergence_convergence, and is required
-to be 9 periods long, no more, no less. If you'd like to pass in a different amount see personalised_signal_line
-
-__Parameters:__
-
-- _macd:_ list of 9 macds retrieved from moving_average_divergence_convergence
-
-__Example:__
-```python
-macd = [1.2, 1.45, 0.98 ... ]
-
-signal = moving_averages.signal_line(macd[:-9])
-```
-
-#### personalised_macd(prices, short_period, long_period, ma_model='ema')
-
-The personalised macd allows you to determine what the short period and long period are for the macd calculation.
-Essentially the macd is the subsctraction of the EMA of the short period - the EMA of the long period, which are
-12 and 26 respectively in the traditional MACD. Here we allow you to determine what those periods are.
-We also allow you to chose you moving average model in the event where you would prefer something other than the EMA.
-
-__Parameters:__
-
-- _prices:_ list of floats or ints with oldest values at position 0 and newest value in position n, the length of prices
-must be at least as big as the value for your long_period
-- short_period: int, value strictly greater than 0 but smaller than your long_period.
-- long_period: int, value strictly greater than the short period but smaller or equal to the length of prices.
-- ma_model: _optional_ The moving average model of your choice (defaults to EMA):
-  - for moving average either of the following: 'ma', 'moving average', 'moving_average'
-  - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
-  - for exponential moving average either of the following: 'ema', 'exponential moving average', 'exponential_moving_average'
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-pers_macd = moving_averages.personalised_macd(prices, 10, 20, 'smoothed moving average')
-```
-
-#### personalised_signal_line(macd, period, ma_model='ema')
-
-The personalised signal line is similar to the personalised MACD in that it lets you decide of the length of the macds
-that you want to pass in, however is doesn't require you to insert a variable, it will instead just calculate it based
-on the length of the macd list provided.
-
-You can also choose the MA model you would like to run, it is normally just a EMA but you are free to choose your model.personalised
-
-__Parameters:__
-
-- _macd:_ list of macds can be either from a normal macd or a personalised one. The length of the list needs to be greater
-than 1 and can be as large as you like.
-- _period:_ int, the number of prices that you would like taken into account to calculate the median.
-- _ma_model:_ _optional_ The moving average model of your choice (defaults to EMA):
-  - for moving average either of the following: 'ma', 'moving average', 'moving_average'
-  - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
-  - for exponential moving average either of the following: 'ema', 'exponential moving average', 'exponential_moving_average'
-
-__Example:__
-```python
-macd = [1.2, 1.45, 0.98 ... ]
-
-signal = moving_averages.personalised_signal_line(macd, 20, 'moving_average')
-```
-
-### Strength Indicators
-
-Calling stength indicators
-
-```python
-from PyTechnicalIndicators.Single import strength_indicators
-```
-
-#### relative_strength_index(prices)
-
-Returns the relative strength index (RSI) of submitted prices, the length of prices needs to be 14 periods long, no more,
-no less.
-
-__Parameters:__
-
-- _prices:_ list of floats or ints of prices that needs to be exactly 14 periods long.
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-rsi = strength_indicators.relative_strength_index(prices)
-```
-
-#### personalised_rsi(prices, period, ma_model='sma')
-
-The personalised RSI allows you to choose which MA model to use as well as the number of periods. The traditional RSI 
-uses 14 periods and a SMA model.
-
-__Parameters__:
-
-- _prices:_ list of floats or int, the length of prices needs to be exactly of length of the period that you want to evaluate.
-than 1 and can be as large as you like.
-- _period:_ int, the number of prices that you would like taken into account to calculate the median.
-- _ma_model:_ _optional_ The moving average model of your choice (defaults to SMA):
-  - for moving average either of the following: 'ma', 'moving average', 'moving_average'
-  - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
-  - for exponential moving average either of the following: 'ema', 'exponential moving average', 'exponential_moving_average'
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-pers_rsi = strength_indicators.personalised_rsi(prices, 20,'ema')
-```
-
-#### stochastic_oscillator(close_prices)
-
-Returns the stochastic oscillator (SO) for submitted close prices which need to be 14 periods long, no more, no less.
-
-__Parameters:__
-
-- _close_prices:_ list of floats or ints of closing prices that needs to be exactly 14 periods long.
-
-__Example:__
-```python
-close = [99, 103, 96 ... ]
-
-so = strength_indicators.stochastic_oscillator(close)
-```
-
-#### personalised_stochastic_oscillator(close_prices, period)
-
-The personalised version of the stochastic oscillator allows you to submit close prices of any length.
-
-__Parameters:__
-
-- _close_prices:_ list of floats or ints of closing prices, the length is of your choosing.
-- _period:_ int, the number of prices that you would like taken into account to calculate the median.
-
-__Example:__
-```python
-close = [99, 103, 96 ... ]
-
-pers_so = strength_indicators.personalised_stochastic_oscillator(close, 5)
-```
-
-### Candle Indicators
-
-Calling candle indicators
-
-```python
-from PyTechnicalIndicators.Single import candle_indicators 
-```
-
-#### bollinger_bands(typical_prices, fill_empty=False, fill_value=None)
-
-Returns the upper and lower Bollinger Band for a submitted typical prices, which need to be 20 periods long, no more, no
-less.
-
-The typical price is calculated by taking the average of the High, Low, and Close ( (High + Low + Close) / 3 ).
-
-__Parameters:__
-
-- _typical_prices:_ a list of floats or ints of exactly 20 periods long.
-- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
-  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
-  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
-- _fill_value:_ The value that you want used to fill in the empty spaces.
-
-__Example:__
-```python
-typical_prices = [100, 102, 101 ... ]
-
-bband = candle_indicators.bollinger_bands(typical_prices, True, 0)
-```
-
-#### personalised_bollinger_bands(typical_price, period, ma_model='ma', stddev_multiplier=2, fill_empty=False, fill_value=None)
-
-The personalised version allows you to choose the length of typical prices to submit as well as the MA model to run.
-
-The traditional Bollinger Band model uses a MA and 20 periods.
-
-__Parameters:__
-
-- _typical_prices:_ a list of floats or ints of a chosen period period.
-- _period:_ int, the number of prices that you would like taken into account to calculate the median.
-- _ma_model:_ _optional_ The moving average model of your choice (defaults to MA):
-  - for moving average either of the following: 'ma', 'moving average', 'moving_average'
-  - for smoothed moving average either of the following: 'sma', 'smoothed moving average', 'smoothed_moving_average'
-  - for exponential moving average either of the following: 'ema', 'exponential moving average', 'exponential_moving_average'
-- _stddev_multiplier:_ int or float, number of standard deviations, defaults to 2.  
-- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
-  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
-  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
-- _fill_value:_ The value that you want used to fill in the empty spaces.  
-
-__Example:__
-```python
-typical_prices = [100, 102, 101 ... ]
-
-pers_bband = candle_indicators.personalised_bollinger_bands(typical_prices, 10, 'ema', 1.5, True, None)
-```
-
-#### ichimoku_cloud(highs, lows, fill_empty=False, fill_value=None)
-
-Returns the leading span A and leading span B, using the highs and lows of a series, these need to be 52 periods long, no
-more, no less.
-
-__Parameters:__
-- _highs:_ list of floats or ints of the highs of a series, needs to be 52 periods long.
-- _lows:_ list of floats or ints of the lows of a series, needs to be 52 periods long.
-- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
-  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
-  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
-- _fill_value:_ The value that you want used to fill in the empty spaces.  
-
-__Example:__
-```python
-highs = [100, 102, 101 ... ]
-lows = [90, 86, 92 ... ]
-
-icloud = candle_indicators.ichimoku_cloud(highs, lows, True, 0)
-```
-
-#### personalised_ichimoku_cloud(highs, lows, conversion_period, base_period, span_b_period, fill_empty=False, fill_value=None)
-The personalised version of the Ichimoku Cloud allows you to play around with the variables of the Ichimoku Cloud. These
-are rather involved so don't play around with them if you don't know what you're doing, or do, I won't judge.
-
-__Parameters:__
-- _highs:_ list of floats or ints of the highs of a series, needs to be 52 periods long.
-- _lows:_ list of floats or ints of the lows of a series, needs to be 52 periods long.
-- _conversion_period:_ 
-- _base_period:_
-- _span_b_period:_
-- _fill_empty:_ Boolean, whether you want to fill the list with a value to match the length of the submitted prices. This
-  is helpful when using this with Pandas as it will allow to insert the returned list directly into your DataFrame (see
-  (Example)[https://github.com/0100101001010000/PyTechnicalIndicators_Examples/tree/main/Notebook_Example] )
-- _fill_value:_ The value that you want used to fill in the empty spaces. 
-
-__Example:__
-```python
-highs = [100, 102, 101 ... ]
-lows = [91, 95, 95 ... ]
-
-pers_icloud = candle_indicators.personalised_ichimoku_cloud(highs, lows, , , )
-```
-
----
-## Chart_Patterns
-Chart patterns is a collection of functions to help highlight and break down trends in the data. 
-
-It is broken down in three parts:
-- peaks: highlights the peaks (highs) of a series
-- pits: highlights the pits (lows) of a series
-- trends: a set of functions to retrieve the trend as an int, angle...
-
-### peaks
-
-Calling peaks
-
-```python
-from PyTechnicalIndicators.Chart_Patterns import peaks
-```
-
-#### get_peaks(prices, period=5)
-
-Gets the highest prices of a series within a predetermined period, and returns them as a list.
-
-__Parameters:__
-- _prices:_ list of floats or ints of the prices of a series.
-- _period:_ _optional_ int, number of prices before and after. 
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-peaks_list = peaks.get_peaks(prices, 2)
-```
-
-#### get_highest_peak(prices)
-
-Returns the max of the previous function
-
-__Parameters:__
-- _prices:_ list of floats or ints of the prices of a series.
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-max_pit = peaks.get_highest_peak(prices)
-```
-
-### pits
-
-Calling pits
-
-```python
-from PyTechnicalIndicators.Chart_Patterns import pits
-```
-
-#### get_pits(prices, period=5)
-
-Gets the lowest prices of a series within a predetermined period, and returns them as a list.
-
-__Parameters:__
-- _prices:_ list of floats or ints of the prices of a series.
-- _period:_ _optional_ int, number of prices before and after. 
-
-__Example:__
-
-```python
-prices = [100, 102, 101...]
-
-pits_list = pits.get_valleys(prices, 2)
-```
-
-#### get_lowest_pit(prices)
-
-Returns the min of the previous function
-
-__Parameters:__
-- _prices:_ list of floats or ints of the prices of a series.
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-min_pit = peaks.get_highest_peak(prices)
-```
-
-### trends
-
-Calling trends
-
-```python
-from PyTechnicalIndicators.Chart_Patterns import trends
-```
-
-#### get_trend(p)
-
-Gets the trend of a set of prices, mostly to be used by other functions in trends,
-but if you want to use it go for it. Returns a float.
-
-__Parameters:__
-- _p:_ list of floats or ints to retrieve a trend against.
-
-__Example:__
-```python
-# We wouldn't recommend using it like this...
-prices = [100, 102, 101 ... ]
-
-trend = trends.get_trend(prices)
-```
-
-#### get_peak_trend(prices)
-
-Gets the peaks and determines the trend of the peaks. Returns a float.
-
-__Parameters:__
-- _prices:_ list of floats or ints of prices.
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-peak_trend = trends.get_peak_trend(prices)
-```
-
-#### get_pit_trend(prices)
-
-Gets the pits and determines the trend of the pits. Returns a float.
-
-__Parameters:__
-- _prices:_ list of floats or ints of prices.
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-pit_trend = trends.get_pit_trend(prices)
-```
-
-#### get_overall_trend(prices)
-
-Gets the pits and peaks, gets the trend of each, then returns the average of the two. Returns a float.
-
-__Parameters:__
-- _prices:_ list of floats or ints of prices.
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-overall_trend = trends.get_overall_trend(prices)
-```
-
-#### get_trend_angle(price_a, index_a, price_b, index_b)
-
-Determines the angle between two prices, price a should be the price and the start of the period, price b shoul be the 
-price at the end of the period. Some people find this useful.
-
-__Parameters:__
-- _price_a:_ price a, needs to be before price b.
-- _index_a:_ index of price a.
-- _price_b:_ price b, needs to be after price a.
-- _index_b:_ index of price b.
-
-__Example:__
-```python
-angle = trends.get_trend_angle(100, 0, 105, 10)
-```
-
-#### break_down_trends(prices, min_period=2, peaks_only=False, pits_only=False)
-
-Breaks down the different trends in a series of prices into periods whose trends ressemble one anothers the most. Choosing
-peaks_only or pit_only will only return one otherwise the two will be returned by default. 
-
-Returns a list of tuples with (trend_start_index, trend_end_index, trend)
-
-The Example notebook will illustrate this in an obvious manner.
-
-__Parameters:__
-- _prices:_ price a, needs to be before price b.
-- _min_period:_ _optional_ number of periods either side of the evaluated price to determine a pit or peak.
-- _peaks_only:_ _optional_ whether or not you only want peaks returned.
-- _pits_only:_ _optional_ whether or not you only want pits returned.
-
-__Example:__
-```python
-prices = [100, 102, 101 ... ]
-
-angle = trends.break_down_trends(prices, 5)
-```
-
-#### merge_trends(typical_prices, min_period=2)
-
-This breaks down the price series into different sections when their trends differ. It is similar to the above but takes
-into account both highs and lows and treats them as one.
-
-Returns a list of tuples with (trend_start_index, trend_end_index, trend)
-
-__Parameters:__
-- _typical_prices:_ 
-- _min_period:_ _optional_ number of periods either side of the evaluated price to determine a pit or peak
-
-__Example:__
-```python
-typical_prices = [100, 102, 101 ... ]
-
-merge_trends = trends.merge_trends(prices, 1)
-```
-
----
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
-
-If you need ideas on where to start go to [TODO](), there will always be something that needs to be done...
-
----
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+
+## Contributing
