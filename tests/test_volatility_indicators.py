@@ -74,10 +74,7 @@ def test_bulk_average_true_range():
     high = [120, 125, 123, 127, 121, 110]
     low = [90, 110, 116, 113, 96, 79]
     close = [100, 115, 120, 125, 110, 83]
-
     atr = volatility_bulk.average_true_range(high, low, close, 3)
-
-    assert len(atr) == 4
     assert atr == [17.333333333333332, 16.22222222222222, 19.14814814814815, 23.09876543209877]
 
 

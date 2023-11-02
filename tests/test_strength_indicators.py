@@ -35,7 +35,6 @@ def test_bulk_accumulation_distribution_indicator():
     close = [165, 200, 200]
     volume = [1200, 1500, 1200]
     adi = strength_indicators_bulk.accumulation_distribution_indicator(high, low, close, volume)
-    assert len(adi) == 3
     assert adi == [-800, -800, -400]
 
 

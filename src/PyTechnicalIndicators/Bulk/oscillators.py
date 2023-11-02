@@ -110,7 +110,7 @@ def slow_stochastic(fast_stochastic: list[float], period: int, ma_model: str = '
 
 def slow_stochastic_ds(slow_stochastic: list[float], period: int, ma_model: str = 'ma') -> list[float]:
     """
-    Calculates the %DS-Slow for the slow stochastic for a given period
+    Calculates the %DS-Slow from the slow stochastic for a given period
     :param slow_stochastic: List of slow stochastics (%D-Slow)
     :param period: Period used to calculate the MA of the %DS-Slow
     :param ma_model: (Optional) Name of the moving average that should be used. Supported models are:

@@ -26,7 +26,7 @@ The PyTechnicalIndicators package is split into three directories.
 `Chart Patterns` is used to calculate chart patterns to be displayed on OHLC charts.
 
 ### Bulk
-The `Bulk` directory has 11 files used to calculate different Technical Indicator areas.
+The `Bulk` directory has 11 files used to calculate different Technical Indicator categories.
 
 #### Basic Indicators
 `basic_indicators` has functions native to the Python standard library that get calculated for a list of asset prices and
@@ -401,6 +401,358 @@ pers_co = chaikin_oscillator(high, low, close, volume, 5, 20, 'ma')
 print(pers_co)
 ```
 
+##### Stochastic Oscillator
+Calculates the stochastic oscillator for an asset. Period defaults to 14, can be changed by caller.
+```python
+from PyTechnicalIndicators.Bulk.oscillators import stochastic_oscillator
+# Default Stochastic Oscillator
+close = [100, 92, 88, 82, 75, 68, 74, 76, 84, 84, 83, 89, 95, 89, 97, 104]
+so = stochastic_oscillator(close)
+print(so) 
+# [65.625, 100, 100]
+
+# Personalised Stochastic Oscillator
+close = [100, 92, 88, 82, 75, 68, 74, 76, 84, 84, 83, 89, 95, 89]
+pso = stochastic_oscillator(close, 5)
+print(pso) 
+# [0.0, 0.0, 30.0, 57.14285714285714, 100.0, 100.0, 90.0, 100.0, 100.0, 50.0]
+```
+
+##### Fast Stochastic
+Calculates the fast stochastic from a list of stochastic oscillators for a given period. Moving average model defaults
+to 'ma' (moving average). Period needs to be determined by the caller.
+```python
+from PyTechnicalIndicators.Bulk.oscillators import fast_stochastic
+# Default Fast Stochastic
+stochastic_oscillators = [0.0, 0.0, 30.0, 57.14285714285714, 100.0, 100.0, 90.0, 100.0, 100.0, 50.0]
+fs = fast_stochastic(stochastic_oscillators, 5)
+print(fs) 
+
+# Personalised Fast Stochastic
+stochastic_oscillators = [0.0, 0.0, 30.0, 57.14285714285714, 100.0, 100.0, 90.0, 100.0, 100.0, 50.0]
+pers_fs = fast_stochastic(stochastic_oscillators, 5, 'ema')
+print(pers_fs) 
+# [58.13134732566012, 77.14285714285714, 85.9783344617468, 94.19092755585648, 98.29383886255926, 79.66824644549763]
+```
+
+##### Slow Stochastic
+Calculates the slow stochastic from a list of fast stochastics over a given period. Moving average model defaults
+to 'ma' (moving average). Period needs to be determined by the caller.
+```python
+from PyTechnicalIndicators.Bulk.oscillators import slow_stochastic
+# Default Slow Stochastic
+fast_stochastics = [58.13134732566012, 77.14285714285714, 85.9783344617468, 94.19092755585648, 98.29383886255926, 79.66824644549763]
+ss = slow_stochastic(fast_stochastics, 5)
+print(ss)
+    
+# Personalised Slow Stochastic
+fast_stochastics = [58.13134732566012, 77.14285714285714, 85.9783344617468, 94.19092755585648, 98.29383886255926, 79.66824644549763]
+pers_ss = slow_stochastic(fast_stochastics, 5, 'ema')
+print(pers_ss) 
+# [89.69128533244347, 87.43902556418001]
+```
+
+##### Slow Stochastic DS
+Calculates the %DS-Slow from the slow stochastic over a given period. Moving average model defaults
+to 'ma' (moving average). Period needs to be determined by the caller.
+```python
+from PyTechnicalIndicators.Bulk.oscillators import slow_stochastic_ds
+# Default Slow Stochastic DS
+slow_stochastics = [89, 87, 88, 83, 82]
+ssds = slow_stochastic_ds(slow_stochastics, 3)
+print(ssds)
+# [88, 86, 84.33333333333333]
+
+# Personalised Slow Stochastic DS
+slow_stochastics = [89, 87, 88, 83, 82]
+pers_ssds = slow_stochastic_ds(slow_stochastics, 3, 'ma')
+print(pers_ssds)
+# [88, 86, 84.33333333333333]
+```
+
+##### Williams %R
+Calculates the Williams %R for an asset over a given period.
+```python
+from PyTechnicalIndicators.Bulk.oscillators import williams_percent_r
+high = [150, 157, 163, 152, 155, 160, 158, 153, 148, 144, 145, 143]
+low = [132, 143, 153, 148, 145, 151, 142, 138, 132, 135, 137, 132]
+close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137, 140, 138]
+wr = williams_percent_r(high, low, close, 3)
+print(wr)
+# [-19.35483870967742, -65.0, -83.33333333333333, -13.333333333333334, -27.77777777777778, -81.81818181818181, -50.0, -76.19047619047619, -50.0, -53.84615384615385]
+```
+
+#### Other Indicators
+Indicators that don't really fall into other categories
+
+##### Value Added Index
+Calculates the value added index for an asset. Starting investment defaults to 1000 but can be changed by caller.
+```python
+from PyTechnicalIndicators.Bulk.other_indicators import value_added_index
+prices = [100, 210, 270, 250, 180, 220]
+
+# Default Value Added Index
+vai = value_added_index(prices)
+print(vai)
+# [111000, 6771000, -128649000, 8876781000, 363948021000]
+
+# Personalised Value Added Index
+vai = value_added_index(prices, 2000)
+print(vai)
+```
+
+##### True Range
+Calculates the true range for an asset. Primarily used internally.
+```python
+from PyTechnicalIndicators.Bulk.other_indicators import true_range
+high = [190, 190, 150]
+low = [120, 150, 120]
+close = [150, 120, 190]
+tr = true_range(high, low, close) 
+print(tr)
+# [70, 70, 70]
+```
+
+##### Average Range Constant
+Calculates the average range constant for an asset. The constant defaults to 3 but can be updated by caller.
+```python
+from PyTechnicalIndicators.Bulk.other_indicators import average_range_constant
+average_true_range = [10, 11]
+
+# Default ARC
+arc = average_range_constant(average_true_range) 
+print(arc)
+#[30, 33]
+    
+# Personalised ARC
+pers_arc = average_range_constant(average_true_range, 2) 
+print(pers_arc)
+# [20, 22]
+```
+
+##### Significant Close
+Calculates the significant close of an asset for a given period.
+```python
+from PyTechnicalIndicators.Bulk.other_indicators import significant_close
+close = [100, 105, 109, 106, 107, 110]
+sc = significant_close(close, 4) 
+print(sc)
+# [109, 109, 110]
+```
+
+#### Strength Indicators
+
+##### Relative Strength Index
+Calculates the RSI of an asset. Period defaults to 14m and moving average model defaults to 'sma' (smoothed moving 
+average)
+```python
+from PyTechnicalIndicators.Bulk.strength_indicators import relative_strength_index
+# Default RSI
+prices = [100, 103, 110, 115, 123, 115, 116, 112, 110, 106, 116, 116, 126, 130, 118]
+rsi = relative_strength_index(prices)
+print(rsi) 
+# [60.44650041420754, 49.98706804800788]
+
+# Personal RSI
+pers_rsi = relative_strength_index(prices, 13, 'ma')
+print(pers_rsi)
+# [58.27814569536424, 58.82352941176471, 51.35135135135135]
+```
+
+##### Accumulation Distribution Index
+Calculate the ADI of an asset.
+```python
+from PyTechnicalIndicators.Bulk.strength_indicators import accumulation_distribution_indicator
+high = [190, 220, 215]
+low = [160, 180, 170]
+close = [165, 200, 200]
+volume = [1200, 1500, 1200]
+adi = accumulation_distribution_indicator(high, low, close, volume)
+print(adi) 
+# [-800, -800, -400]
+```
+
+##### Directional Indicator
+Calculate the directional indicator of an asset over a period. 
+
+Returns positive and negative direction indicators, and true range to be used in `directional_index`.
+```python
+from PyTechnicalIndicators.Bulk.strength_indicators import directional_indicator
+high = [127, 107, 130, 109, 120, 110, 125, 110, 105, 103]
+low = [87, 97, 85, 81, 80, 75, 85, 70, 60, 50]
+close = [115, 106, 124, 90, 88, 79, 90, 85, 83, 45]
+di = directional_indicator(high, low, close, 5)
+print(di)
+# [
+#     (20.858895705521473, 2.4539877300613497, 163),
+#     (16.444981862152358, 4.9576783555018135, 165.4),
+#     (21.332404828226554, 3.8068709377901575, 172.32),
+#     (16.534724721122704, 11.384490824037423, 177.856),
+#     (12.561830965460091, 13.988535108027989, 187.2848),
+#     (9.056111058075762, 14.89632957740407, 207.82783999999998)
+# ]
+```
+
+##### Directional Index
+Calculates the directional index from directional indicator values (positive and negative indicators).
+```python
+from PyTechnicalIndicators.Bulk.strength_indicators import directional_index
+positive_directional_indicator = [20.858895705521473, 16.444981862152358, 21.332404828226554, 16.534724721122704, 12.561830965460091, 9.056111058075762]
+negative_directional_indicator = [2.4539877300613497, 4.9576783555018135, 3.8068709377901575, 11.384490824037423, 13.988535108027989, 14.89632957740407]
+idx = directional_index(positive_directional_indicator, negative_directional_indicator)
+print(idx)
+# [0.7894736842105263, 0.536723163841808, 0.6971375807940905, 0.18446914773642656, 0.053735761632022705, 0.24382561293889254]
+```
+
+##### Average Direction Index
+Calculates the average direction index over a given period from the directional index.
+```python
+from PyTechnicalIndicators.Bulk.strength_indicators import average_directional_index
+idx = [0.7894736842105263, 0.536723163841808, 0.6971375807940905, 0.18446914773642656, 0.053735761632022705, 0.24382561293889254]
+adx = average_directional_index(idx, 3, 'ma')
+print(adx)
+# [0.6744448096154749, 0.47277663079077503, 0.31178083005417995, 0.16067684076911393]
+```
+
+##### Average Directional Index Rating
+Calculates the average directional index rating of the average directional index over a period.
+```python
+from PyTechnicalIndicators.Bulk.strength_indicators import average_directional_index_rating
+adx = [0.6744448096154749, 0.47277663079077503, 0.31178083005417995, 0.16067684076911393]
+adxr = average_directional_index_rating(adx, 3)
+print(adxr)
+# [0.49311281983482746, 0.3167267357799445]
+```
+
+#### Support and Resistance Indicators
+
+##### Fibonacci Retracement
+Calculates the Fibonacci retracement for an asset.
+```python
+from PyTechnicalIndicators.Bulk.support_resistance_indicators import fibonacci_retracement
+fr = fibonacci_retracement([100, 103, 106, 102, 96])
+print(fr) 
+#[
+#     (100, 123.6, 138.2, 150, 161.8, 176.4, 200),
+#     (103, 127.30799999999999, 142.34599999999998, 154.5, 166.65400000000002, 181.692, 206),
+#     (106, 131.016, 146.492, 159, 171.508, 186.984, 212),
+#     (102, 126.072, 140.964, 153, 165.036, 179.928, 204),
+#     (96, 118.656, 132.672, 144, 155.328, 169.344, 192)
+# ]
+```
+
+##### Pivot points
+Calculates the pivot points of an asset.
+```python
+from PyTechnicalIndicators.Bulk.support_resistance_indicators import pivot_points
+high = [115, 119, 125, 118, 116]
+low = [99, 96, 110, 105, 108]
+close = [108, 113, 120, 115, 110]
+pivot = pivot_points(high, low, close)
+print(pivot) 
+# [
+#     (107.33333333333333, 99.66666666666666, 115.66666666666666, 91.33333333333333, 123.33333333333333),
+#     (109.33333333333333, 99.66666666666666, 122.66666666666666, 86.33333333333333, 132.33333333333331),
+#     (118.33333333333333, 111.66666666666666, 126.66666666666666, 103.333333333333333, 133.33333333333331),
+#     (112.66666666666667, 107.33333333333334, 120.33333333333334, 99.66666666666667, 125.66666666666667),
+#     (111.33333333333333, 106.66666666666666, 114.66666666666666, 103.33333333333333, 119.33333333333333)
+# ]
+```
+
+#### Trend Indicators
+
+##### Aroon Up
+Calculates the Aroon up for an asset. Period defaults to 25.
+```python
+from PyTechnicalIndicators.Bulk.trend_indicators import aroon_up
+period_from_high = [117, 107, 115, 114, 116, 110, 108, 103, 100, 100, 100, 116, 115, 118, 121]
+aroon_up = aroon_up(period_from_high, 10)
+print(aroon_up) 
+# [0.0, 100.0, 90.0, 100.0, 100.0]
+```
+
+##### Aroon Down
+Calculates the Aroon Down for an asset. Period defaults to 25.
+```python
+from PyTechnicalIndicators.Bulk.trend_indicators import aroon_down
+period_from_low = [96, 100, 102, 109, 113, 109, 108, 95, 95, 98, 94, 104, 98, 95, 92]
+aroon_down = aroon_down(period_from_low, 10)
+print(aroon_down) 
+# [100.0, 90.0, 80.0, 70.0, 100.0]
+```
+
+##### Aroon Oscillator
+Calculates both the Aroon oscillator of an asset.
+```python
+from PyTechnicalIndicators.Bulk.trend_indicators import aroon_oscillator
+highs = [117, 107, 115, 114, 116, 110, 108, 103, 100, 100, 100, 116, 115, 118, 121]
+lows = [96, 100, 102, 109, 113, 109, 108, 95, 95, 98, 94, 104, 98, 95, 92]
+aroon_oscillator = aroon_oscillator(highs, lows, 10)
+print(aroon_oscillator)
+# [-100.0, 10.0, 10.0, 30.0, 0.0]
+```
+
+##### Parabolic Stop and Reverse
+Calculates the parabolic SaR of an asset over a given period.
+```python
+from PyTechnicalIndicators.Bulk.trend_indicators import parabolic_sar
+highs = [109, 111, 112, 110, 111, 113, 109, 107]
+lows = [90, 94, 98, 100, 96, 89, 95, 93]
+close = [100, 103, 109, 108, 110, 111, 108, 106]
+psar = parabolic_sar(highs, lows, close, 5)
+print(psar)
+# [(90.44, 0.02, 112, 'rising'),  (91.3424, 0.04, 113, 'rising'), (92.208704, 0.04, 113, 'rising'), (93.04035584, 0.04, 113, 'rising')]
+```
+
+#### Volatility Indicators
+
+##### Average True Range
+Calculates the average true range of an asset over a given period.
+```python
+from PyTechnicalIndicators.Bulk.volatility_indicators import average_true_range
+high = [120, 125, 123, 127, 121, 110]
+low = [90, 110, 116, 113, 96, 79]
+close = [100, 115, 120, 125, 110, 83]
+atr = average_true_range(high, low, close, 3)
+print(atr)
+# [17.333333333333332, 16.22222222222222, 19.14814814814815, 23.09876543209877]
+```
+
+##### Ulcer Index
+Calculates the Ulcer index of an asset over a given period.
+```python
+from PyTechnicalIndicators.Bulk.volatility_indicators import ulcer_index
+close_prices = [103, 105, 106, 104, 101, 99, 93]
+ui = ulcer_index(close_prices, 5)
+print(ui)
+# [2.2719989771306217, 3.7261165392700946, 6.630672977662482]
+```
+
+##### Volatility Index
+Calculate the volatility index of an asset over a given period.
+```python
+from PyTechnicalIndicators.Bulk.volatility_indicators import volatility_index
+high = [190, 190, 150]
+low = [120, 150, 120]
+close = [150, 120, 190]
+vi = volatility_index(high, low, close, 14)
+print(vi) 
+# [5.0, 9.642857142857142, 13.95408163265306]
+```
+
+##### Volatiliy System
+Calculates the volatility system of an asset. Period defaults to 7, average true range constant defaults to 3.
+```python
+from PyTechnicalIndicators.Bulk.volatility_indicators import volatility_system
+high = [120, 125, 123, 127, 121, 110]
+low = [90, 110, 116, 113, 96, 79]
+close = [100, 115, 120, 125, 110, 83]
+vs = volatility_system(high, low, close, 3, 2)
+print(vs) 
+# [(125, 32.44444444444444, 92.55555555555556, 16.22222222222222),
+# (125, 38.2962962962963, 86.7037037037037, 19.14814814814815),
+# (83, 46.19753086419754, 129.19753086419755, 23.09876543209877)]
+```
 
 ## License
 

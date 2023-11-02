@@ -109,9 +109,9 @@ def test_bulk_aroon_down():
 
 
 def test_bulk_aroon_oscillator():
-    period_from_high = [117, 107, 115, 114, 116, 110, 108, 103, 100, 100, 100, 116, 115, 118, 121]
-    period_from_low = [96, 100, 102, 109, 113, 109, 108, 95, 95, 98, 94, 104, 98, 95, 92]
-    aroon_oscillator = trend_bulk.aroon_oscillator(period_from_high, period_from_low, 10)
+    highs = [117, 107, 115, 114, 116, 110, 108, 103, 100, 100, 100, 116, 115, 118, 121]
+    lows = [96, 100, 102, 109, 113, 109, 108, 95, 95, 98, 94, 104, 98, 95, 92]
+    aroon_oscillator = trend_bulk.aroon_oscillator(highs, lows, 10)
     assert aroon_oscillator == [-100.0, 10.0, 10.0, 30.0, 0.0]
 
 

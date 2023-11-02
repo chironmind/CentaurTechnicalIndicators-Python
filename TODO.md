@@ -20,3 +20,4 @@
 - test personalised commodity channel index and add it to readme
 - test personalised moving average with funky numbers
 - test personalised chaikin oscillator
+- test default fast, slow, and slow ds stochastics
