@@ -682,7 +682,7 @@ print(aroon_down)
 ```
 
 ##### Aroon Oscillator
-Calculates both the Aroon oscillator of an asset.
+Calculates the Aroon oscillator of an asset.
 ```python
 from PyTechnicalIndicators.Bulk.trend_indicators import aroon_oscillator
 highs = [117, 107, 115, 114, 116, 110, 108, 103, 100, 100, 100, 116, 115, 118, 121]
@@ -740,7 +740,7 @@ print(vi)
 # [5.0, 9.642857142857142, 13.95408163265306]
 ```
 
-##### Volatiliy System
+##### Volatility System
 Calculates the volatility system of an asset. Period defaults to 7, average true range constant defaults to 3.
 ```python
 from PyTechnicalIndicators.Bulk.volatility_indicators import volatility_system
@@ -753,6 +753,613 @@ print(vs)
 # (125, 38.2962962962963, 86.7037037037037, 19.14814814814815),
 # (83, 46.19753086419754, 129.19753086419755, 23.09876543209877)]
 ```
+
+### Single
+
+Most of the `Single` functions are missing the period parameter as the length of the passed in prices is assumed to be 
+the period.
+
+#### Basic Indicators
+Single `basic_indicators` is missing a number of functions that bulk has because they are native Python functions. There
+was no need to have a wrapper function call the native function. Package user can just call the native function.
+
+##### Mean Absolute Deviation
+Calculates the prices absolute deviation from the mean.
+```python
+from PyTechnicalIndicators.Single.basic_indicators import mean_absolute_deviation
+prices = [100, 102, 105]
+single_mean_absolute_deviation = mean_absolute_deviation(prices)
+print(single_mean_absolute_deviation)
+# 1.7777777777777761
+```
+
+##### Median Absolute Deviation
+Calculates the prices absolute deviation from the median.
+```python
+from PyTechnicalIndicators.Single.basic_indicators import median_absolute_deviation
+prices = [100, 102, 105]
+single_median_absolute_deviation = median_absolute_deviation(prices)
+print(single_median_absolute_deviation)
+# 1.6666666666666667
+```
+
+##### Mode Absolute Deviation
+Calculates the prices absolute deviation from the median over a period. Period needs to be determined by the caller.
+```python
+from PyTechnicalIndicators.Single.basic_indicators import mode_absolute_deviation
+prices = [100, 102, 105]
+single_mode_absolute_deviation = mode_absolute_deviation(prices)
+print(single_mode_absolute_deviation)
+# 2.3333333333333335
+```
+
+#### Candle Indicators
+`candle_indicators` has technical indicators intended to be used on OHLC charts.
+
+##### Bollinger Bands
+Calculates the Bollinger Bands for typical prices. The moving average model defaults to 'ma' 
+(moving average), and the standard deviation multiplier defaults to 2.
+
+The first item in the tuple is the lower band, the second item is the upper band.
+```python
+from PyTechnicalIndicators.Single.candle_indicators import bollinger_bands
+# Default Bollinger Bands
+prices = [103, 105, 102, 107, 103, 111, 106, 104, 105, 108, 112, 120, 125, 110, 107, 108, 105, 103, 106, 107]
+bbands = bollinger_bands(prices)
+print(bbands)
+# (96.36499833879442, 119.33500166120557)
+
+# Personalised Bollinger Bands
+prices = [110, 107, 108, 105, 103, 106, 107]
+personalised_bbands = bollinger_bands(prices, ma_model='ema', stddev_multiplier=3)
+print(personalised_bbands) 
+# (99.46018315489414, 112.81255052123461)
+```
+
+##### Ichimoku Cloud
+Calculates the Ichimoku Cloud from high, low, and closing prices. The conversion period defaults to 9, the base period
+defaults to 26, and the span B period defaults to 52. These can be changed by the caller.
+
+Returns the leading span A, leading span B, baseline, conversion line, and lagged close based on the base period, in that order.
+```python
+from PyTechnicalIndicators.Single.candle_indicators import ichimoku_cloud
+# Default Ichimoku Cloud
+highs = [119, 117, 110, 100, 103, 104, 111, 103, 119, 120, 104, 111, 113, 114, 107, 102, 103, 111, 108, 107, 118,
+         106, 109, 118, 114, 108, 120, 103, 119, 119, 110, 100, 118, 111, 101, 105, 113, 112, 103, 117, 107, 115,
+         114, 116, 110, 108, 103, 100, 100, 100, 116, 115]
+lows = [114, 111, 103, 100, 103, 96, 100, 101, 91, 115, 93, 98, 107, 95, 104, 99, 95, 94, 96, 92, 114, 97, 108, 106,
+        107, 106, 97, 101, 92, 107, 110, 91, 101, 104, 93, 97, 92, 106, 102, 96, 100, 102, 109, 113, 109, 108, 95,
+        95, 98, 94, 104, 98]
+close = [114, 116, 108, 100, 103, 102, 106, 101, 103, 118, 102, 106, 112, 101, 107, 99, 101, 111, 103, 106, 116,
+         106, 108, 106, 113, 106, 109, 103, 106, 118, 110, 94, 109, 107, 93, 101, 103, 110, 102, 102, 102, 112, 111,
+         115, 110, 108, 103, 98, 98, 95, 113, 112]
+icloud = ichimoku_cloud(highs, lows, close)
+print(icloud) 
+# (105.25, 105.5, 105.5, 105, 109)
+
+# Personalised Ichimoku Cloud
+highs = [117, 107, 115, 114, 116, 110, 108, 103, 100, 100, 100, 116, 115]
+lows = [96, 100, 102, 109, 113, 109, 108, 95, 95, 98, 94, 104, 98]
+close = [99, 103, 108, 113, 115, 110, 108, 96, 95, 99, 99, 109, 108]
+icloud = ichimoku_cloud(highs, lows, close, conversion_period=5, base_period=3, span_b_period=13)
+print(icloud) 
+# (105.0, 105.5, 105, 105, 99)
+```
+
+#### Correlation Indicators
+`correlation_indicators` are indicators that calculate the correlation between two assets.
+
+##### Correlate Asset Prices
+Calculates the price correlation between two asset prices.
+```python
+from PyTechnicalIndicators.Single.correlation_indicators import correlate_asset_prices
+asset_a_price = [120, 110, 105, 112, 114]
+asset_b_price = [150, 155, 162, 165, 159]
+correlation = correlate_asset_prices(asset_a_price, asset_b_price)
+print(correlation) 
+# -0.65025528597848
+```
+
+#### Momentum Indicators
+`momentum_indicators` are indicators that calculate price momentum of an asset.
+
+##### Rate of Change
+Calculates the rate of change of an asset. Unlike the Bulk function this function takes a current and previous closing 
+price.
+```python
+from PyTechnicalIndicators.Single.momentum_indicators import rate_of_change
+roc = rate_of_change(current_close_price=101, previous_close_price=100)
+print(roc) 
+# 3.0
+```
+
+##### On Balance Volume
+Calculates the on balance volume from asset prices and volume. A previous observation parameter can be passed in to make
+the calculation more precise.
+```python
+from PyTechnicalIndicators.Single.momentum_indicators import on_balance_volume
+closing_prices = [100, 105, 111, 107, 108]
+volume = [1200, 1800, 1600, 1700, 1500]
+obv = on_balance_volume(current_close=105, previous_close=100, current_volume=1800)
+print(obv) 
+# 1200
+next_obv = on_balance_volume(current_close=105, previous_close=100, current_volume=1800, previous_obv=1200)
+# 3000
+```
+
+##### Commodity Channel Index
+Calculates the commodity channel index of an asset.
+Moving average model defaults to 'ma' (moving average) and absolute deviation model default to 'mean'.
+
+```python
+from PyTechnicalIndicators.Single.momentum_indicators import commodity_channel_index
+# Default Commodity Channel Index
+prices = [103, 106, 111, 113, 111, 102, 98]
+cci = commodity_channel_index(prices)
+print(cci) 
+# -119.7640117994101
+
+prices = [103, 106, 111, 113, 111, 102, 98]
+personalised_cci = commodity_channel_index(prices, ma_model='ema', absolute_deviation_model='median')
+print(cci) 
+```
+
+#### Moving Averages
+`moving_averages` has indicators related to calculating and using moving averages.
+
+##### Moving Average
+Calculates the moving average of an asset.
+```python
+from PyTechnicalIndicators.Single.moving_averages import moving_average
+prices = [110, 107, 108, 105, 103]
+mas = moving_average(prices)
+print(mas) 
+# 106.6
+```
+
+##### Exponential Moving Average
+Calculates the exponential moving average of an asset.
+```python
+from PyTechnicalIndicators.Single.moving_averages import exponential_moving_average
+prices = [110, 107, 108, 105, 103]
+emas = exponential_moving_average(prices)
+print(emas) 
+# 105.35071090047394
+```
+
+##### Smoothed Moving Average
+Calculates the smoothed moving average of an asset.
+```python
+from PyTechnicalIndicators.Single.moving_averages import smoothed_moving_average
+prices = [110, 107, 108, 105, 103]
+smas = smoothed_moving_average(prices)
+print(smas) 
+# 105.89005235602093
+```
+
+##### Personalised Moving Average
+The `personalised_moving_average` is an internal function used by the smoothed (nominator=1, denominator=0), and the
+exponential (nominator=2, denominator=1) moving average functions as the underlying logic is indentical with changes in
+the nominator and denominator of the alpha variables for each. This function is exposed in the event that the caller 
+knows what they're doing, or feel lucky, and wants to tweak the alpha when calculating the moving average.
+```python
+from PyTechnicalIndicators.Single.moving_averages import personalised_moving_average
+prices = [110, 107, 108, 105, 103]
+pmas = personalised_moving_average(prices, alpha_nominator=5, alpha_denominator=3)
+print(pmas)
+```
+
+##### MACD Line
+Calculate the MACD line for `moving_average_convergence_divergence`. The short period defaults to 12, the long period
+defaults to 26, and the moving average model defaults to 'ema' (exponential moving average).
+```python
+from PyTechnicalIndicators.Single.moving_averages import macd_line
+# Default MACD Line
+prices = [103, 105, 102, 107, 103, 111, 106, 104, 105, 108, 112, 120, 125, 110, 107, 108, 105, 103, 106, 107, 101,
+              99, 103, 106, 104, 102]
+macd = macd_line(prices)
+print(macd)
+# -2.164962379494412
+
+# Personalised MACD Line
+prices = [110, 107, 108, 105, 103]
+pers_macd = macd_line(prices, short_period=3, long_period=5, ma_model='ma')
+print(pers_macd) 
+# -1.2666666666666657
+```
+
+##### Signal Line
+Calculates the signal line for `moving_average_convergence_divergence`. The moving average
+model defaults to 'ema' (exponential moving average).
+```python
+from PyTechnicalIndicators.Single.moving_averages import signal_line
+# Default Signal Line
+macds = [-2, -1.8, -1, -0.3, 0.1, 0.6, 1.2, 2.4, 1.92]
+signal = signal_line(macds)
+print(signal)
+# 0.8922983167758831
+
+# Personalised Signal Line
+macds = [0.1, 0.6, 1.2]
+signal = signal_line(macds, ma_model='ma')
+print(signal)
+# 0.6333333333333333
+```
+
+##### McGinley Dynamic
+Calculates the McGinely dynamic of an asset for a given period.
+```python
+from PyTechnicalIndicators.Single.moving_averages import mcginley_dynamic
+md = mcginley_dynamic(100, period=10)
+print(md) 
+# 100
+next_md = mcginley_dynamic(110, period=10, previous_mcginley_dynamic=md)
+print(next_md)
+# 100.68301345536507
+```
+
+##### Moving Average Envelopes
+Calculates upper and lower envelopes for a list of prices. Moving average model defaults to 'ma'
+(moving average), the difference between the bands and the moving average defaults to 3%.
+```python
+from PyTechnicalIndicators.Bulk.moving_averages import moving_average_envelopes
+# Default MA Envelopes
+prices = [202, 205, 208, 204, 201]
+mae = moving_average_envelopes(prices, period=5)
+print(mae) 
+# (210.12, 204, 197.88)
+
+# Personalised MA Envelopes
+prices = [202, 205, 208, 204, 201]
+pers_mae = moving_average_envelopes(prices, period=5, ma_model='ma', difference=3)
+print(pers_mae) 
+# (210.12, 204, 197.88)
+```
+
+#### Oscillators
+Technical Indicators that oscillate
+
+##### Money Flow Index
+Calculates the money flow index for an asset.
+```python
+from PyTechnicalIndicators.Single.oscillators import money_flow_index
+# Default MFI
+typical_prices = [100, 105, 103, 104, 106, 109, 104, 107, 111, 115, 109, 108, 107]
+volume = [1200, 1200, 1300, 1200, 1600, 1400, 2000, 1800, 1600, 1500, 1200, 1100, 1500]
+mfi = money_flow_index(typical_prices, volume)
+print(mfi)
+# 39.58136997172759
+
+# Personalised MFI
+typical_prices = [100, 105, 103]
+volume = [1200, 1200, 1300]
+pers_mfi = money_flow_index(typical_prices, volume)
+print(pers_mfi) 
+# 99.00990099009901
+```
+
+##### Chaikin Oscillator
+Calculates the Chaikin ocillator for an asset. The short period defaults to 3, the moving average
+model to 'ema' (exponential moving average). The long period from the bulk model is assumed to be the length of the list.
+```python
+from PyTechnicalIndicators.Single.oscillators import chaikin_oscillator
+# Default Chaikin Oscillator
+high = [150, 157, 163, 152, 155, 160, 158, 153, 148, 144, 145, 143]
+low = [132, 143, 153, 148, 145, 151, 142, 138, 132, 135, 137, 132]
+close = [148, 155, 157, 150, 148, 158, 155, 142, 145, 137, 140, 138]
+volume = [1500, 1600, 1800, 2200, 2000, 1900, 1750, 1800, 2100, 1800, 1700, 1500]
+co = chaikin_oscillator(high, low, close, volume)
+print(co)
+
+# Personalised Chaikin Oscillator
+pers_co = chaikin_oscillator(high, low, close, volume, 5, 'ma')
+print(pers_co)
+```
+
+##### Stochastic Oscillator
+Calculates the stochastic oscillator for an asset. 
+```python
+from PyTechnicalIndicators.Bulk.oscillators import stochastic_oscillator
+close = [100, 92, 88, 82, 75, 68, 74, 76, 84, 84, 83, 89, 95, 89]
+so = stochastic_oscillator(close)
+print(so) 
+# 65.625
+```
+
+##### Fast Stochastic
+Calculates the fast stochastic from a list of stochastic oscillators. Moving average model defaults
+to 'ma' (moving average). Period needs to be determined by the caller.
+```python
+from PyTechnicalIndicators.Single.oscillators import fast_stochastic
+stochastic_oscillators = [0.0, 0.0, 30.0, 57.14285714285714]
+fs = fast_stochastic(stochastic_oscillators, 'ema')
+print(fs) 
+# 58.13134732566012
+```
+
+##### Slow Stochastic
+Calculates the slow stochastic from a list of fast stochastics. Moving average model defaults
+to 'ma' (moving average). 
+```python
+from PyTechnicalIndicators.Single.oscillators import slow_stochastic
+fast_stochastics = [58.13134732566012, 77.14285714285714, 85.9783344617468, 94.19092755585648, 98.29383886255926]
+ss = slow_stochastic(fast_stochastics, 'ema')
+print(ss) 
+# 89.69128533244347
+```
+
+##### Slow Stochastic DS
+Calculates the %DS-Slow from the slow stochastic. Moving average model defaults
+to 'ma' (moving average).
+```python
+from PyTechnicalIndicators.Bulk.oscillators import slow_stochastic_ds
+
+slow_stochastics = [89, 87, 88]
+ssds = slow_stochastic_ds(slow_stochastics, 3, 'ma')
+print(ssds)
+# 88
+```
+
+##### Williams %R
+Calculates the Williams %R for an asset over a given period.
+```python
+from PyTechnicalIndicators.Single.oscillators import williams_percent_r
+high = 150
+low = 132
+close = 148
+wr = williams_percent_r(high, low, close)
+print(wr)
+# -19.35483870967742
+```
+
+#### Other Indicators
+Indicators that don't really fall into other categories
+
+##### Value Added Index
+Calculates the value added index for an asset. Starting investment defaults to 1000 but can be changed by caller.
+The `Single` function takes a start price and end price.
+```python
+from PyTechnicalIndicators.Single.other_indicators import value_added_index
+vai = value_added_index(start_price=100, end_price=210)
+print(vai)
+# 111000
+
+```
+
+##### True Range
+Calculates the true range for an asset. Primarily used internally.
+```python
+from PyTechnicalIndicators.Single.other_indicators import true_range
+high = 190
+low = 120
+close = 150
+tr = true_range(high, low, close) 
+print(tr)
+# 70
+```
+
+##### Average Range Constant
+Calculates the average range constant for an asset. The constant defaults to 3 but can be updated by caller.
+```python
+from PyTechnicalIndicators.Single.other_indicators import average_range_constant
+pers_arc = average_range_constant(10, 2) 
+print(pers_arc)
+# 20
+```
+
+##### Significant Close
+Calculates the significant close of an asset.
+```python
+from PyTechnicalIndicators.Single.other_indicators import significant_close
+close = [100, 105, 109, 106]
+sc = significant_close(close) 
+print(sc)
+# 109
+```
+
+#### Strength Indicators
+
+##### Relative Strength Index
+Calculates the RSI of an asset. Moving average model defaults to 'sma' (smoothed moving 
+average)
+```python
+from PyTechnicalIndicators.Single.strength_indicators import relative_strength_index
+# Default RSI
+prices = [100, 103, 110, 115, 123, 115, 116, 112, 110, 106, 116, 116, 126]
+pers_rsi = relative_strength_index(prices, 'ma')
+print(pers_rsi)
+# 58.27814569536424
+```
+
+##### Accumulation Distribution Index
+Calculate the ADI of an asset.
+```python
+from PyTechnicalIndicators.Single.strength_indicators import accumulation_distribution_indicator
+high = 190
+low = 160
+close = 165
+volume = 1200
+adi = accumulation_distribution_indicator(high, low, close, volume)
+print(adi) 
+# -800
+```
+
+##### Directional Indicator
+Calculate the directional indicator of an asset. 
+
+Returns positive and negative direction indicators, and true range to be used in `directional_index`.
+```python
+from PyTechnicalIndicators.Single.strength_indicators import directional_indicator
+high = [127, 107, 130, 109, 120]
+low = [87, 97, 85, 81, 80]
+close = [115, 106, 124, 90, 88]
+di = directional_indicator(high, low, close)
+print(di)
+# (20.858895705521473, 2.4539877300613497, 163)
+```
+
+##### Directional Index
+Calculates the directional index from directional indicator values (positive and negative indicators).
+```python
+from PyTechnicalIndicators.Single.strength_indicators import directional_index
+positive_directional_indicator = 20.858895705521473
+negative_directional_indicator = 2.4539877300613497
+idx = directional_index(positive_directional_indicator, negative_directional_indicator)
+print(idx)
+# 0.7894736842105263
+```
+
+##### Average Direction Index
+Calculates the average direction index from the directional index.
+```python
+from PyTechnicalIndicators.Single.strength_indicators import average_directional_index
+idx = [0.7894736842105263, 0.536723163841808, 0.6971375807940905]
+adx = average_directional_index(idx, 'ma')
+print(adx)
+# 0.6744448096154749
+```
+
+##### Average Directional Index Rating
+Calculates the average directional index rating of the average directional index over a period. Unlike the `Bulk` 
+version the `Single` version takes the current `average_directional_index` and the previous one.
+```python
+from PyTechnicalIndicators.Single.strength_indicators import average_directional_index_rating
+adx = [0.6744448096154749, 0.47277663079077503, 0.31178083005417995, 0.16067684076911393]
+adxr = average_directional_index_rating(current_average_directional_index=0.47277663079077503, previous_average_directional_index=0.6744448096154749)
+print(adxr)
+# 0.49311281983482746
+```
+
+#### Support and Resistance Indicators
+
+##### Fibonacci Retracement
+Calculates the Fibonacci retracement for an asset.
+```python
+from PyTechnicalIndicators.Single.support_resistance_indicators import fibonacci_retracement
+fr = fibonacci_retracement(100)
+print(fr) 
+# (100, 123.6, 138.2, 150, 161.8, 176.4, 200)
+```
+
+##### Pivot points
+Calculates the pivot points of an asset.
+```python
+from PyTechnicalIndicators.Single.support_resistance_indicators import pivot_points
+high = 115
+low = 99
+close = 108
+pivot = pivot_points(high, low, close)
+print(pivot) 
+# (107.33333333333333, 99.66666666666666, 115.66666666666666, 91.33333333333333, 123.33333333333333),
+```
+
+#### Trend Indicators
+
+##### Aroon Up
+Calculates the Aroon up for an asset.
+```python
+from PyTechnicalIndicators.Single.trend_indicators import aroon_up
+period_from_high = [116, 110, 108, 103, 100, 100, 100, 116, 115, 118, 121]
+aroon_up = aroon_up(period_from_high, 10)
+print(aroon_up) 
+# 100.0
+```
+
+##### Aroon Down
+Calculates the Aroon Down for an asset.
+```python
+from PyTechnicalIndicators.Single.trend_indicators import aroon_down
+period_from_low = [109, 108, 95, 95, 98, 94, 104, 98, 95, 92]
+aroon_down = aroon_down(period_from_low, 10)
+print(aroon_down) 
+# 100.0
+```
+
+##### Aroon Oscillator
+Calculates the Aroon oscillator of an asset.
+```python
+from PyTechnicalIndicators.Single.trend_indicators import aroon_oscillator
+highs = [110, 108, 103, 100, 100, 100, 116, 115, 118, 121]
+lows = [109, 108, 95, 95, 98, 94, 104, 98, 95, 92]
+aroon_oscillator = aroon_oscillator(highs, lows, 10)
+print(aroon_oscillator)
+# 0.0
+```
+
+##### Parabolic Stop and Reverse
+The `Single` version of this function is intended for intended use.
+```python
+from PyTechnicalIndicators.Single.trend_indicators import parabolic_sar
+highs = [110, 111, 113, 109, 107]
+lows = [100, 96, 89, 95, 93]
+close = [108, 110, 111, 108, 106]
+psar = parabolic_sar(highs, lows, close, previous_psar=92.208704, acceleration_factor=0.04, extreme=113, state='rising')
+print(psar)
+# (93.04035584, 0.04, 113, 'rising')
+```
+
+#### Volatility Indicators
+
+##### Average True Range
+Calculates the average true range of an asset.  `Single` has two versions of this function the first when there isn't 
+a previous ATR, the other when there is.
+```python
+from PyTechnicalIndicators.Single.volatility_indicators import average_true_range_initial, average_true_range
+high = [120, 125, 123]
+low = [90, 110, 116]
+close = [100, 115, 120]
+atr = average_true_range_initial(high, low, close)
+print(atr)
+# 17.333333333333332
+next_atr = average_true_range(high=127, low=113, close=125, previous_average_true_range=atr, period=3)
+print(next_atr)
+# 16.22222222222222
+```
+
+##### Ulcer Index
+Calculates the Ulcer index of an asset.
+```python
+from PyTechnicalIndicators.Single.volatility_indicators import ulcer_index
+close_prices = [103, 105, 106, 104, 101]
+ui = ulcer_index(close_prices)
+print(ui)
+# 2.2719989771306217
+```
+
+##### Volatility Index
+Calculate the volatility index of an asset. Function takes an optional previous VI parameter if one has been calculated.
+```python
+from PyTechnicalIndicators.Single.volatility_indicators import volatility_index
+vi = volatility_index(high=190, low=120, close=150, period=14)
+print(vi) 
+# 5.0
+next_vi = volatility_index(high=190, low=150, close=120, period=14, previous_volatility_index=vi)
+print(next_vi)
+# 9.642857142857142
+```
+
+##### Volatility System
+Calculates the volatility system of an asset. Period defaults to 7, average true range constant defaults to 3. Takes an
+optional previous parameter is one is available.
+```python
+from PyTechnicalIndicators.Single.volatility_indicators import volatility_system
+high = [120, 125, 123]
+low = [90, 110, 116]
+close = [100, 115, 120]
+vs = volatility_system(high, low, close, period=3, average_true_range_constant=2)
+print(vs) 
+# (125, 32.44444444444444, 92.55555555555556, 16.22222222222222)
+high = [125, 123, 127]
+low = [110, 116, 113]
+close = [115, 120, 125]
+next_vs = volatility_system(high, low, close, period=3, average_true_range_constant=2, previous_volatility_system=vs)
+# (125, 38.2962962962963, 86.7037037037037, 19.14814814814815)
+```
+
+### Chart Patterns
+
+#### Chart Trends
+
 
 ## License
 
