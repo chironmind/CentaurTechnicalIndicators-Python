@@ -1359,8 +1359,106 @@ next_vs = volatility_system(high, low, close, period=3, average_true_range_const
 ### Chart Patterns
 
 #### Chart Trends
+A series of functions to help with OHLC analysis
 
+##### Get Trend Line
+Calculates the trend line for a series of points and locations. This function is primarily intended for internal use as the 
+locations of each point is expected and calculated by other functions. Returns slope then intercept.
+```python
+from PyTechnicalIndicators.Chart_Patterns.chart_trends import get_trend_line
+price_points = [(100, 2), (110, 5), (115, 7), (140, 18)]
+trend = get_trend_line(price_points)
+print(trend)
+# (2.4315068493150687, 96.79794520547945)
+```
+
+##### Get Peak Trend
+Calculates the trend line for all peaks. Function takes a period parameter to determine the highest point within 
+period, defaults to 5. Returns slope then intercept.
+```python
+from PyTechnicalIndicators.Chart_Patterns.chart_trends import get_peak_trend
+prices = [100, 103, 95, 90, 81, 99, 113, 99, 113, 95, 87, 92, 86, 94, 86, 82, 97, 77, 90, 107]
+peak_trend = get_peak_trend(prices, 10)
+print(peak_trend)
+# (-0.860813704496788, 118.04496788008565)
+```
+
+##### Get Valley Trend
+Calculates the trend line for all valleys. Function takes a period parameter to determine the lowest point within 
+period, defaults to 5. Returns slope then intercept.
+```python
+from PyTechnicalIndicators.Chart_Patterns.chart_trends import get_valley_trend
+prices = [100, 103, 95, 90, 81, 99, 113, 99, 113, 95, 87, 92, 86, 94, 86, 82, 97, 77, 90, 107]
+peak_trend = get_valley_trend(prices, 10)
+print(peak_trend)
+# (-0.09683794466403162, 83.60079051383399)
+```
+
+##### Get Overall Trend
+Calculates the overall trend line for all prices. Returns slope then intercept.
+```python
+from PyTechnicalIndicators.Chart_Patterns.chart_trends import get_overall_trend
+prices = [100, 103, 95, 90, 81, 99, 113, 99, 113, 95, 87, 92, 86, 94, 86, 82, 97, 77, 90, 107]
+overall_trend = get_overall_trend(prices)
+print(overall_trend)
+# (-0.48270676691729325, 98.88571428571429)
+```
+
+##### Breakdown Trends
+Calculates new trend starts and ends for a list of prices. The standard deviation multiplier defaults to 2 but can be 
+updated by caller, a higher multiplier is more forgiving in price changes before announcing a new trend. The sensitivity
+denominator defaults to 2 and can be updated by caller, it decides how forgiving it should be when lists are small vs 
+large lists.
+```python
+from PyTechnicalIndicators.Chart_Patterns.chart_trends import break_down_trends
+prices = [100, 103, 95, 90, 81, 99, 113, 99, 113, 95, 87, 92, 86, 94, 86, 82, 97, 77, 90, 107]
+trend_breakdown = break_down_trends(prices)
+print(trend_breakdown)
+# [(0, 1, 3.0, 100.0), (2, 4, -7.0, 109.66666666666667), (5, 7, 0.0, 103.66666666666667), (8, 15, -2.9404761904761907, 125.69047619047619), (16, 18, -3.5, 147.5), (19, 19, 0, 0)]
+```
+
+#### Peaks
+
+##### Get Peaks
+Intended use is to be used in combination with `get_peak_trends` so that peaks are highlight on chart with the trend
+line. Optional period can be passed in to determine the highest point of the period. Defaults to 5.
+```python
+from PyTechnicalIndicators.Chart_Patterns.peaks import get_peaks
+prices = [100, 103, 95, 90, 81, 99, 113, 99, 113, 95, 87, 92, 86, 94, 86, 82, 97, 77, 90, 107]
+pks = get_peaks(prices, 10)
+print(pks)
+# [(113, 6), (113, 8), (97, 16), (107, 19)]
+```
+
+#### Valleys
+
+##### Get Valleys
+Intended use is to be used in combination with `get_valley_trends` so that peaks are highlight on chart with the trend
+line. Optional period can be passed in to determine the lowest point of the period. Defaults to 5.
+```python
+from PyTechnicalIndicators.Chart_Patterns.valleys import get_valleys
+prices = [100, 103, 95, 90, 81, 99, 113, 99, 113, 95, 87, 92, 86, 94, 86, 82, 97, 77, 90, 107]
+valleys = get_valleys(prices, 10)
+print(valleys)
+# [(113, 6), (113, 8), (97, 16), (107, 19)]
+```
 
 ## License
+`PyTechnicalIndicators` is available under the GNU AFFERO GENERAL PUBLIC LICENSE.
+
+The following information was taken from [choosealicense.com](choosealicense.com/licenses/agpl-3.0/)
+
+> Under GNU AGPLv3 copyright and license notices must be preserved. Contributor provide an express grant of patent 
+> rights. When a modified version is used to provide a service over a network, the complete source code of the modified
+> version must be made available.
+
+For more information go look at the `License`
 
 ## Contributing
+
+To contribute to `PyTechnicalIndicators` follow these simple steps:
+* Raise a PR with your changes
+* If there is a new function make sure that a test covers it
+* Assign 0100101001010000 to the PR
+
+For ideas on how to contribute go to `Contributing.md` and pick an item from the TODO list. 
