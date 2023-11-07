@@ -58,7 +58,7 @@ def personalised_moving_average(prices: list[float], alpha_nominator: int, alpha
 
 
 # TODO: PMA, and McGinley dynamic
-def moving_average_convergence_divergence(prices: list[float], short_period: int = 12, long_period: int = 26, ma_model: str = 'ema') -> float:
+def macd_line(prices: list[float], short_period: int = 12, long_period: int = 26, ma_model: str = 'ema') -> float:
     """
     Calculates the personalised MACD
 

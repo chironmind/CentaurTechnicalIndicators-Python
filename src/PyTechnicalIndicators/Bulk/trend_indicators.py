@@ -3,7 +3,7 @@ from ..Single import trend_indicators
 
 def aroon_up(highs: list[float], period: int = 25) -> list[float]:
     """
-    A personalised version of the aroon_up function. Allows for the period to be chosen rather than set to 25.
+    Calculates the aroon_up function. Allows for the period to be chosen rather than set to 25.
     :param highs: List of high prices
     :param period: Time period
     :return: Returns a list of Aroon ups
@@ -24,7 +24,7 @@ def aroon_up(highs: list[float], period: int = 25) -> list[float]:
 
 def aroon_down(lows: list[float], period: int = 25) -> list[float]:
     """
-    A personalised verion of the Aroon down. Allows for the period to be chosen rather than set to 25.
+    Calculates the Aroon down. Allows for the period to be chosen rather than set to 25.
     :param lows: List of lows
     :param period: Time period
     :return: Returns a list of Aroon downs
@@ -42,7 +42,7 @@ def aroon_down(lows: list[float], period: int = 25) -> list[float]:
 
 def aroon_oscillator(highs: list[float], lows: list[float], period: int = 25) -> list[float]:
     """
-    A personalised version of the Aroon oscillator. Should be used in conjunction with the Aroon up and down.
+    Calculates the Aroon oscillator. Should be used in conjunction with the Aroon up and down.
     :param highs: List of high prices
     :param lows: List of low prices
     :param period: Period to study

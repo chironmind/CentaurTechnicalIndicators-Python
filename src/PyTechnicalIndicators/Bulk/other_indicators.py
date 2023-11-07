@@ -39,7 +39,6 @@ def average_range_constant(average_true_range: list[float], constant: float = 3.
     """
     Calculates the average range constant
     :param average_true_range: List of average true range
-    :param period: Period observed
     :param constant: Constant to multiply it by
     :return: Returns a list of average range constants
     """

@@ -38,7 +38,6 @@ def test_bulk_variance():
 
 
 def test_bulk_mean_deviation():
-    prices = [100, 102, 105, 103, 108]
     mean_deviation = bulk_basic_indicators.mean_absolute_deviation(prices, 3)
     assert mean_deviation == [1.7777777777777761, 1.1111111111111096, 1.7777777777777761]
 
@@ -51,4 +50,3 @@ def test_bulk_median_deviation():
 def test_bulk_mode_deviation():
     mode_deviation = bulk_basic_indicators.mode_absolute_deviation(prices, 3)
     assert mode_deviation == [2.3333333333333335, 1.3333333333333333, 1.6666666666666667]
-

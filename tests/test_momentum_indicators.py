@@ -82,7 +82,6 @@ def test_bulk_on_balance_volume():
     closing_prices = [100, 105, 111, 107, 108]
     volume = [1200, 1800, 1600, 1700, 1500]
     obv = bulk_momentum_indicators.on_balance_volume(closing_prices, volume)
-    assert len(obv) == 5
     assert obv == [1200, 3000, 4600, 2900, 4400]
 
 

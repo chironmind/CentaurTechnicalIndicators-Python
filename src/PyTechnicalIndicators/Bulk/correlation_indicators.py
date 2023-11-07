@@ -13,7 +13,6 @@ def correlate_asset_prices(asset_a_prices: list[float], asset_b_prices: list[flo
         raise Exception(f'length of price_a ({len(asset_a_prices)}) and length of price_b ({len(asset_b_prices)}) needs to be greater than period ({period})')
     if len(asset_a_prices) != len(asset_b_prices):
         raise Exception(f'length of price_a ({len(asset_a_prices)}) needs to equal length of price_b ({len(asset_b_prices)})')
-
     correlation_list = []
     for i in range(len(asset_a_prices)-period+1):
         correlation_list.append(correlation_indicators.correlate_asset_prices(asset_a_prices[i:i+period], asset_b_prices[i:i+period]))

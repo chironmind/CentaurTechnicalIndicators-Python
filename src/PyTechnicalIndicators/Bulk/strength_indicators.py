@@ -88,6 +88,7 @@ def average_directional_index(directional_index: list[float], period: int, movin
     """
     Calculates the average directional index from a list of directional indexes
     :param directional_index: List of directional indexes
+    :param period: period
     :param moving_average_model: Name of the moving average that should be used. Supported models are:
         'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
         Defaults to 'sma'

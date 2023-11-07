@@ -1,7 +1,7 @@
 from ..Single import moving_averages
 
 
-def moving_average(prices: list[float], period: int, fill_empty: bool = False, fill_value: any = None) -> list[float]:
+def moving_average(prices: list[float], period: int) -> list[float]:
     """
     Calculates the moving average for a list of prices and a certain period, returns a list of moving averages.
     :param prices: List of prices
@@ -15,16 +15,13 @@ def moving_average(prices: list[float], period: int, fill_empty: bool = False, f
     if len(prices) < period:
         raise Exception(f'Length of prices ({prices}) needs to or equal to period ({period})')
     mas = []
-    if fill_empty:
-        for i in range(period):
-            mas.append(fill_value)
     for i in range(period, len(prices)+1):
         price_set = prices[i - period:i]
         mas.append(moving_averages.moving_average(price_set))
     return mas
 
 
-def exponential_moving_average(prices: list[float], period: int, fill_empty: bool = False, fill_value: any = None) -> list[float]:
+def exponential_moving_average(prices: list[float], period: int) -> list[float]:
     """
     Calculates the exponential moving average for a list of prices and a certain period, returns a list of exponential moving averages.
     :param prices: List of prices
@@ -33,10 +30,10 @@ def exponential_moving_average(prices: list[float], period: int, fill_empty: boo
     :param fill_value: (Optional) The fill value to fill empty values with if fill_empty is True (default None)
     :return: Returns a list of exponential moving averages
     """
-    return personalised_moving_average(prices, period, 2, 1, fill_empty, fill_value)
+    return personalised_moving_average(prices, period, 2, 1)
 
 
-def smoothed_moving_average(prices: list[float], period: int, fill_empty: bool = False, fill_value: any = None) -> list[float]:
+def smoothed_moving_average(prices: list[float], period: int) -> list[float]:
     """
     Calculates the smoothed moving average for a list of prices and a certain period, returns a list of smoothed moving averages.
     :param prices: List of prices
@@ -45,10 +42,10 @@ def smoothed_moving_average(prices: list[float], period: int, fill_empty: bool =
     :param fill_value: (Optional) The fill value to fill empty values with if fill_empty is True (default None)
     :return: Returns a list of smoothed moving averages
     """
-    return personalised_moving_average(prices, period, 1, 0, fill_empty, fill_value)
+    return personalised_moving_average(prices, period, 1, 0)
 
 
-def personalised_moving_average(prices: list[float], period: int, alpha_nominator: int, alpha_denominator: int, fill_empty: bool = False, fill_value: any = None) -> list[float]:
+def personalised_moving_average(prices: list[float], period: int, alpha_nominator: int, alpha_denominator: int) -> list[float]:
     """
     Calculates the personalised moving average for a list of prices and a certain period, returns a list of personalised moving averages.
 
@@ -65,14 +62,9 @@ def personalised_moving_average(prices: list[float], period: int, alpha_nominato
     """
     if period <= 0:
         raise Exception('Period needs to be at least 1')
-
     if len(prices) < period:
         raise Exception(f'Length of prices ({prices}) needs to or equal to period ({period})')
-
     pma = []
-    if fill_empty:
-        for i in range(period):
-            pma.append(fill_value)
     for i in range(period, len(prices)+1):
         price_set = prices[i - period: i]
         single_pma = moving_averages.personalised_moving_average(price_set, alpha_nominator, alpha_denominator)
@@ -80,8 +72,30 @@ def personalised_moving_average(prices: list[float], period: int, alpha_nominato
     return pma
 
 
-# TODO: Allow for PMA
-def moving_average_convergence_divergence(prices: list[float], short_period: int = 12, long_period: int = 26, ma_model: str = 'ema', fill_empty: bool = False, fill_value: bool = None):
+# TODO: Allow for PMA and McGinley
+def moving_average_convergence_divergence(prices: list[float], macd_short_period: int = 12, macd_long_period: int = 26, signal_period: int = 9, ma_model: str = 'ema') -> list[tuple[float, float, float]]:
+    """
+    Calculates the MACD, signal line, and difference between them.
+    :param prices:  List of prices
+    :param macd_short_period: Short period for the MACD. Defaults to 12
+    :param macd_long_period: Long period for the MACD. Defaults to 26.
+    :param signal_period: Period for the Signal line. Defaults to 9.
+    :param ma_model: Name of the moving average that should be used. Supported models are:
+        'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
+        Defaults to 'ema'
+    :return: Returns the MACD line, signal line, and the difference between the two as a list of floats.
+    """
+    macd = macd_line(prices, macd_short_period, macd_long_period, ma_model)
+    signal = signal_line(macd, signal_period, ma_model)
+    length_diff = len(macd) - len(signal)
+    r = []
+    for i in range(len(signal)+1):
+        r.append((macd[i+length_diff], signal[i], signal[i] - macd[i+length_diff]))
+    return r
+
+
+# TODO: Allow for PMA and McGinley
+def macd_line(prices: list[float], short_period: int = 12, long_period: int = 26, ma_model: str = 'ema') -> list[float]:
     """
     Calculates the MACD.
     The default MACD uses a short period of 12, a long period of 26, and uses an Exponential Moving Average model to calculate
@@ -92,26 +106,21 @@ def moving_average_convergence_divergence(prices: list[float], short_period: int
     :param ma_model: Name of the moving average that should be used. Supported models are:
         'ma', 'moving average', 'moving_average', 'sma', 'smoothed moving average', 'smoothed_moving_average', 'ema', 'exponential moving average', 'exponential_moving_average'
         Defaults to 'ema'
-    :param fill_empty: (Optional) Whether empty values should be filled with the fill_value (default False)
-    :param fill_value: (Optional) The fill value to fill empty values with if fill_empty is True (default None)
     :return: Returns a list of MACD points
     """
     length = len(prices)
     if length < long_period:
         raise Exception(f'Prices ({length}) needs to be equal or greater than long_period ({long_period})')
     macd = []
-    if fill_empty:
-        for i in range(long_period):
-            macd.append(fill_value)
     for i in range(long_period, length+1):
         price_set = prices[i - long_period: i]
-        single_macd = moving_averages.moving_average_convergence_divergence(price_set, short_period, long_period, ma_model)
+        single_macd = moving_averages.macd_line(price_set, short_period, long_period, ma_model)
         macd.append(single_macd)
     return macd
 
 
-# TODO: Support PMA
-def signal_line(macd: list[float], period: int = 9, ma_model: str = 'ema', fill_empty: bool = False, fill_value: any = None):
+# TODO: Support PMA  and McGinley
+def signal_line(macd: list[float], period: int = 9, ma_model: str = 'ema'):
     """
     Calculates the Signal line
     The default signal line calculation uses a period of 9 and an Exponential Moving Average model. The caller of the
@@ -129,17 +138,13 @@ def signal_line(macd: list[float], period: int = 9, ma_model: str = 'ema', fill_
     if macd_len < period:
         raise Exception(f"Length of MACD ({macd_len}) needs to be equal or greater tjan period ({period})")
     signal_lines = []
-    if fill_empty:
-        for i in range(period):
-            signal_lines.append(fill_value)
     for i in range(period, macd_len+1):
         macd_set = macd[i-period: i]
         signal_line = moving_averages.signal_line(macd_set, ma_model)
         signal_lines.append(signal_line)
     return signal_lines
 
-# TODO: Moving Median
-
+# TODO: Moving Median and McGinley
 
 def mcginley_dynamic(prices: list[float], period: int) -> list[float]:
     """
@@ -171,7 +176,6 @@ def moving_average_envelopes(prices: list[float], period: int, ma_model: str = '
     """
     if period > len(prices):
         raise Exception(f'Period ({period}) cannot be longer than length of prices ({len(prices)})')
-
     ma_envelope_list = []
     for i in range(len(prices) - period + 1):
         ma_envelope_list.append(moving_averages.moving_average_envelopes(prices[i:i+period], ma_model, difference))
