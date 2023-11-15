@@ -90,7 +90,7 @@ def moving_average_convergence_divergence(prices: list[float], macd_short_period
     length_diff = len(macd) - len(signal)
     r = []
     for i in range(len(signal)):
-        r.append((macd[i+length_diff], signal[i], signal[i] - macd[i+length_diff]))
+        r.append((macd[i+length_diff], signal[i], macd[i+length_diff] - signal[i]))
     return r
 
 
