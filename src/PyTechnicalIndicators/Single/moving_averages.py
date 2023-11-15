@@ -44,6 +44,8 @@ def personalised_moving_average(prices: list[float], alpha_nominator: int, alpha
     length_prices = len(prices)
     if length_prices == 0:
         raise Exception('There needs to be prices to be able to calculate the moving average')
+    elif length_prices == 1:
+        return prices[0]
     if length_prices + alpha_denominator == 0:
         raise Exception(f'The length of prices {length_prices} and the value of the alpha denominator {alpha_denominator} add up to 0, and division by 0 isn\'t possible')
     alpha = alpha_nominator / (length_prices + alpha_denominator)
