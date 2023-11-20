@@ -2,14 +2,14 @@ from src.PyTechnicalIndicators.Single import other_indicators as other_single
 from src.PyTechnicalIndicators.Bulk import other_indicators as other_bulk
 
 
-def test_single_value_added_personalised_index_no_previous():
-    vapi = other_single.value_added_index(100, 210)
-    assert vapi == 111000
+def test_single_return_on_investment_no_previous():
+    roi = other_single.return_on_investment(100, 200)
+    assert roi == (2000, 100)
 
 
-def test_single_value_added_personalised_index_previous():
-    vapi = other_single.value_added_index(210, 270, 111000)
-    assert vapi == 6771000
+def test_single_return_on_investment_previous():
+    roi = other_single.return_on_investment(200, 250, 2000)
+    assert roi == (2500, 25)
 
 
 def test_single_true_range():
@@ -33,10 +33,10 @@ def test_single_stop_and_reverse():
     assert other_single.stop_and_reverse(100, 110, 10, 110) == 110
 
 
-def test_bulk_value_added_personalised_index():
-    prices = [100, 210, 270, 250, 180, 220]
-    vapi = other_bulk.value_added_index(prices)
-    assert vapi == [111000, 6771000, -128649000, 8876781000, 363948021000]
+def test_bulk_return_on_investment():
+    prices = [100, 200, 250, 250, 100]
+    roi = other_bulk.return_on_investment(prices)
+    assert roi == [(2000, 100), (2500, 25), (2500, 0), (1000, -60)]
 
 
 def test_bulk_true_range():

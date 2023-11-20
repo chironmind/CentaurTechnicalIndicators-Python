@@ -43,7 +43,7 @@ def ichimoku_cloud(highs: list[float], lows: list[float], close: list[float], co
     :param conversion_period: int -
     :param base_period:
     :param span_b_period:
-    :return: Returns a list with Senkou Span A and Span B as a tuple
+    :return: Returns the Senkou Span A and Span B, Base Line, Conversion Line, and the Lagged close price as a tuple with a list of floats for each
     """
     highest_period = max(conversion_period, base_period, span_b_period)
     length = len(highs)

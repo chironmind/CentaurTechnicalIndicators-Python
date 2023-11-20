@@ -1,21 +1,22 @@
 from ..Single import other_indicators
 
 
-def value_added_index(prices: list[float], starting_investment: int = 1000) -> list[float]:
+def return_on_investment(prices: list[float], starting_investment: int = 1000) -> list[tuple[float, float]]:
     """
-    Calculates and returns a personalised version of the VAMI where the period is determined by the called
+    Calculates the return on investment and returns the value of the investment at the end of the period, as well as the
+    percentage change
 
-    If the caller wants to start with an initial investment other than $1000, the caller should use the starting_investment
-    variable
+    If the caller wants to start with an initial investment other than $1000, the caller should input the value they
+    want in starting_investment instead of leaving it to default to 1000
     :param prices: list of prices, these should be the start prices for each period. An assumption here is made that the
     start price for period t is the end price for period t+1.
     :param starting_investment: (Optional) Use if the starting investment should be different that $1000
-    :return: Returns a list of Value Added Personalised Index
+    :return: Returns a list of return on investment and the percentage return
     """
-    vai_list = [other_indicators.value_added_index(prices[0], prices[1], starting_investment)]
+    roi_list = [other_indicators.return_on_investment(prices[0], prices[1], starting_investment)]
     for i in range(1, len(prices)-1):
-        vai_list.append(other_indicators.value_added_index(prices[i], prices[i+1], vai_list[-1]))
-    return vai_list
+        roi_list.append(other_indicators.return_on_investment(prices[i], prices[i+1], roi_list[-1][0]))
+    return roi_list
 
 
 def true_range(high: list[float], low: list[float], previous_close: list[float]) -> list[float]:

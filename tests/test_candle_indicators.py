@@ -7,13 +7,13 @@ from src.PyTechnicalIndicators.Bulk import candle_indicators as bulk_candle_indi
 def test_single_bollinger_bands():
     prices = [103, 105, 102, 107, 103, 111, 106, 104, 105, 108, 112, 120, 125, 110, 107, 108, 105, 103, 106, 107]
     bbands = single_candle_indicators.bollinger_bands(prices)
-    assert bbands == (96.36499833879442, 119.33500166120557)
+    assert bbands == (96.36499833879442, 119.33500166120557, 107.85)
 
 
 def test_single_personalised_bollinger_bands():
     prices = [110, 107, 108, 105, 103, 106, 107]
     bbands = single_candle_indicators.bollinger_bands(prices, 'ema', 3)
-    assert bbands == (99.46018315489414, 112.81255052123461)
+    assert bbands == (99.46018315489414, 112.81255052123461, 106.13636683806438)
 
 
 def test_single_ichimoku_cloud():
@@ -35,13 +35,13 @@ def test_single_personalised_ichimoku_cloud():
 def test_bulk_bollinger_bands():
     prices = [103, 105, 102, 107, 103, 111, 106, 104, 105, 108, 112, 120, 125, 110, 107, 108, 105, 103, 106, 107, 110, 108]
     bbands = bulk_candle_indicators.bollinger_bands(prices)
-    assert bbands == [(96.36499833879442, 119.33500166120557), (96.91237286601877, 119.48762713398123), (97.16213062944371, 119.53786937055628)]
+    assert bbands == [(96.36499833879442, 119.33500166120557, 107.85), (96.91237286601877, 119.48762713398123, 108.2), (97.16213062944371, 119.53786937055628, 108.35)]
 
 
 def test_bulk_personalised_bollinger_bands():
     prices = [110, 107, 108, 105, 103, 106, 107, 110, 108]
     bbands = bulk_candle_indicators.bollinger_bands(prices, 7, 'ema', 3)
-    assert bbands == [(99.46018315489414, 112.81255052123461), (100.42609144537805, 113.77845881171852), (100.49915238054767, 114.23128362705957)]
+    assert bbands == [(99.46018315489414, 112.81255052123461, 106.13636683806438), (100.42609144537805, 113.77845881171852, 107.10227512854829), (100.49915238054767, 114.23128362705957, 107.36521800380362)]
 
 
 def test_bulk_ichimoku_cloud():

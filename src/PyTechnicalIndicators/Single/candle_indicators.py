@@ -36,14 +36,13 @@ def bollinger_bands(typical_prices: list[float], ma_model: str = 'ma', stddev_mu
     stddev = statistics.stdev(typical_prices)
     upper_band = ma + (stddev_multiplier*stddev)
     lower_band = ma - (stddev_multiplier*stddev)
-    return lower_band, upper_band
+    return lower_band, upper_band, ma
 
 
 def ichimoku_cloud(highs: list[float], lows: list[float], close: list[float], conversion_period: int = 9, base_period: int = 26, span_b_period: int = 52) -> tuple[float, float, float, float, float]:
     """
     Calculates Ichimoku cloud from a list of highs and lows and returns a tuple with Senkou Span A and Span B as lists
-
-    The personalised ichimoku cloud allows for fine tuning of ichimoku cloud but change the conversion period, based period and span b period.
+    The function allows for fine-tuning of ichimoku cloud but change the conversion period, based period and span b period.
     The default conversion period is 9, the default base period is 26, the default Span B period is 52, adjusting these
     to fit the current market will yield a more precise cloud
     :param highs: List of highs

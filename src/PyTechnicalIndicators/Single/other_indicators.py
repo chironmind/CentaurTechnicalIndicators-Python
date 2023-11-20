@@ -1,17 +1,21 @@
 
 
-def value_added_index(start_price: float, end_price: float, previous_vai: float = 1000) -> float:
+def return_on_investment(start_price: float, end_price: float, previous_roi: float = 1000) -> tuple[float, float]:
     """
-    Calculates and returns a personalised version of the VAMI where the period is determined by the called
+    Calculates the return on investment and returns the value of the investment at the end of the period, as well as the
+    percentage change
 
     If the caller wants to start with an initial investment other than $1000, the caller should input the value they
-    want as the first previous_vapi instead of leaving it to default to 1000
+    want as the first previous_roi instead of leaving it to default to 1000
     :param start_price: The price at the start of the period
     :param end_price: The price at the end of the period
-    :param previous_vai: (Optional) The previous Value Added Monthly Index (Default = 1000)
-    :return: Returns the value add personalised index as a float
+    :param previous_roi: (Optional) The previous return on investment (Default = 1000)
+    :return: Returns the return on investment and the percentage return as a tuple of floats
     """
-    return previous_vai * (1 + (end_price - start_price))
+    initial_investment = previous_roi / start_price
+    final_investment_worth = end_price * initial_investment
+    percent_return_on_investment = ((final_investment_worth - previous_roi) / previous_roi) * 100
+    return final_investment_worth, percent_return_on_investment
 
 
 def true_range(high: float, low: float, previous_close: float) -> float:
