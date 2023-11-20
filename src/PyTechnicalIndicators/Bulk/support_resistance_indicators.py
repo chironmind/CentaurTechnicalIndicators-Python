@@ -1,18 +1,6 @@
 from ..Single import support_resistance_indicators
 
 
-def fibonacci_retracement(prices: list[float]) -> list[tuple[float, float, float, float, float, float, float]]:
-    """
-    Calculates the Fibonacci retracement for a list of prices
-    :param prices: List of prices
-    :return:
-    """
-    fr = []
-    for price in prices:
-        fr.append(support_resistance_indicators.fibonacci_retracement(price))
-    return fr
-
-
 def pivot_points(highs: list[float], lows: list[float], close: list[float]) -> list[tuple[float, float, float, float, float]]:
     """
     Calculates the pivot point, primary and secondary support and resistance levels

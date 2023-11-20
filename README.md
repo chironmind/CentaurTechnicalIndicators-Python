@@ -488,17 +488,18 @@ Indicators that don't really fall into other categories
 ##### Value Added Index
 Calculates the value added index for an asset. Starting investment defaults to 1000 but can be changed by caller.
 ```python
-from PyTechnicalIndicators.Bulk.other_indicators import value_added_index
+from PyTechnicalIndicators.Bulk.other_indicators import return_on_investment
 prices = [100, 210, 270, 250, 180, 220]
 
 # Default Value Added Index
-vai = value_added_index(prices)
+roi = return_on_investment(prices)
 print(vai)
-# [111000, 6771000, -128649000, 8876781000, 363948021000]
+# [(2000, 100), (2500, 25), (2500, 0), (1000, -60)]
 
 # Personalised Value Added Index
-vai = value_added_index(prices, 2000)
+vai = return_on_investment(prices, 2000)
 print(vai)
+# [(4000, 100), (5000, 25), (5000, 0), (2000, -60)]
 ```
 
 ##### True Range
@@ -625,21 +626,6 @@ print(adxr)
 ```
 
 #### Support and Resistance Indicators
-
-##### Fibonacci Retracement
-Calculates the Fibonacci retracement for an asset.
-```python
-from PyTechnicalIndicators.Bulk.support_resistance_indicators import fibonacci_retracement
-fr = fibonacci_retracement([100, 103, 106, 102, 96])
-print(fr) 
-#[
-#     (100, 123.6, 138.2, 150, 161.8, 176.4, 200),
-#     (103, 127.30799999999999, 142.34599999999998, 154.5, 166.65400000000002, 181.692, 206),
-#     (106, 131.016, 146.492, 159, 171.508, 186.984, 212),
-#     (102, 126.072, 140.964, 153, 165.036, 179.928, 204),
-#     (96, 118.656, 132.672, 144, 155.328, 169.344, 192)
-# ]
-```
 
 ##### Pivot points
 Calculates the pivot points of an asset.
@@ -1115,15 +1101,14 @@ print(wr)
 #### Other Indicators
 Indicators that don't really fall into other categories
 
-##### Value Added Index
+##### Return on Invesment
 Calculates the value added index for an asset. Starting investment defaults to 1000 but can be changed by caller.
 The `Single` function takes a start price and end price.
 ```python
-from PyTechnicalIndicators.Single.other_indicators import value_added_index
-vai = value_added_index(start_price=100, end_price=210)
-print(vai)
-# 111000
-
+from PyTechnicalIndicators.Single.other_indicators import return_on_investment
+roi = return_on_investment(start_price=100, end_price=200)
+print(roi)
+# (2000, 100)
 ```
 
 ##### True Range
@@ -1231,15 +1216,6 @@ print(adxr)
 ```
 
 #### Support and Resistance Indicators
-
-##### Fibonacci Retracement
-Calculates the Fibonacci retracement for an asset.
-```python
-from PyTechnicalIndicators.Single.support_resistance_indicators import fibonacci_retracement
-fr = fibonacci_retracement(100)
-print(fr) 
-# (100, 123.6, 138.2, 150, 161.8, 176.4, 200)
-```
 
 ##### Pivot points
 Calculates the pivot points of an asset.

@@ -2,25 +2,9 @@ from src.PyTechnicalIndicators.Bulk import support_resistance_indicators as bulk
 from src.PyTechnicalIndicators.Single import support_resistance_indicators as single_support_resistance_indicators
 
 
-def test_single_fibonacci_retracement():
-    fr = single_support_resistance_indicators.fibonacci_retracement(100)
-    assert fr == (100, 123.6, 138.2, 150, 161.8, 176.4, 200)
-
-
 def test_single_pivot_points():
     pivot = single_support_resistance_indicators.pivot_points(125, 118, 120)
     assert pivot == (121, 117, 124, 114, 128)
-
-
-def test_bulk_fibonacci_retracement():
-    fr = bulk_support_resistance_indicators.fibonacci_retracement([100, 103, 106, 102, 96])
-    assert fr == [
-        (100, 123.6, 138.2, 150, 161.8, 176.4, 200),
-        (103, 127.30799999999999, 142.34599999999998, 154.5, 166.65400000000002, 181.692, 206),
-        (106, 131.016, 146.492, 159, 171.508, 186.984, 212),
-        (102, 126.072, 140.964, 153, 165.036, 179.928, 204),
-        (96, 118.656, 132.672, 144, 155.328, 169.344, 192)
-    ]
 
 
 def test_bulk_pivot_points():
