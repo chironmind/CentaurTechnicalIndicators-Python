@@ -1,3 +1,5 @@
+![alt text](./banner.webp)
+
 # PyTechnicalIndicators
 
 A simple, lightweight package used to calculate Technical Indicators in Python.
