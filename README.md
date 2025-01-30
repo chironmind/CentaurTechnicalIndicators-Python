@@ -1,4 +1,4 @@
-![alt text](./assets/banner.webp)
+![alt text](./banner.webp)
 
 # PyTechnicalIndicators
 
