@@ -1,31 +1,15 @@
 [build-system]
-requires = [
-    "hatchling"
-]
-build-backend = "hatchling.build"
+requires = ["maturin>=1.9,<2.0"]
+build-backend = "maturin"
 
 [project]
 name = "PyTechnicalIndicators"
-version = "2.0.9"
-authors = [
-    { name="0100101001010000", email="mind@your.business"}
-]
-description = "A simple technical indicators package for financial technical Analysis"
-readme = "README.md"
-requires-python = ">3.8"
+requires-python = ">=3.8"
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "Operating System :: OS Independent",
-    "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Financial and Insurance Industry",
-    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)"
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
 ]
-
-[project.urls]
-"Homepage" = "https://github.com/0100101001010000/PyTechnicalIndicators"
-"Issues" = "https://github.com/0100101001010000/PyTechnicalIndicators/issues"
-
-[tool.pytest.ini_options]
-pythonpath = [
-  "."
-]
+dynamic = ["version"]
+[tool.maturin]
+features = ["pyo3/extension-module"]
