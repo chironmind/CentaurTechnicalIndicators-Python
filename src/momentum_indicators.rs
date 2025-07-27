@@ -39,6 +39,25 @@ fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
         bulk_commodity_channel_index,
         &bulk_module
     )?)?;
+    bulk_module.add_function(wrap_pyfunction!(
+        bulk_mcginley_dynamic_commodity_channel_index,
+        &bulk_module
+    )?)?;
+    bulk_module.add_function(wrap_pyfunction!(bulk_macd_line, &bulk_module)?)?;
+    bulk_module.add_function(wrap_pyfunction!(bulk_signal_line, &bulk_module)?)?;
+    bulk_module.add_function(wrap_pyfunction!(
+        bulk_mcginley_dynamic_macd_line,
+        &bulk_module
+    )?)?;
+    bulk_module.add_function(wrap_pyfunction!(bulk_chaikin_oscillator, &bulk_module)?)?;
+    bulk_module.add_function(wrap_pyfunction!(
+        bulk_percentage_price_oscillator,
+        &bulk_module
+    )?)?;
+    bulk_module.add_function(wrap_pyfunction!(
+        bulk_chande_momentum_oscillator,
+        &bulk_module
+    )?)?;
     parent_module.add_submodule(&bulk_module);
     Ok(())
 }
@@ -62,6 +81,25 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     single_module.add_function(wrap_pyfunction!(single_on_balance_volume, &single_module)?)?;
     single_module.add_function(wrap_pyfunction!(
         single_commodity_channel_index,
+        &single_module
+    )?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_mcginley_dynamic_commodity_channel_index,
+        &single_module
+    )?)?;
+    single_module.add_function(wrap_pyfunction!(single_macd_line, &single_module)?)?;
+    single_module.add_function(wrap_pyfunction!(single_signal_line, &single_module)?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_mcginley_dynamic_macd_line,
+        &single_module
+    )?)?;
+    single_module.add_function(wrap_pyfunction!(single_chaikin_oscillator, &single_module)?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_percentage_price_oscillator,
+        &single_module
+    )?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_chande_momentum_oscillator,
         &single_module
     )?)?;
     parent_module.add_submodule(&single_module);
@@ -418,4 +456,366 @@ fn bulk_commodity_channel_index(
         constant_multiplier,
         period,
     ))
+}
+
+// McGinley Dynamic Commodity Channel Index
+
+/// Calculates the McGinley Dynamic Commodity Channel Index (CCI)
+///
+/// Args:
+///     prices: List of prices
+///     previous_mcginley_dynamic: Previous McGinley dynamic (0.0 if none)
+///     deviation_model: Variant of `DeviationModel`
+///     constant_multiplier: Scale factor (normally 0.015)
+///
+/// Returns:
+///     A tuple with the Commodity Channel Index and McGinley Dynamic
+#[pyfunction(name = "mcginley_dynamic_commodity_channel_index")]
+fn single_mcginley_dynamic_commodity_channel_index(
+    prices: Vec<f64>,
+    previous_mcginley_dynamic: f64,
+    deviation_model: crate::PyDeviationModel,
+    constant_multiplier: f64,
+) -> PyResult<(f64, f64)> {
+    Ok(mi::single::mcginley_dynamic_commodity_channel_index(
+        &prices,
+        previous_mcginley_dynamic,
+        deviation_model.into(),
+        constant_multiplier,
+    ))
+}
+
+/// Calculates the McGinley Dynamic Commodity Channel Index (CCI)
+///
+/// Args:
+///     prices: List of prices
+///     previous_mcginley_dynamic: Previous McGinley dynamic (0.0 if none)
+///     deviation_model: Variant of `DeviationModel`
+///     constant_multiplier: Scale factor (normally 0.015)
+///     period: Period over which to calculate the CCI
+///
+/// Returns:
+///     A tuple with the Commodity Channel Index and McGinley Dynamic
+#[pyfunction(name = "mcginley_dynamic_commodity_channel_index")]
+fn bulk_mcginley_dynamic_commodity_channel_index(
+    prices: Vec<f64>,
+    previous_mcginley_dynamic: f64,
+    deviation_model: crate::PyDeviationModel,
+    constant_multiplier: f64,
+    period: usize,
+) -> PyResult<Vec<(f64, f64)>> {
+    Ok(mi::bulk::mcginley_dynamic_commodity_channel_index(
+        &prices,
+        previous_mcginley_dynamic,
+        deviation_model.into(),
+        constant_multiplier,
+        period,
+    ))
+}
+
+// MACD
+
+/// Calculates the Moving Average Convergence Divergence (MACD) line
+///
+/// Args:
+///     prices: List of prices
+///     short_period: Length of the short period
+///     short_period_model: Variant of `ConstantModelType`
+///     long_period_model: Variant of `ConstantModelType`
+///
+/// Returns:
+///     Moving Average Convergence Divergence
+#[pyfunction(name = "macd_line")]
+fn single_macd_line(
+    prices: Vec<f64>,
+    short_period: usize,
+    short_period_model: crate::PyConstantModelType,
+    long_period_model: crate::PyConstantModelType,
+) -> PyResult<f64> {
+    Ok(mi::single::macd_line(
+        &prices,
+        short_period,
+        short_period_model.into(),
+        long_period_model.into(),
+    ))
+}
+
+/// Calculates the Moving Average Convergence Divergence (MACD) line
+///
+/// Args:
+///     prices: List of prices
+///     short_period: Length of the short period
+///     short_period_model: Variant of `ConstantModelType`
+///     long_period: Length of the long period
+///     long_period_model: Variant of `ConstantModelType`
+///
+/// Returns:
+///     Moving Average Convergence Divergence
+#[pyfunction(name = "macd_line")]
+fn bulk_macd_line(
+    prices: Vec<f64>,
+    short_period: usize,
+    short_period_model: crate::PyConstantModelType,
+    long_period: usize,
+    long_period_model: crate::PyConstantModelType,
+) -> PyResult<Vec<f64>> {
+    Ok(mi::bulk::macd_line(
+        &prices,
+        short_period,
+        short_period_model.into(),
+        long_period,
+        long_period_model.into(),
+    ))
+}
+
+// MACD Signal line
+
+/// Calculates the MACD signal line divergence.
+///
+/// Args:
+///     macds: list of MACDs
+///     constant_model_type: Variant of `ConstantModelType`
+///
+/// Returns:
+///     Signal line point
+#[pyfunction(name = "signal_line")]
+fn single_signal_line(
+    macds: Vec<f64>,
+    constant_model_type: crate::PyConstantModelType,
+) -> PyResult<f64> {
+    Ok(mi::single::signal_line(&macds, constant_model_type.into()))
+}
+
+/// Calculates the MACD signal line divergence.
+///
+/// Args:
+///     macds: list of MACDs
+///     constant_model_type: Variant of `ConstantModelType`
+///     period: Period over which to calculate the signal line
+///
+/// Returns:
+///     List Signal line points
+#[pyfunction(name = "signal_line")]
+fn bulk_signal_line(
+    macds: Vec<f64>,
+    constant_model_type: crate::PyConstantModelType,
+    period: usize,
+) -> PyResult<Vec<f64>> {
+    Ok(mi::bulk::signal_line(
+        &macds,
+        constant_model_type.into(),
+        period,
+    ))
+}
+
+// McGinley Dynamic MACD
+
+/// Calculates the McGinley dynamic MACD line
+///
+/// Args:
+///     prices: List of prices
+///     short_period: Length of the short period
+///     previous_short_mcginley - Previous short model McGinley dynamic (if none use 0.0)
+///     previous_long_mcginley - Previous long model McGinley dynamic (if none use 0.0)
+///
+/// Returns:
+///     Tuple with Moving Average Convergence Divergence, short McGinley dynamic, long McGinley
+///     dynamic
+#[pyfunction(name = "mcginley_dynamic_macd_line")]
+fn single_mcginley_dynamic_macd_line(
+    prices: Vec<f64>,
+    short_period: usize,
+    previous_short_mcginley: f64,
+    previous_long_mcginley: f64,
+) -> PyResult<(f64, f64, f64)> {
+    Ok(mi::single::mcginley_dynamic_macd_line(
+        &prices,
+        short_period,
+        previous_short_mcginley,
+        previous_long_mcginley,
+    ))
+}
+
+/// Calculates the McGinley dynamic MACD line
+///
+/// Args:
+///     prices: List of prices
+///     short_period: Length of the short period
+///     previous_short_mcginley: Previous short model McGinley dynamic (if none use 0.0)
+///     long_period: Length of the long period
+///     previous_long_mcginley: Previous long model McGinley dynamic (if none use 0.0)
+///
+/// Returns:
+///     Tuple with Moving Average Convergence Divergence, short McGinley dynamic, long McGinley
+///     dynamic
+#[pyfunction(name = "mcginley_dynamic_macd_line")]
+fn bulk_mcginley_dynamic_macd_line(
+    prices: Vec<f64>,
+    short_period: usize,
+    previous_short_mcginley: f64,
+    long_period: usize,
+    previous_long_mcginley: f64,
+) -> PyResult<Vec<(f64, f64, f64)>> {
+    Ok(mi::bulk::mcginley_dynamic_macd_line(
+        &prices,
+        short_period,
+        previous_short_mcginley,
+        long_period,
+        previous_long_mcginley,
+    ))
+}
+
+// Chaikin Oscillator
+
+/// Calculates the  Chaikin Oscillator (CO)
+///
+/// # Args:
+///     highs: List of highs
+///     lows: List of lows
+///     close: List of closing prices
+///     volume: List of volumes
+///     short_period: Short period over which to calculate the AD
+///     previous_accumulation_distribution: Previous AD value (if none use 0.0)
+///     short_period_model: Variant of `ConstantModelType`
+///     long_period_model: Variant of `ConstantModelType`
+///
+/// Returns:
+///     Tuple of Chaikin Oscillator and Accumulation Distribution
+#[pyfunction(name = "chaikin_oscillator")]
+fn single_chaikin_oscillator(
+    highs: Vec<f64>,
+    lows: Vec<f64>,
+    close: Vec<f64>,
+    volume: Vec<f64>,
+    short_period: usize,
+    previous_accumulation_distribution: f64,
+    short_period_model: crate::PyConstantModelType,
+    long_period_model: crate::PyConstantModelType,
+) -> PyResult<(f64, f64)> {
+    Ok(mi::single::chaikin_oscillator(
+        &highs,
+        &lows,
+        &close,
+        &volume,
+        short_period,
+        previous_accumulation_distribution,
+        short_period_model.into(),
+        long_period_model.into(),
+    ))
+}
+
+/// Calculates the  Chaikin Oscillator (CO)
+///
+/// # Args:
+///     highs: List of highs
+///     lows: List of lows
+///     close: List of closing prices
+///     volume: List of volumes
+///     short_period: Short period over which to calculate the AD
+///     long_period: Long period over which to calculate the AD
+///     previous_accumulation_distribution: Previous AD value (if none use 0.0)
+///     short_period_model: Variant of `ConstantModelType`
+///     long_period_model: Variant of `ConstantModelType`
+///
+/// Returns:
+///     Tuple of Chaikin Oscillator and Accumulation Distribution
+#[pyfunction(name = "chaikin_oscillator")]
+fn bulk_chaikin_oscillator(
+    highs: Vec<f64>,
+    lows: Vec<f64>,
+    close: Vec<f64>,
+    volume: Vec<f64>,
+    short_period: usize,
+    long_period: usize,
+    previous_accumulation_distribution: f64,
+    short_period_model: crate::PyConstantModelType,
+    long_period_model: crate::PyConstantModelType,
+) -> PyResult<Vec<(f64, f64)>> {
+    Ok(mi::bulk::chaikin_oscillator(
+        &highs,
+        &lows,
+        &close,
+        &volume,
+        short_period,
+        long_period,
+        previous_accumulation_distribution,
+        short_period_model.into(),
+        long_period_model.into(),
+    ))
+}
+
+// Percentage Price Oscillator
+
+/// Calculates the Percentage Price Oscillator (PPO)
+///
+/// Args:
+///     prices: List of prices
+///     short_period: Length of short period.
+///     constant_model_type: Variant of `ConstantModelType`
+///
+/// Returns:
+///     The Percentage Price Oscillator
+#[pyfunction(name = "percentage_price_oscillator")]
+fn single_percentage_price_oscillator(
+    prices: Vec<f64>,
+    short_period: usize,
+    constant_model_type: crate::PyConstantModelType,
+) -> PyResult<f64> {
+    Ok(mi::single::percentage_price_oscillator(
+        &prices,
+        short_period,
+        constant_model_type.into(),
+    ))
+}
+
+/// Calculates the Percentage Price Oscillator (PPO)
+///
+/// Args:
+///     prices: List of prices
+///     short_period: Length of short period.
+///     long_period: Length of long period
+///     constant_model_type: Variant of `ConstantModelType`
+///
+/// Returns:
+///     List of Percentage Price Oscillator
+#[pyfunction(name = "percentage_price_oscillator")]
+fn bulk_percentage_price_oscillator(
+    prices: Vec<f64>,
+    short_period: usize,
+    long_period: usize,
+    constant_model_type: crate::PyConstantModelType,
+) -> PyResult<Vec<f64>> {
+    Ok(mi::bulk::percentage_price_oscillator(
+        &prices,
+        short_period,
+        long_period,
+        constant_model_type.into(),
+    ))
+}
+
+// Chande Momentum Oscillator
+
+/// Calculates the Chande Momentum Oscillator (CMO)
+///
+/// Args:
+///     prices: List of prices
+///     
+/// Returns:
+///     The Chande Momentum Oscillator
+#[pyfunction(name = "chande_momentum_oscillator")]
+fn single_chande_momentum_oscillator(prices: Vec<f64>) -> PyResult<f64> {
+    Ok(mi::single::chande_momentum_oscillator(&prices))
+}
+
+/// Calculates the Chande Momentum Oscillator (CMO)
+///
+/// Args:
+///     prices: List of prices
+///     period: Period over which to calculate the CMO
+///     
+/// Returns:
+///     List Chande Momentum Oscillator
+#[pyfunction(name = "chande_momentum_oscillator")]
+fn bulk_chande_momentum_oscillator(prices: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
+    Ok(mi::bulk::chande_momentum_oscillator(&prices, period))
 }
