@@ -17,6 +17,5 @@ jobs:
           . ./venv/bin/activate
           pip install -r test_requirements.txt
           maturin develop
-          pytest
       - name: Run Pytest
         run: pytest
