@@ -85,10 +85,10 @@ def test_bulk_slowest_stochastic():
     assert PyTechnicalIndicators.momentum_indicators.bulk.slowest_stochastic(slow_stochastics, PyTechnicalIndicators.ConstantModelType.SimpleMovingMode(), 3) == [69.33333333333333, 63.666666666666664]
 
 def test_single_williams_percent_r():
-    assert PyTechnicalIndicators.momentum_indicators.single.williams_percent_r(high, low, close[-1]) == -63.888888888888886
+    assert PyTechnicalIndicators.momentum_indicators.single.williams_percent_r(high, low, close[-1]) == -61.111111111111114
 
 def test_bulk_williams_percent_r():
-    assert PyTechnicalIndicators.momentum_indicators.bulk.williams_percent_r(high, low, close, 3) == [-25.71428571428571, -63.888888888888886]
+    assert PyTechnicalIndicators.momentum_indicators.bulk.williams_percent_r(high, low, close, 3) == [-25.71428571428571, -63.888888888888886, -54.83870967741935]
 
 def test_single_money_flow_index():
     assert PyTechnicalIndicators.momentum_indicators.single.money_flow_index(prices, volume) == 56.771463119709786
@@ -179,42 +179,41 @@ def test_bulk_mcginley_dynamic_macd_line():
     assert PyTechnicalIndicators.momentum_indicators.bulk.mcginley_dynamic_macd_line(prices, 2, 0.0, 4, 0.0) == [(0.0, 101.0, 101.0), (-0.541644978308824, 99.91671004338234, 100.45835502169116)]
 
 def test_single_chaikin_oscillator():
-    assert PyTechnicalIndicators.momentum_indicators.single.chaikin_oscillator(high, low, close, volume, 3, 0.0, PyTechnicalIndicators.ConstantModelType.SimpleMovingAverage(), PyTechnicalIndicators.ConstantModelType.SimpleMovingAverage()) == 0.0
-    assert PyTechnicalIndicators.momentum_indicators.single.chaikin_oscillator(high, low, close, volume, 3, 0.0, PyTechnicalIndicators.ConstantModelType.SmoothedMovingAverage(), PyTechnicalIndicators.ConstantModelType.SmoothedMovingAverage) == 0.0
-    assert PyTechnicalIndicators.momentum_indicators.single.chaikin_oscillator(high, low, close, volume, 3, 0.0, PyTechnicalIndicators.ConstantModelType.ExponentialMovingAverage(), PyTechnicalIndicators.ConstantModelType.ExponentialMovingAverage()) == 0.0
-    assert PyTechnicalIndicators.momentum_indicators.single.chaikin_oscillator(high, low, close, volume, 3, 0.0, PyTechnicalIndicators.ConstantModelType.PersonalisedMovingAverage(5, 4), PyTechnicalIndicators.ConstantModelType.PersonalisedMovingAverage(5, 4)) == 0.0
-    assert PyTechnicalIndicators.momentum_indicators.single.chaikin_oscillator(high, low, close, volume, 3, 0.0, PyTechnicalIndicators.ConstantModelType.SimpleMovingMedian(), PyTechnicalIndicators.ConstantModelType.SimpleMovingMedian()) == 0.0
-    assert PyTechnicalIndicators.momentum_indicators.single.chaikin_oscillator(high, low, close, volume, 3, 0.0, PyTechnicalIndicators.ConstantModelType.SimpleMovingMode(), PyTechnicalIndicators.ConstantModelType.SimpleMovingMode()) == 0.0
+    assert PyTechnicalIndicators.momentum_indicators.single.chaikin_oscillator(high, low, close, volume, 3, 0.0, PyTechnicalIndicators.ConstantModelType.SimpleMovingAverage(), PyTechnicalIndicators.ConstantModelType.SimpleMovingAverage()) == (175.33333333333326, 2635.8333333333335)
+    assert PyTechnicalIndicators.momentum_indicators.single.chaikin_oscillator(high, low, close, volume, 3, 0.0, PyTechnicalIndicators.ConstantModelType.SmoothedMovingAverage(), PyTechnicalIndicators.ConstantModelType.SmoothedMovingAverage()) == (383.32130898402636, 2635.8333333333335)
+    assert PyTechnicalIndicators.momentum_indicators.single.chaikin_oscillator(high, low, close, volume, 3, 0.0, PyTechnicalIndicators.ConstantModelType.ExponentialMovingAverage(), PyTechnicalIndicators.ConstantModelType.ExponentialMovingAverage()) == (460.72839088241915, 2635.8333333333335)
+    assert PyTechnicalIndicators.momentum_indicators.single.chaikin_oscillator(high, low, close, volume, 3, 0.0, PyTechnicalIndicators.ConstantModelType.PersonalisedMovingAverage(5, 4), PyTechnicalIndicators.ConstantModelType.PersonalisedMovingAverage(5, 4)) == (445.8245652392925, 2635.8333333333335)
+    assert PyTechnicalIndicators.momentum_indicators.single.chaikin_oscillator(high, low, close, volume, 3, 0.0, PyTechnicalIndicators.ConstantModelType.SimpleMovingMedian(), PyTechnicalIndicators.ConstantModelType.SimpleMovingMedian()) == (-157.49999999999997, 2635.8333333333335)
+    assert PyTechnicalIndicators.momentum_indicators.single.chaikin_oscillator(high, low, close, volume, 3, 0.0, PyTechnicalIndicators.ConstantModelType.SimpleMovingMode(), PyTechnicalIndicators.ConstantModelType.SimpleMovingMode()) == (175.39999999999998, 2635.8333333333335)
 
 def test_bulk_chaikin_oscillator():
-    assert PyTechnicalIndicators.momentum_indicators.bulk.chaikin_oscillator(high, low, close, volume, 2, 4, 0.0, PyTechnicalIndicators.ConstantModelType.SimpleMovingAverage(), PyTechnicalIndicators.ConstantModelType.SimpleMovingAverage()) == 0.0
-    assert PyTechnicalIndicators.momentum_indicators.bulk.chaikin_oscillator(high, low, close, volume, 2, 4, 0.0, PyTechnicalIndicators.ConstantModelType.SmoothedMovingAverage(), PyTechnicalIndicators.ConstantModelType.SmoothedMovingAverage) == 0.0
-    assert PyTechnicalIndicators.momentum_indicators.bulk.chaikin_oscillator(high, low, close, volume, 2, 4, 0.0, PyTechnicalIndicators.ConstantModelType.ExponentialMovingAverage(), PyTechnicalIndicators.ConstantModelType.ExponentialMovingAverage()) == 0.0
-    assert PyTechnicalIndicators.momentum_indicators.bulk.chaikin_oscillator(high, low, close, volume, 2, 4, 0.0, PyTechnicalIndicators.ConstantModelType.PersonalisedMovingAverage(5, 4), PyTechnicalIndicators.ConstantModelType.PersonalisedMovingAverage(5, 4)) == 0.0
-    assert PyTechnicalIndicators.momentum_indicators.bulk.chaikin_oscillator(high, low, close, volume, 2, 4, 0.0, PyTechnicalIndicators.ConstantModelType.SimpleMovingMedian(), PyTechnicalIndicators.ConstantModelType.SimpleMovingMedian()) == 0.0
-    assert PyTechnicalIndicators.momentum_indicators.bulk.chaikin_oscillator(high, low, close, volume, 2, 4, 0.0, PyTechnicalIndicators.ConstantModelType.SimpleMovingMode(), PyTechnicalIndicators.ConstantModelType.SimpleMovingMode()) == 0.0
+    assert PyTechnicalIndicators.momentum_indicators.bulk.chaikin_oscillator(high, low, close, volume, 2, 4, 0.0, PyTechnicalIndicators.ConstantModelType.SimpleMovingAverage(), PyTechnicalIndicators.ConstantModelType.SimpleMovingAverage()) == [(-261.04166666666663, 35.83333333333337), (751.25, 2311.666666666667)]
+    assert PyTechnicalIndicators.momentum_indicators.bulk.chaikin_oscillator(high, low, close, volume, 2, 4, 0.0, PyTechnicalIndicators.ConstantModelType.SmoothedMovingAverage(), PyTechnicalIndicators.ConstantModelType.SmoothedMovingAverage()) == [(-115.6285714285714, 35.83333333333337), (873.8904761904763, 2311.666666666667)]
+    assert PyTechnicalIndicators.momentum_indicators.bulk.chaikin_oscillator(high, low, close, volume, 2, 4, 0.0, PyTechnicalIndicators.ConstantModelType.ExponentialMovingAverage(), PyTechnicalIndicators.ConstantModelType.ExponentialMovingAverage()) == [(-43.759191176470615, 35.83333333333337), (832.5735294117644, 2311.666666666667)]
+    assert PyTechnicalIndicators.momentum_indicators.bulk.chaikin_oscillator(high, low, close, volume, 2, 4, 0.0, PyTechnicalIndicators.ConstantModelType.PersonalisedMovingAverage(5, 4), PyTechnicalIndicators.ConstantModelType.PersonalisedMovingAverage(5, 4)) == [(29.11670521259564, 35.83333333333337), (615.9282156199965, 2311.666666666667)]
+    assert PyTechnicalIndicators.momentum_indicators.bulk.chaikin_oscillator(high, low, close, volume, 2, 4, 0.0, PyTechnicalIndicators.ConstantModelType.SimpleMovingMedian(), PyTechnicalIndicators.ConstantModelType.SimpleMovingMedian()) == [(-360.0, 35.83333333333337), (1221.25, 2311.666666666667)]
+    assert PyTechnicalIndicators.momentum_indicators.bulk.chaikin_oscillator(high, low, close, volume, 2, 4, 0.0, PyTechnicalIndicators.ConstantModelType.SimpleMovingMode(), PyTechnicalIndicators.ConstantModelType.SimpleMovingMode()) == [(-261.0, 35.83333333333337), (751.5, 2311.666666666667)]
 
-# TODO: PPO
+def test_single_percentage_price_oscillator():
+    assert PyTechnicalIndicators.momentum_indicators.single.percentage_price_oscillator(prices, 3, PyTechnicalIndicators.ConstantModelType.SimpleMovingAverage()) == 0.0
+    assert PyTechnicalIndicators.momentum_indicators.single.percentage_price_oscillator(prices, 3, PyTechnicalIndicators.ConstantModelType.SmoothedMovingAverage()) == -0.339819877574384
+    assert PyTechnicalIndicators.momentum_indicators.single.percentage_price_oscillator(prices, 3, PyTechnicalIndicators.ConstantModelType.ExponentialMovingAverage()) == -0.4656702758356384
+    assert PyTechnicalIndicators.momentum_indicators.single.percentage_price_oscillator(prices, 3, PyTechnicalIndicators.ConstantModelType.PersonalisedMovingAverage(5, 4)) == -0.46293391142480667
+    assert PyTechnicalIndicators.momentum_indicators.single.percentage_price_oscillator(prices, 3, PyTechnicalIndicators.ConstantModelType.SimpleMovingMedian()) == 0.0
+    assert PyTechnicalIndicators.momentum_indicators.single.percentage_price_oscillator(prices, 3, PyTechnicalIndicators.ConstantModelType.SimpleMovingMode()) == 0.0
+
+
+def test_bulk_percentage_price_oscillator():
+    assert PyTechnicalIndicators.momentum_indicators.bulk.percentage_price_oscillator(prices, 3, 5, PyTechnicalIndicators.ConstantModelType.SimpleMovingAverage()) == [0.0]
+    assert PyTechnicalIndicators.momentum_indicators.bulk.percentage_price_oscillator(prices, 3, 5, PyTechnicalIndicators.ConstantModelType.SmoothedMovingAverage()) == [-0.339819877574384]
+    assert PyTechnicalIndicators.momentum_indicators.bulk.percentage_price_oscillator(prices, 3, 5, PyTechnicalIndicators.ConstantModelType.ExponentialMovingAverage()) == [-0.4656702758356384]
+    assert PyTechnicalIndicators.momentum_indicators.bulk.percentage_price_oscillator(prices, 3, 5, PyTechnicalIndicators.ConstantModelType.PersonalisedMovingAverage(5, 4)) == [-0.46293391142480667]
+    assert PyTechnicalIndicators.momentum_indicators.bulk.percentage_price_oscillator(prices, 3, 5, PyTechnicalIndicators.ConstantModelType.SimpleMovingMedian()) == [0.0]
+    assert PyTechnicalIndicators.momentum_indicators.bulk.percentage_price_oscillator(prices, 3, 5, PyTechnicalIndicators.ConstantModelType.SimpleMovingMode()) == [0.0]
 
 def test_single_chande_momentum_oscillator():
     assert PyTechnicalIndicators.momentum_indicators.single.chande_momentum_oscillator(prices) == -14.285714285714285
 
 def test_bulk_chande_momentum_oscillator():
     assert PyTechnicalIndicators.momentum_indicators.bulk.chande_momentum_oscillator(prices, 3) == [100.0, -33.33333333333333, -100.0]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

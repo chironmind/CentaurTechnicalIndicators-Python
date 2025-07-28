@@ -4,6 +4,7 @@ use pyo3::prelude::*;
 use rust_ti::{ConstantModelType, DeviationModel};
 
 pub mod momentum_indicators;
+pub mod candle_indicators;
 
 #[pyclass(name = "ConstantModelType")]
 #[derive(Clone)]
@@ -63,9 +64,12 @@ impl From<PyDeviationModel> for DeviationModel {
 /// A Python module implemented in Rust.
 #[pymodule]
 fn PyTechnicalIndicators(m: &Bound<'_, PyModule>) -> PyResult<()> {
-    let mom_mod = PyModule::new(m.py(), "momentum_indicators")?;
-    momentum_indicators::momentum_indicators(&mom_mod)?;
-    m.add_submodule(&mom_mod)?;
+    let momentum_mod = PyModule::new(m.py(), "momentum_indicators")?;
+    momentum_indicators::momentum_indicators(&momentum_mod)?;
+    m.add_submodule(&momentum_mod)?;
+    let candle_mod = PyModule::new(m.py(), "candle_indicators")?;
+    candle_indicators::candle_indicators(&candle_mod)?;
+    m.add_submodule(&candle_mod)?;
     m.add_class::<PyConstantModelType>()?;
     m.add_class::<PyDeviationModel>()?;
     Ok(())
