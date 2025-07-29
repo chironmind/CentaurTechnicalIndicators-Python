@@ -18,4 +18,4 @@ jobs:
           pip install -r test_requirements.txt
           maturin develop
       - name: Run Pytest
-        run: pytest
+        run: python -m pytest

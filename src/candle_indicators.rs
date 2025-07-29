@@ -1,12 +1,12 @@
 use pyo3::prelude::*;
-use rust_ti::candle_indicators as ci; 
+use rust_ti::candle_indicators as ci;
 
 /// Candle indicators are technical indicators designed for use with candlestick price charts.
 ///
 /// They help identify trends, volatility, and price action patterns commonly used in trading and analysis.
 ///
 /// ## When to Use
-/// 
+///
 /// Use these indicators to analyze support/resistance, volatility bands,
 /// and price channels on candle charts for both traditional and crypto assets.
 ///
@@ -23,8 +23,14 @@ pub fn candle_indicators(m: &Bound<'_, PyModule>) -> PyResult<()> {
 /// **bulk**: Functions that compute values of a slice of prices over a period and return a vector.
 fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let bulk_module = PyModule::new(parent_module.py(), "bulk")?;
-    bulk_module.add_function(wrap_pyfunction!(bulk_moving_constant_envelopes, &bulk_module)?)?;
-    bulk_module.add_function(wrap_pyfunction!(bulk_mcginley_dynamic_envelopes, &bulk_module)?)?;
+    bulk_module.add_function(wrap_pyfunction!(
+        bulk_moving_constant_envelopes,
+        &bulk_module
+    )?)?;
+    bulk_module.add_function(wrap_pyfunction!(
+        bulk_mcginley_dynamic_envelopes,
+        &bulk_module
+    )?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_moving_constant_bands, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_mcginley_dynamic_bands, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_ichimoku_cloud, &bulk_module)?)?;
@@ -38,10 +44,22 @@ fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 /// **single**: Functions that return a single value for a slice of prices.
 fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let single_module = PyModule::new(parent_module.py(), "single")?;
-    single_module.add_function(wrap_pyfunction!(single_moving_constant_envelopes, &single_module)?)?;
-    single_module.add_function(wrap_pyfunction!(single_mcginley_dynamic_envelopes, &single_module)?)?;
-    single_module.add_function(wrap_pyfunction!(single_moving_constant_bands, &single_module)?)?;
-    single_module.add_function(wrap_pyfunction!(single_mcginley_dynamic_bands, &single_module)?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_moving_constant_envelopes,
+        &single_module
+    )?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_mcginley_dynamic_envelopes,
+        &single_module
+    )?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_moving_constant_bands,
+        &single_module
+    )?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_mcginley_dynamic_bands,
+        &single_module
+    )?)?;
     single_module.add_function(wrap_pyfunction!(single_ichimoku_cloud, &single_module)?)?;
     single_module.add_function(wrap_pyfunction!(single_donchian_channels, &single_module)?)?;
     single_module.add_function(wrap_pyfunction!(single_keltner_channel, &single_module)?)?;
@@ -63,14 +81,14 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///     Moving Constant Envelopes tuple (lower envelope, constant model result, upper envelope)
 #[pyfunction(name = "moving_constant_envelopes")]
 fn single_moving_constant_envelopes(
-        prices: Vec<f64>,
-        constant_model_type: crate::PyConstantModelType,
-        difference: f64,
+    prices: Vec<f64>,
+    constant_model_type: crate::PyConstantModelType,
+    difference: f64,
 ) -> PyResult<(f64, f64, f64)> {
     Ok(ci::single::moving_constant_envelopes(
-            &prices,
-            constant_model_type.into(),
-            difference
+        &prices,
+        constant_model_type.into(),
+        difference,
     ))
 }
 
@@ -86,16 +104,16 @@ fn single_moving_constant_envelopes(
 ///     List of Moving Constant Envelopes tuple (lower envelope, constant model result, upper envelope)
 #[pyfunction(name = "moving_constant_envelopes")]
 fn bulk_moving_constant_envelopes(
-        prices: Vec<f64>,
-        constant_model_type: crate::PyConstantModelType,
-        difference: f64,
-        period: usize
+    prices: Vec<f64>,
+    constant_model_type: crate::PyConstantModelType,
+    difference: f64,
+    period: usize,
 ) -> PyResult<Vec<(f64, f64, f64)>> {
     Ok(ci::bulk::moving_constant_envelopes(
-            &prices,
-            constant_model_type.into(),
-            difference,
-            period
+        &prices,
+        constant_model_type.into(),
+        difference,
+        period,
     ))
 }
 
@@ -117,9 +135,9 @@ fn single_mcginley_dynamic_envelopes(
     previous_mcginley_dynamic: f64,
 ) -> PyResult<(f64, f64, f64)> {
     Ok(ci::single::mcginley_dynamic_envelopes(
-            &prices,
-            difference,
-            previous_mcginley_dynamic
+        &prices,
+        difference,
+        previous_mcginley_dynamic,
     ))
 }
 
@@ -138,68 +156,68 @@ fn bulk_mcginley_dynamic_envelopes(
     prices: Vec<f64>,
     difference: f64,
     previous_mcginley_dynamic: f64,
-    period: usize
+    period: usize,
 ) -> PyResult<Vec<(f64, f64, f64)>> {
     Ok(ci::bulk::mcginley_dynamic_envelopes(
-            &prices,
-            difference,
-            previous_mcginley_dynamic,
-            period
+        &prices,
+        difference,
+        previous_mcginley_dynamic,
+        period,
     ))
 }
 
 // Moving Constant bands
 
 /// Calculates moving constant bands
-/// 
+///
 /// Args:
 ///     prices: List of prices
 ///     constant_model_type: Variant of `ConstantModelType`
 ///     deviation_model: Variant of `DeviationModel`
 ///     deviation_multiplier: Price deviation multiplier
-/// 
+///
 /// Returns:
 ///     Moving constant bands tuple (lower band, constant model result, upper lower band)
 #[pyfunction(name = "moving_constant_bands")]
 fn single_moving_constant_bands(
-        prices: Vec<f64>,
-        constant_model_type: crate::PyConstantModelType,
-        deviation_model: crate::PyDeviationModel,
-        deviation_multiplier: f64,
+    prices: Vec<f64>,
+    constant_model_type: crate::PyConstantModelType,
+    deviation_model: crate::PyDeviationModel,
+    deviation_multiplier: f64,
 ) -> PyResult<(f64, f64, f64)> {
     Ok(ci::single::moving_constant_bands(
-            &prices, 
-            constant_model_type.into(),
-            deviation_model.into(),
-            deviation_multiplier
+        &prices,
+        constant_model_type.into(),
+        deviation_model.into(),
+        deviation_multiplier,
     ))
 }
 
 /// Calculates moving constant bands
-/// 
+///
 /// Args:
 ///     prices: List of prices
 ///     constant_model_type: Variant of `ConstantModelType`
 ///     deviation_model: Variant of `DeviationModel`
 ///     deviation_multiplier: Price deviation multiplier
 ///     period: Period over which to calculate the moving constant bands
-/// 
+///
 /// Returns:
 ///     List of Moving constant bands tuple (lower band, constant model result, upper band)
 #[pyfunction(name = "moving_constant_bands")]
 fn bulk_moving_constant_bands(
-        prices: Vec<f64>,
-        constant_model_type: crate::PyConstantModelType,
-        deviation_model: crate::PyDeviationModel,
-        deviation_multiplier: f64,
-        period: usize
+    prices: Vec<f64>,
+    constant_model_type: crate::PyConstantModelType,
+    deviation_model: crate::PyDeviationModel,
+    deviation_multiplier: f64,
+    period: usize,
 ) -> PyResult<Vec<(f64, f64, f64)>> {
     Ok(ci::bulk::moving_constant_bands(
-            &prices, 
-            constant_model_type.into(),
-            deviation_model.into(),
-            deviation_multiplier,
-            period
+        &prices,
+        constant_model_type.into(),
+        deviation_model.into(),
+        deviation_multiplier,
+        period,
     ))
 }
 
@@ -218,15 +236,15 @@ fn bulk_moving_constant_bands(
 #[pyfunction(name = "mcginley_dynamic_bands")]
 fn single_mcginley_dynamic_bands(
     prices: Vec<f64>,
-        deviation_model: crate::PyDeviationModel,
-        deviation_multiplier: f64,
-        previous_mcginley_dynamic: f64,
-) -> PyResult<(f64, f64, f64)> { 
+    deviation_model: crate::PyDeviationModel,
+    deviation_multiplier: f64,
+    previous_mcginley_dynamic: f64,
+) -> PyResult<(f64, f64, f64)> {
     Ok(ci::single::mcginley_dynamic_bands(
-            &prices,
-            deviation_model.into(),
-            deviation_multiplier,
-            previous_mcginley_dynamic
+        &prices,
+        deviation_model.into(),
+        deviation_multiplier,
+        previous_mcginley_dynamic,
     ))
 }
 
@@ -244,17 +262,17 @@ fn single_mcginley_dynamic_bands(
 #[pyfunction(name = "mcginley_dynamic_bands")]
 fn bulk_mcginley_dynamic_bands(
     prices: Vec<f64>,
-        deviation_model: crate::PyDeviationModel,
-        deviation_multiplier: f64,
-        previous_mcginley_dynamic: f64,
-        period: usize
-) -> PyResult<Vec<(f64, f64, f64)>> { 
+    deviation_model: crate::PyDeviationModel,
+    deviation_multiplier: f64,
+    previous_mcginley_dynamic: f64,
+    period: usize,
+) -> PyResult<Vec<(f64, f64, f64)>> {
     Ok(ci::bulk::mcginley_dynamic_bands(
-            &prices,
-            deviation_model.into(),
-            deviation_multiplier,
-            previous_mcginley_dynamic,
-            period
+        &prices,
+        deviation_model.into(),
+        deviation_multiplier,
+        previous_mcginley_dynamic,
+        period,
     ))
 }
 
@@ -269,18 +287,18 @@ fn bulk_mcginley_dynamic_bands(
 ///     conversion_period: Period used to calculate the conversion line
 ///     base_period: Period used to calculate the base line
 ///     span_b_period: Period used to calculate the Span B line
-/// 
+///
 /// Returns:
 ///     Ichimoku cloud points tuple (leading span a, leading span b, base line, conversion_line, and most
 ///     revelant closing price)
 #[pyfunction(name = "ichimoku_cloud")]
 fn single_ichimoku_cloud(
     highs: Vec<f64>,
-        lows: Vec<f64>,
-        close: Vec<f64>,
-        conversion_period: usize,
-        base_period: usize,
-        span_b_period: usize
+    lows: Vec<f64>,
+    close: Vec<f64>,
+    conversion_period: usize,
+    base_period: usize,
+    span_b_period: usize,
 ) -> PyResult<(f64, f64, f64, f64, f64)> {
     Ok(ci::single::ichimoku_cloud(
         &highs,
@@ -288,7 +306,7 @@ fn single_ichimoku_cloud(
         &close,
         conversion_period,
         base_period,
-        span_b_period
+        span_b_period,
     ))
 }
 
@@ -301,18 +319,18 @@ fn single_ichimoku_cloud(
 ///     conversion_period: Period used to calculate the conversion line
 ///     base_period: Period used to calculate the base line
 ///     span_b_period: Period used to calculate the Span B line
-/// 
+///
 /// Returns:
 ///     A list of Ichimoku cloud points tuple (leading span a, leading span b, base line, conversion_line, and most
 ///     revelant closing price)
 #[pyfunction(name = "ichimoku_cloud")]
 fn bulk_ichimoku_cloud(
     highs: Vec<f64>,
-        lows: Vec<f64>,
-        close: Vec<f64>,
-        conversion_period: usize,
-        base_period: usize,
-        span_b_period: usize
+    lows: Vec<f64>,
+    close: Vec<f64>,
+    conversion_period: usize,
+    base_period: usize,
+    span_b_period: usize,
 ) -> PyResult<Vec<(f64, f64, f64, f64, f64)>> {
     Ok(ci::bulk::ichimoku_cloud(
         &highs,
@@ -320,7 +338,7 @@ fn bulk_ichimoku_cloud(
         &close,
         conversion_period,
         base_period,
-        span_b_period
+        span_b_period,
     ))
 }
 
@@ -335,14 +353,8 @@ fn bulk_ichimoku_cloud(
 /// Returns:
 ///     Donchian channel tuple (lower, average, upper)
 #[pyfunction(name = "donchian_channels")]
-fn single_donchian_channels(
-    high: Vec<f64>,
-    low: Vec<f64>,
-) -> PyResult<(f64, f64, f64)> {
-    Ok(ci::single::donchian_channels(
-            &high,
-            &low
-    ))
+fn single_donchian_channels(high: Vec<f64>, low: Vec<f64>) -> PyResult<(f64, f64, f64)> {
+    Ok(ci::single::donchian_channels(&high, &low))
 }
 
 /// Calculates the Donchian Channels over a given period.
@@ -358,13 +370,9 @@ fn single_donchian_channels(
 fn bulk_donchian_channels(
     high: Vec<f64>,
     low: Vec<f64>,
-    period: usize
+    period: usize,
 ) -> PyResult<Vec<(f64, f64, f64)>> {
-    Ok(ci::bulk::donchian_channels(
-            &high,
-            &low,
-            period
-    ))
+    Ok(ci::bulk::donchian_channels(&high, &low, period))
 }
 
 // Keltner Channels
@@ -383,20 +391,20 @@ fn bulk_donchian_channels(
 ///     Keltner channel tuple
 #[pyfunction(name = "keltner_channel")]
 fn single_keltner_channel(
-        high: Vec<f64>,
-        low: Vec<f64>,
-        close: Vec<f64>,
-        constant_model_type: crate::PyConstantModelType,
-        atr_constant_model_type: crate::PyConstantModelType,
-        multiplier: f64,
+    high: Vec<f64>,
+    low: Vec<f64>,
+    close: Vec<f64>,
+    constant_model_type: crate::PyConstantModelType,
+    atr_constant_model_type: crate::PyConstantModelType,
+    multiplier: f64,
 ) -> PyResult<(f64, f64, f64)> {
     Ok(ci::single::keltner_channel(
-            &high,
-    &low,
-    &close,
-    constant_model_type.into(),
-    atr_constant_model_type.into(),
-    multiplier,
+        &high,
+        &low,
+        &close,
+        constant_model_type.into(),
+        atr_constant_model_type.into(),
+        multiplier,
     ))
 }
 
@@ -415,22 +423,22 @@ fn single_keltner_channel(
 ///     Keltner channel tuple
 #[pyfunction(name = "keltner_channel")]
 fn bulk_keltner_channel(
-        high: Vec<f64>,
-        low: Vec<f64>,
-        close: Vec<f64>,
-        constant_model_type: crate::PyConstantModelType,
-        atr_constant_model_type: crate::PyConstantModelType,
-        multiplier: f64,
-        period: usize
+    high: Vec<f64>,
+    low: Vec<f64>,
+    close: Vec<f64>,
+    constant_model_type: crate::PyConstantModelType,
+    atr_constant_model_type: crate::PyConstantModelType,
+    multiplier: f64,
+    period: usize,
 ) -> PyResult<Vec<(f64, f64, f64)>> {
     Ok(ci::bulk::keltner_channel(
-            &high,
-    &low,
-    &close,
-    constant_model_type.into(),
-    atr_constant_model_type.into(),
-    multiplier,
-    period
+        &high,
+        &low,
+        &close,
+        constant_model_type.into(),
+        atr_constant_model_type.into(),
+        multiplier,
+        period,
     ))
 }
 
@@ -447,18 +455,18 @@ fn bulk_keltner_channel(
 ///     Super Trend indicator
 #[pyfunction(name = "supertrend")]
 fn single_supertrend(
-            high: Vec<f64>,
-        low: Vec<f64>,
-        close: Vec<f64>,
-        constant_model_type: crate::PyConstantModelType,
-        multiplier: f64
+    high: Vec<f64>,
+    low: Vec<f64>,
+    close: Vec<f64>,
+    constant_model_type: crate::PyConstantModelType,
+    multiplier: f64,
 ) -> PyResult<f64> {
     Ok(ci::single::supertrend(
-            &high,
-            &low,
-            &close,
-            constant_model_type.into(),
-            multiplier
+        &high,
+        &low,
+        &close,
+        constant_model_type.into(),
+        multiplier,
     ))
 }
 
@@ -476,20 +484,19 @@ fn single_supertrend(
 ///     List of Super Trend indicators
 #[pyfunction(name = "supertrend")]
 fn bulk_supertrend(
-            high: Vec<f64>,
-        low: Vec<f64>,
-        close: Vec<f64>,
-        constant_model_type: crate::PyConstantModelType,
-        multiplier: f64,
-        period: usize
+    high: Vec<f64>,
+    low: Vec<f64>,
+    close: Vec<f64>,
+    constant_model_type: crate::PyConstantModelType,
+    multiplier: f64,
+    period: usize,
 ) -> PyResult<Vec<f64>> {
     Ok(ci::bulk::supertrend(
-            &high,
-            &low,
-            &close,
-            constant_model_type.into(),
-            multiplier,
-            period
+        &high,
+        &low,
+        &close,
+        constant_model_type.into(),
+        multiplier,
+        period,
     ))
 }
-

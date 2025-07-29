@@ -3,8 +3,11 @@ use pyo3::prelude::*;
 
 use rust_ti::{ConstantModelType, DeviationModel};
 
-pub mod momentum_indicators;
 pub mod candle_indicators;
+pub mod momentum_indicators;
+pub mod trend_indicators;
+pub mod strength_indicators;
+pub mod other_indicators;
 
 #[pyclass(name = "ConstantModelType")]
 #[derive(Clone)]
@@ -70,6 +73,15 @@ fn PyTechnicalIndicators(m: &Bound<'_, PyModule>) -> PyResult<()> {
     let candle_mod = PyModule::new(m.py(), "candle_indicators")?;
     candle_indicators::candle_indicators(&candle_mod)?;
     m.add_submodule(&candle_mod)?;
+    let trend_mod = PyModule::new(m.py(), "trend_indicators")?;
+    trend_indicators::trend_indicators(&trend_mod)?;
+    m.add_submodule(&trend_mod)?;
+    let strength_mod = PyModule::new(m.py(), "strength_indicators")?;
+    strength_indicators::strength_indicators(&strength_mod)?;
+    m.add_submodule(&strength_mod)?;
+    let other_mod = PyModule::new(m.py(), "other_indicators")?;
+    other_indicators::other_indicators(&other_mod);
+    m.add_submodule(&other_mod)?;
     m.add_class::<PyConstantModelType>()?;
     m.add_class::<PyDeviationModel>()?;
     Ok(())
