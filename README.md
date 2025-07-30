@@ -7,7 +7,7 @@
 
 [![PyPI Downloads](https://img.shields.io/pypi/dm/pytechnicalindicators.svg)](https://pypi.org/project/pytechnicalindicators/)
 [![Tutorials](https://img.shields.io/badge/Tutorials-Available-brightgreen?style=flat&logo=book)](https://github.com/chironmind/PyTechnicalIndicators-tutorials)
-// [![Benchmarks](https://img.shields.io/badge/Performance-Microsecond-blue?logo=zap)](https://github.com/chironmind/PyTechnicalIndicators-benchmarks)
+[![Benchmarks](https://img.shields.io/badge/Performance-Microsecond-blue?logo=zap)](https://github.com/chironmind/PyTechnicalIndicators-benchmarks)
 
 # 🐍 Meet PyTechnicalIndicators
 
