@@ -1,8 +1,8 @@
 ![PyTechnicalIndicators Banner](./assets/pytechnicalindicators_banner.png)
 
 [![PyPI Version](https://img.shields.io/pypi/v/pytechnicalindicators.svg)](https://pypi.org/project/pytechnicalindicators/)
-//  [![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://github.com/chironmind/PyTechnicalIndicators/tree/main/docs)
-// [![CI](https://github.com/chironmind/PyTechnicalIndicators/actions/workflows/python-package.yml/badge.svg)](https://github.com/chironmind/PyTechnicalIndicators/actions)
+[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://github.com/chironmind/PyTechnicalIndicators/wiki)
+[![CI](https://github.com/chironmind/PyTechnicalIndicators/actions/workflows/python-package.yml/badge.svg)](https://github.com/chironmind/PyTechnicalIndicators/actions)
 [![License](https://img.shields.io/github/license/chironmind/PyTechnicalIndicators)](LICENSE-MIT)
 
 [![PyPI Downloads](https://img.shields.io/pypi/dm/pytechnicalindicators.svg)](https://pypi.org/project/pytechnicalindicators/)
@@ -175,7 +175,9 @@ Contributions, bug reports, and feature requests are welcome!
 
 ## 📰 Release Notes
 
-**Latest:** See [CHANGELOG.md](https://github.com/chironmind/PyTechnicalIndicators/blob/main/CHANGELOG.md) for details.
+**Latest:** See [CHANGELOG.md](./CHANGELOG.md) for details.
+
+**Full changlog:** See [Releases](https://github.com/chironmind/PyTechnicalIndicators/releases) for details
 
 ---
 
