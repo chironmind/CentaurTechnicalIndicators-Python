@@ -28,8 +28,14 @@ fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     bulk_module.add_function(wrap_pyfunction!(bulk_aroon_down, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_aroon_oscillator, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_aroon_indicator, &bulk_module)?)?;
-    bulk_module.add_function(wrap_pyfunction!(bulk_parabolic_time_price_system, &bulk_module)?)?;
-    bulk_module.add_function(wrap_pyfunction!(bulk_directional_movement_system, &bulk_module)?)?;
+    bulk_module.add_function(wrap_pyfunction!(
+        bulk_parabolic_time_price_system,
+        &bulk_module
+    )?)?;
+    bulk_module.add_function(wrap_pyfunction!(
+        bulk_directional_movement_system,
+        &bulk_module
+    )?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_volume_price_trend, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_true_strength_index, &bulk_module)?)?;
     parent_module.add_submodule(&bulk_module);
@@ -43,10 +49,19 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     single_module.add_function(wrap_pyfunction!(single_aroon_down, &single_module)?)?;
     single_module.add_function(wrap_pyfunction!(single_aroon_oscillator, &single_module)?)?;
     single_module.add_function(wrap_pyfunction!(single_aroon_indicator, &single_module)?)?;
-    single_module.add_function(wrap_pyfunction!(single_long_parabolic_time_price_system, &single_module)?)?;
-    single_module.add_function(wrap_pyfunction!(single_short_parabolic_time_price_system, &single_module)?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_long_parabolic_time_price_system,
+        &single_module
+    )?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_short_parabolic_time_price_system,
+        &single_module
+    )?)?;
     single_module.add_function(wrap_pyfunction!(single_volume_price_trend, &single_module)?)?;
-    single_module.add_function(wrap_pyfunction!(single_true_strength_index, &single_module)?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_true_strength_index,
+        &single_module
+    )?)?;
     parent_module.add_submodule(&single_module);
     Ok(())
 }
@@ -120,7 +135,7 @@ fn single_aroon_oscillator(aroon_up: f64, aroon_down: f64) -> PyResult<f64> {
     Ok(ti::single::aroon_oscillator(aroon_up, aroon_down))
 }
 
-/// Calculates the Aroon Oscillator 
+/// Calculates the Aroon Oscillator
 ///
 /// Args:
 ///     aroon_up: List of Aroon Up values
@@ -135,8 +150,8 @@ fn bulk_aroon_oscillator(aroon_up: Vec<f64>, aroon_down: Vec<f64>) -> PyResult<V
 
 // Aroon Indidcator
 
-/// Calculates the Aroon Indicator 
-/// 
+/// Calculates the Aroon Indicator
+///
 /// Args:
 ///     highs: List of highs
 ///     lows: List of lows
@@ -148,7 +163,7 @@ fn single_aroon_indicator(highs: Vec<f64>, lows: Vec<f64>) -> PyResult<(f64, f64
     Ok(ti::single::aroon_indicator(&highs, &lows))
 }
 
-/// Calculates Aroon Indicator 
+/// Calculates Aroon Indicator
 ///
 /// Args:
 ///     highs: List of highs
@@ -158,13 +173,17 @@ fn single_aroon_indicator(highs: Vec<f64>, lows: Vec<f64>) -> PyResult<(f64, f64
 /// Returns:
 ///     List of  Aroon indicator tuples (Aroon Up, Aroon Down, Aroon Oscillator)
 #[pyfunction(name = "aroon_indicator")]
-fn bulk_aroon_indicator(highs: Vec<f64>, lows: Vec<f64>, period: usize) -> PyResult<Vec<(f64, f64, f64)>> {
+fn bulk_aroon_indicator(
+    highs: Vec<f64>,
+    lows: Vec<f64>,
+    period: usize,
+) -> PyResult<Vec<(f64, f64, f64)>> {
     Ok(ti::bulk::aroon_indicator(&highs, &lows, period))
 }
 
-// Parabolic Time Price System 
+// Parabolic Time Price System
 
-/// Calculates the long Parabolic Time Price System 
+/// Calculates the long Parabolic Time Price System
 ///
 /// Args:
 ///     previous_sar: Previous SAR value (if none use period low)
@@ -182,14 +201,14 @@ fn single_long_parabolic_time_price_system(
     low: f64,
 ) -> PyResult<f64> {
     Ok(ti::single::long_parabolic_time_price_system(
-            previous_sar,
-            extreme_point,
-            af,
-            low
+        previous_sar,
+        extreme_point,
+        af,
+        low,
     ))
 }
 
-/// Calculates the short Parabolic Time Price System 
+/// Calculates the short Parabolic Time Price System
 ///
 /// Args:
 ///     previous_sar: Previous SAR value (if none use period high)
@@ -235,33 +254,34 @@ fn bulk_parabolic_time_price_system(
     af_step: f64,
     af_max: f64,
     long: bool,
-    previous_sar: f64
+    previous_sar: f64,
 ) -> PyResult<Vec<f64>> {
     if long {
-    Ok(ti::bulk::parabolic_time_price_system(
-        &highs,
-        &lows,
-        af_start,
-        af_max,
-        af_step,
-        rust_ti::Position::Long,
-        previous_sar
-    )) } else {
-    Ok(ti::bulk::parabolic_time_price_system(
-        &highs,
-        &lows,
-        af_start,
-        af_max,
-        af_step,
-        rust_ti::Position::Short,
-        previous_sar
-    )) 
+        Ok(ti::bulk::parabolic_time_price_system(
+            &highs,
+            &lows,
+            af_start,
+            af_max,
+            af_step,
+            rust_ti::Position::Long,
+            previous_sar,
+        ))
+    } else {
+        Ok(ti::bulk::parabolic_time_price_system(
+            &highs,
+            &lows,
+            af_start,
+            af_max,
+            af_step,
+            rust_ti::Position::Short,
+            previous_sar,
+        ))
     }
 }
 
 // Directional Movement System
 
-/// Calculates the Directional Movement System 
+/// Calculates the Directional Movement System
 ///
 /// Args:
 ///     highs: List of highs
@@ -309,9 +329,9 @@ fn single_volume_price_trend(
     previous_vpt: f64,
 ) -> PyResult<f64> {
     Ok(ti::single::volume_price_trend(
-            current_price,
-            previous_price,
-            current_volume,
+        current_price,
+        previous_price,
+        current_volume,
         previous_vpt,
     ))
 }
@@ -353,7 +373,7 @@ fn bulk_volume_price_trend(
 #[pyfunction(name = "true_strength_index")]
 fn single_true_strength_index(
     prices: Vec<f64>,
-first_period: usize,
+    first_period: usize,
     first_constant_model: crate::PyConstantModelType,
     second_constant_model: crate::PyConstantModelType,
 ) -> PyResult<f64> {
@@ -389,6 +409,6 @@ fn bulk_true_strength_index(
         first_constant_model.into(),
         first_period,
         second_constant_model.into(),
-        second_period
+        second_period,
     ))
 }

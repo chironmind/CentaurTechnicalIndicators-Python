@@ -1,7 +1,7 @@
 use pyo3::prelude::*;
 use rust_ti::strength_indicators as si;
 
-/// The `strength_indicators` module provides functions to assess the strength and conviction of 
+/// The `strength_indicators` module provides functions to assess the strength and conviction of
 /// price movements and trends using volume and price-based calculations.
 ///
 /// ## When to Use
@@ -23,7 +23,10 @@ pub fn strength_indicators(m: &Bound<'_, PyModule>) -> PyResult<()> {
 /// **bulk**: Functions that compute values of a slice of prices over a period and return a vector.
 fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let bulk_module = PyModule::new(parent_module.py(), "bulk")?;
-    bulk_module.add_function(wrap_pyfunction!(bulk_accumulation_distribution, &bulk_module)?)?;
+    bulk_module.add_function(wrap_pyfunction!(
+        bulk_accumulation_distribution,
+        &bulk_module
+    )?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_positive_volume_index, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_negative_volume_index, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_relative_vigor_index, &bulk_module)?)?;
@@ -34,9 +37,15 @@ fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 /// **single**: Functions that return a single value for a slice of prices.
 fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let single_module = PyModule::new(parent_module.py(), "single")?;
-    single_module.add_function(wrap_pyfunction!(single_accumulation_distribution, &single_module)?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_accumulation_distribution,
+        &single_module
+    )?)?;
     single_module.add_function(wrap_pyfunction!(single_volume_index, &single_module)?)?;
-    single_module.add_function(wrap_pyfunction!(single_relative_vigor_index, &single_module)?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_relative_vigor_index,
+        &single_module
+    )?)?;
     parent_module.add_submodule(&single_module);
     Ok(())
 }

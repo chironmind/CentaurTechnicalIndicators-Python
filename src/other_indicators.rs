@@ -37,10 +37,16 @@ fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 /// **single**: Functions that return a single value for a slice of prices.
 fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let single_module = PyModule::new(parent_module.py(), "single")?;
-    single_module.add_function(wrap_pyfunction!(single_return_on_investment, &single_module)?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_return_on_investment,
+        &single_module
+    )?)?;
     single_module.add_function(wrap_pyfunction!(single_true_range, &single_module)?)?;
     single_module.add_function(wrap_pyfunction!(single_average_true_range, &single_module)?)?;
-    single_module.add_function(wrap_pyfunction!(single_internal_bar_strength, &single_module)?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_internal_bar_strength,
+        &single_module
+    )?)?;
     parent_module.add_submodule(&single_module);
     Ok(())
 }
