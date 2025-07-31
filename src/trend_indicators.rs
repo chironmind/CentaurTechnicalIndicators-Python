@@ -260,8 +260,8 @@ fn bulk_parabolic_time_price_system(
         &highs,
         &lows,
         af_start,
-        af_max,
         af_step,
+        af_max,
         crate::PyPosition::from_string(position)?.into(),
         previous_sar,
     ))
