@@ -23,10 +23,7 @@ pub fn correlation_indicators(m: &Bound<'_, PyModule>) -> PyResult<()> {
 /// **bulk**: Functions that compute values of a slice of prices over a period and return a vector.
 fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let bulk_module = PyModule::new(parent_module.py(), "bulk")?;
-    bulk_module.add_function(wrap_pyfunction!(
-        bulk_correlate_asset_prices,
-        &bulk_module
-    )?)?;
+    bulk_module.add_function(wrap_pyfunction!(bulk_correlate_asset_prices, &bulk_module)?)?;
     parent_module.add_submodule(&bulk_module)?;
     Ok(())
 }
@@ -48,7 +45,7 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///     prices_asset_b: List of prices for asset B
 ///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
 ///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
-///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation", 
+///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation",
 ///         "median_absolute_deviation", "mode_absolute_deviation", or "ulcer_index"
 ///
 /// Returns:
@@ -75,7 +72,7 @@ fn single_correlate_asset_prices(
 ///     prices_asset_b: List of prices for asset B
 ///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
 ///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
-///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation", 
+///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation",
 ///         "median_absolute_deviation", "mode_absolute_deviation", or "ulcer_index"
 ///     period: Period over which to calculate the correlation
 ///

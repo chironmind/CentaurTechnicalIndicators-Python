@@ -1,3 +1,5 @@
+import pytest
+
 from PyTechnicalIndicators import volatility_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
@@ -37,3 +39,5 @@ def test_bulk_volatility_system():
     assert volatility_indicators.bulk.volatility_system(high, low, close, 3, 2.0, "exponential") == [177.85714285714286, 174.71428571428572, 180.14285714285714]
     assert volatility_indicators.bulk.volatility_system(high, low, close, 3, 2.0, "median") == [165.0, 169.0, 183.0]
     assert volatility_indicators.bulk.volatility_system(high, low, close, 3, 2.0, "mode") == [169.0, 175.0, 181.0]
+    with pytest.raises(ValueError):
+        volatility_indicators.bulk.volatility_system(high, low, close, 3, 2.0, "")

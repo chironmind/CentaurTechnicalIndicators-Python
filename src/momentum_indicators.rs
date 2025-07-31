@@ -58,7 +58,7 @@ fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
         bulk_chande_momentum_oscillator,
         &bulk_module
     )?)?;
-    parent_module.add_submodule(&bulk_module);
+    parent_module.add_submodule(&bulk_module)?;
     Ok(())
 }
 
@@ -102,7 +102,7 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
         single_chande_momentum_oscillator,
         &single_module
     )?)?;
-    parent_module.add_submodule(&single_module);
+    parent_module.add_submodule(&single_module)?;
     Ok(())
 }
 
@@ -118,10 +118,7 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 /// Returns:
 ///     Relative Strength Index
 #[pyfunction(name = "relative_strength_index")]
-fn single_relative_strength_index(
-    prices: Vec<f64>,
-    constant_model_type: &str,
-) -> PyResult<f64> {
+fn single_relative_strength_index(prices: Vec<f64>, constant_model_type: &str) -> PyResult<f64> {
     Ok(mi::single::relative_strength_index(
         &prices,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
@@ -190,10 +187,7 @@ fn bulk_stochastic_oscillator(prices: Vec<f64>, period: usize) -> PyResult<Vec<f
 /// Returns:
 ///     Slow stochastic
 #[pyfunction(name = "slow_stochastic")]
-fn single_slow_stochastic(
-    stochastics: Vec<f64>,
-    constant_model_type: &str,
-) -> PyResult<f64> {
+fn single_slow_stochastic(stochastics: Vec<f64>, constant_model_type: &str) -> PyResult<f64> {
     Ok(mi::single::slow_stochastic(
         &stochastics,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
@@ -417,7 +411,7 @@ fn bulk_on_balance_volume(
 ///     prices: List of prices
 ///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
 ///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
-///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation", 
+///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation",
 ///         "median_absolute_deviation", "mode_absolute_deviation", "ulcer_index"
 ///     constant_multiplier: Scale factor (normally 0.015)
 ///
@@ -596,11 +590,11 @@ fn bulk_macd_line(
 /// Returns:
 ///     Signal line point
 #[pyfunction(name = "signal_line")]
-fn single_signal_line(
-    macds: Vec<f64>,
-    constant_model_type: &str,
-) -> PyResult<f64> {
-    Ok(mi::single::signal_line(&macds, crate::PyConstantModelType::from_string(constant_model_type)?.into()))
+fn single_signal_line(macds: Vec<f64>, constant_model_type: &str) -> PyResult<f64> {
+    Ok(mi::single::signal_line(
+        &macds,
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
+    ))
 }
 
 /// Calculates the MACD signal line divergence.

@@ -38,7 +38,7 @@ fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     )?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_volume_price_trend, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_true_strength_index, &bulk_module)?)?;
-    parent_module.add_submodule(&bulk_module);
+    parent_module.add_submodule(&bulk_module)?;
     Ok(())
 }
 
@@ -62,7 +62,7 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
         single_true_strength_index,
         &single_module
     )?)?;
-    parent_module.add_submodule(&single_module);
+    parent_module.add_submodule(&single_module)?;
     Ok(())
 }
 
@@ -256,15 +256,15 @@ fn bulk_parabolic_time_price_system(
     position: &str,
     previous_sar: f64,
 ) -> PyResult<Vec<f64>> {
-        Ok(ti::bulk::parabolic_time_price_system(
-            &highs,
-            &lows,
-            af_start,
-            af_max,
-            af_step,
-            crate::PyPosition::from_string(position)?.into(),
-            previous_sar,
-        ))
+    Ok(ti::bulk::parabolic_time_price_system(
+        &highs,
+        &lows,
+        af_start,
+        af_max,
+        af_step,
+        crate::PyPosition::from_string(position)?.into(),
+        previous_sar,
+    ))
 }
 
 // Directional Movement System
@@ -276,7 +276,7 @@ fn bulk_parabolic_time_price_system(
 ///     lows: List of lows
 ///     close: List of close prices
 ///     period: Period for calculation
-///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average", 
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
 ///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:

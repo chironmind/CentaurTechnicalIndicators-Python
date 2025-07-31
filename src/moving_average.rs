@@ -16,14 +16,8 @@ pub fn moving_average(m: &Bound<'_, PyModule>) -> PyResult<()> {
 /// **bulk**: Functions that compute values of a slice of prices over a period and return a vector.
 fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let bulk_module = PyModule::new(parent_module.py(), "bulk")?;
-    bulk_module.add_function(wrap_pyfunction!(
-        bulk_moving_average,
-        &bulk_module
-    )?)?;
-    bulk_module.add_function(wrap_pyfunction!(
-        bulk_mcginley_dynamic,
-        &bulk_module
-    )?)?;
+    bulk_module.add_function(wrap_pyfunction!(bulk_moving_average, &bulk_module)?)?;
+    bulk_module.add_function(wrap_pyfunction!(bulk_mcginley_dynamic, &bulk_module)?)?;
     parent_module.add_submodule(&bulk_module)?;
     Ok(())
 }
@@ -31,14 +25,8 @@ fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 /// **single**: Functions that return a single value for a slice of prices.
 fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let single_module = PyModule::new(parent_module.py(), "single")?;
-    single_module.add_function(wrap_pyfunction!(
-        single_moving_average,
-        &single_module
-    )?)?;
-    single_module.add_function(wrap_pyfunction!(
-        single_mcginley_dynamic,
-        &single_module
-    )?)?;
+    single_module.add_function(wrap_pyfunction!(single_moving_average, &single_module)?)?;
+    single_module.add_function(wrap_pyfunction!(single_mcginley_dynamic, &single_module)?)?;
     parent_module.add_submodule(&single_module)?;
     Ok(())
 }
@@ -50,12 +38,9 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///     moving_average_type: Choice of "simple", "smoothed", "exponential"
 ///
 /// Returns:
-///     Moving average 
+///     Moving average
 #[pyfunction(name = "moving_average")]
-fn single_moving_average(
-    prices: Vec<f64>,
-    moving_average_type: &str,
-) -> PyResult<f64> {
+fn single_moving_average(prices: Vec<f64>, moving_average_type: &str) -> PyResult<f64> {
     Ok(ma::single::moving_average(
         &prices,
         crate::PyMovingAverageType::from_string(moving_average_type)?.into(),
@@ -84,7 +69,7 @@ fn bulk_moving_average(
     ))
 }
 
-/// Calculates the McGinley dynamic 
+/// Calculates the McGinley dynamic
 ///
 /// Args:
 ///     latest_price: Most recent price

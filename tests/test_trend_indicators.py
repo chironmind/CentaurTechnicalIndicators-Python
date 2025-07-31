@@ -1,3 +1,5 @@
+import pytest
+
 from PyTechnicalIndicators import trend_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
@@ -58,6 +60,8 @@ def test_single_long_parabolic_time_price_system():
 
 def test_bulk_parabolic_time_price_system():
     assert trend_indicators.bulk.parabolic_time_price_system(high, low, 0.0, 0.02, 0.2, 'long', 0.0) == [175.0, 175.0, 175.7, 210.0, 210.0]
+    with pytest.raises(ValueError):
+        trend_indicators.bulk.parabolic_time_price_system(high, low, 0.0, 0.02, 0.2, '', 0.0)
 
 extended_high = high + [180.0, 195.0, 205.0, 210.0, 225.0]
 extended_low = low + [160.0, 150.0, 170.0, 190.0, 185.0]
@@ -69,6 +73,8 @@ def test_bulk_directional_movement_system():
     assert trend_indicators.bulk.directional_movement_system(extended_high, extended_low, extended_close, 3, "exponential") == [(25.0, 19.0, 25.439266615737203, 58.75137933961463), (30.0, 0.0, 62.7196333078686, 56.14973262032085), (31.57894736842105, 0.0, 87.66233766233766, 56.55080213903743)]
     assert trend_indicators.bulk.directional_movement_system(extended_high, extended_low, extended_close, 3, "median") == [(25.0, 19.0, 13.636363636363635, 56.81818181818182), (30.0, 0.0, 13.636363636363635, 56.81818181818182), (31.57894736842105, 0.0, 100.0, 56.81818181818182)]
     assert trend_indicators.bulk.directional_movement_system(extended_high, extended_low, extended_close, 3, "mode") == [(25.0, 19.0, 42.0, 71.0), (30.0, 0.0, 42.0, 71.0), (31.57894736842105, 0.0, 100.0, 71.0)]
+    with pytest.raises(ValueError):
+        trend_indicators.bulk.directional_movement_system(extended_high, extended_low, extended_close, 3, "")
 
 def test_single_volume_price_trend():
     assert trend_indicators.single.volume_price_trend(prices[-1], prices[-2], volume[-1], 0.0) == -25.742574257425744
@@ -82,6 +88,10 @@ def test_single_true_strength_index():
     assert trend_indicators.single.true_strength_index(prices, 3, "exponential", "exponential") == -0.7254901960784312
     assert trend_indicators.single.true_strength_index(prices, 3, "median", "median") == -0.25
     assert trend_indicators.single.true_strength_index(prices, 3, "mode", "mode") == -0.5
+    with pytest.raises(ValueError):
+        trend_indicators.single.true_strength_index(prices, 3, "", "mode")
+    with pytest.raises(ValueError):
+        trend_indicators.single.true_strength_index(prices, 3, "mode", "")
 
 def test_bulk_true_strength_index():
     assert trend_indicators.bulk.true_strength_index(prices, "simple", 2, "simple", 3) == [-0.19999999999999998]
@@ -89,3 +99,8 @@ def test_bulk_true_strength_index():
     assert trend_indicators.bulk.true_strength_index(prices, "exponential", 2, "exponential", 3) == [-0.7254901960784313]
     assert trend_indicators.bulk.true_strength_index(prices, "median", 2, "median", 3) == [-0.3333333333333333]
     assert trend_indicators.bulk.true_strength_index(prices, "mode", 2, "mode", 3) == [-0.16666666666666666]
+    with pytest.raises(ValueError):
+        trend_indicators.bulk.true_strength_index(prices, "", 2, "mode", 3)
+    with pytest.raises(ValueError):
+        trend_indicators.bulk.true_strength_index(prices, "mode", 2, "", 3)
+

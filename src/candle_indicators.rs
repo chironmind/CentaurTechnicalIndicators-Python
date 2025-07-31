@@ -37,7 +37,7 @@ fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     bulk_module.add_function(wrap_pyfunction!(bulk_donchian_channels, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_keltner_channel, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_supertrend, &bulk_module)?)?;
-    parent_module.add_submodule(&bulk_module);
+    parent_module.add_submodule(&bulk_module)?;
     Ok(())
 }
 
@@ -64,7 +64,7 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     single_module.add_function(wrap_pyfunction!(single_donchian_channels, &single_module)?)?;
     single_module.add_function(wrap_pyfunction!(single_keltner_channel, &single_module)?)?;
     single_module.add_function(wrap_pyfunction!(single_supertrend, &single_module)?)?;
-    parent_module.add_submodule(&single_module);
+    parent_module.add_submodule(&single_module)?;
     Ok(())
 }
 

@@ -4,15 +4,15 @@ use pyo3::prelude::*;
 use rust_ti::{ConstantModelType, DeviationModel, MovingAverageType, Position};
 
 pub mod candle_indicators;
-pub mod momentum_indicators;
-pub mod other_indicators;
-pub mod strength_indicators;
-pub mod trend_indicators;
-pub mod standard_indicators;
 pub mod chart_trends;
 pub mod correlation_indicators;
-pub mod volatility_indicators;
+pub mod momentum_indicators;
 pub mod moving_average;
+pub mod other_indicators;
+pub mod standard_indicators;
+pub mod strength_indicators;
+pub mod trend_indicators;
+pub mod volatility_indicators;
 
 #[derive(Clone)]
 pub enum PyConstantModelType {
@@ -44,9 +44,7 @@ impl From<PyConstantModelType> for ConstantModelType {
     fn from(value: PyConstantModelType) -> Self {
         match value {
             PyConstantModelType::SimpleMovingAverage => ConstantModelType::SimpleMovingAverage,
-            PyConstantModelType::SmoothedMovingAverage => {
-                ConstantModelType::SmoothedMovingAverage
-            }
+            PyConstantModelType::SmoothedMovingAverage => ConstantModelType::SmoothedMovingAverage,
             PyConstantModelType::ExponentialMovingAverage => {
                 ConstantModelType::ExponentialMovingAverage
             }
@@ -120,14 +118,14 @@ impl From<PyMovingAverageType> for MovingAverageType {
             PyMovingAverageType::Simple => MovingAverageType::Simple,
             PyMovingAverageType::Smoothed => MovingAverageType::Smoothed,
             PyMovingAverageType::Exponential => MovingAverageType::Exponential,
-        }   
-    }   
+        }
+    }
 }
 
 #[derive(Clone)]
 pub enum PyPosition {
     Long,
-    Short
+    Short,
 }
 
 impl PyPosition {
@@ -136,9 +134,9 @@ impl PyPosition {
             "long" => Ok(PyPosition::Long),
             "short" => Ok(PyPosition::Short),
             _ => Err(PyValueError::new_err(format!(
-                        "Unknown position: '{}'. Valid options are: `long`, `short`",
-                        s
-            )))
+                "Unknown position: '{}'. Valid options are: `long`, `short`",
+                s
+            ))),
         }
     }
 }
@@ -147,7 +145,7 @@ impl From<PyPosition> for Position {
     fn from(value: PyPosition) -> Self {
         match value {
             PyPosition::Long => Position::Long,
-            PyPosition::Short => Position::Short
+            PyPosition::Short => Position::Short,
         }
     }
 }
@@ -156,34 +154,34 @@ impl From<PyPosition> for Position {
 #[pymodule]
 fn PyTechnicalIndicators(m: &Bound<'_, PyModule>) -> PyResult<()> {
     let momentum_mod = PyModule::new(m.py(), "momentum_indicators")?;
-    momentum_indicators::momentum_indicators(&momentum_mod)?;
+    let _ = momentum_indicators::momentum_indicators(&momentum_mod)?;
     m.add_submodule(&momentum_mod)?;
     let candle_mod = PyModule::new(m.py(), "candle_indicators")?;
-    candle_indicators::candle_indicators(&candle_mod)?;
+    let _ = candle_indicators::candle_indicators(&candle_mod)?;
     m.add_submodule(&candle_mod)?;
     let trend_mod = PyModule::new(m.py(), "trend_indicators")?;
-    trend_indicators::trend_indicators(&trend_mod)?;
+    let _ = trend_indicators::trend_indicators(&trend_mod)?;
     m.add_submodule(&trend_mod)?;
     let strength_mod = PyModule::new(m.py(), "strength_indicators")?;
-    strength_indicators::strength_indicators(&strength_mod)?;
+    let _ = strength_indicators::strength_indicators(&strength_mod)?;
     m.add_submodule(&strength_mod)?;
     let other_mod = PyModule::new(m.py(), "other_indicators")?;
-    other_indicators::other_indicators(&other_mod)?;
+    let _ = other_indicators::other_indicators(&other_mod)?;
     m.add_submodule(&other_mod)?;
     let standard_mod = PyModule::new(m.py(), "standard_indicators")?;
-    standard_indicators::standard_indicators(&standard_mod)?;
+    let _ = standard_indicators::standard_indicators(&standard_mod)?;
     m.add_submodule(&standard_mod)?;
     let chart_mod = PyModule::new(m.py(), "chart_trends")?;
-    chart_trends::chart_trends(&chart_mod)?;
+    let _ = chart_trends::chart_trends(&chart_mod)?;
     m.add_submodule(&chart_mod)?;
     let corr_mod = PyModule::new(m.py(), "correlation_indicators")?;
-    correlation_indicators::correlation_indicators(&corr_mod)?;
+    let _ = correlation_indicators::correlation_indicators(&corr_mod)?;
     m.add_submodule(&corr_mod)?;
     let vol_mod = PyModule::new(m.py(), "volatility_indicators")?;
-    volatility_indicators::volatility_indicators(&vol_mod)?;
+    let _ = volatility_indicators::volatility_indicators(&vol_mod)?;
     m.add_submodule(&vol_mod)?;
     let ma_mod = PyModule::new(m.py(), "moving_average")?;
-    moving_average::moving_average(&ma_mod)?;
+    let _ = moving_average::moving_average(&ma_mod)?;
     m.add_submodule(&ma_mod)?;
     Ok(())
 }

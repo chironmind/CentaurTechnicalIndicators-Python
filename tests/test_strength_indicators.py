@@ -1,3 +1,5 @@
+import pytest
+
 from PyTechnicalIndicators import strength_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
@@ -48,6 +50,8 @@ def test_single_relative_vigor_index():
     assert strength_indicators.single.relative_vigor_index(open_prices, high, low, close, "exponential") == 0.2317460317460318
     assert strength_indicators.single.relative_vigor_index(open_prices, high, low, close, "median") == 0.27607361963190186
     assert strength_indicators.single.relative_vigor_index(open_prices, high, low, close, "mode") == 0.25
+    with pytest.raises(ValueError):
+        strength_indicators.single.relative_vigor_index(open_prices, high, low, close, "")
 
 def test_bulk_relative_vigor_index():
      assert strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "simple", 4) == [0.3563218390804598, 0.1842105263157895]
@@ -55,4 +59,6 @@ def test_bulk_relative_vigor_index():
      assert strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "exponential", 4) == [0.3563218390804598, 0.1842105263157895]
      assert strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "median", 4) == [0.3563218390804598, 0.1842105263157895]
      assert strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "mode", 4) == [0.3333333333333333, 0.15384615384615385]
+     with pytest.raises(ValueError):
+         strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "", 4)
 

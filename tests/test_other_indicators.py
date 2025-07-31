@@ -1,3 +1,5 @@
+import pytest
+
 from PyTechnicalIndicators import other_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
@@ -45,6 +47,8 @@ def test_single_average_true_range():
     assert other_indicators.single.average_true_range(close, high, low, "exponential") == 15.033175355450236
     assert other_indicators.single.average_true_range(close, high, low, "median") == 16.0
     assert other_indicators.single.average_true_range(close, high, low, "mode") == 16.0
+    with pytest.raises(ValueError):
+        other_indicators.single.average_true_range(close, high, low, "")
 
 def test_bulk_average_true_range():
     assert other_indicators.bulk.average_true_range(close, high, low, "simple", 3) == [16.0, 13.0, 12.333333333333334]
@@ -52,6 +56,8 @@ def test_bulk_average_true_range():
     assert other_indicators.bulk.average_true_range(close, high, low, "exponential", 3) == [11.571428571428571, 13.142857142857142, 14.428571428571429]
     assert other_indicators.bulk.average_true_range(close, high, low, "median", 3) == [18.0, 16.0, 16.0]
     assert other_indicators.bulk.average_true_range(close, high, low, "mode", 3) == [16.0, 13.0, 16.0]
+    with pytest.raises(ValueError):
+        other_indicators.bulk.average_true_range(close, high, low, "", 3)
 
 def test_single_internal_bar_strength():
     assert other_indicators.single.internal_bar_strength(high[-1], low[-1], close[-1]) == 0.5625
@@ -65,3 +71,5 @@ def test_bulk_positivity_indicator():
     assert other_indicators.bulk.positivity_indicator(open_prices, close, 3, "exponential") == [(-0.4975124378109453, -2.605721393034826), (1.6042780748663104, 0.060298203406193), (-4.25531914893617, -2.0443189834032864)]
     assert other_indicators.bulk.positivity_indicator(open_prices, close, 3, "median") == [(-0.4975124378109453, -5.0), (1.6042780748663104, -0.4975124378109453), (-4.25531914893617, -0.4975124378109453)]
     assert other_indicators.bulk.positivity_indicator(open_prices, close, 3, "mode") == [(-0.4975124378109453, -3.6666666666666665), (1.6042780748663104, -1.0), (-4.25531914893617, -0.6666666666666666)]
+    with pytest.raises(ValueError):
+        other_indicators.bulk.positivity_indicator(open_prices, close, 3, "")

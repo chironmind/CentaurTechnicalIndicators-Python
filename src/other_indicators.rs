@@ -30,7 +30,7 @@ fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     bulk_module.add_function(wrap_pyfunction!(bulk_average_true_range, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_internal_bar_strength, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_positivity_indicator, &bulk_module)?)?;
-    parent_module.add_submodule(&bulk_module);
+    parent_module.add_submodule(&bulk_module)?;
     Ok(())
 }
 
@@ -47,7 +47,7 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
         single_internal_bar_strength,
         &single_module
     )?)?;
-    parent_module.add_submodule(&single_module);
+    parent_module.add_submodule(&single_module)?;
     Ok(())
 }
 
@@ -126,7 +126,7 @@ fn bulk_true_range(close: Vec<f64>, high: Vec<f64>, low: Vec<f64>) -> PyResult<V
 ///     close: List of previous closes
 ///     high: List of highs
 ///     low: List of lows
-///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average", 
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
 ///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:

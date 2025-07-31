@@ -1,3 +1,5 @@
+import pytest
+
 from PyTechnicalIndicators import correlation_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
@@ -29,6 +31,10 @@ def test_single_correlation():
     assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "exponential", "median") == 1.2124140206954974
     assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "median", "ulcer") == 0.8238549759365069
     assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "mode", "mode") == 1.026570048309179
+    with pytest.raises(ValueError):
+        correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "", "mode")
+    with pytest.raises(ValueError):
+        correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "mode", "")
 
 def test_bulk_correlation():
     assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, "simple", "standard", 3) == [0.9732227014483793, 0.8962581595302719, 0.8322397195638238]

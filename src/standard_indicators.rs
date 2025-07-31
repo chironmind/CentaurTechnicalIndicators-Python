@@ -24,25 +24,40 @@ pub fn standard_indicators(m: &Bound<'_, PyModule>) -> PyResult<()> {
 fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let bulk_module = PyModule::new(parent_module.py(), "bulk")?;
     bulk_module.add_function(wrap_pyfunction!(bulk_simple_moving_average, &bulk_module)?)?;
-    bulk_module.add_function(wrap_pyfunction!(bulk_smoothed_moving_average, &bulk_module)?)?;
-    bulk_module.add_function(wrap_pyfunction!(bulk_exponential_moving_average, &bulk_module)?)?;
+    bulk_module.add_function(wrap_pyfunction!(
+        bulk_smoothed_moving_average,
+        &bulk_module
+    )?)?;
+    bulk_module.add_function(wrap_pyfunction!(
+        bulk_exponential_moving_average,
+        &bulk_module
+    )?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_bollinger_bands, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_macd, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_rsi, &bulk_module)?)?;
-    parent_module.add_submodule(&bulk_module);
+    parent_module.add_submodule(&bulk_module)?;
     Ok(())
 }
 
 /// **single**: Functions that return a single value for a slice of prices.
 fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let single_module = PyModule::new(parent_module.py(), "single")?;
-    single_module.add_function(wrap_pyfunction!(single_simple_moving_average, &single_module)?)?;
-    single_module.add_function(wrap_pyfunction!(single_smoothed_moving_average, &single_module)?)?;
-    single_module.add_function(wrap_pyfunction!(single_exponential_moving_average, &single_module)?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_simple_moving_average,
+        &single_module
+    )?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_smoothed_moving_average,
+        &single_module
+    )?)?;
+    single_module.add_function(wrap_pyfunction!(
+        single_exponential_moving_average,
+        &single_module
+    )?)?;
     single_module.add_function(wrap_pyfunction!(single_bollinger_bands, &single_module)?)?;
     single_module.add_function(wrap_pyfunction!(single_macd, &single_module)?)?;
     single_module.add_function(wrap_pyfunction!(single_rsi, &single_module)?)?;
-    parent_module.add_submodule(&single_module);
+    parent_module.add_submodule(&single_module)?;
     Ok(())
 }
 

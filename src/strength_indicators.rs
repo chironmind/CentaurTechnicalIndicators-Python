@@ -30,7 +30,7 @@ fn register_bulk_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     bulk_module.add_function(wrap_pyfunction!(bulk_positive_volume_index, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_negative_volume_index, &bulk_module)?)?;
     bulk_module.add_function(wrap_pyfunction!(bulk_relative_vigor_index, &bulk_module)?)?;
-    parent_module.add_submodule(&bulk_module);
+    parent_module.add_submodule(&bulk_module)?;
     Ok(())
 }
 
@@ -46,7 +46,7 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
         single_relative_vigor_index,
         &single_module
     )?)?;
-    parent_module.add_submodule(&single_module);
+    parent_module.add_submodule(&single_module)?;
     Ok(())
 }
 

@@ -45,7 +45,11 @@ fn peaks(prices: Vec<f64>, period: usize, closest_neighbor: usize) -> PyResult<V
 /// Returns:
 ///     List of tuples containing (valley_value, valley_index)
 #[pyfunction]
-fn valleys(prices: Vec<f64>, period: usize, closest_neighbor: usize) -> PyResult<Vec<(f64, usize)>> {
+fn valleys(
+    prices: Vec<f64>,
+    period: usize,
+    closest_neighbor: usize,
+) -> PyResult<Vec<(f64, usize)>> {
     Ok(ct::valleys(&prices, period, closest_neighbor))
 }
 
