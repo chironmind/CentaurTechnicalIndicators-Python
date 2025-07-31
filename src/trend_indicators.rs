@@ -223,13 +223,13 @@ fn single_short_parabolic_time_price_system(
     previous_sar: f64,
     extreme_point: f64,
     af: f64,
-    low: f64,
+    high: f64,
 ) -> PyResult<f64> {
     Ok(ti::single::short_parabolic_time_price_system(
         previous_sar,
         extreme_point,
         af,
-        low,
+        high,
     ))
 }
 

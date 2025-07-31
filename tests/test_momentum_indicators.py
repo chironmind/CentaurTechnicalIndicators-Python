@@ -4,7 +4,7 @@ from PyTechnicalIndicators import momentum_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
 
-These tests are not meant to be in depth, nor to test all edge cases, those should be 
+These tests are not meant to be in depth, nor to test all edge cases, those should be
 done in [RustTI](https://github.com/chironmind/RustTI). These tests exist to confirm whether an update in the bindings, or
 RustTI has broken functionality.
 

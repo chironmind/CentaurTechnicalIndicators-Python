@@ -82,7 +82,7 @@ fn single_simple_moving_average(prices: Vec<f64>) -> PyResult<f64> {
 ///     period: Period over which to calculate the moving average
 ///
 /// Returns:
-///     List of imple moving averages
+///     List of simple moving averages
 #[pyfunction(name = "simple_moving_average")]
 fn bulk_simple_moving_average(prices: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
     Ok(si::bulk::simple_moving_average(&prices, period))
