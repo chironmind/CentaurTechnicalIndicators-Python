@@ -1,154 +1,64 @@
 import pytest
 
-from src.PyTechnicalIndicators.Single import strength_indicators as strength_indicators_single
-from src.PyTechnicalIndicators.Bulk import strength_indicators as strength_indicators_bulk
+from PyTechnicalIndicators import strength_indicators
 
-# TODO: Reorg to match functions order
+"""The purpose of these tests are just to confirm that the bindings work.
 
+These tests are not meant to be in depth, nor to test all edge cases, those should be
+done in [RustTI](https://github.com/chironmind/RustTI). These tests exist to confirm whether an update in the bindings, or
+RustTI has broken functionality.
 
-def test_single_rsi():
-    prices = [100, 103, 110, 115, 123, 115, 116, 112, 110, 106, 116, 116, 126, 130]
-    rsi = strength_indicators_single.relative_strength_index(prices)
-    assert rsi == 60.44650041420754
+To run the tests `maturin` needs to have built the egg. To do so run the following from
+your CLI
 
+```shell
+$ source you_venv_location/bin/activate
 
-def test_single_personalised_rsi_no_negative():
-    prices = [106, 116, 116, 126, 130]
-    rsi = strength_indicators_single.relative_strength_index(prices)
-    assert rsi == 100
+$ pip3 install -r test_requirements.txt
 
+$ maturin develop
 
-def test_single_personalised_rsi():
-    prices = [112, 110, 106, 116, 116, 126, 130]
-    rsi = strength_indicators_single.relative_strength_index(prices)
-    assert rsi == 68.22742474916387
+$ pytest .
+```
+"""
 
+prices = [100.0, 102.0, 103.0, 101.0, 99.0]
+high = [200.0, 210.0, 205.0, 190.0, 195.0]
+low = [175.0, 192.0, 200.0, 174.0, 179.0]
+close = [192.0, 200.0, 201.0, 187.0, 188.0]
+open_prices = [180.0, 190.0, 200.0, 190.0, 180.0]
+volume = [1000.0, 1500.0, 1200.0, 900.0, 1300.0]
 
-def test_single_accumulation_distribution_indicator():
-    adi = strength_indicators_single.accumulation_distribution_indicator(140, 90, 110, 1250, 1800)
-    assert adi == 1550
+def test_single_accumulation_distribution():
+    assert strength_indicators.single.accumulation_distribution(high[-1], low[-1], close[-1], volume[-1], 0.0) == 162.5
 
+def test_bulk_accumulation_distribution_no_previous():
+    assert strength_indicators.bulk.accumulation_distribution(high, low, close, volume, 0.0) == [360.0, 193.33333333333334, -526.6666666666666, 35.83333333333337, 198.33333333333337]
 
-def test_bulk_accumulation_distribution_indicator():
-    high = [190, 220, 215]
-    low = [160, 180, 170]
-    close = [165, 200, 200]
-    volume = [1200, 1500, 1200]
-    adi = strength_indicators_bulk.accumulation_distribution_indicator(high, low, close, volume)
-    assert adi == [-800, -800, -400]
+def test_single_volume_index():
+    assert strength_indicators.single.volume_index(close[-1], close[-2], 0.0) == 0.005376190340015442
 
+def test_bulk_positive_volume_index():
+    assert strength_indicators.bulk.positive_volume_index(close, volume, 0.0) == [0.043402777777777776, 0.043402777777777776, 0.043402777777777776, 0.04363487819370172]
 
-def test_bulk_accumulation_distribution_indicator_length_exception():
-    high = [190, 220]
-    low = [160, 180, 170]
-    close = [165, 200, 200]
-    volume = [1200, 1500, 1200]
+def test_bulk_negative_volume_index_no_previous():
+    assert strength_indicators.bulk.negative_volume_index(close, volume, 0.0) == [0.0, 0.005025, 0.004675, 0.004675]
 
-    with pytest.raises(Exception) as e:
-        strength_indicators_bulk.accumulation_distribution_indicator(high, low, close, volume)
+def test_single_relative_vigor_index():
+    assert strength_indicators.single.relative_vigor_index(open_prices, high, low, close, "simple") == 0.27607361963190186
+    assert strength_indicators.single.relative_vigor_index(open_prices, high, low, close, "smoothed") == 0.2468619246861925
+    assert strength_indicators.single.relative_vigor_index(open_prices, high, low, close, "exponential") == 0.2317460317460318
+    assert strength_indicators.single.relative_vigor_index(open_prices, high, low, close, "median") == 0.27607361963190186
+    assert strength_indicators.single.relative_vigor_index(open_prices, high, low, close, "mode") == 0.25
+    with pytest.raises(ValueError):
+        strength_indicators.single.relative_vigor_index(open_prices, high, low, close, "")
 
-    assert str(e.value) == f'lengths needs to match, high: {len(high)}, low: {len(low)}, close {len(close)}, volume{len(volume)}'
+def test_bulk_relative_vigor_index():
+     assert strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "simple", 4) == [0.3563218390804598, 0.1842105263157895]
+     assert strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "smoothed", 4) == [0.3563218390804598, 0.1842105263157895]
+     assert strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "exponential", 4) == [0.3563218390804598, 0.1842105263157895]
+     assert strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "median", 4) == [0.3563218390804598, 0.1842105263157895]
+     assert strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "mode", 4) == [0.3333333333333333, 0.15384615384615385]
+     with pytest.raises(ValueError):
+         strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "", 4)
 
-    high = [190, 220, 215]
-    low = [160, 180]
-
-    with pytest.raises(Exception) as e:
-        strength_indicators_bulk.accumulation_distribution_indicator(high, low, close, volume)
-
-    assert str(e.value) == f'lengths needs to match, high: {len(high)}, low: {len(low)}, close {len(close)}, volume{len(volume)}'
-
-    low = [160, 180, 170]
-    close = [165, 200]
-
-    with pytest.raises(Exception) as e:
-        strength_indicators_bulk.accumulation_distribution_indicator(high, low, close, volume)
-
-    assert str(e.value) == f'lengths needs to match, high: {len(high)}, low: {len(low)}, close {len(close)}, volume{len(volume)}'
-
-    close = [165, 200, 200]
-    volume = [1200, 1500]
-
-    with pytest.raises(Exception) as e:
-        strength_indicators_bulk.accumulation_distribution_indicator(high, low, close, volume)
-
-    assert str(e.value) == f'lengths needs to match, high: {len(high)}, low: {len(low)}, close {len(close)}, volume{len(volume)}'
-
-
-def test_single_directional_movement():
-    assert strength_indicators_single.directional_movement(103, 100, 93, 90) == (3, 'positive')
-    assert strength_indicators_single.directional_movement(100, 103, 90, 93) == (3, 'negative')
-    assert strength_indicators_single.directional_movement(103, 103, 93, 93) == (0, 'none')
-
-
-def test_single_period_directional_indicator():
-    high = [127, 107, 130, 109, 120]
-    low = [87, 97, 85, 81, 80]
-    close = [115, 106, 124, 90, 88]
-    pdi = strength_indicators_single.directional_indicator(high, low, close)
-    assert pdi == (20.858895705521473, 2.4539877300613497, 163, 34, 4)
-
-
-def test_single_period_directional_indicator_known_previous():
-    known_previous_di = strength_indicators_single.directional_indicator_known_previous(110, 120, 75, 80, 79, 163, 34, 4, 5)
-    assert known_previous_di == (16.444981862152358, 4.9576783555018135, 165.4, 27.2, 8.2)
-
-
-def test_single_known_previous_directional_indicator():
-    assert strength_indicators_single.known_previous_directional_movement(0, 34, 5) == 27.2
-    assert strength_indicators_single.known_previous_directional_movement(5, 4, 5) == 8.2
-
-
-def test_single_directional_index():
-    assert strength_indicators_single.directional_index(16.444981862152358, 4.9576783555018135) == 0.536723163841808
-    assert strength_indicators_single.directional_index(4.9576783555018135, 16.444981862152358) == 0.536723163841808
-
-
-def test_single_average_directional_index():
-    adx = strength_indicators_single.average_directional_index([0.789473684210526, 0.536723163841808], 'ma')
-    assert adx == 0.663098424026167
-
-
-def test_bulk_directional_indicator():
-    high = [127, 107, 130, 109, 120, 110, 125, 110, 105, 103]
-    low = [87, 97, 85, 81, 80, 75, 85, 70, 60, 50]
-    close = [115, 106, 124, 90, 88, 79, 90, 85, 83, 45]
-    di = strength_indicators_bulk.directional_indicator(high, low, close, 5)
-    assert di == [
-        (20.858895705521473, 2.4539877300613497, 163),
-        (16.444981862152358, 4.9576783555018135, 165.4),
-        (21.332404828226554, 3.8068709377901575, 172.32),
-        (16.534724721122704, 11.384490824037423, 177.856),
-        (12.561830965460091, 13.988535108027989, 187.2848),
-        (9.056111058075762, 14.89632957740407, 207.82783999999998)
-    ]
-
-
-def test_bulk_directional_index():
-    positive_directional_indicator = [20.858895705521473, 16.444981862152358, 21.332404828226554, 16.534724721122704, 12.561830965460091, 9.056111058075762]
-    negative_directional_indicator = [2.4539877300613497, 4.9576783555018135, 3.8068709377901575, 11.384490824037423, 13.988535108027989, 14.89632957740407]
-    idx = strength_indicators_bulk.directional_index(positive_directional_indicator, negative_directional_indicator)
-    assert idx == [0.7894736842105263, 0.536723163841808, 0.6971375807940905, 0.18446914773642656, 0.053735761632022705, 0.24382561293889254]
-
-
-def test_bulk_average_directional_index():
-    idx = [0.7894736842105263, 0.536723163841808, 0.6971375807940905, 0.18446914773642656, 0.053735761632022705, 0.24382561293889254]
-    adx = strength_indicators_bulk.average_directional_index(idx, 3, 'ma')
-    assert adx == [0.6744448096154749, 0.47277663079077503, 0.31178083005417995, 0.16067684076911393]
-
-
-def test_bulk_average_directional_index_rating():
-    adx = [0.6744448096154749, 0.47277663079077503, 0.31178083005417995, 0.16067684076911393]
-    adxr = strength_indicators_bulk.average_directional_index_rating(adx, 3)
-    assert adxr == [0.49311281983482746, 0.3167267357799445]
-
-
-def test_bulk_rsi():
-    prices = [100, 103, 110, 115, 123, 115, 116, 112, 110, 106, 116, 116, 126, 130, 118]
-    rsi = strength_indicators_bulk.relative_strength_index(prices)
-    assert rsi == [60.44650041420754, 49.98706804800788]
-
-
-def test_bulk_personal_rsi():
-    prices = [100, 103, 110, 115, 123, 115, 116, 112, 110, 106, 116, 116, 126, 130, 118]
-    rsi = strength_indicators_bulk.relative_strength_index(prices, 13, 'ma')
-    assert rsi == [58.27814569536424, 58.82352941176471, 51.35135135135135]

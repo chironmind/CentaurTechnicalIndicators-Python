@@ -1,162 +1,106 @@
 import pytest
 
-from src.PyTechnicalIndicators.Single import trend_indicators as trend_single
-from src.PyTechnicalIndicators.Bulk import trend_indicators as trend_bulk
+from PyTechnicalIndicators import trend_indicators
 
+"""The purpose of these tests are just to confirm that the bindings work.
+
+These tests are not meant to be in depth, nor to test all edge cases, those should be
+done in [RustTI](https://github.com/chironmind/RustTI). These tests exist to confirm whether an update in the bindings, or
+RustTI has broken functionality.
+
+To run the tests `maturin` needs to have built the egg. To do so run the following from
+your CLI
+
+```shell
+$ source you_venv_location/bin/activate
+
+$ pip3 install -r test_requirements.txt
+
+$ maturin develop
+
+$ pytest .
+```
+"""
+
+prices = [100.0, 102.0, 103.0, 101.0, 99.0]
+high = [200.0, 210.0, 205.0, 190.0, 185.0]
+low = [175.0, 192.0, 200.0, 174.0, 179.0]
+close = [192.0, 200.0, 201.0, 187.0, 188.0]
+volume = [1000.0, 1500.0, 1200.0, 900.0, 1300.0]
 
 def test_single_aroon_up():
-    aroon_up = trend_single.aroon_up([117, 107, 115, 114, 116, 110, 108, 103, 100, 100, 100], 10)
-    assert aroon_up == 0
-    aroon_up = trend_single.aroon_up([107, 115, 114, 116, 110, 108, 103, 100, 100, 100, 116], 10)
-    assert aroon_up == 100
-    aroon_up = trend_single.aroon_up([115, 114, 116, 110, 108, 103, 100, 100, 100, 116, 115], 10)
-    assert aroon_up == 90
-
-
-def test_single_aroon_excpetion():
-    with pytest.raises(Exception) as e:
-        trend_single.aroon_up([117, 107, 115, 114, 116, 110, 108, 103, 100, 100, 100], 11)
-    assert str(e.value) == 'Length of highs (11) needs to be greater or equal to period +1 (11 +1)'
-
-
-def test_single_aroon_down():
-    aroon_down = trend_single.aroon_down([96, 100, 102, 109, 113, 109, 108, 95, 95, 98, 94], 10)
-    assert aroon_down == 100
-    aroon_down = trend_single.aroon_down([100, 102, 109, 113, 109, 108, 95, 95, 98, 94, 104], 10)
-    assert aroon_down == 90
-    aroon_down = trend_single.aroon_down([102, 109, 113, 109, 108, 95, 95, 98, 94, 104, 98], 10)
-    assert aroon_down == 80
-
-
-def test_single_aroon_down_excpetion():
-    with pytest.raises(Exception) as e:
-        trend_single.aroon_down([96, 100, 102, 109, 113, 109, 108, 95, 95, 98, 94], 11)
-    assert str(e.value) == 'Length of lows (11) needs to be greater or equal to period +1 (11 +1)'
-
-
-def test_single_aroon_oscillator():
-    highs = [117, 107, 115, 114, 116, 110, 108, 103, 100, 100, 100]
-    lows = [96, 100, 102, 109, 113, 109, 108, 95, 95, 98, 94]
-    aroon_oscillator = trend_single.aroon_oscillator(highs, lows, 10)
-    assert aroon_oscillator == -100
-    highs = [107, 115, 114, 116, 110, 108, 103, 100, 100, 100, 116]
-    lows = [100, 102, 109, 113, 109, 108, 95, 95, 98, 94, 104]
-    aroon_oscillator = trend_single.aroon_oscillator(highs, lows, 10)
-    assert aroon_oscillator == 10
-    highs = [115, 114, 116, 110, 108, 103, 100, 100, 100, 116, 115]
-    lows = [102, 109, 113, 109, 108, 95, 95, 98, 94, 104, 98]
-    aroon_oscillator = trend_single.aroon_oscillator(highs, lows, 10)
-    assert aroon_oscillator == 10
-
-
-def test_single_parabolic_sar_rising():
-    highs = [109, 111, 112, 110, 111]
-    lows = [90, 94, 98, 100, 96]
-    close = [100, 103, 109, 108, 110]
-    rpsar = trend_single.parabolic_sar(highs, lows, close)
-    assert rpsar == (90.44, 0.02, 112, 'rising')
-
-
-def test_single_parabolic_sar_falling():
-    highs = [111, 110, 112, 111, 109]
-    lows = [96, 100, 98, 94, 90]
-    close = [110, 108, 109, 103, 100]
-    rpsar = trend_single.parabolic_sar(highs, lows, close)
-    assert rpsar == (111.56, 0.02, 90, 'falling')
-
-
-def test_single_parabolic_sar_neutral():
-    highs = [111, 110, 112, 111, 109]
-    lows = [96, 100, 98, 94, 90]
-    close = [100, 103, 107, 104, 100]
-    rpsar = trend_single.parabolic_sar(highs, lows, close)
-    assert rpsar == (100.02, 0.02, 101.0, 'neutral')
-
-
-def test_single_parabolic_sar_length_exception():
-    highs = [111, 110, 112, 111]
-    lows = [96, 100, 98, 94, 90]
-    close = [100, 103, 107, 104, 100]
-    with pytest.raises(Exception) as e:
-        trend_single.parabolic_sar(highs, lows, close)
-    assert str(e.value) == f'Length of lists need to match, high ({len(highs)}), low ({len(lows)}), close ({len(close)})'
-
-    highs = [111, 110, 112, 111, 109]
-    lows = [96, 100, 98, 94]
-    close = [100, 103, 107, 104, 100]
-    with pytest.raises(Exception) as e:
-        trend_single.parabolic_sar(highs, lows, close)
-    assert str(e.value) == f'Length of lists need to match, high ({len(highs)}), low ({len(lows)}), close ({len(close)})'
-
-    highs = [111, 110, 112, 111, 109]
-    lows = [96, 100, 98, 94, 90]
-    close = [100, 103, 107, 104]
-    with pytest.raises(Exception) as e:
-        trend_single.parabolic_sar(highs, lows, close)
-    assert str(e.value) == f'Length of lists need to match, high ({len(highs)}), low ({len(lows)}), close ({len(close)})'
-
+    assert trend_indicators.single.aroon_up(high) == 25.0
 
 def test_bulk_aroon_up():
-    period_from_high = [117, 107, 115, 114, 116, 110, 108, 103, 100, 100, 100, 116, 115, 118, 121]
-    aroon_up = trend_bulk.aroon_up(period_from_high, 10)
-    assert aroon_up == [0.0, 100.0, 90.0, 100.0, 100.0]
+    assert trend_indicators.bulk.aroon_up(high, 3) == [50.0, 0.0, 0.0]
 
+def test_single_aroon_down():
+    assert trend_indicators.single.aroon_down(low) == 75.0
 
 def test_bulk_aroon_down():
-    period_from_low = [96, 100, 102, 109, 113, 109, 108, 95, 95, 98, 94, 104, 98, 95, 92]
-    aroon_down = trend_bulk.aroon_down(period_from_low, 10)
-    assert aroon_down == [100.0, 90.0, 80.0, 70.0, 100.0]
+    assert trend_indicators.bulk.aroon_down(low, 3) == [0.0, 100.0, 50.0]
 
+def test_single_aroon_oscillator():
+    assert trend_indicators.single.aroon_oscillator(25.0, 25.0) == 0.0
 
 def test_bulk_aroon_oscillator():
-    highs = [117, 107, 115, 114, 116, 110, 108, 103, 100, 100, 100, 116, 115, 118, 121]
-    lows = [96, 100, 102, 109, 113, 109, 108, 95, 95, 98, 94, 104, 98, 95, 92]
-    aroon_oscillator = trend_bulk.aroon_oscillator(highs, lows, 10)
-    assert aroon_oscillator == [-100.0, 10.0, 10.0, 30.0, 0.0]
+    assert trend_indicators.bulk.aroon_oscillator([25.0, 50.0, 75.0], [25.0, 10.0, 100.0]) == [0.0, 40.0, -25.0]
 
+def test_single_aroon_indicator():
+    assert trend_indicators.single.aroon_indicator(high, low) == (25.0, 75.0, -50.0)
 
-def test_bulk_parabolic_sar_rising():
-    highs = [109, 111, 112, 110, 111, 113, 109, 107]
-    lows = [90, 94, 98, 100, 96, 89, 95, 93]
-    close = [100, 103, 109, 108, 110, 111, 108, 106]
-    psar = trend_bulk.parabolic_sar(highs, lows, close, 5)
-    assert psar == [(90.44, 0.02, 112, 'rising'),  (91.3424, 0.04, 113, 'rising'), (92.208704, 0.04, 113, 'rising'), (93.04035584, 0.04, 113, 'rising')]
+def test_bulk_aroon_indicator():
+    assert trend_indicators.bulk.aroon_indicator(high, low, 3) == [(50.0, 0.0, 50.0), (0.0, 100.0, -100.0), (0.0, 50.0, -50.0)]
 
-def test_bulk_parabolic_sar_falling():
-    highs = [111, 110, 112, 111, 109, 110, 107, 105]
-    lows = [96, 100, 98, 94, 90, 89, 92, 90]
-    close = [110, 108, 109, 103, 100, 102, 103, 99]
-    psar = trend_bulk.parabolic_sar(highs, lows, close, 5)
-    assert psar == [(111.56, 0.02, 90, 'falling'), (110.6576, 0.04, 89, 'falling'), (109.791296, 0.04, 89, 'falling'), (108.95964416, 0.04, 89, 'falling')]
+def test_single_short_parabolic_time_price_system():
+    assert trend_indicators.single.short_parabolic_time_price_system(high[-1], min(low), 0.02, max(high[-2:])) == 190.0
 
+def test_single_long_parabolic_time_price_system():
+    assert trend_indicators.single.long_parabolic_time_price_system(low[-1], max(high), 0.02, min(low[-2:])) == 174.0
 
-def test_bulk_parabolic_sar_length_exception():
-    highs = [111, 110, 112, 111]
-    lows = [96, 100, 98, 94, 90]
-    close = [100, 103, 107, 104, 100]
-    with pytest.raises(Exception) as e:
-        trend_bulk.parabolic_sar(highs, lows, close, 3)
-    assert str(e.value) == f'Length of lists need to match, high ({len(highs)}), low ({len(lows)}), close ({len(close)})'
+def test_bulk_parabolic_time_price_system():
+    assert trend_indicators.bulk.parabolic_time_price_system(high, low, 0.0, 0.02, 0.2, 'long', 0.0) == [175.0, 175.0, 175.7, 210.0, 210.0]
+    with pytest.raises(ValueError):
+        trend_indicators.bulk.parabolic_time_price_system(high, low, 0.0, 0.02, 0.2, '', 0.0)
 
-    highs = [111, 110, 112, 111, 109]
-    lows = [96, 100, 98, 94]
-    close = [100, 103, 107, 104, 100]
-    with pytest.raises(Exception) as e:
-        trend_bulk.parabolic_sar(highs, lows, close, 3)
-    assert str(e.value) == f'Length of lists need to match, high ({len(highs)}), low ({len(lows)}), close ({len(close)})'
+extended_high = high + [180.0, 195.0, 205.0, 210.0, 225.0]
+extended_low = low + [160.0, 150.0, 170.0, 190.0, 185.0]
+extended_close = close + [175.0, 160.0, 180.0, 200.0, 205.0]
 
-    highs = [111, 110, 112, 111, 109]
-    lows = [96, 100, 98, 94, 90]
-    close = [100, 103, 107, 104]
-    with pytest.raises(Exception) as e:
-        trend_bulk.parabolic_sar(highs, lows, close, 3)
-    assert str(e.value) == f'Length of lists need to match, high ({len(highs)}), low ({len(lows)}), close ({len(close)})'
+def test_bulk_directional_movement_system():
+    assert trend_indicators.bulk.directional_movement_system(extended_high, extended_low, extended_close, 3, "simple") == [(25.0, 19.0, 41.80035650623886, 61.64091899386017), (30.0, 0.0, 41.800356506238856, 56.19429590017825), (31.57894736842105, 0.0, 71.2121212121212, 56.50623885918003)]
+    assert trend_indicators.bulk.directional_movement_system(extended_high, extended_low, extended_close, 3, "smoothed") == [(25.0, 19.0, 31.22713200112581, 59.76561278418864), (30.0, 0.0, 54.15142133408387, 56.17787784970447), (31.57894736842105, 0.0, 81.81818181818183, 56.52265690965382)]
+    assert trend_indicators.bulk.directional_movement_system(extended_high, extended_low, extended_close, 3, "exponential") == [(25.0, 19.0, 25.439266615737203, 58.75137933961463), (30.0, 0.0, 62.7196333078686, 56.14973262032085), (31.57894736842105, 0.0, 87.66233766233766, 56.55080213903743)]
+    assert trend_indicators.bulk.directional_movement_system(extended_high, extended_low, extended_close, 3, "median") == [(25.0, 19.0, 13.636363636363635, 56.81818181818182), (30.0, 0.0, 13.636363636363635, 56.81818181818182), (31.57894736842105, 0.0, 100.0, 56.81818181818182)]
+    assert trend_indicators.bulk.directional_movement_system(extended_high, extended_low, extended_close, 3, "mode") == [(25.0, 19.0, 42.0, 71.0), (30.0, 0.0, 42.0, 71.0), (31.57894736842105, 0.0, 100.0, 71.0)]
+    with pytest.raises(ValueError):
+        trend_indicators.bulk.directional_movement_system(extended_high, extended_low, extended_close, 3, "")
 
+def test_single_volume_price_trend():
+    assert trend_indicators.single.volume_price_trend(prices[-1], prices[-2], volume[-1], 0.0) == -25.742574257425744
 
-def test_bulk_parabolic_sar_period_exception():
-    highs = [109, 111, 112, 110, 111, 113, 109, 107]
-    lows = [90, 94, 98, 100, 96, 89, 95, 93]
-    close = [100, 103, 109, 108, 110, 111, 108, 106]
-    with pytest.raises(Exception) as e:
-        trend_bulk.parabolic_sar(highs, lows, close, 50)
-    assert str(e.value) == f'Length of lists ({len(highs)}) needs to be greater or equal to period (50)'
+def test_bulk_volume_price_trend():
+    assert trend_indicators.bulk.volume_price_trend(prices, volume[:-1], 0.0) == [20.0, 34.705882352941174, 11.40491147915477, -6.416870699063054]
+
+def test_single_true_strength_index():
+    assert trend_indicators.single.true_strength_index(prices, 3, "simple", "simple") == -0.2
+    assert trend_indicators.single.true_strength_index(prices, 3, "smoothed", "smoothed") == -0.5599999999999999
+    assert trend_indicators.single.true_strength_index(prices, 3, "exponential", "exponential") == -0.7254901960784312
+    assert trend_indicators.single.true_strength_index(prices, 3, "median", "median") == -0.25
+    assert trend_indicators.single.true_strength_index(prices, 3, "mode", "mode") == -0.5
+    with pytest.raises(ValueError):
+        trend_indicators.single.true_strength_index(prices, 3, "", "mode")
+    with pytest.raises(ValueError):
+        trend_indicators.single.true_strength_index(prices, 3, "mode", "")
+
+def test_bulk_true_strength_index():
+    assert trend_indicators.bulk.true_strength_index(prices, "simple", 2, "simple", 3) == [-0.19999999999999998]
+    assert trend_indicators.bulk.true_strength_index(prices, "smoothed", 2, "smoothed", 3) == [-0.56]
+    assert trend_indicators.bulk.true_strength_index(prices, "exponential", 2, "exponential", 3) == [-0.7254901960784313]
+    assert trend_indicators.bulk.true_strength_index(prices, "median", 2, "median", 3) == [-0.3333333333333333]
+    assert trend_indicators.bulk.true_strength_index(prices, "mode", 2, "mode", 3) == [-0.16666666666666666]
+    with pytest.raises(ValueError):
+        trend_indicators.bulk.true_strength_index(prices, "", 2, "mode", 3)
+    with pytest.raises(ValueError):
+        trend_indicators.bulk.true_strength_index(prices, "mode", 2, "", 3)
+

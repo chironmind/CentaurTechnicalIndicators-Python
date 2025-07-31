@@ -1,69 +1,45 @@
 import pytest
 
-from src.PyTechnicalIndicators.Single import correlation_indicators as single_correlation
-from src.PyTechnicalIndicators.Bulk import correlation_indicators as bulk_correlation
+from PyTechnicalIndicators import correlation_indicators
 
+"""The purpose of these tests are just to confirm that the bindings work.
 
-# TODO: Test perfectly correlated, opposing...
-def test_single_correlate_asset_prices():
-    asset_a_price = [120, 110, 105, 112, 114]
-    asset_b_price = [150, 155, 162, 165, 159]
-    correlation = single_correlation.correlate_asset_prices(asset_a_price, asset_b_price)
-    assert correlation == -0.65025528597848
+These tests are not meant to be in depth, nor to test all edge cases, those should be
+done in [RustTI](https://github.com/chironmind/RustTI). These tests exist to confirm whether an update in the bindings, or
+RustTI has broken functionality.
 
+To run the tests `maturin` needs to have built the egg. To do so run the following from
+your CLI
 
-def test_single_correlate_asset_prices_perfect_positive():
-    asset_a_price = [120, 110, 105, 112, 114]
-    asset_b_price = [120, 110, 105, 112, 114]
-    correlation = single_correlation.correlate_asset_prices(asset_a_price, asset_b_price)
-    assert correlation == 1.0
+```shell
+$ source you_venv_location/bin/activate
 
+$ pip3 install -r test_requirements.txt
 
-def test_single_correlate_asset_prices_perfect_negatively():
-    asset_a_price = [100, 105, 100, 95, 100]
-    asset_b_price = [100, 95, 100, 105, 100]
-    correlation = single_correlation.correlate_asset_prices(asset_a_price, asset_b_price)
-    assert correlation == -0.9999999999999999
+$ maturin develop
 
+$ pytest .
+```
+"""
 
-def test_single_correlate_asset_prices_exception():
-    asset_a_price = [120, 110, 105, 98]
-    asset_b_price = [150, 155, 162, 165, 170]
-    with pytest.raises(Exception) as e:
-        single_correlation.correlate_asset_prices(asset_a_price, asset_b_price)
-    assert str(e.value) == f'length of price_a ({len(asset_a_price)}) needs to equal length of price_b ({len(asset_b_price)})'
+prices_a = [100.0, 102.0, 103.0, 101.0, 99.0]
+prices_b = [192.0, 200.0, 201.0, 187.0, 188.0]
 
-    asset_a_price = [120, 110, 105, 98, 114]
-    asset_b_price = [150, 155, 162, 165]
-    with pytest.raises(Exception) as e:
-        single_correlation.correlate_asset_prices(asset_a_price, asset_b_price)
-    assert str(e.value) == f'length of price_a ({len(asset_a_price)}) needs to equal length of price_b ({len(asset_b_price)})'
+def test_single_correlation():
+    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "simple", "standard") == 0.8169678632647616
+    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "smoothed", "mean") == 1.0556339082935264
+    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "exponential", "median") == 1.2124140206954974
+    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "median", "ulcer") == 0.8238549759365069
+    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "mode", "mode") == 1.026570048309179
+    with pytest.raises(ValueError):
+        correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "", "mode")
+    with pytest.raises(ValueError):
+        correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "mode", "")
 
+def test_bulk_correlation():
+    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, "simple", "standard", 3) == [0.9732227014483793, 0.8962581595302719, 0.8322397195638238]
+    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, "smoothed", "mean", 3) == [1.2679485090435099, 1.239381348107105, 1.18721144967682]
+    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, "exponential", "median", 3) == [1.9931972789115662, 1.7886297376093352, 1.7274052478134112]
+    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, "median", "ulcer", 3) == [float('inf'), 1.03515, 0.6300067463043878]
+    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, "mode", "mode", 3) == [1.1647058823529417, 1.1666666666666667, 1.0833333333333333]
 
-def test_bulk_correlate_asset_prices():
-    asset_a_price = [120, 110, 105, 112, 114, 116]
-    asset_b_price = [150, 155, 162, 165, 159, 154]
-    corr = bulk_correlation.correlate_asset_prices(asset_a_price, asset_b_price, 5)
-    assert corr == [-0.65025528597848, -0.4217205045478597]
-
-
-def test_bulk_correlate_asset_prices_mismatch_length_exception():
-    asset_a_price = [120, 110, 105, 98]
-    asset_b_price = [150, 155, 162, 165, 170]
-    with pytest.raises(Exception) as e:
-        bulk_correlation.correlate_asset_prices(asset_a_price, asset_b_price, 3)
-    assert str(e.value) == f'length of price_a ({len(asset_a_price)}) needs to equal length of price_b ({len(asset_b_price)})'
-
-    asset_a_price = [120, 110, 105, 98, 114]
-    asset_b_price = [150, 155, 162, 165]
-    with pytest.raises(Exception) as e:
-        bulk_correlation.correlate_asset_prices(asset_a_price, asset_b_price, 3)
-    assert str(e.value) == f'length of price_a ({len(asset_a_price)}) needs to equal length of price_b ({len(asset_b_price)})'
-
-
-def test_bulk_correlate_asset_prices_period_exception():
-    asset_a_price = [120, 110, 105, 98, 114]
-    asset_b_price = [150, 155, 162, 165, 170]
-    with pytest.raises(Exception) as e:
-        bulk_correlation.correlate_asset_prices(asset_a_price, asset_b_price, 10)
-    assert str(e.value) == f'length of price_a ({len(asset_a_price)}) and length of price_b ({len(asset_b_price)}) needs to be greater than period (10)'

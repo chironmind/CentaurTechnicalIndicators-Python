@@ -1,102 +1,43 @@
 import pytest
 
-from src.PyTechnicalIndicators.Single import volatility_indicators as volatility_single
-from src.PyTechnicalIndicators.Bulk import volatility_indicators as volatility_bulk
+from PyTechnicalIndicators import volatility_indicators
 
+"""The purpose of these tests are just to confirm that the bindings work.
 
-def test_single_average_true_range():
-    atr = volatility_single.average_true_range(123, 116, 120, 11, 3)
-    assert atr == 9.666666666666666
+These tests are not meant to be in depth, nor to test all edge cases, those should be
+done in [RustTI](https://github.com/chironmind/RustTI). These tests exist to confirm whether an update in the bindings, or
+RustTI has broken functionality.
 
+To run the tests `maturin` needs to have built the egg. To do so run the following from
+your CLI
 
-def test_single_average_true_range_initial():
-    high = [120, 125, 123]
-    low = [90, 110, 116]
-    close = [100, 115, 120]
-    atr = volatility_single.average_true_range_initial(high, low, close)
-    assert atr == 17.333333333333332
+```shell
+$ source you_venv_location/bin/activate
 
+$ pip3 install -r test_requirements.txt
 
-def test_single_average_true_range_length_exception():
-    high = [120, 125]
-    low = [90, 110, 116]
-    close = [100, 115, 120]
-    with pytest.raises(Exception) as e:
-        volatility_single.average_true_range_initial(high, low, close)
-    assert str(e.value) == f'lengths needs to match, high: {len(high)}, low: {len(low)}, close {len(close)}'
+$ maturin develop
 
-    high = [120, 125, 123]
-    low = [90, 110]
-    with pytest.raises(Exception) as e:
-        volatility_single.average_true_range_initial(high, low, close)
-    assert str(e.value) == f'lengths needs to match, high: {len(high)}, low: {len(low)}, close {len(close)}'
+$ pytest .
+```
+"""
 
-    low = [90, 110, 116]
-    close = [100, 115]
-    with pytest.raises(Exception) as e:
-        volatility_single.average_true_range_initial(high, low, close)
-    assert str(e.value) == f'lengths needs to match, high: {len(high)}, low: {len(low)}, close {len(close)}'
-
+prices = [100.0, 102.0, 103.0, 101.0, 99.0]
+high = [200.0, 210.0, 205.0, 190.0, 185.0]
+low = [175.0, 192.0, 200.0, 174.0, 179.0]
+close = [192.0, 200.0, 201.0, 187.0, 188.0]
 
 def test_single_ulcer_index():
-    close_prices = [103, 105, 106, 104, 101]
-    ui = volatility_single.ulcer_index(close_prices)
-    assert ui == 2.2719989771306217
-
-
-def test_single_volatility_index_no_previous():
-    vi = volatility_single.volatility_index(190, 120, 130, 14, 0)
-    assert vi == 5
-
-
-def test_single_volatility_index():
-    vi = volatility_single.volatility_index(190, 120, 130, 14, 5)
-    assert vi == 9.642857142857142
-
-
-def test_single_volatility_system_no_previous():
-    high = [120, 125, 123, 127]
-    low = [90, 110, 116, 113]
-    close = [100, 115, 120, 125]
-    vs = volatility_single.volatility_system(high, low, close, 3, 2)
-    assert vs == (125.0, 32.44444444444444, 92.55555555555556, 16.22222222222222)
-
-
-def test_single_volatility_system_previous():
-    high = [123, 127, 121]
-    low = [116, 113, 96]
-    close = [120, 125, 110]
-    vs = volatility_single.volatility_system(high, low, close, 3, 2, (125.0, 32.44444444444444, 92.55555555555556, 16.22222222222222))
-    assert vs == (125, 38.2962962962963, 86.7037037037037, 19.14814814814815)
-
-
-def test_bulk_average_true_range():
-    high = [120, 125, 123, 127, 121, 110]
-    low = [90, 110, 116, 113, 96, 79]
-    close = [100, 115, 120, 125, 110, 83]
-    atr = volatility_bulk.average_true_range(high, low, close, 3)
-    assert atr == [17.333333333333332, 16.22222222222222, 19.14814814814815, 23.09876543209877]
-
+    assert volatility_indicators.single.ulcer_index(prices) == 1.9417475728155338
 
 def test_bulk_ulcer_index():
-    close_prices = [103, 105, 106, 104, 101, 99, 93]
-    ui = volatility_bulk.ulcer_index(close_prices, 5)
-    assert ui == [2.2719989771306217, 3.7261165392700946, 6.630672977662482]
-
-
-def test_bulk_volatility_index():
-    high = [190, 190, 150]
-    low = [120, 150, 120]
-    close = [150, 120, 190]
-    vi = volatility_bulk.volatility_index(high, low, close, 14)
-    assert vi == [5.0, 9.642857142857142, 13.95408163265306]
-
+    assert volatility_indicators.bulk.ulcer_index(prices, 5) == [1.9417475728155338]
 
 def test_bulk_volatility_system():
-    high = [120, 125, 123, 127, 121, 110]
-    low = [90, 110, 116, 113, 96, 79]
-    close = [100, 115, 120, 125, 110, 83]
-    vs = volatility_bulk.volatility_system(high, low, close, 3, 2)
-    assert vs == [(125, 32.44444444444444, 92.55555555555556, 16.22222222222222),
-                  (125, 38.2962962962963, 86.7037037037037, 19.14814814814815),
-                  (83, 46.19753086419754, 129.19753086419755, 23.09876543209877)]
+    assert volatility_indicators.bulk.volatility_system(high, low, close, 3, 2.0, "simple") == [169.0, 175.0, 181.0]
+    assert volatility_indicators.bulk.volatility_system(high, low, close, 3, 2.0, "smoothed") == [174.36842105263156, 175.10526315789474, 180.26315789473685]
+    assert volatility_indicators.bulk.volatility_system(high, low, close, 3, 2.0, "exponential") == [177.85714285714286, 174.71428571428572, 180.14285714285714]
+    assert volatility_indicators.bulk.volatility_system(high, low, close, 3, 2.0, "median") == [165.0, 169.0, 183.0]
+    assert volatility_indicators.bulk.volatility_system(high, low, close, 3, 2.0, "mode") == [169.0, 175.0, 181.0]
+    with pytest.raises(ValueError):
+        volatility_indicators.bulk.volatility_system(high, low, close, 3, 2.0, "")
