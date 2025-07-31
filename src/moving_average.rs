@@ -47,18 +47,18 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///
 /// Args:
 ///     prices: List of prices
-///     moving_average_type: Variant of `MovingAverageType`
+///     moving_average_type: Choice of "simple", "smoothed", "exponential"
 ///
 /// Returns:
 ///     Moving average 
 #[pyfunction(name = "moving_average")]
 fn single_moving_average(
     prices: Vec<f64>,
-    moving_average_type: crate::PyMovingAverageType,
+    moving_average_type: &str,
 ) -> PyResult<f64> {
     Ok(ma::single::moving_average(
         &prices,
-        moving_average_type.into(),
+        crate::PyMovingAverageType::from_string(moving_average_type)?.into(),
     ))
 }
 
@@ -66,7 +66,7 @@ fn single_moving_average(
 ///
 /// Args:
 ///     prices: List of prices
-///     moving_average_type: Variant of `MovingAverageType`
+///     moving_average_type: Choice of "simple", "smoothed", "exponential"
 ///     period: Period over which to calculate the moving average
 ///
 /// Returns:
@@ -74,12 +74,12 @@ fn single_moving_average(
 #[pyfunction(name = "moving_average")]
 fn bulk_moving_average(
     prices: Vec<f64>,
-    moving_average_type: crate::PyMovingAverageType,
+    moving_average_type: &str,
     period: usize,
 ) -> PyResult<Vec<f64>> {
     Ok(ma::bulk::moving_average(
         &prices,
-        moving_average_type.into(),
+        crate::PyMovingAverageType::from_string(moving_average_type)?.into(),
         period,
     ))
 }

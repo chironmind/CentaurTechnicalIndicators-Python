@@ -185,7 +185,8 @@ fn bulk_negative_volume_index(
 ///     high: List of highs
 ///     low: List of lows
 ///     close: List of closing prices
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     Relative Vigor Index value
@@ -195,14 +196,14 @@ fn single_relative_vigor_index(
     high: Vec<f64>,
     low: Vec<f64>,
     close: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
 ) -> PyResult<f64> {
     Ok(si::single::relative_vigor_index(
         &open,
         &high,
         &low,
         &close,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ))
 }
 
@@ -213,7 +214,8 @@ fn single_relative_vigor_index(
 ///     high: List of highs
 ///     low: List of lows
 ///     close: List of closing prices
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///     period: Period over which to calculate the RVI
 ///
 /// Returns:
@@ -224,7 +226,7 @@ fn bulk_relative_vigor_index(
     high: Vec<f64>,
     low: Vec<f64>,
     close: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
     period: usize,
 ) -> PyResult<Vec<f64>> {
     Ok(si::bulk::relative_vigor_index(
@@ -232,7 +234,7 @@ fn bulk_relative_vigor_index(
         &high,
         &low,
         &close,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
     ))
 }

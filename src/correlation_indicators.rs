@@ -46,8 +46,10 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 /// Args:
 ///     prices_asset_a: List of prices for asset A
 ///     prices_asset_b: List of prices for asset B
-///     constant_model_type: Variant of `ConstantModelType`
-///     deviation_model: Variant of `DeviationModel`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
+///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation", 
+///         "median_absolute_deviation", "mode_absolute_deviation", or "ulcer_index"
 ///
 /// Returns:
 ///     Correlation between the two asset price series.
@@ -55,14 +57,14 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 fn single_correlate_asset_prices(
     prices_asset_a: Vec<f64>,
     prices_asset_b: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
-    deviation_model: crate::PyDeviationModel,
+    constant_model_type: &str,
+    deviation_model: &str,
 ) -> PyResult<f64> {
     Ok(ci::single::correlate_asset_prices(
         &prices_asset_a,
         &prices_asset_b,
-        constant_model_type.into(),
-        deviation_model.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
+        crate::PyDeviationModel::from_string(deviation_model)?.into(),
     ))
 }
 
@@ -71,8 +73,10 @@ fn single_correlate_asset_prices(
 /// Args:
 ///     prices_asset_a: List of prices for asset A
 ///     prices_asset_b: List of prices for asset B
-///     constant_model_type: Variant of `ConstantModelType`
-///     deviation_model: Variant of `DeviationModel`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
+///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation", 
+///         "median_absolute_deviation", "mode_absolute_deviation", or "ulcer_index"
 ///     period: Period over which to calculate the correlation
 ///
 /// Returns:
@@ -81,15 +85,15 @@ fn single_correlate_asset_prices(
 fn bulk_correlate_asset_prices(
     prices_asset_a: Vec<f64>,
     prices_asset_b: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
-    deviation_model: crate::PyDeviationModel,
+    constant_model_type: &str,
+    deviation_model: &str,
     period: usize,
 ) -> PyResult<Vec<f64>> {
     Ok(ci::bulk::correlate_asset_prices(
         &prices_asset_a,
         &prices_asset_b,
-        constant_model_type.into(),
-        deviation_model.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
+        crate::PyDeviationModel::from_string(deviation_model)?.into(),
         period,
     ))
 }

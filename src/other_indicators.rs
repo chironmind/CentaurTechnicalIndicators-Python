@@ -126,7 +126,8 @@ fn bulk_true_range(close: Vec<f64>, high: Vec<f64>, low: Vec<f64>) -> PyResult<V
 ///     close: List of previous closes
 ///     high: List of highs
 ///     low: List of lows
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average", 
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     Average True Range value
@@ -135,13 +136,13 @@ fn single_average_true_range(
     close: Vec<f64>,
     high: Vec<f64>,
     low: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
 ) -> PyResult<f64> {
     Ok(oi::single::average_true_range(
         &close,
         &high,
         &low,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ))
 }
 
@@ -151,7 +152,8 @@ fn single_average_true_range(
 ///     close: List of previous closes
 ///     high: List of highs
 ///     low: List of lows
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///     period: Period over which to calculate the ATR
 ///
 /// Returns:
@@ -161,14 +163,14 @@ fn bulk_average_true_range(
     close: Vec<f64>,
     high: Vec<f64>,
     low: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
     period: usize,
 ) -> PyResult<Vec<f64>> {
     Ok(oi::bulk::average_true_range(
         &close,
         &high,
         &low,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
     ))
 }
@@ -215,7 +217,8 @@ fn bulk_internal_bar_strength(
 ///     open: List of opening prices
 ///     previous_close: List of closing prices
 ///     signal_period: Period to calculate the signal
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     List of tuples containing (positivity indicator, signal line)
@@ -224,12 +227,12 @@ fn bulk_positivity_indicator(
     open: Vec<f64>,
     previous_close: Vec<f64>,
     signal_period: usize,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
 ) -> PyResult<Vec<(f64, f64)>> {
     Ok(oi::bulk::positivity_indicator(
         &open,
         &previous_close,
         signal_period,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ))
 }

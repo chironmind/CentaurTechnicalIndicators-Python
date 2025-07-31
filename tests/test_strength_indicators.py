@@ -1,4 +1,4 @@
-import PyTechnicalIndicators
+from PyTechnicalIndicators import strength_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
 
@@ -28,33 +28,31 @@ open_prices = [180.0, 190.0, 200.0, 190.0, 180.0]
 volume = [1000.0, 1500.0, 1200.0, 900.0, 1300.0]
 
 def test_single_accumulation_distribution():
-    assert PyTechnicalIndicators.strength_indicators.single.accumulation_distribution(high[-1], low[-1], close[-1], volume[-1], 0.0) == 162.5
+    assert strength_indicators.single.accumulation_distribution(high[-1], low[-1], close[-1], volume[-1], 0.0) == 162.5
 
 def test_bulk_accumulation_distribution_no_previous():
-    assert PyTechnicalIndicators.strength_indicators.bulk.accumulation_distribution(high, low, close, volume, 0.0) == [360.0, 193.33333333333334, -526.6666666666666, 35.83333333333337, 198.33333333333337]
+    assert strength_indicators.bulk.accumulation_distribution(high, low, close, volume, 0.0) == [360.0, 193.33333333333334, -526.6666666666666, 35.83333333333337, 198.33333333333337]
 
 def test_single_volume_index():
-    assert PyTechnicalIndicators.strength_indicators.single.volume_index(close[-1], close[-2], 0.0) == 0.005376190340015442
+    assert strength_indicators.single.volume_index(close[-1], close[-2], 0.0) == 0.005376190340015442
 
 def test_bulk_positive_volume_index():
-    assert PyTechnicalIndicators.strength_indicators.bulk.positive_volume_index(close, volume, 0.0) == [0.043402777777777776, 0.043402777777777776, 0.043402777777777776, 0.04363487819370172]
+    assert strength_indicators.bulk.positive_volume_index(close, volume, 0.0) == [0.043402777777777776, 0.043402777777777776, 0.043402777777777776, 0.04363487819370172]
 
 def test_bulk_negative_volume_index_no_previous():
-    assert PyTechnicalIndicators.strength_indicators.bulk.negative_volume_index(close, volume, 0.0) == [0.0, 0.005025, 0.004675, 0.004675]
+    assert strength_indicators.bulk.negative_volume_index(close, volume, 0.0) == [0.0, 0.005025, 0.004675, 0.004675]
 
 def test_single_relative_vigor_index():
-    assert PyTechnicalIndicators.strength_indicators.single.relative_vigor_index(open_prices, high, low, close, PyTechnicalIndicators.ConstantModelType.SimpleMovingAverage()) == 0.27607361963190186
-    assert PyTechnicalIndicators.strength_indicators.single.relative_vigor_index(open_prices, high, low, close, PyTechnicalIndicators.ConstantModelType.SmoothedMovingAverage()) == 0.2468619246861925
-    assert PyTechnicalIndicators.strength_indicators.single.relative_vigor_index(open_prices, high, low, close, PyTechnicalIndicators.ConstantModelType.ExponentialMovingAverage()) == 0.2317460317460318
-    assert PyTechnicalIndicators.strength_indicators.single.relative_vigor_index(open_prices, high, low, close, PyTechnicalIndicators.ConstantModelType.PersonalisedMovingAverage(5, 4)) == 0.21178637200736652
-    assert PyTechnicalIndicators.strength_indicators.single.relative_vigor_index(open_prices, high, low, close, PyTechnicalIndicators.ConstantModelType.SimpleMovingMedian()) == 0.27607361963190186
-    assert PyTechnicalIndicators.strength_indicators.single.relative_vigor_index(open_prices, high, low, close, PyTechnicalIndicators.ConstantModelType.SimpleMovingMode()) == 0.25
+    assert strength_indicators.single.relative_vigor_index(open_prices, high, low, close, "simple") == 0.27607361963190186
+    assert strength_indicators.single.relative_vigor_index(open_prices, high, low, close, "smoothed") == 0.2468619246861925
+    assert strength_indicators.single.relative_vigor_index(open_prices, high, low, close, "exponential") == 0.2317460317460318
+    assert strength_indicators.single.relative_vigor_index(open_prices, high, low, close, "median") == 0.27607361963190186
+    assert strength_indicators.single.relative_vigor_index(open_prices, high, low, close, "mode") == 0.25
 
 def test_bulk_relative_vigor_index():
-     assert PyTechnicalIndicators.strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, PyTechnicalIndicators.ConstantModelType.SimpleMovingAverage(), 4) == [0.3563218390804598, 0.1842105263157895]
-     assert PyTechnicalIndicators.strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, PyTechnicalIndicators.ConstantModelType.SmoothedMovingAverage(), 4) == [0.3563218390804598, 0.1842105263157895]
-     assert PyTechnicalIndicators.strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, PyTechnicalIndicators.ConstantModelType.ExponentialMovingAverage(), 4) == [0.3563218390804598, 0.1842105263157895]
-     assert PyTechnicalIndicators.strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, PyTechnicalIndicators.ConstantModelType.PersonalisedMovingAverage(5, 4), 4) == [0.3563218390804598, 0.1842105263157895]
-     assert PyTechnicalIndicators.strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, PyTechnicalIndicators.ConstantModelType.SimpleMovingMedian(), 4) == [0.3563218390804598, 0.1842105263157895]
-     assert PyTechnicalIndicators.strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, PyTechnicalIndicators.ConstantModelType.SimpleMovingMode(), 4) == [0.3333333333333333, 0.15384615384615385]
+     assert strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "simple", 4) == [0.3563218390804598, 0.1842105263157895]
+     assert strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "smoothed", 4) == [0.3563218390804598, 0.1842105263157895]
+     assert strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "exponential", 4) == [0.3563218390804598, 0.1842105263157895]
+     assert strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "median", 4) == [0.3563218390804598, 0.1842105263157895]
+     assert strength_indicators.bulk.relative_vigor_index(open_prices, high, low, close, "mode", 4) == [0.3333333333333333, 0.15384615384615385]
 

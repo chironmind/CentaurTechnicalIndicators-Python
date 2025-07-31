@@ -63,7 +63,8 @@ fn bulk_ulcer_index(prices: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
 ///     close: List of closing prices
 ///     period: Period over which to calculate the volatility system
 ///     constant_multiplier: Multiplier for ATR
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     List of volatility system SaR points
@@ -74,7 +75,7 @@ fn bulk_volatility_system(
     close: Vec<f64>,
     period: usize,
     constant_multiplier: f64,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
 ) -> PyResult<Vec<f64>> {
     Ok(vi::bulk::volatility_system(
         &high,
@@ -82,6 +83,6 @@ fn bulk_volatility_system(
         &close,
         period,
         constant_multiplier,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ))
 }

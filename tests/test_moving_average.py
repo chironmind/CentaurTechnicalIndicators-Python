@@ -1,4 +1,4 @@
-from PyTechnicalIndicators import moving_average, MovingAverageType
+from PyTechnicalIndicators import moving_average
 
 """The purpose of these tests are just to confirm that the bindings work.
 
@@ -23,16 +23,14 @@ $ pytest .
 prices = [100.0, 102.0, 103.0, 101.0, 99.0]
 
 def test_single_moving_average():
-    assert moving_average.single.moving_average(prices, MovingAverageType.Simple()) == 101.0
-    assert moving_average.single.moving_average(prices, MovingAverageType.Smoothed()) == 100.81627796287482
-    assert moving_average.single.moving_average(prices, MovingAverageType.Exponential()) == 100.61137440758296
-    assert moving_average.single.moving_average(prices, MovingAverageType.Personalised(5, 4)) == 100.1202068074106
+    assert moving_average.single.moving_average(prices, "simple") == 101.0
+    assert moving_average.single.moving_average(prices, "smoothed") == 100.81627796287482
+    assert moving_average.single.moving_average(prices, "exponential") == 100.61137440758296
 
 def test_bulk_moving_average():
-    assert moving_average.bulk.moving_average(prices, MovingAverageType.Simple(), 3) == [101.66666666666667, 102.0, 101.0]
-    assert moving_average.bulk.moving_average(prices, MovingAverageType.Smoothed(), 3) == [102.05263157894737, 101.8421052631579, 100.47368421052633]
-    assert moving_average.bulk.moving_average(prices, MovingAverageType.Exponential(), 3) == [102.28571428571429, 101.71428571428571, 100.14285714285714]
-    assert moving_average.bulk.moving_average(prices, MovingAverageType.Personalised(5, 4), 3) == [102.61194029850746, 101.47761194029852, 99.65671641791045]
+    assert moving_average.bulk.moving_average(prices, "simple", 3) == [101.66666666666667, 102.0, 101.0]
+    assert moving_average.bulk.moving_average(prices, "smoothed", 3) == [102.05263157894737, 101.8421052631579, 100.47368421052633]
+    assert moving_average.bulk.moving_average(prices, "exponential", 3) == [102.28571428571429, 101.71428571428571, 100.14285714285714]
 
 def test_single_mcginley_dynamic():
     assert moving_average.single.mcginley_dynamic(prices[-1], 0.0, 3) == 99.0

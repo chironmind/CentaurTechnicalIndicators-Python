@@ -1,7 +1,7 @@
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 
-use rust_ti::{ConstantModelType, DeviationModel, MovingAverageType};
+use rust_ti::{ConstantModelType, DeviationModel, MovingAverageType, Position};
 
 pub mod candle_indicators;
 pub mod momentum_indicators;
@@ -14,82 +14,142 @@ pub mod correlation_indicators;
 pub mod volatility_indicators;
 pub mod moving_average;
 
-#[pyclass(name = "ConstantModelType")]
 #[derive(Clone)]
 pub enum PyConstantModelType {
-    SimpleMovingAverage(),
-    SmoothedMovingAverage(),
-    ExponentialMovingAverage(),
-    PersonalisedMovingAverage(f64, f64),
-    SimpleMovingMedian(),
-    SimpleMovingMode(),
+    SimpleMovingAverage,
+    SmoothedMovingAverage,
+    ExponentialMovingAverage,
+    SimpleMovingMedian,
+    SimpleMovingMode,
+}
+
+impl PyConstantModelType {
+    // Add a method to create from string
+    pub fn from_string(s: &str) -> PyResult<Self> {
+        match s.to_lowercase().as_str() {
+            "simple" | "ma" | "simple_moving_average" => Ok(PyConstantModelType::SimpleMovingAverage),
+            "smoothed" | "sma" | "smoothed_moving_average" => Ok(PyConstantModelType::SmoothedMovingAverage),
+            "exponential" | "ema" | "exponential_moving_average" => Ok(PyConstantModelType::ExponentialMovingAverage),
+            "median" | "smm" | "simple_moving_median" => Ok(PyConstantModelType::SimpleMovingMedian),
+            "mode" | "simple_moving_mode" => Ok(PyConstantModelType::SimpleMovingMode),
+            _ => Err(PyValueError::new_err(format!(
+                "Unknown constant model type: '{}'. Valid options are: 'simple', 'smoothed', 'exponential', 'median', 'mode'", 
+                s
+            )))
+        }
+    }
 }
 
 impl From<PyConstantModelType> for ConstantModelType {
     fn from(value: PyConstantModelType) -> Self {
         match value {
-            PyConstantModelType::SimpleMovingAverage() => ConstantModelType::SimpleMovingAverage,
-            PyConstantModelType::SmoothedMovingAverage() => {
+            PyConstantModelType::SimpleMovingAverage => ConstantModelType::SimpleMovingAverage,
+            PyConstantModelType::SmoothedMovingAverage => {
                 ConstantModelType::SmoothedMovingAverage
             }
-            PyConstantModelType::ExponentialMovingAverage() => {
+            PyConstantModelType::ExponentialMovingAverage => {
                 ConstantModelType::ExponentialMovingAverage
             }
-            PyConstantModelType::PersonalisedMovingAverage(alpha_num, alpha_den) => {
-                ConstantModelType::PersonalisedMovingAverage {
-                    alpha_num,
-                    alpha_den,
-                }
-            }
-            PyConstantModelType::SimpleMovingMedian() => ConstantModelType::SimpleMovingMedian,
-            PyConstantModelType::SimpleMovingMode() => ConstantModelType::SimpleMovingMode,
+            PyConstantModelType::SimpleMovingMedian => ConstantModelType::SimpleMovingMedian,
+            PyConstantModelType::SimpleMovingMode => ConstantModelType::SimpleMovingMode,
         }
     }
 }
 
-#[pyclass(name = "DeviationModel")]
+impl PyDeviationModel {
+    pub fn from_string(s: &str) -> PyResult<Self> {
+        match s.to_lowercase().as_str() {
+            "standard" | "std" | "standard_deviation" => Ok(PyDeviationModel::StandardDeviation),
+            "mean" | "mean_absolute_deviation" => Ok(PyDeviationModel::MeanAbsoluteDeviation),
+            "median" | "median_absolute_deviation" => Ok(PyDeviationModel::MedianAbsoluteDeviation),
+            "mode" | "mode_absolute_deviation" => Ok(PyDeviationModel::ModeAbsoluteDeviation),
+            "ulcer" | "ulcer_index" => Ok(PyDeviationModel::UlcerIndex),
+            _ => Err(PyValueError::new_err(format!(
+                "Unknown deviation model: '{}'. Valid options are: 'standard', 'mean', 'median', 'mode', 'ulcer'",
+                s
+            )))
+        }
+    }
+}
+
 #[derive(Clone)]
 pub enum PyDeviationModel {
-    StandardDeviation(),
-    MeanAbsoluteDeviation(),
-    MedianAbsoluteDeviation(),
-    ModeAbsoluteDeviation(),
-    UlcerIndex(),
+    StandardDeviation,
+    MeanAbsoluteDeviation,
+    MedianAbsoluteDeviation,
+    ModeAbsoluteDeviation,
+    UlcerIndex,
 }
 
 impl From<PyDeviationModel> for DeviationModel {
     fn from(value: PyDeviationModel) -> Self {
         match value {
-            PyDeviationModel::StandardDeviation() => DeviationModel::StandardDeviation,
-            PyDeviationModel::MeanAbsoluteDeviation() => DeviationModel::MeanAbsoluteDeviation,
-            PyDeviationModel::MedianAbsoluteDeviation() => DeviationModel::MedianAbsoluteDeviation,
-            PyDeviationModel::ModeAbsoluteDeviation() => DeviationModel::ModeAbsoluteDeviation,
-            PyDeviationModel::UlcerIndex() => DeviationModel::UlcerIndex,
+            PyDeviationModel::StandardDeviation => DeviationModel::StandardDeviation,
+            PyDeviationModel::MeanAbsoluteDeviation => DeviationModel::MeanAbsoluteDeviation,
+            PyDeviationModel::MedianAbsoluteDeviation => DeviationModel::MedianAbsoluteDeviation,
+            PyDeviationModel::ModeAbsoluteDeviation => DeviationModel::ModeAbsoluteDeviation,
+            PyDeviationModel::UlcerIndex => DeviationModel::UlcerIndex,
         }
     }
 }
 
-#[pyclass(name = "MovingAverageType")]
 #[derive(Clone)]
 pub enum PyMovingAverageType {
-    Simple(),
-    Smoothed(),
-    Exponential(),
-    Personalised(f64, f64)
+    Simple,
+    Smoothed,
+    Exponential,
+}
+
+impl PyMovingAverageType {
+    pub fn from_string(s: &str) -> PyResult<Self> {
+        match s.to_lowercase().as_str() {
+            "simple" => Ok(PyMovingAverageType::Simple),
+            "smoothed" => Ok(PyMovingAverageType::Smoothed),
+            "exponential" => Ok(PyMovingAverageType::Exponential),
+            _ => Err(PyValueError::new_err(format!(
+                "Unknown moving average type: '{}'. Valid options are: 'simple', 'smoothed', 'exponential'",
+                s
+            )))
+        }
+    }
 }
 
 impl From<PyMovingAverageType> for MovingAverageType {
     fn from(value: PyMovingAverageType) -> Self {
         match value {
-            PyMovingAverageType::Simple() => MovingAverageType::Simple,
-            PyMovingAverageType::Smoothed() => MovingAverageType::Smoothed,
-            PyMovingAverageType::Exponential() => MovingAverageType::Exponential,
-            PyMovingAverageType::Personalised(alpha_num, alpha_den) => MovingAverageType::Personalised {
-                alpha_num,
-                alpha_den,
-            }
+            PyMovingAverageType::Simple => MovingAverageType::Simple,
+            PyMovingAverageType::Smoothed => MovingAverageType::Smoothed,
+            PyMovingAverageType::Exponential => MovingAverageType::Exponential,
         }   
     }   
+}
+
+#[derive(Clone)]
+pub enum PyPosition {
+    Long,
+    Short
+}
+
+impl PyPosition {
+    pub fn from_string(s: &str) -> PyResult<Self> {
+        match s.to_lowercase().as_str() {
+            "long" => Ok(PyPosition::Long),
+            "short" => Ok(PyPosition::Short),
+            _ => Err(PyValueError::new_err(format!(
+                        "Unknown position: '{}'. Valid options are: `long`, `short`",
+                        s
+            )))
+        }
+    }
+}
+
+impl From<PyPosition> for Position {
+    fn from(value: PyPosition) -> Self {
+        match value {
+            PyPosition::Long => Position::Long,
+            PyPosition::Short => Position::Short
+        }
+    }
 }
 
 /// A Python module implemented in Rust.
@@ -125,8 +185,5 @@ fn PyTechnicalIndicators(m: &Bound<'_, PyModule>) -> PyResult<()> {
     let ma_mod = PyModule::new(m.py(), "moving_average")?;
     moving_average::moving_average(&ma_mod)?;
     m.add_submodule(&ma_mod)?;
-    m.add_class::<PyConstantModelType>()?;
-    m.add_class::<PyDeviationModel>()?;
-    m.add_class::<PyMovingAverageType>()?;
     Ok(())
 }

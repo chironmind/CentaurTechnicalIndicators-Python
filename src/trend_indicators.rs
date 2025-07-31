@@ -241,7 +241,7 @@ fn single_short_parabolic_time_price_system(
 ///     af_start: Initial acceleration factor
 ///     af_step: Acceleration factor increment (default 0.02)
 ///     af_max: Maximum acceleration factor (default 0.2)
-///     long: Whether to start long (True) or short (False)
+///     position: 'long' or 'short'
 ///     previous_sar: Previous SaR (0.0 if none)
 ///
 /// Returns:
@@ -253,30 +253,18 @@ fn bulk_parabolic_time_price_system(
     af_start: f64,
     af_step: f64,
     af_max: f64,
-    long: bool,
+    position: &str,
     previous_sar: f64,
 ) -> PyResult<Vec<f64>> {
-    if long {
         Ok(ti::bulk::parabolic_time_price_system(
             &highs,
             &lows,
             af_start,
             af_max,
             af_step,
-            rust_ti::Position::Long,
+            crate::PyPosition::from_string(position)?.into(),
             previous_sar,
         ))
-    } else {
-        Ok(ti::bulk::parabolic_time_price_system(
-            &highs,
-            &lows,
-            af_start,
-            af_max,
-            af_step,
-            rust_ti::Position::Short,
-            previous_sar,
-        ))
-    }
 }
 
 // Directional Movement System
@@ -288,7 +276,8 @@ fn bulk_parabolic_time_price_system(
 ///     lows: List of lows
 ///     close: List of close prices
 ///     period: Period for calculation
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average", 
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     List of Directional Movement System tuples (+DI, -DI, ADX, ADXR)
@@ -298,14 +287,14 @@ fn bulk_directional_movement_system(
     lows: Vec<f64>,
     close: Vec<f64>,
     period: usize,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
 ) -> PyResult<Vec<(f64, f64, f64, f64)>> {
     Ok(ti::bulk::directional_movement_system(
         &highs,
         &lows,
         &close,
         period,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ))
 }
 
@@ -365,8 +354,10 @@ fn bulk_volume_price_trend(
 /// Args:
 ///     prices: List of prices
 ///     first_period: Period for first smoothing
-///     first_constant_model: Variant of `ConstantModelType`
-///     second_constant_model: Variant of `ConstantModelType`
+///     first_constant_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
+///     second_constant_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     TSI value
@@ -374,14 +365,14 @@ fn bulk_volume_price_trend(
 fn single_true_strength_index(
     prices: Vec<f64>,
     first_period: usize,
-    first_constant_model: crate::PyConstantModelType,
-    second_constant_model: crate::PyConstantModelType,
+    first_constant_model: &str,
+    second_constant_model: &str,
 ) -> PyResult<f64> {
     Ok(ti::single::true_strength_index(
         &prices,
-        first_constant_model.into(),
+        crate::PyConstantModelType::from_string(first_constant_model)?.into(),
         first_period,
-        second_constant_model.into(),
+        crate::PyConstantModelType::from_string(second_constant_model)?.into(),
     ))
 }
 
@@ -389,9 +380,11 @@ fn single_true_strength_index(
 ///
 /// Args:
 ///     prices: List of prices
-///     first_constant_model: Variant of `ConstantModelType`
+///     first_constant_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///     first_period: Period for first smoothing
-///     second_constant_model: Variant of `ConstantModelType`
+///     second_constant_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///     second_period: Period for second smoothing
 ///
 /// Returns:
@@ -399,16 +392,16 @@ fn single_true_strength_index(
 #[pyfunction(name = "true_strength_index")]
 fn bulk_true_strength_index(
     prices: Vec<f64>,
-    first_constant_model: crate::PyConstantModelType,
+    first_constant_model: &str,
     first_period: usize,
-    second_constant_model: crate::PyConstantModelType,
+    second_constant_model: &str,
     second_period: usize,
 ) -> PyResult<Vec<f64>> {
     Ok(ti::bulk::true_strength_index(
         &prices,
-        first_constant_model.into(),
+        crate::PyConstantModelType::from_string(first_constant_model)?.into(),
         first_period,
-        second_constant_model.into(),
+        crate::PyConstantModelType::from_string(second_constant_model)?.into(),
         second_period,
     ))
 }

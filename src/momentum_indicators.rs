@@ -112,18 +112,19 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///
 /// Args:
 ///     prices: List of prices
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     Relative Strength Index
 #[pyfunction(name = "relative_strength_index")]
 fn single_relative_strength_index(
     prices: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
 ) -> PyResult<f64> {
     Ok(mi::single::relative_strength_index(
         &prices,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ))
 }
 
@@ -131,7 +132,8 @@ fn single_relative_strength_index(
 ///
 /// Args:
 ///     prices: List of prices
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///     period: Period over which to calculate the RSI
 ///
 /// Returns:
@@ -139,12 +141,12 @@ fn single_relative_strength_index(
 #[pyfunction(name = "relative_strength_index")]
 fn bulk_relative_strength_index(
     prices: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
     period: usize,
 ) -> PyResult<Vec<f64>> {
     Ok(mi::bulk::relative_strength_index(
         &prices,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
     ))
 }
@@ -182,18 +184,19 @@ fn bulk_stochastic_oscillator(prices: Vec<f64>, period: usize) -> PyResult<Vec<f
 ///
 /// Args:
 ///     stochastics: List of stochastics
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     Slow stochastic
 #[pyfunction(name = "slow_stochastic")]
 fn single_slow_stochastic(
     stochastics: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
 ) -> PyResult<f64> {
     Ok(mi::single::slow_stochastic(
         &stochastics,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ))
 }
 
@@ -201,7 +204,8 @@ fn single_slow_stochastic(
 ///
 /// Args:
 ///     stochastics: List of stochastics
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///     period: Period over which to calculate the slow stochastic
 ///
 /// Returns:
@@ -209,12 +213,12 @@ fn single_slow_stochastic(
 #[pyfunction(name = "slow_stochastic")]
 fn bulk_slow_stochastic(
     stochastics: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
     period: usize,
 ) -> PyResult<Vec<f64>> {
     Ok(mi::bulk::slow_stochastic(
         &stochastics,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
     ))
 }
@@ -225,18 +229,19 @@ fn bulk_slow_stochastic(
 ///
 /// Args:
 ///     slow_stochastics: List of slow stochastics
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     Slowest stochastic
 #[pyfunction(name = "slowest_stochastic")]
 fn single_slowest_stochastic(
     slow_stochastics: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
 ) -> PyResult<f64> {
     Ok(mi::single::slowest_stochastic(
         &slow_stochastics,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ))
 }
 
@@ -244,7 +249,8 @@ fn single_slowest_stochastic(
 ///
 /// Args:
 ///     slow_stochastics: List of slow stochastics
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///     period: Period over which to calculate the slowest stochastic oscillator
 ///
 /// Returns:
@@ -252,12 +258,12 @@ fn single_slowest_stochastic(
 #[pyfunction(name = "slowest_stochastic")]
 fn bulk_slowest_stochastic(
     slow_stochastics: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
     period: usize,
 ) -> PyResult<Vec<f64>> {
     Ok(mi::bulk::slowest_stochastic(
         &slow_stochastics,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
     ))
 }
@@ -409,8 +415,10 @@ fn bulk_on_balance_volume(
 ///
 /// Args:
 ///     prices: List of prices
-///     constant_model_type: Variant of `ConstantModelType`
-///     deviation_model: Variant of `DeviationModel`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
+///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation", 
+///         "median_absolute_deviation", "mode_absolute_deviation", "ulcer_index"
 ///     constant_multiplier: Scale factor (normally 0.015)
 ///
 /// Returns:
@@ -418,14 +426,14 @@ fn bulk_on_balance_volume(
 #[pyfunction(name = "commodity_channel_index")]
 fn single_commodity_channel_index(
     prices: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
-    deviation_model: crate::PyDeviationModel,
+    constant_model_type: &str,
+    deviation_model: &str,
     constant_multiplier: f64,
 ) -> PyResult<f64> {
     Ok(mi::single::commodity_channel_index(
         &prices,
-        constant_model_type.into(),
-        deviation_model.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
+        crate::PyDeviationModel::from_string(deviation_model)?.into(),
         constant_multiplier,
     ))
 }
@@ -434,8 +442,10 @@ fn single_commodity_channel_index(
 ///
 /// Args:
 ///     prices: List of prices
-///     constant_model_type: Variant of `ConstantModelType`
-///     deviation_model: Variant of `DeviationModel`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
+///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation",
+///         "median_absolute_deviation", "mode_absolute_deviation", "ulcer_index"
 ///     constant_multiplier: Scale factor (normally 0.015)
 ///     period: Period over which to calculate the CCI
 ///
@@ -444,15 +454,15 @@ fn single_commodity_channel_index(
 #[pyfunction(name = "commodity_channel_index")]
 fn bulk_commodity_channel_index(
     prices: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
-    deviation_model: crate::PyDeviationModel,
+    constant_model_type: &str,
+    deviation_model: &str,
     constant_multiplier: f64,
     period: usize,
 ) -> PyResult<Vec<f64>> {
     Ok(mi::bulk::commodity_channel_index(
         &prices,
-        constant_model_type.into(),
-        deviation_model.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
+        crate::PyDeviationModel::from_string(deviation_model)?.into(),
         constant_multiplier,
         period,
     ))
@@ -465,7 +475,8 @@ fn bulk_commodity_channel_index(
 /// Args:
 ///     prices: List of prices
 ///     previous_mcginley_dynamic: Previous McGinley dynamic (0.0 if none)
-///     deviation_model: Variant of `DeviationModel`
+///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation",
+///         "median_absolute_deviation", "mode_absolute_deviation", "ulcer_index"
 ///     constant_multiplier: Scale factor (normally 0.015)
 ///
 /// Returns:
@@ -474,13 +485,13 @@ fn bulk_commodity_channel_index(
 fn single_mcginley_dynamic_commodity_channel_index(
     prices: Vec<f64>,
     previous_mcginley_dynamic: f64,
-    deviation_model: crate::PyDeviationModel,
+    deviation_model: &str,
     constant_multiplier: f64,
 ) -> PyResult<(f64, f64)> {
     Ok(mi::single::mcginley_dynamic_commodity_channel_index(
         &prices,
         previous_mcginley_dynamic,
-        deviation_model.into(),
+        crate::PyDeviationModel::from_string(deviation_model)?.into(),
         constant_multiplier,
     ))
 }
@@ -490,7 +501,8 @@ fn single_mcginley_dynamic_commodity_channel_index(
 /// Args:
 ///     prices: List of prices
 ///     previous_mcginley_dynamic: Previous McGinley dynamic (0.0 if none)
-///     deviation_model: Variant of `DeviationModel`
+///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation",
+///         "median_absolute_deviation", "mode_absolute_deviation", "ulcer_index"
 ///     constant_multiplier: Scale factor (normally 0.015)
 ///     period: Period over which to calculate the CCI
 ///
@@ -500,14 +512,14 @@ fn single_mcginley_dynamic_commodity_channel_index(
 fn bulk_mcginley_dynamic_commodity_channel_index(
     prices: Vec<f64>,
     previous_mcginley_dynamic: f64,
-    deviation_model: crate::PyDeviationModel,
+    deviation_model: &str,
     constant_multiplier: f64,
     period: usize,
 ) -> PyResult<Vec<(f64, f64)>> {
     Ok(mi::bulk::mcginley_dynamic_commodity_channel_index(
         &prices,
         previous_mcginley_dynamic,
-        deviation_model.into(),
+        crate::PyDeviationModel::from_string(deviation_model)?.into(),
         constant_multiplier,
         period,
     ))
@@ -520,8 +532,10 @@ fn bulk_mcginley_dynamic_commodity_channel_index(
 /// Args:
 ///     prices: List of prices
 ///     short_period: Length of the short period
-///     short_period_model: Variant of `ConstantModelType`
-///     long_period_model: Variant of `ConstantModelType`
+///     short_period_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
+///     long_period_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     Moving Average Convergence Divergence
@@ -529,14 +543,14 @@ fn bulk_mcginley_dynamic_commodity_channel_index(
 fn single_macd_line(
     prices: Vec<f64>,
     short_period: usize,
-    short_period_model: crate::PyConstantModelType,
-    long_period_model: crate::PyConstantModelType,
+    short_period_model: &str,
+    long_period_model: &str,
 ) -> PyResult<f64> {
     Ok(mi::single::macd_line(
         &prices,
         short_period,
-        short_period_model.into(),
-        long_period_model.into(),
+        crate::PyConstantModelType::from_string(short_period_model)?.into(),
+        crate::PyConstantModelType::from_string(long_period_model)?.into(),
     ))
 }
 
@@ -545,9 +559,11 @@ fn single_macd_line(
 /// Args:
 ///     prices: List of prices
 ///     short_period: Length of the short period
-///     short_period_model: Variant of `ConstantModelType`
+///     short_period_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///     long_period: Length of the long period
-///     long_period_model: Variant of `ConstantModelType`
+///     long_period_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     Moving Average Convergence Divergence
@@ -555,16 +571,16 @@ fn single_macd_line(
 fn bulk_macd_line(
     prices: Vec<f64>,
     short_period: usize,
-    short_period_model: crate::PyConstantModelType,
+    short_period_model: &str,
     long_period: usize,
-    long_period_model: crate::PyConstantModelType,
+    long_period_model: &str,
 ) -> PyResult<Vec<f64>> {
     Ok(mi::bulk::macd_line(
         &prices,
         short_period,
-        short_period_model.into(),
+        crate::PyConstantModelType::from_string(short_period_model)?.into(),
         long_period,
-        long_period_model.into(),
+        crate::PyConstantModelType::from_string(long_period_model)?.into(),
     ))
 }
 
@@ -574,23 +590,25 @@ fn bulk_macd_line(
 ///
 /// Args:
 ///     macds: list of MACDs
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     Signal line point
 #[pyfunction(name = "signal_line")]
 fn single_signal_line(
     macds: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
 ) -> PyResult<f64> {
-    Ok(mi::single::signal_line(&macds, constant_model_type.into()))
+    Ok(mi::single::signal_line(&macds, crate::PyConstantModelType::from_string(constant_model_type)?.into()))
 }
 
 /// Calculates the MACD signal line divergence.
 ///
 /// Args:
 ///     macds: list of MACDs
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///     period: Period over which to calculate the signal line
 ///
 /// Returns:
@@ -598,12 +616,12 @@ fn single_signal_line(
 #[pyfunction(name = "signal_line")]
 fn bulk_signal_line(
     macds: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
     period: usize,
 ) -> PyResult<Vec<f64>> {
     Ok(mi::bulk::signal_line(
         &macds,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
     ))
 }
@@ -676,8 +694,10 @@ fn bulk_mcginley_dynamic_macd_line(
 ///     volume: List of volumes
 ///     short_period: Short period over which to calculate the AD
 ///     previous_accumulation_distribution: Previous AD value (if none use 0.0)
-///     short_period_model: Variant of `ConstantModelType`
-///     long_period_model: Variant of `ConstantModelType`
+///     short_period_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
+///     long_period_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     Tuple of Chaikin Oscillator and Accumulation Distribution
@@ -689,8 +709,8 @@ fn single_chaikin_oscillator(
     volume: Vec<f64>,
     short_period: usize,
     previous_accumulation_distribution: f64,
-    short_period_model: crate::PyConstantModelType,
-    long_period_model: crate::PyConstantModelType,
+    short_period_model: &str,
+    long_period_model: &str,
 ) -> PyResult<(f64, f64)> {
     Ok(mi::single::chaikin_oscillator(
         &highs,
@@ -699,8 +719,8 @@ fn single_chaikin_oscillator(
         &volume,
         short_period,
         previous_accumulation_distribution,
-        short_period_model.into(),
-        long_period_model.into(),
+        crate::PyConstantModelType::from_string(short_period_model)?.into(),
+        crate::PyConstantModelType::from_string(long_period_model)?.into(),
     ))
 }
 
@@ -714,8 +734,10 @@ fn single_chaikin_oscillator(
 ///     short_period: Short period over which to calculate the AD
 ///     long_period: Long period over which to calculate the AD
 ///     previous_accumulation_distribution: Previous AD value (if none use 0.0)
-///     short_period_model: Variant of `ConstantModelType`
-///     long_period_model: Variant of `ConstantModelType`
+///     short_period_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
+///     long_period_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     Tuple of Chaikin Oscillator and Accumulation Distribution
@@ -728,8 +750,8 @@ fn bulk_chaikin_oscillator(
     short_period: usize,
     long_period: usize,
     previous_accumulation_distribution: f64,
-    short_period_model: crate::PyConstantModelType,
-    long_period_model: crate::PyConstantModelType,
+    short_period_model: &str,
+    long_period_model: &str,
 ) -> PyResult<Vec<(f64, f64)>> {
     Ok(mi::bulk::chaikin_oscillator(
         &highs,
@@ -739,8 +761,8 @@ fn bulk_chaikin_oscillator(
         short_period,
         long_period,
         previous_accumulation_distribution,
-        short_period_model.into(),
-        long_period_model.into(),
+        crate::PyConstantModelType::from_string(short_period_model)?.into(),
+        crate::PyConstantModelType::from_string(long_period_model)?.into(),
     ))
 }
 
@@ -751,7 +773,8 @@ fn bulk_chaikin_oscillator(
 /// Args:
 ///     prices: List of prices
 ///     short_period: Length of short period.
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     The Percentage Price Oscillator
@@ -759,12 +782,12 @@ fn bulk_chaikin_oscillator(
 fn single_percentage_price_oscillator(
     prices: Vec<f64>,
     short_period: usize,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
 ) -> PyResult<f64> {
     Ok(mi::single::percentage_price_oscillator(
         &prices,
         short_period,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ))
 }
 
@@ -774,7 +797,8 @@ fn single_percentage_price_oscillator(
 ///     prices: List of prices
 ///     short_period: Length of short period.
 ///     long_period: Length of long period
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///
 /// Returns:
 ///     List of Percentage Price Oscillator
@@ -783,13 +807,13 @@ fn bulk_percentage_price_oscillator(
     prices: Vec<f64>,
     short_period: usize,
     long_period: usize,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
 ) -> PyResult<Vec<f64>> {
     Ok(mi::bulk::percentage_price_oscillator(
         &prices,
         short_period,
         long_period,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ))
 }
 

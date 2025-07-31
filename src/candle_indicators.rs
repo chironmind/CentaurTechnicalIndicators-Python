@@ -74,7 +74,8 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///  
 /// Args:
 ///     prices: List of prices
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///     difference: Percent band width (e.g., 3.0 for +-3%)
 ///
 /// Returns:
@@ -82,12 +83,12 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 #[pyfunction(name = "moving_constant_envelopes")]
 fn single_moving_constant_envelopes(
     prices: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
     difference: f64,
 ) -> PyResult<(f64, f64, f64)> {
     Ok(ci::single::moving_constant_envelopes(
         &prices,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         difference,
     ))
 }
@@ -96,7 +97,8 @@ fn single_moving_constant_envelopes(
 ///  
 /// Args:
 ///     prices: List of prices
-///     constant_model_type: Variant of `ConstantModelType`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///     difference: Percent band width (e.g., 3.0 for +-3%)
 ///     period: Period over which to calculate the moving constant envelopes
 ///
@@ -105,13 +107,13 @@ fn single_moving_constant_envelopes(
 #[pyfunction(name = "moving_constant_envelopes")]
 fn bulk_moving_constant_envelopes(
     prices: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
     difference: f64,
     period: usize,
 ) -> PyResult<Vec<(f64, f64, f64)>> {
     Ok(ci::bulk::moving_constant_envelopes(
         &prices,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         difference,
         period,
     ))
@@ -172,8 +174,10 @@ fn bulk_mcginley_dynamic_envelopes(
 ///
 /// Args:
 ///     prices: List of prices
-///     constant_model_type: Variant of `ConstantModelType`
-///     deviation_model: Variant of `DeviationModel`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
+///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation",
+///         "median_absolute_deviation", "mode_absolute_deviation", or "ulcer_index"
 ///     deviation_multiplier: Price deviation multiplier
 ///
 /// Returns:
@@ -181,14 +185,14 @@ fn bulk_mcginley_dynamic_envelopes(
 #[pyfunction(name = "moving_constant_bands")]
 fn single_moving_constant_bands(
     prices: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
-    deviation_model: crate::PyDeviationModel,
+    constant_model_type: &str,
+    deviation_model: &str,
     deviation_multiplier: f64,
 ) -> PyResult<(f64, f64, f64)> {
     Ok(ci::single::moving_constant_bands(
         &prices,
-        constant_model_type.into(),
-        deviation_model.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
+        crate::PyDeviationModel::from_string(deviation_model)?.into(),
         deviation_multiplier,
     ))
 }
@@ -197,8 +201,10 @@ fn single_moving_constant_bands(
 ///
 /// Args:
 ///     prices: List of prices
-///     constant_model_type: Variant of `ConstantModelType`
-///     deviation_model: Variant of `DeviationModel`
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
+///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation",
+///         "median_absolute_deviation", "mode_absolute_deviation", or "ulcer_index"
 ///     deviation_multiplier: Price deviation multiplier
 ///     period: Period over which to calculate the moving constant bands
 ///
@@ -207,15 +213,15 @@ fn single_moving_constant_bands(
 #[pyfunction(name = "moving_constant_bands")]
 fn bulk_moving_constant_bands(
     prices: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
-    deviation_model: crate::PyDeviationModel,
+    constant_model_type: &str,
+    deviation_model: &str,
     deviation_multiplier: f64,
     period: usize,
 ) -> PyResult<Vec<(f64, f64, f64)>> {
     Ok(ci::bulk::moving_constant_bands(
         &prices,
-        constant_model_type.into(),
-        deviation_model.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
+        crate::PyDeviationModel::from_string(deviation_model)?.into(),
         deviation_multiplier,
         period,
     ))
@@ -227,7 +233,8 @@ fn bulk_moving_constant_bands(
 ///
 /// Args:
 ///     prices: List of prices
-///     deviation_model: Variant of `DeviationModel`
+///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation",
+///         "median_absolute_deviation", "mode_absolute_deviation", or "ulcer_index"
 ///     deviation_multiplier: Price deviation multiplier
 ///     previous_mcginley_dynamic: Previous McGinley dynamic (0.0 if none)
 ///
@@ -236,13 +243,13 @@ fn bulk_moving_constant_bands(
 #[pyfunction(name = "mcginley_dynamic_bands")]
 fn single_mcginley_dynamic_bands(
     prices: Vec<f64>,
-    deviation_model: crate::PyDeviationModel,
+    deviation_model: &str,
     deviation_multiplier: f64,
     previous_mcginley_dynamic: f64,
 ) -> PyResult<(f64, f64, f64)> {
     Ok(ci::single::mcginley_dynamic_bands(
         &prices,
-        deviation_model.into(),
+        crate::PyDeviationModel::from_string(deviation_model)?.into(),
         deviation_multiplier,
         previous_mcginley_dynamic,
     ))
@@ -252,7 +259,8 @@ fn single_mcginley_dynamic_bands(
 ///
 /// Args:
 ///     prices: List of prices
-///     deviation_model: Variant of `DeviationModel`
+///     deviation_model: Choice of "standard_deviation", "mean_absolute_deviation",
+///         "median_absolute_deviation", "mode_absolute_deviation", or "ulcer_index"
 ///     deviation_multiplier: Price deviation multiplier
 ///     previous_mcginley_dynamic: Previous McGinley dynamic (0.0 if none)
 ///     period: Period over which to calculate the McGinley dynamic bands
@@ -262,14 +270,14 @@ fn single_mcginley_dynamic_bands(
 #[pyfunction(name = "mcginley_dynamic_bands")]
 fn bulk_mcginley_dynamic_bands(
     prices: Vec<f64>,
-    deviation_model: crate::PyDeviationModel,
+    deviation_model: &str,
     deviation_multiplier: f64,
     previous_mcginley_dynamic: f64,
     period: usize,
 ) -> PyResult<Vec<(f64, f64, f64)>> {
     Ok(ci::bulk::mcginley_dynamic_bands(
         &prices,
-        deviation_model.into(),
+        crate::PyDeviationModel::from_string(deviation_model)?.into(),
         deviation_multiplier,
         previous_mcginley_dynamic,
         period,
@@ -383,8 +391,12 @@ fn bulk_donchian_channels(
 ///     high: List of highs
 ///     low: List of lows
 ///     close: List of previous closing prices
-///     constant_type_model: Variant of `ConstantModelType` for the function
-///     atr_constant_type_model: Variant of `ConstantModelType` for the ATR
+///     constant_type_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
+///         for the function
+///     atr_constant_type_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
+///         for the ATR
 ///     multiplier: Multiplier for the ATR
 ///
 /// Returns:
@@ -394,16 +406,16 @@ fn single_keltner_channel(
     high: Vec<f64>,
     low: Vec<f64>,
     close: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
-    atr_constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
+    atr_constant_model_type: &str,
     multiplier: f64,
 ) -> PyResult<(f64, f64, f64)> {
     Ok(ci::single::keltner_channel(
         &high,
         &low,
         &close,
-        constant_model_type.into(),
-        atr_constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
+        crate::PyConstantModelType::from_string(atr_constant_model_type)?.into(),
         multiplier,
     ))
 }
@@ -414,8 +426,12 @@ fn single_keltner_channel(
 ///     high: List of highs
 ///     low: List of lows
 ///     close: List of previous closing prices
-///     constant_type_model: Variant of `ConstantModelType` for the function
-///     atr_constant_type_model: Variant of `ConstantModelType` for the ATR
+///     constant_type_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
+///         for the function
+///     atr_constant_type_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
+///         for the ATR
 ///     multiplier: Multiplier for the ATR
 ///     period: Period over which to calculate the Keltner Channel
 ///
@@ -426,8 +442,8 @@ fn bulk_keltner_channel(
     high: Vec<f64>,
     low: Vec<f64>,
     close: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
-    atr_constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
+    atr_constant_model_type: &str,
     multiplier: f64,
     period: usize,
 ) -> PyResult<Vec<(f64, f64, f64)>> {
@@ -435,8 +451,8 @@ fn bulk_keltner_channel(
         &high,
         &low,
         &close,
-        constant_model_type.into(),
-        atr_constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
+        crate::PyConstantModelType::from_string(atr_constant_model_type)?.into(),
         multiplier,
         period,
     ))
@@ -448,7 +464,8 @@ fn bulk_keltner_channel(
 ///     high: List of highs
 ///     low: List of lows
 ///     close: List of previous closing prices
-///     constant_type_model: Variant of `ConstantModelType`
+///     constant_type_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///     multiplier: Multiplier for the ATR
 ///
 /// Returns:
@@ -458,14 +475,14 @@ fn single_supertrend(
     high: Vec<f64>,
     low: Vec<f64>,
     close: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
     multiplier: f64,
 ) -> PyResult<f64> {
     Ok(ci::single::supertrend(
         &high,
         &low,
         &close,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         multiplier,
     ))
 }
@@ -476,7 +493,8 @@ fn single_supertrend(
 ///     high: List of highs
 ///     low: List of lows
 ///     close: List of previous closing prices
-///     constant_type_model: Variant of `ConstantModelType`
+///     constant_type_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///     multiplier: Multiplier for the ATR
 ///     period: Period over which to calculate the supertrend
 ///
@@ -487,7 +505,7 @@ fn bulk_supertrend(
     high: Vec<f64>,
     low: Vec<f64>,
     close: Vec<f64>,
-    constant_model_type: crate::PyConstantModelType,
+    constant_model_type: &str,
     multiplier: f64,
     period: usize,
 ) -> PyResult<Vec<f64>> {
@@ -495,7 +513,7 @@ fn bulk_supertrend(
         &high,
         &low,
         &close,
-        constant_model_type.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         multiplier,
         period,
     ))

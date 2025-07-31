@@ -1,4 +1,4 @@
-from PyTechnicalIndicators import correlation_indicators, ConstantModelType, DeviationModel
+from PyTechnicalIndicators import correlation_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
 
@@ -24,18 +24,16 @@ prices_a = [100.0, 102.0, 103.0, 101.0, 99.0]
 prices_b = [192.0, 200.0, 201.0, 187.0, 188.0]
 
 def test_single_correlation():
-    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, ConstantModelType.SimpleMovingAverage(), DeviationModel.StandardDeviation()) == 0.8169678632647616
-    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, ConstantModelType.SmoothedMovingAverage(), DeviationModel.MeanAbsoluteDeviation()) == 1.0556339082935264
-    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, ConstantModelType.ExponentialMovingAverage(), DeviationModel.MedianAbsoluteDeviation()) == 1.2124140206954974
-    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, ConstantModelType.PersonalisedMovingAverage(5, 4), DeviationModel.ModeAbsoluteDeviation()) == 1.5200776889081322
-    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, ConstantModelType.SimpleMovingMedian(), DeviationModel.UlcerIndex()) == 0.8238549759365069
-    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, ConstantModelType.SimpleMovingMode(), DeviationModel.StandardDeviation()) == 0.8169678632647616
+    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "simple", "standard") == 0.8169678632647616
+    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "smoothed", "mean") == 1.0556339082935264
+    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "exponential", "median") == 1.2124140206954974
+    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "median", "ulcer") == 0.8238549759365069
+    assert correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "mode", "mode") == 1.026570048309179
 
 def test_bulk_correlation():
-    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, ConstantModelType.SimpleMovingAverage(), DeviationModel.StandardDeviation(), 3) == [0.9732227014483793, 0.8962581595302719, 0.8322397195638238]
-    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, ConstantModelType.SmoothedMovingAverage(), DeviationModel.MeanAbsoluteDeviation(), 3) == [1.2679485090435099, 1.239381348107105, 1.18721144967682]
-    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, ConstantModelType.ExponentialMovingAverage(), DeviationModel.MedianAbsoluteDeviation(), 3) == [1.9931972789115662, 1.7886297376093352, 1.7274052478134112]
-    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, ConstantModelType.PersonalisedMovingAverage(5, 4), DeviationModel.ModeAbsoluteDeviation(), 3) == [1.7473064877543827, 1.8586359248533328, 1.6597423331105674]
-    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, ConstantModelType.SimpleMovingMedian(), DeviationModel.UlcerIndex(), 3) == [float('inf'), 1.03515, 0.6300067463043878]
-    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, ConstantModelType.SimpleMovingMode(), DeviationModel.StandardDeviation(), 3) == [0.9732227014483793, 0.8962581595302719, 0.8322397195638238]
+    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, "simple", "standard", 3) == [0.9732227014483793, 0.8962581595302719, 0.8322397195638238]
+    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, "smoothed", "mean", 3) == [1.2679485090435099, 1.239381348107105, 1.18721144967682]
+    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, "exponential", "median", 3) == [1.9931972789115662, 1.7886297376093352, 1.7274052478134112]
+    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, "median", "ulcer", 3) == [float('inf'), 1.03515, 0.6300067463043878]
+    assert correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, "mode", "mode", 3) == [1.1647058823529417, 1.1666666666666667, 1.0833333333333333]
 
