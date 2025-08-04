@@ -1,4 +1,4 @@
-![PyTechnicalIndicators Banner](./assets/pytechnicalindicators_banner.png)
+![PyTechnicalIndicators Banner](https://github.com/chironmind/PyTechnicalIndicators/blob/main/assets/pytechnicalindicators_banner.png)
 
 [![PyPI Version](https://img.shields.io/pypi/v/pytechnicalindicators.svg)](https://pypi.org/project/pytechnicalindicators/)
 [![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://github.com/chironmind/PyTechnicalIndicators/wiki)
@@ -64,7 +64,9 @@ Simple Moving Average: 100.352
 
 ## 📚 Reference
 
-**COMING SOON!**
+All the information needed to use PyTechnicalIndicators can be found in the [wiki](https://github.com/chironmind/PyTechnicalIndicators/wiki)
+
+The API reference can be found [here](https://github.com/chironmind/PyTechnicalIndicators/wiki/API-Reference)
 
 ### Example
 
