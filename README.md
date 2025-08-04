@@ -177,7 +177,7 @@ Contributions, bug reports, and feature requests are welcome!
 
 **Latest:** See [CHANGELOG.md](./CHANGELOG.md) for details.
 
-**Full changlog:** See [Releases](https://github.com/chironmind/PyTechnicalIndicators/releases) for details
+**Full changelog:** See [Releases](https://github.com/chironmind/PyTechnicalIndicators/releases) for details
 
 ---
 

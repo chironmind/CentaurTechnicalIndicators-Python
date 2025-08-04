@@ -1,6 +1,6 @@
 import pytest
 
-from PyTechnicalIndicators import other_indicators
+from pytechnicalindicators import other_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
 

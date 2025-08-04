@@ -1,6 +1,6 @@
 import pytest
 
-from PyTechnicalIndicators import correlation_indicators
+from pytechnicalindicators import correlation_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
 

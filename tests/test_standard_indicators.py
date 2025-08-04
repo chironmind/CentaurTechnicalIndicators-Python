@@ -1,4 +1,4 @@
-from PyTechnicalIndicators import standard_indicators
+from pytechnicalindicators import standard_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
 

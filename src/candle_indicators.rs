@@ -391,10 +391,10 @@ fn bulk_donchian_channels(
 ///     high: List of highs
 ///     low: List of lows
 ///     close: List of previous closing prices
-///     constant_type_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
 ///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///         for the function
-///     atr_constant_type_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///     atr_constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
 ///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///         for the ATR
 ///     multiplier: Multiplier for the ATR
@@ -426,10 +426,10 @@ fn single_keltner_channel(
 ///     high: List of highs
 ///     low: List of lows
 ///     close: List of previous closing prices
-///     constant_type_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///     constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
 ///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///         for the function
-///     atr_constant_type_model: Choice of "simple_moving_average", "smoothed_moving_average",
+///     atr_constant_model_type: Choice of "simple_moving_average", "smoothed_moving_average",
 ///         "exponential_moving_average", "simple_moving_median", or "simple_moving_mode"
 ///         for the ATR
 ///     multiplier: Multiplier for the ATR

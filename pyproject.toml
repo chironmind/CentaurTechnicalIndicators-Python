@@ -3,13 +3,34 @@ requires = ["maturin>=1.9,<2.0"]
 build-backend = "maturin"
 
 [project]
-name = "PyTechnicalIndicators"
-requires-python = ">=3.8"
+name = "pytechnicalindicators"
+requires-python = ">=3.10"
+description = "A collection of 70+ fully configurable technical indicators for financial analysis, powered by Rust and Python."
+readme = "README.md"
+authors = [
+    { name="ChironMind", email="your@email.com" }
+]
+maintainers = [
+    { name="ChironMind", email="your@email.com" }
+]
+license = { file="LICENSE-MIT" }
+keywords = ["finance", "technical indicators", "analysis", "trading", "python", "rust", "quantitative"]
 classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "License :: OSI Approved :: MIT License",
     "Programming Language :: Rust",
-    "Programming Language :: Python :: Implementation :: CPython",
-    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: 3",
 ]
 dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://github.com/chironmind/PyTechnicalIndicators"
+"Documentation" = "https://github.com/chironmind/PyTechnicalIndicators/wiki"
+"Source" = "https://github.com/chironmind/PyTechnicalIndicators"
+"Issues" = "https://github.com/chironmind/PyTechnicalIndicators/issues"
+
 [tool.maturin]
 features = ["pyo3/extension-module"]

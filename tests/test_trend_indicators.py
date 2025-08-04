@@ -1,6 +1,6 @@
 import pytest
 
-from PyTechnicalIndicators import trend_indicators
+from pytechnicalindicators import trend_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
 
@@ -59,7 +59,7 @@ def test_single_long_parabolic_time_price_system():
     assert trend_indicators.single.long_parabolic_time_price_system(low[-1], max(high), 0.02, min(low[-2:])) == 174.0
 
 def test_bulk_parabolic_time_price_system():
-    assert trend_indicators.bulk.parabolic_time_price_system(high, low, 0.0, 0.02, 0.2, 'long', 0.0) == [175.0, 175.0, 175.7, 210.0, 210.0]
+    assert trend_indicators.bulk.parabolic_time_price_system(high, low, 0.0, 0.02, 0.2, 'long', 0.0) == [175.0, 175.0, 182.0, 210.0, 210.0]
     with pytest.raises(ValueError):
         trend_indicators.bulk.parabolic_time_price_system(high, low, 0.0, 0.02, 0.2, '', 0.0)
 

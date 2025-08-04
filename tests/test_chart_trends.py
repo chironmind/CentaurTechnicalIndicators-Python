@@ -1,4 +1,4 @@
-from PyTechnicalIndicators import chart_trends
+from pytechnicalindicators import chart_trends
 
 """The purpose of these tests are just to confirm that the bindings work.
 
