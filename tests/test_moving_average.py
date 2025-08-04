@@ -1,6 +1,6 @@
 import pytest
 
-from PyTechnicalIndicators import moving_average
+from pytechnicalindicators import moving_average
 
 """The purpose of these tests are just to confirm that the bindings work.
 

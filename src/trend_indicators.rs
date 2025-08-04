@@ -241,7 +241,7 @@ fn single_short_parabolic_time_price_system(
 ///     af_start: Initial acceleration factor
 ///     af_step: Acceleration factor increment (default 0.02)
 ///     af_max: Maximum acceleration factor (default 0.2)
-///     position: 'long' or 'short'
+///     position: "long" or "short"
 ///     previous_sar: Previous SaR (0.0 if none)
 ///
 /// Returns:

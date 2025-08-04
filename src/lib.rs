@@ -152,7 +152,7 @@ impl From<PyPosition> for Position {
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn PyTechnicalIndicators(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn pytechnicalindicators(m: &Bound<'_, PyModule>) -> PyResult<()> {
     let momentum_mod = PyModule::new(m.py(), "momentum_indicators")?;
     let _ = momentum_indicators::momentum_indicators(&momentum_mod)?;
     m.add_submodule(&momentum_mod)?;

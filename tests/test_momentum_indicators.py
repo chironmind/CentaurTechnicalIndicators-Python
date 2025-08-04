@@ -1,6 +1,6 @@
 import pytest
 
-from PyTechnicalIndicators import momentum_indicators
+from pytechnicalindicators import momentum_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
 
@@ -190,7 +190,7 @@ def test_single_signal_line():
     with pytest.raises(ValueError):
         momentum_indicators.single.signal_line(macds, "")
 
-def test_bulk_macd_line():
+def test_bulk_signal_line():
     assert momentum_indicators.bulk.signal_line(macds, "simple", 3) == [-0.9333333333333332, -0.7666666666666666, 0.3333333333333333]
     assert momentum_indicators.bulk.signal_line(macds, "smoothed", 3) == [-0.9789473684210527, -0.5157894736842106, 0.6526315789473685]
     assert momentum_indicators.bulk.signal_line(macds, "exponential", 3) == [-0.9857142857142857, -0.35714285714285715, 0.8571428571428573]

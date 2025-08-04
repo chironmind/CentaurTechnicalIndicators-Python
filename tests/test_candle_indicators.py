@@ -1,6 +1,6 @@
 import pytest
 
-from PyTechnicalIndicators import candle_indicators
+from pytechnicalindicators import candle_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
 
