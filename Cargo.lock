@@ -4,7 +4,7 @@ version = 4
 
 [[package]]
 name = "RustTI_to_PyTechnicalIndicators"
-version = "0.1.0"
+version = "3.0.1"
 dependencies = [
  "pyo3",
  "rust_ti",
@@ -137,9 +137,9 @@ dependencies = [
 
 [[package]]
 name = "rust_ti"
-version = "2.1.1"
+version = "2.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fce9dc7937d1a5198901380e4a3a026fbae7692d0a57774be31881d8510bb3ee"
+checksum = "127dd9fd3eb5b64e530926eb1604daaeb243559b2d63761232102d93988fbe0d"
 
 [[package]]
 name = "syn"

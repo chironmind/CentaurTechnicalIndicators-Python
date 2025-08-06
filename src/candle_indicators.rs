@@ -129,7 +129,7 @@ fn bulk_moving_constant_envelopes(
 ///     previous_mcginley_dynamic: Previous McGinley dynamic (0.0 if none)
 ///
 /// Returns:
-///     McGinley dynamic envelopes tuple (lower envelope, constant model result, upper envelope)
+///     McGinley dynamic envelopes tuple (lower envelope, Mcginley dynamic, upper envelope)
 #[pyfunction(name = "mcginley_dynamic_envelopes")]
 fn single_mcginley_dynamic_envelopes(
     prices: Vec<f64>,
@@ -152,7 +152,7 @@ fn single_mcginley_dynamic_envelopes(
 ///     period: Period over which to calculate the McGinley dynamic envelopes
 ///
 /// Returns:
-///     List of McGinley dynamic envelopes tuple (lower envelope, constant model result, upper envelope)
+///     List of McGinley dynamic envelopes tuple (lower envelope, McGinley dynamic, upper envelope)
 #[pyfunction(name = "mcginley_dynamic_envelopes")]
 fn bulk_mcginley_dynamic_envelopes(
     prices: Vec<f64>,
@@ -373,7 +373,7 @@ fn single_donchian_channels(high: Vec<f64>, low: Vec<f64>) -> PyResult<(f64, f64
 ///     period: Period over which to calculate the Donchian channels
 ///
 /// Returns:
-///     Donchian channel tuple (lower, average, upper)
+///     List of Donchian channel tuples (lower, average, upper)
 #[pyfunction(name = "donchian_channels")]
 fn bulk_donchian_channels(
     high: Vec<f64>,
@@ -436,7 +436,7 @@ fn single_keltner_channel(
 ///     period: Period over which to calculate the Keltner Channel
 ///
 /// Returns:
-///     Keltner channel tuple
+///     List of Keltner channel tuples
 #[pyfunction(name = "keltner_channel")]
 fn bulk_keltner_channel(
     high: Vec<f64>,

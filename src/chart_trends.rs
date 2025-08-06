@@ -29,7 +29,7 @@ pub fn chart_trends(m: &Bound<'_, PyModule>) -> PyResult<()> {
 ///     closest_neighbor: Minimum distance between peaks
 ///
 /// Returns:
-///     List of tuples containing (peak_value, peak_index)
+///     List of tuples containing (peak value, peak index)
 #[pyfunction]
 fn peaks(prices: Vec<f64>, period: usize, closest_neighbor: usize) -> PyResult<Vec<(f64, usize)>> {
     Ok(ct::peaks(&prices, period, closest_neighbor))
@@ -43,7 +43,7 @@ fn peaks(prices: Vec<f64>, period: usize, closest_neighbor: usize) -> PyResult<V
 ///     closest_neighbor: Minimum distance between valleys
 ///
 /// Returns:
-///     List of tuples containing (valley_value, valley_index)
+///     List of tuples containing (valley value, valley index)
 #[pyfunction]
 fn valleys(
     prices: Vec<f64>,
@@ -101,7 +101,7 @@ fn overall_trend(prices: Vec<f64>) -> PyResult<(f64, f64)> {
 ///     hard_r_squared_minimum: Hard minimum value for r squared
 ///     hard_r_squared_maximum: Hard maximum value for r squared
 ///     soft_standard_error_multiplier: Soft standard error multiplier
-///     hard_standard_error_multiplier: Hard multiplier for the standard error
+///     hard_standard_error_multiplier: Hard standard error multiplier
 ///     soft_reduced_chi_squared_multiplier: Soft chi squared multiplier
 ///     hard_reduced_chi_squared_multiplier: Hard chi squared multiplier
 ///
