@@ -6,7 +6,8 @@
 [![CI](https://github.com/chironmind/PyTechnicalIndicators/actions/workflows/python-package.yml/badge.svg)](https://github.com/chironmind/PyTechnicalIndicators/actions)
 [![License](https://img.shields.io/github/license/chironmind/PyTechnicalIndicators)](LICENSE-MIT)
 
-[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://github.com/chironmind/PyTechnicalIndicators/wiki)[![Tutorials](https://img.shields.io/badge/Tutorials-Available-brightgreen?style=flat&logo=book)](https://github.com/chironmind/PyTechnicalIndicators_tutorials)
+[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://github.com/chironmind/PyTechnicalIndicators/wiki)
+[![Tutorials](https://img.shields.io/badge/Tutorials-Available-brightgreen?style=flat&logo=book)](https://github.com/chironmind/PyTechnicalIndicators_tutorials)
 [![Benchmarks](https://img.shields.io/badge/Performance-Microsecond-blue?logo=zap)](https://github.com/chironmind/PyTechnicalIndicators-benchmarks)
 
 # 🐍 Meet PyTechnicalIndicators
