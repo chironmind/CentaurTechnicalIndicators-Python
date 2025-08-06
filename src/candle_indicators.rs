@@ -129,7 +129,7 @@ fn bulk_moving_constant_envelopes(
 ///     previous_mcginley_dynamic: Previous McGinley dynamic (0.0 if none)
 ///
 /// Returns:
-///     McGinley dynamic envelopes tuple (lower envelope, Mcginley dynamic, upper envelope)
+///     McGinley dynamic envelopes tuple (lower envelope, McGinley dynamic, upper envelope)
 #[pyfunction(name = "mcginley_dynamic_envelopes")]
 fn single_mcginley_dynamic_envelopes(
     prices: Vec<f64>,
