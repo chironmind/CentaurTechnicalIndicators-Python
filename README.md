@@ -1,12 +1,13 @@
-![PyTechnicalIndicators Banner](./assets/pytechnicalindicators_banner.png)
+![PyTechnicalIndicators Banner](https://github.com/chironmind/PyTechnicalIndicators/blob/main/assets/pytechnicalindicators_banner.png)
 
 [![PyPI Version](https://img.shields.io/pypi/v/pytechnicalindicators.svg)](https://pypi.org/project/pytechnicalindicators/)
-[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://github.com/chironmind/PyTechnicalIndicators/wiki)
+[![PyPI Downloads](https://pepy.tech/badge/pytechnicalindicators)](https://pypi.org/project/pytechnicalindicators/)
+![Python Versions](https://img.shields.io/pypi/pyversions/pytechnicalindicators)
 [![CI](https://github.com/chironmind/PyTechnicalIndicators/actions/workflows/python-package.yml/badge.svg)](https://github.com/chironmind/PyTechnicalIndicators/actions)
 [![License](https://img.shields.io/github/license/chironmind/PyTechnicalIndicators)](LICENSE-MIT)
 
-[![PyPI Downloads](https://img.shields.io/pypi/dm/pytechnicalindicators.svg)](https://pypi.org/project/pytechnicalindicators/)
-[![Tutorials](https://img.shields.io/badge/Tutorials-Available-brightgreen?style=flat&logo=book)](https://github.com/chironmind/PyTechnicalIndicators-tutorials)
+[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://github.com/chironmind/PyTechnicalIndicators/wiki)
+[![Tutorials](https://img.shields.io/badge/Tutorials-Available-brightgreen?style=flat&logo=book)](https://github.com/chironmind/PyTechnicalIndicators_tutorials)
 [![Benchmarks](https://img.shields.io/badge/Performance-Microsecond-blue?logo=zap)](https://github.com/chironmind/PyTechnicalIndicators-benchmarks)
 
 # 🐍 Meet PyTechnicalIndicators
@@ -64,7 +65,9 @@ Simple Moving Average: 100.352
 
 ## 📚 Reference
 
-**COMING SOON!**
+All the information needed to use PyTechnicalIndicators can be found in the [wiki](https://github.com/chironmind/PyTechnicalIndicators/wiki)
+
+The API reference can be found [here](https://github.com/chironmind/PyTechnicalIndicators/wiki/API-Reference)
 
 ### Example
 
@@ -185,3 +188,16 @@ Contributions, bug reports, and feature requests are welcome!
 
 MIT License. See [LICENSE](LICENSE-MIT).
 
+---
+
+## 📚 More Documentation
+
+This repository is part of a structured documentation suite:
+
+- 📕 **Tutorials:** — [See here](https://github.com/ChironMind/PyTechnicalIndicators_Tutorials)
+- 📘 **How-To Guides:** — [See here](https://github.com/ChironMind/PyTechnicalIndicators-How-To-guides)
+- ⏱️ **Benchmarks:** — [See here](https://github.com/ChironMind/PyTechnicalIndicators-Benchmarks)
+- 📙 **Explanations:** — Coming soon
+- 📗 **Reference:** — [See here](https://github.com/ChironMind/PyTechnicalIndicators/wiki)
+ 
+---
