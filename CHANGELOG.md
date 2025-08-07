@@ -10,7 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 - Minor document updates
-- Updated RustTI version to include new bug fix
+- Updated RustTI version to include volatilty system fix
+
+### Added
+- Better badges to README
 
 ---
 
