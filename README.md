@@ -188,3 +188,16 @@ Contributions, bug reports, and feature requests are welcome!
 
 MIT License. See [LICENSE](LICENSE-MIT).
 
+---
+
+## 📚 More Documentation
+
+This repository is part of a structured documentation suite:
+
+- 📕 **Tutorials:** — [See here](https://github.com/ChironMind/PyTechnicalIndicators_Tutorials)
+- 📘 **How-To Guides:** — [See here](https://github.com/ChironMind/PyTechnicalIndicators-How-To-guides)
+- ⏱️ **Benchmarks:** — [See here](https://github.com/ChironMind/PyTechnicalIndicators-Benchmarks)
+- 📙 **Explanations:** — Coming soon
+- 📗 **Reference:** — [See here](https://github.com/ChironMind/PyTechnicalIndicators/wiki)
+ 
+---
