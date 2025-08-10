@@ -51,7 +51,11 @@ Simple Moving Average: 100.352
 
 **3. Explore more tutorials**
 
-**COMING SOON!**
+- [01 - Using PyTechnicalIndicators with pandas](https://github.com/chironmind/PyTechnicalIndicators_Tutorials/01_pandas_and_pytechnicalindicators.md)
+- [02 - Using PyTechnicalIndicators with Plotly](https://github.com/chironmind/PyTechnicalIndicators_Tutorials/02_using_plotly_and_pytechnicalindicators.md)
+- [03 - More advanced use cases for PyTechnicalIndicators](https://github.com/chironmind/PyTechnicalIndicators_Tutorials/03_advanced_pytechnicalindicators.md)
+- [04 - Connecting to an API](https://github.com/chironmind/PyTechnicalIndicators_Tutorials/04_api_connection.md)
+- [05 - Using PyTechnicalIndicators with Jupyter Notebooks](https://github.com/chironmind/PyTechnicalIndicators_Tutorials/05_using_jupyter_and_pytechnicalindicators.md)
 
 ---
 
