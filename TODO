@@ -1,0 +1,1 @@
+Is maturin a dependency or dev dependency, feels like the latter, if so req.txt should be empty and there should be a dev dependecies file
