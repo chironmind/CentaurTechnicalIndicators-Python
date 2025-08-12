@@ -63,7 +63,11 @@ Simple Moving Average: 100.352
 
 > Task-oriented guides for common problems and advanced scenarios.
 
-**COMING SOON!**
+- [How to pick Bulk vs Single](https://github.com/chironmind/PyTechnicalIndicators-How-To-guides/blob/main/bulk_vs_single.md)
+- [How to choose a Constant Model Type](https://github.com/chironmind/PyTechnicalIndicators-How-To-guides/blob/main/choose_constant_model_type.md)
+- [How to choose a Deviation Model](https://github.com/chironmind/PyTechnicalIndicators-How-To-guides/blob/main/choose_deviation_model.md)
+- [How to choose a period](https://github.com/chironmind/PyTechnicalIndicators-How-To-guides/blob/main/choose_period.md)
+- [How to use the McGinley dynamic function variations](https://github.com/chironmind/PyTechnicalIndicators-How-To-guides/blob/main/mcginley_dynamic.md)
 
 ---
 
@@ -157,9 +161,50 @@ Each module has `bulk` (list output) and `single` (scalar output) functions.
 Want to know how fast PyTechnicalIndicators runs in real-world scenarios?  
 We provide detailed, reproducible benchmarks using realistic OHLCV data and a variety of indicators.
 
-**COMING SOON!**
+## Benchmarks summary (Raspberry Pi 5)
 
-*(Performance is comparable with native RustTI. Your results may vary depending on platform and Python environment.)*
+All results are produced on a Raspberry Pi 5 (RPi5) and reported as microseconds per call (min/mean/median) and derived ops/sec. Each suite is run in two modes:
+- single: run the indicator repeatedly for timing small, per-call latency
+- bulk: process larger arrays to measure throughput-oriented workloads
+
+Headline observations from the momentum suite (large 10Y dataset)
+- Ultra‑lightweight indicators achieve sub‑microsecond latency per call:
+  - ROC single: ~0.11 µs (≈8.72e+06 ops/sec); bulk: ~86 µs (≈1.16e+04 ops/sec)
+  - OBV single: ~0.13 µs (≈7.85e+06 ops/sec); bulk: ~130 µs (≈7.7e+03 ops/sec)
+- RSI single-call latency ranges roughly 45–115 µs depending on averaging method; bulk ranges ~560–3600 µs
+  - Averaging method impact (fast → slow): simple/mean/exponential ≈ median < mode
+- Stochastic (fast/slow/slowest) single: ~36–98 µs; bulk: ~109–2600 µs (mode again the slowest)
+- CCI families:
+  - “standard/mean/median/mode” single calls mostly ~39–155 µs; bulk ~230–3600 µs
+  - “ulcer” variant is significantly heavier: single ~6.8–6.9 ms; bulk ~1.0–2.1 ms
+- MACD line and signal line single: ~32–80 µs; bulk: ~170–4,000+ µs depending on smoothing and dataset
+  - McGinley MACD line single is among the fastest (~32–33 µs); bulk ~300 µs
+- Chaikin Oscillator single: ~140–300 µs; bulk: ~500–2,900 µs
+- PPO single: ~36–151 µs; bulk: ~175–5,700 µs
+- CMO single: ~45 µs; bulk: ~505 µs
+
+These patterns (simple/mean/exponential being fastest; median slightly slower; mode slowest; “ulcer” notably heavy) are consistent across indicator variants and hold across single vs bulk modes.
+
+Small dataset: 1Y daily data
+Medium dataset: 5Y daily data
+Large dataset: 10Y daily data
+
+Coverage and result files
+- Candle indicators: [small](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_candle_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_candle_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_candle_indicators_large_benchmark_results.md)
+- Chart trends: [small](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_chart_trends_small_benchmark_results.md) • [medium](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_chart_trends_medium_benchmark_results.md) • [large](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_chart_trends_large_benchmark_results.md)
+- Correlation indicators: [small](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_correlation_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_correlation_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_correlation_indicators_large_benchmark_results.md)
+- Momentum indicators: [small](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_momentum_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_momentum_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_momentum_indicators_large_benchmark_results.md)
+- Moving averages: [small](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_moving_average_small_benchmark_results.md) • [medium](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_moving_average_medium_benchmark_results.md) • [large](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_moving_average_large_benchmark_results.md)
+- Other indicators: [small](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_other_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_other_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_other_indicators_large_benchmark_results.md)
+- Standard indicators: [small](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_standard_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_standard_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_standard_indicators_large_benchmark_results.md)
+- Strength indicators: [small](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_strength_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_strength_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_strength_indicators_large_benchmark_results.md)
+- Trend indicators: [small](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_trend_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_trend_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_trend_indicators_large_benchmark_results.md)
+- Volatility indicators: [small](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_volatility_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_volatility_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_volatility_indicators_large_benchmark_results.md)
+
+Browse all benchmark tables
+- Folder: https://github.com/chironmind/PyTechnicalIndicators-Benchmarks/tree/main/results/markdown
+
+*(Your results may vary depending on platform and Python environment.)*
 
 ---
 
