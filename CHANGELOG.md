@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - README.md
     - Links to How-Tos
     - Summary of Benchmarks
-    - Badge linking to Read the Docs
+- Updated README.md to add links to How-Tos, a summary of benchmarks, and a badge linking to Read the Docs.
 
 ---
 
