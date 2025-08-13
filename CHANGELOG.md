@@ -9,9 +9,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [3.0.3] - 2025-08-13
 
 ### Added
-- README.md
-    - Links to How-Tos
-    - Summary of Benchmarks
 - Updated README.md to add links to How-Tos, a summary of benchmarks, and a badge linking to Read the Docs.
 
 ---
