@@ -73,9 +73,8 @@ Simple Moving Average: 100.352
 
 ## 📚 Reference
 
-All the information needed to use PyTechnicalIndicators can be found in the [wiki](https://github.com/chironmind/PyTechnicalIndicators/wiki)
 
-The API reference can be found [here](https://github.com/chironmind/PyTechnicalIndicators/wiki/API-Reference)
+The API reference can be found [here](https://pytechnicalindicators-docs.readthedocs.io/en/latest/api/)
 
 ### Example
 
