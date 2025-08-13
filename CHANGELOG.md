@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [3.0.3] - 2025-08-13
+
+### Added
+- README.md
+    - Links to How-Tos
+    - Summary of Benchmarks
+    - Badge linking to Read the Docs
+
+---
+
 ## [3.0.2] - 2025-08-07
 
 ### Changed
