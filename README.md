@@ -7,6 +7,7 @@
 [![License](https://img.shields.io/github/license/chironmind/PyTechnicalIndicators)](LICENSE-MIT)
 
 [![Docs - ReadTheDocs](https://img.shields.io/badge/docs-latest-brightgreen?logo=readthedocs)](https://pytechnicalindicators-docs.readthedocs.io/en/latest/)
+[![Docs - GitHub Pages](https://img.shields.io/badge/docs-github%20pages-blue?logo=github)](https://chironmind.github.io/PyTechnicalIndicators-docs/)
 [![Tutorials](https://img.shields.io/badge/Tutorials-Available-brightgreen?style=flat&logo=book)](https://github.com/chironmind/PyTechnicalIndicators_tutorials)
 [![Benchmarks](https://img.shields.io/badge/Performance-Microsecond-blue?logo=zap)](https://github.com/chironmind/PyTechnicalIndicators-benchmarks)
 
@@ -17,6 +18,10 @@ Say hello to PyTechnicalIndicators, the Python-powered bridge to the battle-test
 Built on top of the RustTI core, PyTechnicalIndicators brings blazing-fast technical indicators to Python, perfect for quants, traders, and anyone who needs robust, high-performance financial analytics in their Python workflows.
 
 Welcome to PyTechnicalIndicators — powered by Rust, ready for Python.
+
+Looking for the Rust crate? See: [ChironMind/RustTI](https://github.com/ChironMind/RustTI)
+
+Looking for the WASM bindings? See: [ChironMind/ti-engine](https://github.com/chironmind/ti-engine)
 
 ---
 
