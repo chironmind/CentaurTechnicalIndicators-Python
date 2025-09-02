@@ -44,8 +44,7 @@ python -m pytest
 
 ### Format Code (Optional)
 ```bash
-cargo fmt          # Format Rust code
-rustfmt --check    # Check Rust formatting
+cargo fmt --check  # Check Rust formatting
 ```
 
 ### Environment Versions (Reference)
