@@ -137,9 +137,9 @@ dependencies = [
 
 [[package]]
 name = "rust_ti"
-version = "2.1.4"
+version = "2.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4e4bb37fe41523bb200c6be391cb717903b0a97f5a163cc4183166001b12792b"
+checksum = "f0f62a7e3e34331372aaafc31e134e6fa103ef4f5b59c1aa0104e1a8614884bf"
 
 [[package]]
 name = "syn"
