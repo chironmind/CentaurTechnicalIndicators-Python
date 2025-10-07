@@ -95,34 +95,59 @@ fn overall_trend(prices: Vec<f64>) -> PyResult<(f64, f64)> {
 ///
 /// Args:
 ///     prices: List of prices
-///     max_outliers: Allowed consecutive trend-breaks before splitting
-///     soft_adj_r_squared_minimum: Soft minimum value for adjusted r squared
-///     hard_adj_r_squared_minimum: Hard minimum value for adjusted r squared
-///     soft_rmse_multiplier: Soft RMSE multiplier
-///     hard_rmse_multiplier: Hard RMSE multiplier
-///     soft_durbin_watson_min: Soft minimum Durbin-Watson statistic
-///     soft_durbin_watson_max: Soft maximum Durbin-Watson statistic
-///     hard_durbin_watson_min: Hard minimum Durbin-Watson statistic
-///     hard_durbin_watson_max: Hard maximum Durbin-Watson statistic
+///     config: Either a preset string ("default", "conservative", "moderate", "aggressive")
+///             or custom parameters (all 9 parameters must be provided together)
+///     max_outliers: (Optional) Allowed consecutive trend-breaks before splitting
+///     soft_adj_r_squared_minimum: (Optional) Soft minimum value for adjusted r squared
+///     hard_adj_r_squared_minimum: (Optional) Hard minimum value for adjusted r squared
+///     soft_rmse_multiplier: (Optional) Soft RMSE multiplier
+///     hard_rmse_multiplier: (Optional) Hard RMSE multiplier
+///     soft_durbin_watson_min: (Optional) Soft minimum Durbin-Watson statistic
+///     soft_durbin_watson_max: (Optional) Soft maximum Durbin-Watson statistic
+///     hard_durbin_watson_min: (Optional) Hard minimum Durbin-Watson statistic
+///     hard_durbin_watson_max: (Optional) Hard maximum Durbin-Watson statistic
 ///
 /// Returns:
 ///     List of tuples containing (start_index, end_index, slope, intercept) for each trend segment
 #[pyfunction]
+#[pyo3(signature = (prices, config=None, max_outliers=None, soft_adj_r_squared_minimum=None, hard_adj_r_squared_minimum=None, soft_rmse_multiplier=None, hard_rmse_multiplier=None, soft_durbin_watson_min=None, soft_durbin_watson_max=None, hard_durbin_watson_min=None, hard_durbin_watson_max=None))]
 fn break_down_trends(
     prices: Vec<f64>,
-    max_outliers: usize,
-    soft_adj_r_squared_minimum: f64,
-    hard_adj_r_squared_minimum: f64,
-    soft_rmse_multiplier: f64,
-    hard_rmse_multiplier: f64,
-    soft_durbin_watson_min: f64,
-    soft_durbin_watson_max: f64,
-    hard_durbin_watson_min: f64,
-    hard_durbin_watson_max: f64,
+    config: Option<&str>,
+    max_outliers: Option<usize>,
+    soft_adj_r_squared_minimum: Option<f64>,
+    hard_adj_r_squared_minimum: Option<f64>,
+    soft_rmse_multiplier: Option<f64>,
+    hard_rmse_multiplier: Option<f64>,
+    soft_durbin_watson_min: Option<f64>,
+    soft_durbin_watson_max: Option<f64>,
+    hard_durbin_watson_min: Option<f64>,
+    hard_durbin_watson_max: Option<f64>,
 ) -> PyResult<Vec<(usize, usize, f64, f64)>> {
-    Ok(ct::break_down_trends(
-        &prices,
-        ct::TrendBreakConfig {
+    let trend_config = if let Some(config_str) = config {
+        crate::PyTrendBreakConfig::from_string(config_str)?.into()
+    } else if let (
+        Some(max_outliers),
+        Some(soft_adj_r_squared_minimum),
+        Some(hard_adj_r_squared_minimum),
+        Some(soft_rmse_multiplier),
+        Some(hard_rmse_multiplier),
+        Some(soft_durbin_watson_min),
+        Some(soft_durbin_watson_max),
+        Some(hard_durbin_watson_min),
+        Some(hard_durbin_watson_max),
+    ) = (
+        max_outliers,
+        soft_adj_r_squared_minimum,
+        hard_adj_r_squared_minimum,
+        soft_rmse_multiplier,
+        hard_rmse_multiplier,
+        soft_durbin_watson_min,
+        soft_durbin_watson_max,
+        hard_durbin_watson_min,
+        hard_durbin_watson_max,
+    ) {
+        crate::PyTrendBreakConfig::custom(
             max_outliers,
             soft_adj_r_squared_minimum,
             hard_adj_r_squared_minimum,
@@ -132,6 +157,13 @@ fn break_down_trends(
             soft_durbin_watson_max,
             hard_durbin_watson_min,
             hard_durbin_watson_max,
-        },
-    ))
+        )
+        .into()
+    } else {
+        return Err(pyo3::exceptions::PyValueError::new_err(
+            "Either provide 'config' as a preset string, or all 9 custom parameters",
+        ));
+    };
+
+    Ok(ct::break_down_trends(&prices, trend_config))
 }
