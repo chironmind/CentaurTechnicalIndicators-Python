@@ -53,8 +53,6 @@ def test_break_down_trends():
         hard_durbin_watson_max=3.3
     )
    
-    # The result may differ from the old version due to the improved algorithm
-    # We just verify that it returns a valid result
-    assert isinstance(trends, list)
-    assert all(isinstance(t, tuple) and len(t) == 4 for t in trends)
+    assert trends == [(0, 2, 1.5, 100.16666666666667), (2, 4, -2.0, 107.0)]
+
 
