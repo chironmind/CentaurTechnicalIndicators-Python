@@ -40,12 +40,6 @@ def test_overall_trend():
     assert chart_trends.overall_trend(prices) == (-0.3, 101.6)
 
 def test_break_down_trends():
-    # Test with preset config
-    trends_default = chart_trends.break_down_trends(prices, config="default")
-    assert isinstance(trends_default, list)
-    assert all(isinstance(t, tuple) and len(t) == 4 for t in trends_default)
-    
-    # Test with custom parameters (original behavior)
     trends = chart_trends.break_down_trends(
         prices,
         max_outliers=1,

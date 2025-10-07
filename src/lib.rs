@@ -1,7 +1,6 @@
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 
-use rust_ti::chart_trends::TrendBreakConfig;
 use rust_ti::{ConstantModelType, DeviationModel, MovingAverageType, Position};
 
 pub mod candle_indicators;
@@ -147,116 +146,6 @@ impl From<PyPosition> for Position {
         match value {
             PyPosition::Long => Position::Long,
             PyPosition::Short => Position::Short,
-        }
-    }
-}
-
-#[derive(Clone)]
-pub enum PyTrendBreakConfig {
-    Default,
-    Conservative,
-    Moderate,
-    Aggressive,
-    Custom {
-        max_outliers: usize,
-        soft_adj_r_squared_minimum: f64,
-        hard_adj_r_squared_minimum: f64,
-        soft_rmse_multiplier: f64,
-        hard_rmse_multiplier: f64,
-        soft_durbin_watson_min: f64,
-        soft_durbin_watson_max: f64,
-        hard_durbin_watson_min: f64,
-        hard_durbin_watson_max: f64,
-    },
-}
-
-impl PyTrendBreakConfig {
-    pub fn from_string(s: &str) -> PyResult<Self> {
-        match s.to_lowercase().as_str() {
-            "default" => Ok(PyTrendBreakConfig::Default),
-            "conservative" => Ok(PyTrendBreakConfig::Conservative),
-            "moderate" => Ok(PyTrendBreakConfig::Moderate),
-            "aggressive" => Ok(PyTrendBreakConfig::Aggressive),
-            _ => Err(PyValueError::new_err(format!(
-                "Unknown trend break config: '{}'. Valid options are: 'default', 'conservative', 'moderate', 'aggressive'",
-                s
-            ))),
-        }
-    }
-
-    pub fn custom(
-        max_outliers: usize,
-        soft_adj_r_squared_minimum: f64,
-        hard_adj_r_squared_minimum: f64,
-        soft_rmse_multiplier: f64,
-        hard_rmse_multiplier: f64,
-        soft_durbin_watson_min: f64,
-        soft_durbin_watson_max: f64,
-        hard_durbin_watson_min: f64,
-        hard_durbin_watson_max: f64,
-    ) -> Self {
-        PyTrendBreakConfig::Custom {
-            max_outliers,
-            soft_adj_r_squared_minimum,
-            hard_adj_r_squared_minimum,
-            soft_rmse_multiplier,
-            hard_rmse_multiplier,
-            soft_durbin_watson_min,
-            soft_durbin_watson_max,
-            hard_durbin_watson_min,
-            hard_durbin_watson_max,
-        }
-    }
-}
-
-impl From<PyTrendBreakConfig> for TrendBreakConfig {
-    fn from(value: PyTrendBreakConfig) -> Self {
-        match value {
-            PyTrendBreakConfig::Default => TrendBreakConfig::default(),
-            PyTrendBreakConfig::Conservative => TrendBreakConfig {
-                max_outliers: 2,
-                soft_adj_r_squared_minimum: 0.4,
-                hard_adj_r_squared_minimum: 0.2,
-                soft_rmse_multiplier: 1.5,
-                hard_rmse_multiplier: 2.5,
-                soft_durbin_watson_min: 1.2,
-                soft_durbin_watson_max: 2.8,
-                hard_durbin_watson_min: 0.9,
-                hard_durbin_watson_max: 3.1,
-            },
-            PyTrendBreakConfig::Moderate => TrendBreakConfig::default(),
-            PyTrendBreakConfig::Aggressive => TrendBreakConfig {
-                max_outliers: 0,
-                soft_adj_r_squared_minimum: 0.1,
-                hard_adj_r_squared_minimum: 0.01,
-                soft_rmse_multiplier: 1.1,
-                hard_rmse_multiplier: 1.5,
-                soft_durbin_watson_min: 0.8,
-                soft_durbin_watson_max: 3.2,
-                hard_durbin_watson_min: 0.5,
-                hard_durbin_watson_max: 3.5,
-            },
-            PyTrendBreakConfig::Custom {
-                max_outliers,
-                soft_adj_r_squared_minimum,
-                hard_adj_r_squared_minimum,
-                soft_rmse_multiplier,
-                hard_rmse_multiplier,
-                soft_durbin_watson_min,
-                soft_durbin_watson_max,
-                hard_durbin_watson_min,
-                hard_durbin_watson_max,
-            } => TrendBreakConfig {
-                max_outliers,
-                soft_adj_r_squared_minimum,
-                hard_adj_r_squared_minimum,
-                soft_rmse_multiplier,
-                hard_rmse_multiplier,
-                soft_durbin_watson_min,
-                soft_durbin_watson_max,
-                hard_durbin_watson_min,
-                hard_durbin_watson_max,
-            },
         }
     }
 }
