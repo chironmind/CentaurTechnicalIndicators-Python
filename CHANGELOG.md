@@ -10,11 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 - Updated rust_ti dependency from 2.1.4 to 2.1.5
-- Updated `break_down_trends` function to use new `TrendBreakConfig` struct from rust_ti 2.1.5
-- Updated parameter names in `break_down_trends`:
-  - `soft_r_squared_minimum`, `soft_r_squared_maximum`, `hard_r_squared_minimum`, `hard_r_squared_maximum` → `soft_adj_r_squared_minimum`, `hard_adj_r_squared_minimum`
-  - `soft_standard_error_multiplier`, `hard_standard_error_multiplier` → `soft_rmse_multiplier`, `hard_rmse_multiplier`
-  - `soft_reduced_chi_squared_multiplier`, `hard_reduced_chi_squared_multiplier` → `soft_durbin_watson_min`, `soft_durbin_watson_max`, `hard_durbin_watson_min`, `hard_durbin_watson_max`
+	- Updated `break_down_trends` function to use new `TrendBreakConfig` struct from rust_ti 2.1.5
+	- Updated parameter names in `break_down_trends`
 
 ---
 
