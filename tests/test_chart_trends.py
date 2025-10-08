@@ -43,15 +43,16 @@ def test_break_down_trends():
     trends = chart_trends.break_down_trends(
         prices,
         max_outliers=1,
-        soft_r_squared_minimum=0.75,
-        soft_r_squared_maximum=1.0,
-        hard_r_squared_minimum=0.5,
-        hard_r_squared_maximum=1.5,
-        soft_standard_error_multiplier=2.0,
-        hard_standard_error_multiplier=3.0,
-        soft_reduced_chi_squared_multiplier=2.0,
-        hard_reduced_chi_squared_multiplier=3.0
+        soft_adj_r_squared_minimum=0.25,
+        hard_adj_r_squared_minimum=0.05,
+        soft_rmse_multiplier=1.3,
+        hard_rmse_multiplier=2.0,
+        soft_durbin_watson_min=1.0,
+        soft_durbin_watson_max=3.0,
+        hard_durbin_watson_min=0.7,
+        hard_durbin_watson_max=3.3
     )
    
     assert trends == [(0, 2, 1.5, 100.16666666666667), (2, 4, -2.0, 107.0)]
+
 

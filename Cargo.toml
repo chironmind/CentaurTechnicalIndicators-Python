@@ -10,4 +10,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 pyo3 = "0.25.0"
-rust_ti = "2.1.4"
+rust_ti = "2.1.5"

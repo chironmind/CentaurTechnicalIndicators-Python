@@ -96,14 +96,14 @@ fn overall_trend(prices: Vec<f64>) -> PyResult<(f64, f64)> {
 /// Args:
 ///     prices: List of prices
 ///     max_outliers: Allowed consecutive trend-breaks before splitting
-///     soft_r_squared_minimum: Soft minimum value for r squared
-///     soft_r_squared_maximum: Soft maximum value for r squared
-///     hard_r_squared_minimum: Hard minimum value for r squared
-///     hard_r_squared_maximum: Hard maximum value for r squared
-///     soft_standard_error_multiplier: Soft standard error multiplier
-///     hard_standard_error_multiplier: Hard standard error multiplier
-///     soft_reduced_chi_squared_multiplier: Soft chi squared multiplier
-///     hard_reduced_chi_squared_multiplier: Hard chi squared multiplier
+///     soft_adj_r_squared_minimum: Soft minimum value for adjusted r squared
+///     hard_adj_r_squared_minimum: Hard minimum value for adjusted r squared
+///     soft_rmse_multiplier: Soft RMSE multiplier
+///     hard_rmse_multiplier: Hard RMSE multiplier
+///     soft_durbin_watson_min: Soft minimum Durbin-Watson statistic
+///     soft_durbin_watson_max: Soft maximum Durbin-Watson statistic
+///     hard_durbin_watson_min: Hard minimum Durbin-Watson statistic
+///     hard_durbin_watson_max: Hard maximum Durbin-Watson statistic
 ///
 /// Returns:
 ///     List of tuples containing (start_index, end_index, slope, intercept) for each trend segment
@@ -111,25 +111,27 @@ fn overall_trend(prices: Vec<f64>) -> PyResult<(f64, f64)> {
 fn break_down_trends(
     prices: Vec<f64>,
     max_outliers: usize,
-    soft_r_squared_minimum: f64,
-    soft_r_squared_maximum: f64,
-    hard_r_squared_minimum: f64,
-    hard_r_squared_maximum: f64,
-    soft_standard_error_multiplier: f64,
-    hard_standard_error_multiplier: f64,
-    soft_reduced_chi_squared_multiplier: f64,
-    hard_reduced_chi_squared_multiplier: f64,
+    soft_adj_r_squared_minimum: f64,
+    hard_adj_r_squared_minimum: f64,
+    soft_rmse_multiplier: f64,
+    hard_rmse_multiplier: f64,
+    soft_durbin_watson_min: f64,
+    soft_durbin_watson_max: f64,
+    hard_durbin_watson_min: f64,
+    hard_durbin_watson_max: f64,
 ) -> PyResult<Vec<(usize, usize, f64, f64)>> {
     Ok(ct::break_down_trends(
         &prices,
-        max_outliers,
-        soft_r_squared_minimum,
-        soft_r_squared_maximum,
-        hard_r_squared_minimum,
-        hard_r_squared_maximum,
-        soft_standard_error_multiplier,
-        hard_standard_error_multiplier,
-        soft_reduced_chi_squared_multiplier,
-        hard_reduced_chi_squared_multiplier,
+        ct::TrendBreakConfig {
+            max_outliers,
+            soft_adj_r_squared_minimum,
+            hard_adj_r_squared_minimum,
+            soft_rmse_multiplier,
+            hard_rmse_multiplier,
+            soft_durbin_watson_min,
+            soft_durbin_watson_max,
+            hard_durbin_watson_min,
+            hard_durbin_watson_max,
+        },
     ))
 }

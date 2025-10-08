@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [Unreleased]
+
+### Changed
+- Updated rust_ti dependency from 2.1.4 to 2.1.5
+	- Updated `break_down_trends` function to use new `TrendBreakConfig` struct from rust_ti 2.1.5
+	- Updated parameter names in `break_down_trends`
+
+---
+
 ## [3.0.3] - 2025-08-13
 
 ### Added
