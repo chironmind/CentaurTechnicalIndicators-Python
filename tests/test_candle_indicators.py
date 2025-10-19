@@ -55,9 +55,9 @@ def test_bulk_mcginley_dynamic_envelopes():
 def test_single_moving_constant_bands():
     assert candle_indicators.single.moving_constant_bands(prices, "simple", "standard", 3.0) == (96.75735931288071, 101.0, 105.24264068711929)
     assert candle_indicators.single.moving_constant_bands(prices, "smoothed", "mean", 3.0) == (97.21627796287483, 100.81627796287482, 104.41627796287482)
-    assert candle_indicators.single.moving_constant_bands(prices, "exponential", "median", 3.0) == (97.01137440758296, 100.61137440758296, 104.21137440758295)
+    assert candle_indicators.single.moving_constant_bands(prices, "exponential", "median", 3.0) == (97.61137440758296, 100.61137440758296, 103.61137440758296)
     assert candle_indicators.single.moving_constant_bands(prices, "median", "ulcer", 3.0) == (95.1747572815534, 101.0, 106.8252427184466)
-    assert candle_indicators.single.moving_constant_bands(prices, "mode", "mode", 3.0) == (97.4, 101.0, 104.6)
+    assert candle_indicators.single.moving_constant_bands(prices, "mode", "mode", 3.0) == (96.5, 101.0, 105.5)
     with pytest.raises(ValueError):
         candle_indicators.single.moving_constant_bands(prices, "", "mode", 3.0)
     with pytest.raises(ValueError):
@@ -66,9 +66,9 @@ def test_single_moving_constant_bands():
 def test_bulk_moving_constant_bands():
     assert candle_indicators.bulk.moving_constant_bands(prices, "simple", "standard", 3.0, 3) == [(97.92500927989273, 101.66666666666667, 105.40832405344061), (99.55051025721683, 102.0, 104.44948974278317), (96.10102051443364, 101.0, 105.89897948556636)]
     assert candle_indicators.bulk.moving_constant_bands(prices, "smoothed", "mean", 3.0, 3) == [(98.71929824561404, 102.05263157894737, 105.3859649122807), (99.8421052631579, 101.8421052631579, 103.8421052631579), (96.47368421052633, 100.47368421052633, 104.47368421052633)]
-    assert candle_indicators.bulk.moving_constant_bands(prices, "exponential", "median", 3.0, 3) == [(99.28571428571429, 102.28571428571429, 105.28571428571429), (99.71428571428571, 101.71428571428571, 103.71428571428571), (96.14285714285714, 100.14285714285714, 104.14285714285714)]
+    assert candle_indicators.bulk.moving_constant_bands(prices, "exponential", "median", 3.0, 3) == [(99.28571428571429, 102.28571428571429, 105.28571428571429), (98.71428571428571, 101.71428571428571, 104.71428571428571), (94.14285714285714, 100.14285714285714, 106.14285714285714)]
     assert candle_indicators.bulk.moving_constant_bands(prices, "median", "ulcer", 3.0, 3) == [(102.0, 102.0, 102.0), (98.63679454840995, 102.0, 105.36320545159005), (93.47964398794676, 101.0, 108.52035601205324)]
-    assert candle_indicators.bulk.moving_constant_bands(prices, "mode", "mode", 3.0, 3) == [(98.33333333333334, 101.66666666666667, 105.0), (100.0, 102.0, 104.0), (97.0, 101.0, 105.0)]
+    assert candle_indicators.bulk.moving_constant_bands(prices, "mode", "mode", 3.0, 3) == [(98.66666666666667, 101.66666666666667, 104.66666666666667), (99.0, 102.0, 105.0), (95.0, 101.0, 107.0)]
     with pytest.raises(ValueError):
         candle_indicators.bulk.moving_constant_bands(prices, "", "mode", 3.0, 3)
     with pytest.raises(ValueError):
@@ -77,8 +77,8 @@ def test_bulk_moving_constant_bands():
 def test_single_mcginley_dynamic_bands():
     assert candle_indicators.single.mcginley_dynamic_bands(prices, "standard", 3.0, 0.0) == (94.75735931288071, 99.0, 103.24264068711929)
     assert candle_indicators.single.mcginley_dynamic_bands(prices, "mean", 3.0, 0.0) == (95.4, 99.0, 102.6)
-    assert candle_indicators.single.mcginley_dynamic_bands(prices, "median", 3.0, 0.0) == (95.4, 99.0, 102.6)
-    assert candle_indicators.single.mcginley_dynamic_bands(prices, "mode", 3.0, 0.0) == (95.4, 99.0, 102.6)
+    assert candle_indicators.single.mcginley_dynamic_bands(prices, "median", 3.0, 0.0) == (96.0, 99.0, 102.0)
+    assert candle_indicators.single.mcginley_dynamic_bands(prices, "mode", 3.0, 0.0) == (94.5, 99.0, 103.5)
     assert candle_indicators.single.mcginley_dynamic_bands(prices, "ulcer", 3.0, 0.0) == (93.1747572815534, 99.0, 104.8252427184466)
     with pytest.raises(ValueError):
         candle_indicators.single.mcginley_dynamic_bands(prices, "", 3.0, 0.0)
@@ -86,8 +86,8 @@ def test_single_mcginley_dynamic_bands():
 def test_bulk_mcginley_dynamic_bands():
     assert candle_indicators.bulk.mcginley_dynamic_bands(prices, "standard", 3.0, 0.0, 3) == [(99.25834261322606, 103.0, 106.74165738677394), (99.82944902791533, 102.2789387706985, 104.72842851348167), (96.13482518646461, 101.03380467203097, 105.93278415759733)]
     assert candle_indicators.bulk.mcginley_dynamic_bands(prices, "mean", 3.0, 0.0, 3) == [(99.66666666666667, 103.0, 106.33333333333333), (100.2789387706985, 102.2789387706985, 104.2789387706985), (97.03380467203097, 101.03380467203097, 105.03380467203097)]
-    assert candle_indicators.bulk.mcginley_dynamic_bands(prices, "median", 3.0, 0.0, 3) == [(100.0, 103.0, 106.0), (100.2789387706985, 102.2789387706985, 104.2789387706985), (97.03380467203097, 101.03380467203097, 105.03380467203097)]
-    assert candle_indicators.bulk.mcginley_dynamic_bands(prices, "mode", 3.0, 0.0, 3) == [(99.66666666666667, 103.0, 106.33333333333333), (100.2789387706985, 102.2789387706985, 104.2789387706985), (97.03380467203097, 101.03380467203097, 105.03380467203097)]
+    assert candle_indicators.bulk.mcginley_dynamic_bands(prices, "median", 3.0, 0.0, 3) == [(100.0, 103.0, 106.0), (99.2789387706985, 102.2789387706985, 105.2789387706985), (95.03380467203097, 101.03380467203097, 107.03380467203097)]
+    assert candle_indicators.bulk.mcginley_dynamic_bands(prices, "mode", 3.0, 0.0, 3) == [(100.0, 103.0, 106.0), (99.2789387706985, 102.2789387706985, 105.2789387706985), (95.03380467203097, 101.03380467203097, 107.03380467203097)]
     assert candle_indicators.bulk.mcginley_dynamic_bands(prices, "ulcer", 3.0, 0.0, 3) == [(103.0, 103.0, 103.0), (98.91573331910845, 102.2789387706985, 105.64214422228855), (93.51344865997773, 101.03380467203097, 108.55416068408421)]
     with pytest.raises(ValueError):
         candle_indicators.bulk.mcginley_dynamic_bands(prices, "", 3.0, 0.0, 3)
@@ -143,4 +143,23 @@ def test_bulk_supertrend():
     assert candle_indicators.bulk.supertrend(high, low, close, "mode", 2.0, 3) == [224.5, 218.0, 209.5]
     with pytest.raises(ValueError):
         candle_indicators.bulk.supertrend(high, low, close, "", 2.0, 3)
+
+def test_new_deviation_models_moving_constant_bands():
+    """Test new probability distribution deviation models added in rust_ti 2.2.0"""
+    # Test log standard deviation
+    result = candle_indicators.single.moving_constant_bands(prices, "simple", "log", 3.0)
+    assert isinstance(result, tuple) and len(result) == 3
+    
+    # Test Laplace distribution
+    result = candle_indicators.single.moving_constant_bands(prices, "exponential", "laplace", 3.0)
+    assert isinstance(result, tuple) and len(result) == 3
+    
+    # Test Cauchy distribution
+    result = candle_indicators.single.moving_constant_bands(prices, "smoothed", "cauchy", 3.0)
+    assert isinstance(result, tuple) and len(result) == 3
+    
+    # Test bulk operations with new models
+    result = candle_indicators.bulk.moving_constant_bands(prices, "exponential", "log", 3.0, 3)
+    assert isinstance(result, list) and len(result) == 3
+
 

@@ -120,9 +120,9 @@ def test_bulk_on_balance_volume():
 def test_single_commodity_channel_index():
     assert momentum_indicators.single.commodity_channel_index(prices, "simple", "standard", 0.015) == -94.28090415820633
     assert momentum_indicators.single.commodity_channel_index(prices, "smoothed", "mean", 0.015) == -100.9043312708234
-    assert momentum_indicators.single.commodity_channel_index(prices, "exponential", "median", 0.015) == -89.52080042127541
+    assert momentum_indicators.single.commodity_channel_index(prices, "exponential", "median", 0.015) == -107.42496050553049
     assert momentum_indicators.single.commodity_channel_index(prices, "median", "ulcer", 0.015) == -68.66666666666667
-    assert momentum_indicators.single.commodity_channel_index(prices, "mode", "mode", 0.015) == -111.11111111111111
+    assert momentum_indicators.single.commodity_channel_index(prices, "mode", "mode", 0.015) == -88.88888888888889
     with pytest.raises(ValueError):
         momentum_indicators.single.commodity_channel_index(prices, "", "mode", 0.015)
     with pytest.raises(ValueError):
@@ -131,9 +131,9 @@ def test_single_commodity_channel_index():
 def test_bulk_commodity_channel_index():
     assert momentum_indicators.bulk.commodity_channel_index(prices, "simple", "standard", 0.015, 3) == [71.26966450997959, -81.64965809277261, -81.64965809277261]
     assert momentum_indicators.bulk.commodity_channel_index(prices, "smoothed", "mean", 0.015, 3) == [56.84210526315789, -84.21052631579046, -73.68421052631648]
-    assert momentum_indicators.bulk.commodity_channel_index(prices, "exponential", "median", 0.015, 3) == [47.619047619047215, -71.42857142857083, -57.14285714285695]
+    assert momentum_indicators.bulk.commodity_channel_index(prices, "exponential", "median", 0.015, 3) == [47.619047619047215, -47.619047619047215, -38.09523809523796]
     assert momentum_indicators.bulk.commodity_channel_index(prices, "median", "ulcer", 0.015, 3) == [0.0, -59.467077726531464, -53.1889712879152]
-    assert momentum_indicators.bulk.commodity_channel_index(prices, "mode", "mode", 0.015, 3) == [79.99999999999983, -100.00000000000001, -100.00000000000001]
+    assert momentum_indicators.bulk.commodity_channel_index(prices, "mode", "mode", 0.015, 3) == [88.88888888888857, -66.66666666666667, -66.66666666666667]
     with pytest.raises(ValueError):
         momentum_indicators.bulk.commodity_channel_index(prices, "", "mode", 0.015, 3)
     with pytest.raises(ValueError):
@@ -151,8 +151,8 @@ def test_single_mcginley_dynamic_commodity_channel_index():
 def test_bulk_mcginley_dynamic_commodity_channel_index():
     assert momentum_indicators.bulk.mcginley_dynamic_commodity_channel_index(prices, 0.0, "standard", 0.015, 3) == [(0.0, 103.0), (-104.42491334912364, 102.2789387706985), (-83.02972804940603, 101.03380467203097)]
     assert momentum_indicators.bulk.mcginley_dynamic_commodity_channel_index(prices, 0.0, "mean", 0.015, 3) == [(0.0, 103.0), (-127.89387706985026, 102.2789387706985), (-101.6902336015484, 101.03380467203097)]
-    assert momentum_indicators.bulk.mcginley_dynamic_commodity_channel_index(prices, 0.0, "median", 0.015, 3) == [(0.0, 103.0), (-127.89387706985026, 102.2789387706985), (-101.6902336015484, 101.03380467203097)]
-    assert momentum_indicators.bulk.mcginley_dynamic_commodity_channel_index(prices, 0.0, "mode", 0.015, 3) == [(0.0, 103.0), (-127.89387706985026, 102.2789387706985), (-101.6902336015484, 101.03380467203097)]
+    assert momentum_indicators.bulk.mcginley_dynamic_commodity_channel_index(prices, 0.0, "median", 0.015, 3) == [(0.0, 103.0), (-85.26258471323351, 102.2789387706985), (-67.79348906769893, 101.03380467203097)]
+    assert momentum_indicators.bulk.mcginley_dynamic_commodity_channel_index(prices, 0.0, "mode", 0.015, 3) == [(0.0, 103.0), (-85.26258471323351, 102.2789387706985), (-67.79348906769893, 101.03380467203097)]
     assert momentum_indicators.bulk.mcginley_dynamic_commodity_channel_index(prices, 0.0, "ulcer", 0.015, 3) == [(0.0, 103.0), (-76.05475128460245, 102.2789387706985), (-54.08798915294147, 101.03380467203097)]
     with pytest.raises(ValueError):
         momentum_indicators.bulk.mcginley_dynamic_commodity_channel_index(prices, 0.0, "", 0.015, 3)
@@ -251,4 +251,23 @@ def test_single_chande_momentum_oscillator():
 
 def test_bulk_chande_momentum_oscillator():
     assert momentum_indicators.bulk.chande_momentum_oscillator(prices, 3) == [100.0, -33.33333333333333, -100.0]
+
+def test_new_deviation_models_commodity_channel_index():
+    """Test new probability distribution deviation models added in rust_ti 2.2.0"""
+    # Test log standard deviation
+    result = momentum_indicators.single.commodity_channel_index(prices, "simple", "log", 0.015)
+    assert isinstance(result, float)
+    
+    # Test Laplace distribution
+    result = momentum_indicators.single.commodity_channel_index(prices, "exponential", "laplace", 0.015)
+    assert isinstance(result, float)
+    
+    # Test Cauchy distribution
+    result = momentum_indicators.single.commodity_channel_index(prices, "smoothed", "cauchy", 0.015)
+    assert isinstance(result, float)
+    
+    # Test bulk operations with new models
+    result = momentum_indicators.bulk.commodity_channel_index(prices, "exponential", "log", 0.015, 3)
+    assert isinstance(result, list) and len(result) == 3
+
 

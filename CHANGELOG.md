@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [3.0.5] - 2025-10-19
+
+### Changed
+- Updated rust_ti dependency from 2.1.5 to 2.2.0
+
+### Added
+- Added support for new probability distribution deviation models from rust_ti 2.2.0:
+	- `LogStandardDeviation` - Log-scale standard deviation for analyzing log-returns
+	- `LaplaceStdEquivalent` - Laplace (double exponential) distribution scaled to standard deviation
+	- `CauchyIQRScale` - Cauchy distribution scaled by interquartile range for extreme outliers
+- Added string aliases for new deviation models: `"log"`, `"logstd"`, `"laplace"`, `"cauchy"`
+- Enhanced `PyDeviationModel::from_string()` to support the new deviation models
+
+### Fixed
+- Updated test expectations for median and mode absolute deviation calculations due to improved algorithms in rust_ti 2.2.0
+
+---
+
 ## [3.0.4] - 2025-10-08
 
 ### Changed

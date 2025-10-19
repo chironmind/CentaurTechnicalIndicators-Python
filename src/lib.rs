@@ -56,14 +56,19 @@ impl From<PyConstantModelType> for ConstantModelType {
 
 impl PyDeviationModel {
     pub fn from_string(s: &str) -> PyResult<Self> {
-        match s.to_lowercase().as_str() {
+        let lower = s.to_lowercase();
+
+        match lower.as_str() {
             "standard" | "std" | "standard_deviation" => Ok(PyDeviationModel::StandardDeviation),
             "mean" | "mean_absolute_deviation" => Ok(PyDeviationModel::MeanAbsoluteDeviation),
             "median" | "median_absolute_deviation" => Ok(PyDeviationModel::MedianAbsoluteDeviation),
             "mode" | "mode_absolute_deviation" => Ok(PyDeviationModel::ModeAbsoluteDeviation),
             "ulcer" | "ulcer_index" => Ok(PyDeviationModel::UlcerIndex),
+            "log" | "log_standard_deviation" | "logstd" => Ok(PyDeviationModel::LogStandardDeviation),
+            "laplace" | "laplace_std_equivalent" => Ok(PyDeviationModel::LaplaceStdEquivalent),
+            "cauchy" | "cauchy_iqr_scale" => Ok(PyDeviationModel::CauchyIQRScale),
             _ => Err(PyValueError::new_err(format!(
-                "Unknown deviation model: '{}'. Valid options are: 'standard', 'mean', 'median', 'mode', 'ulcer'",
+                "Unknown deviation model: '{}'. Valid options are: 'standard', 'mean', 'median', 'mode', 'ulcer', 'log', 'laplace', 'cauchy'",
                 s
             )))
         }
@@ -77,6 +82,9 @@ pub enum PyDeviationModel {
     MedianAbsoluteDeviation,
     ModeAbsoluteDeviation,
     UlcerIndex,
+    LogStandardDeviation,
+    LaplaceStdEquivalent,
+    CauchyIQRScale,
 }
 
 impl From<PyDeviationModel> for DeviationModel {
@@ -87,6 +95,9 @@ impl From<PyDeviationModel> for DeviationModel {
             PyDeviationModel::MedianAbsoluteDeviation => DeviationModel::MedianAbsoluteDeviation,
             PyDeviationModel::ModeAbsoluteDeviation => DeviationModel::ModeAbsoluteDeviation,
             PyDeviationModel::UlcerIndex => DeviationModel::UlcerIndex,
+            PyDeviationModel::LogStandardDeviation => DeviationModel::LogStandardDeviation,
+            PyDeviationModel::LaplaceStdEquivalent => DeviationModel::LaplaceStdEquivalent,
+            PyDeviationModel::CauchyIQRScale => DeviationModel::CauchyIQRScale,
         }
     }
 }

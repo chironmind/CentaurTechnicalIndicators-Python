@@ -1,6 +1,6 @@
 [package]
 name = "RustTI_to_PyTechnicalIndicators"
-version = "3.0.4"
+version = "3.0.5"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -10,4 +10,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 pyo3 = "0.25.0"
-rust_ti = "2.1.5"
+rust_ti = "2.2.0"
