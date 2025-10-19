@@ -162,8 +162,22 @@ def test_new_deviation_models_moving_constant_bands():
     result = candle_indicators.single.moving_constant_bands(prices, "simple", "student_t:5.0", 3.0)
     assert isinstance(result, tuple) and len(result) == 3
     
+    # Test Empirical Quantile Range with full name
+    result = candle_indicators.single.moving_constant_bands(prices, "simple", "empirical_quantile_range:0.1:0.9:0.01", 3.0)
+    assert isinstance(result, tuple) and len(result) == 3
+    
+    # Test Empirical Quantile Range with short aliases
+    result = candle_indicators.single.moving_constant_bands(prices, "exponential", "empirical:0.25:0.75:0.05", 3.0)
+    assert isinstance(result, tuple) and len(result) == 3
+    
+    result = candle_indicators.single.moving_constant_bands(prices, "smoothed", "eqr:0.05:0.95:0.01", 3.0)
+    assert isinstance(result, tuple) and len(result) == 3
+    
     # Test bulk operations with new models
     result = candle_indicators.bulk.moving_constant_bands(prices, "exponential", "log", 3.0, 3)
+    assert isinstance(result, list) and len(result) == 3
+    
+    result = candle_indicators.bulk.moving_constant_bands(prices, "simple", "empirical_quantile_range:0.1:0.9:0.01", 3.0, 3)
     assert isinstance(result, list) and len(result) == 3
     
     # Test error handling for invalid student_t parameter
@@ -175,4 +189,17 @@ def test_new_deviation_models_moving_constant_bands():
     
     with pytest.raises(ValueError):
         candle_indicators.single.moving_constant_bands(prices, "simple", "student_t:invalid", 3.0)
+    
+    # Test error handling for invalid empirical quantile range parameters
+    with pytest.raises(ValueError):
+        candle_indicators.single.moving_constant_bands(prices, "simple", "empirical_quantile_range:0.5:0.5:0.01", 3.0)
+    
+    with pytest.raises(ValueError):
+        candle_indicators.single.moving_constant_bands(prices, "simple", "empirical_quantile_range:0.9:0.1:0.01", 3.0)
+    
+    with pytest.raises(ValueError):
+        candle_indicators.single.moving_constant_bands(prices, "simple", "empirical_quantile_range:-0.1:0.9:0.01", 3.0)
+    
+    with pytest.raises(ValueError):
+        candle_indicators.single.moving_constant_bands(prices, "simple", "empirical_quantile_range:0.1:1.5:0.01", 3.0)
 

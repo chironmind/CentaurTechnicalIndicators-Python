@@ -58,7 +58,7 @@ impl PyDeviationModel {
     pub fn from_string(s: &str) -> PyResult<Self> {
         let lower = s.to_lowercase();
 
-        // Check for parametric variants (format: "type:param")
+        // Check for parametric variants (format: "type:param" or "type:param1:param2:param3")
         if lower.starts_with("student_t:") || lower.starts_with("studentt:") {
             let parts: Vec<&str> = lower.split(':').collect();
             if parts.len() == 2 {
@@ -82,6 +82,49 @@ impl PyDeviationModel {
             }
         }
 
+        if lower.starts_with("empirical_quantile_range:")
+            || lower.starts_with("empirical:")
+            || lower.starts_with("eqr:")
+        {
+            let parts: Vec<&str> = lower.split(':').collect();
+            if parts.len() == 4 {
+                match (
+                    parts[1].parse::<f64>(),
+                    parts[2].parse::<f64>(),
+                    parts[3].parse::<f64>(),
+                ) {
+                    (Ok(low), Ok(high), Ok(precision)) => {
+                        if low >= 0.0 && low < 1.0 && high > 0.0 && high <= 1.0 && low < high {
+                            if precision > 0.0 && precision <= 1.0 {
+                                return Ok(PyDeviationModel::EmpiricalQuantileRange {
+                                    low,
+                                    high,
+                                    precision,
+                                });
+                            } else {
+                                return Err(PyValueError::new_err(
+                                    "Precision must be positive and <= 1.0",
+                                ));
+                            }
+                        } else {
+                            return Err(PyValueError::new_err(
+                                "Quantile range must satisfy: 0 <= low < high <= 1",
+                            ));
+                        }
+                    }
+                    _ => {
+                        return Err(PyValueError::new_err(
+                            "Invalid parameters for empirical quantile range. Format: 'empirical_quantile_range:low:high:precision' (e.g., 'empirical_quantile_range:0.1:0.9:0.01')"
+                        ));
+                    }
+                }
+            } else {
+                return Err(PyValueError::new_err(
+                    "Empirical quantile range requires 3 parameters: low, high, precision. Format: 'empirical_quantile_range:low:high:precision'"
+                ));
+            }
+        }
+
         match lower.as_str() {
             "standard" | "std" | "standard_deviation" => Ok(PyDeviationModel::StandardDeviation),
             "mean" | "mean_absolute_deviation" => Ok(PyDeviationModel::MeanAbsoluteDeviation),
@@ -92,7 +135,7 @@ impl PyDeviationModel {
             "laplace" | "laplace_std_equivalent" => Ok(PyDeviationModel::LaplaceStdEquivalent),
             "cauchy" | "cauchy_iqr_scale" => Ok(PyDeviationModel::CauchyIQRScale),
             _ => Err(PyValueError::new_err(format!(
-                "Unknown deviation model: '{}'. Valid options are: 'standard', 'mean', 'median', 'mode', 'ulcer', 'log', 'laplace', 'cauchy', 'student_t:<df>' (e.g., 'student_t:5.0')",
+                "Unknown deviation model: '{}'. Valid options are: 'standard', 'mean', 'median', 'mode', 'ulcer', 'log', 'laplace', 'cauchy', 'student_t:<df>' (e.g., 'student_t:5.0'), 'empirical_quantile_range:low:high:precision' (e.g., 'empirical_quantile_range:0.1:0.9:0.01')",
                 s
             )))
         }
@@ -110,6 +153,7 @@ pub enum PyDeviationModel {
     StudentT { df: f64 },
     LaplaceStdEquivalent,
     CauchyIQRScale,
+    EmpiricalQuantileRange { low: f64, high: f64, precision: f64 },
 }
 
 impl From<PyDeviationModel> for DeviationModel {
@@ -124,6 +168,15 @@ impl From<PyDeviationModel> for DeviationModel {
             PyDeviationModel::StudentT { df } => DeviationModel::StudentT { df },
             PyDeviationModel::LaplaceStdEquivalent => DeviationModel::LaplaceStdEquivalent,
             PyDeviationModel::CauchyIQRScale => DeviationModel::CauchyIQRScale,
+            PyDeviationModel::EmpiricalQuantileRange {
+                low,
+                high,
+                precision,
+            } => DeviationModel::EmpiricalQuantileRange {
+                low,
+                high,
+                precision,
+            },
         }
     }
 }

@@ -270,8 +270,15 @@ def test_new_deviation_models_commodity_channel_index():
     result = momentum_indicators.single.commodity_channel_index(prices, "simple", "student_t:10.0", 0.015)
     assert isinstance(result, float)
     
+    # Test Empirical Quantile Range
+    result = momentum_indicators.single.commodity_channel_index(prices, "simple", "empirical_quantile_range:0.1:0.9:0.01", 0.015)
+    assert isinstance(result, float)
+    
     # Test bulk operations with new models
     result = momentum_indicators.bulk.commodity_channel_index(prices, "exponential", "log", 0.015, 3)
+    assert isinstance(result, list) and len(result) == 3
+    
+    result = momentum_indicators.bulk.commodity_channel_index(prices, "simple", "eqr:0.25:0.75:0.05", 0.015, 3)
     assert isinstance(result, list) and len(result) == 3
     
     # Test error handling for invalid student_t parameter
@@ -280,4 +287,8 @@ def test_new_deviation_models_commodity_channel_index():
     
     with pytest.raises(ValueError):
         momentum_indicators.single.commodity_channel_index(prices, "simple", "student_t:-5", 0.015)
+    
+    # Test error handling for invalid empirical quantile range
+    with pytest.raises(ValueError):
+        momentum_indicators.single.commodity_channel_index(prices, "simple", "empirical_quantile_range:0.5:0.4:0.01", 0.015)
 
