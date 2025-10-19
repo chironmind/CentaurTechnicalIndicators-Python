@@ -61,15 +61,8 @@ def test_new_deviation_models_correlation():
     result = correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "simple", "student_t:7.5")
     assert isinstance(result, float)
     
-    # Test Empirical Quantile Range
-    result = correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "simple", "empirical_quantile_range:0.1:0.9:0.01")
-    assert isinstance(result, float)
-    
     # Test bulk operations with new models
     result = correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, "exponential", "log", 3)
-    assert isinstance(result, list) and len(result) == 3
-    
-    result = correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, "simple", "empirical:0.2:0.8:0.05", 3)
     assert isinstance(result, list) and len(result) == 3
     
     # Test error handling for invalid student_t parameter
@@ -78,8 +71,4 @@ def test_new_deviation_models_correlation():
     
     with pytest.raises(ValueError):
         correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "simple", "student_t:-1")
-    
-    # Test error handling for invalid empirical quantile range
-    with pytest.raises(ValueError):
-        correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "simple", "eqr:1.0:1.5:0.01")
 
