@@ -57,7 +57,7 @@ impl From<PyConstantModelType> for ConstantModelType {
 impl PyDeviationModel {
     pub fn from_string(s: &str) -> PyResult<Self> {
         let lower = s.to_lowercase();
-        
+
         // Check for parametric variants (format: "type:param")
         if lower.starts_with("student_t:") || lower.starts_with("studentt:") {
             let parts: Vec<&str> = lower.split(':').collect();
@@ -68,7 +68,7 @@ impl PyDeviationModel {
                             return Ok(PyDeviationModel::StudentT { df });
                         } else {
                             return Err(PyValueError::new_err(
-                                "Student-t degrees of freedom must be positive"
+                                "Student-t degrees of freedom must be positive",
                             ));
                         }
                     }
@@ -81,7 +81,7 @@ impl PyDeviationModel {
                 }
             }
         }
-        
+
         match lower.as_str() {
             "standard" | "std" | "standard_deviation" => Ok(PyDeviationModel::StandardDeviation),
             "mean" | "mean_absolute_deviation" => Ok(PyDeviationModel::MeanAbsoluteDeviation),
