@@ -266,18 +266,8 @@ def test_new_deviation_models_commodity_channel_index():
     result = momentum_indicators.single.commodity_channel_index(prices, "smoothed", "cauchy", 0.015)
     assert isinstance(result, float)
     
-    # Test Student-t distribution with degrees of freedom
-    result = momentum_indicators.single.commodity_channel_index(prices, "simple", "student_t:10.0", 0.015)
-    assert isinstance(result, float)
-    
     # Test bulk operations with new models
     result = momentum_indicators.bulk.commodity_channel_index(prices, "exponential", "log", 0.015, 3)
     assert isinstance(result, list) and len(result) == 3
-    
-    # Test error handling for invalid student_t parameter
-    with pytest.raises(ValueError):
-        momentum_indicators.single.commodity_channel_index(prices, "simple", "student_t:0", 0.015)
-    
-    with pytest.raises(ValueError):
-        momentum_indicators.single.commodity_channel_index(prices, "simple", "student_t:-5", 0.015)
+
 

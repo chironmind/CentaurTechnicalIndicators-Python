@@ -57,18 +57,8 @@ def test_new_deviation_models_correlation():
     result = correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "smoothed", "cauchy")
     assert isinstance(result, float)
     
-    # Test Student-t distribution with degrees of freedom
-    result = correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "simple", "student_t:7.5")
-    assert isinstance(result, float)
-    
     # Test bulk operations with new models
     result = correlation_indicators.bulk.correlate_asset_prices(prices_a, prices_b, "exponential", "log", 3)
     assert isinstance(result, list) and len(result) == 3
-    
-    # Test error handling for invalid student_t parameter
-    with pytest.raises(ValueError):
-        correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "simple", "student_t:not_a_number")
-    
-    with pytest.raises(ValueError):
-        correlation_indicators.single.correlate_asset_prices(prices_a, prices_b, "simple", "student_t:-1")
+
 

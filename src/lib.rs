@@ -58,30 +58,6 @@ impl PyDeviationModel {
     pub fn from_string(s: &str) -> PyResult<Self> {
         let lower = s.to_lowercase();
 
-        // Check for parametric variants (format: "type:param")
-        if lower.starts_with("student_t:") || lower.starts_with("studentt:") {
-            let parts: Vec<&str> = lower.split(':').collect();
-            if parts.len() == 2 {
-                match parts[1].parse::<f64>() {
-                    Ok(df) => {
-                        if df > 0.0 {
-                            return Ok(PyDeviationModel::StudentT { df });
-                        } else {
-                            return Err(PyValueError::new_err(
-                                "Student-t degrees of freedom must be positive",
-                            ));
-                        }
-                    }
-                    Err(_) => {
-                        return Err(PyValueError::new_err(format!(
-                            "Invalid degrees of freedom parameter: '{}'. Must be a positive number",
-                            parts[1]
-                        )));
-                    }
-                }
-            }
-        }
-
         match lower.as_str() {
             "standard" | "std" | "standard_deviation" => Ok(PyDeviationModel::StandardDeviation),
             "mean" | "mean_absolute_deviation" => Ok(PyDeviationModel::MeanAbsoluteDeviation),
@@ -92,7 +68,7 @@ impl PyDeviationModel {
             "laplace" | "laplace_std_equivalent" => Ok(PyDeviationModel::LaplaceStdEquivalent),
             "cauchy" | "cauchy_iqr_scale" => Ok(PyDeviationModel::CauchyIQRScale),
             _ => Err(PyValueError::new_err(format!(
-                "Unknown deviation model: '{}'. Valid options are: 'standard', 'mean', 'median', 'mode', 'ulcer', 'log', 'laplace', 'cauchy', 'student_t:<df>' (e.g., 'student_t:5.0')",
+                "Unknown deviation model: '{}'. Valid options are: 'standard', 'mean', 'median', 'mode', 'ulcer', 'log', 'laplace', 'cauchy'",
                 s
             )))
         }
@@ -107,7 +83,6 @@ pub enum PyDeviationModel {
     ModeAbsoluteDeviation,
     UlcerIndex,
     LogStandardDeviation,
-    StudentT { df: f64 },
     LaplaceStdEquivalent,
     CauchyIQRScale,
 }
@@ -121,7 +96,6 @@ impl From<PyDeviationModel> for DeviationModel {
             PyDeviationModel::ModeAbsoluteDeviation => DeviationModel::ModeAbsoluteDeviation,
             PyDeviationModel::UlcerIndex => DeviationModel::UlcerIndex,
             PyDeviationModel::LogStandardDeviation => DeviationModel::LogStandardDeviation,
-            PyDeviationModel::StudentT { df } => DeviationModel::StudentT { df },
             PyDeviationModel::LaplaceStdEquivalent => DeviationModel::LaplaceStdEquivalent,
             PyDeviationModel::CauchyIQRScale => DeviationModel::CauchyIQRScale,
         }

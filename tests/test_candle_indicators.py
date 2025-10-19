@@ -158,21 +158,8 @@ def test_new_deviation_models_moving_constant_bands():
     result = candle_indicators.single.moving_constant_bands(prices, "smoothed", "cauchy", 3.0)
     assert isinstance(result, tuple) and len(result) == 3
     
-    # Test Student-t distribution with degrees of freedom
-    result = candle_indicators.single.moving_constant_bands(prices, "simple", "student_t:5.0", 3.0)
-    assert isinstance(result, tuple) and len(result) == 3
-    
     # Test bulk operations with new models
     result = candle_indicators.bulk.moving_constant_bands(prices, "exponential", "log", 3.0, 3)
     assert isinstance(result, list) and len(result) == 3
-    
-    # Test error handling for invalid student_t parameter
-    with pytest.raises(ValueError):
-        candle_indicators.single.moving_constant_bands(prices, "simple", "student_t:0", 3.0)
-    
-    with pytest.raises(ValueError):
-        candle_indicators.single.moving_constant_bands(prices, "simple", "student_t:-5", 3.0)
-    
-    with pytest.raises(ValueError):
-        candle_indicators.single.moving_constant_bands(prices, "simple", "student_t:invalid", 3.0)
+
 
