@@ -4,7 +4,7 @@ version = 4
 
 [[package]]
 name = "RustTI_to_PyTechnicalIndicators"
-version = "3.0.4"
+version = "3.0.5"
 dependencies = [
  "pyo3",
  "rust_ti",
