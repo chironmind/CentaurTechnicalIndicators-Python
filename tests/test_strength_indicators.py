@@ -1,6 +1,6 @@
 import pytest
 
-from centaurtechnicalindicators import strength_indicators
+from centaur_technical_indicators import strength_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
 

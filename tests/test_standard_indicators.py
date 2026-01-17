@@ -1,4 +1,4 @@
-from centaurtechnicalindicators import standard_indicators
+from centaur_technical_indicators import standard_indicators
 
 """The purpose of these tests are just to confirm that the bindings work.
 

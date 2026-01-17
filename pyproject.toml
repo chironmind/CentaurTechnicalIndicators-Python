@@ -3,7 +3,7 @@ requires = ["maturin>=1.9,<2.0"]
 build-backend = "maturin"
 
 [project]
-name = "centaurtechnicalindicators"
+name = "centaur_technical_indicators"
 requires-python = ">=3.10"
 description = "A collection of 60+ fully configurable technical indicators for financial analysis, powered by Rust and Python. Part of the Centaur Capital ecosystem."
 readme = "README.md"
