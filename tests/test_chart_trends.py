@@ -1,4 +1,4 @@
-from centaurtechnicalindicators import chart_trends
+from centaur_technical_indicators import chart_trends
 
 """The purpose of these tests are just to confirm that the bindings work.
 

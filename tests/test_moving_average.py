@@ -1,6 +1,6 @@
 import pytest
 
-from centaurtechnicalindicators import moving_average
+from centaur_technical_indicators import moving_average
 
 """The purpose of these tests are just to confirm that the bindings work.
 
