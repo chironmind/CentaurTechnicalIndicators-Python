@@ -1,5 +1,5 @@
 use pyo3::prelude::*;
-use rust_ti::trend_indicators as ti;
+use centaur_technical_indicators::trend_indicators as ti;
 
 /// The `trend_indicators` module provides functions to analyze and quantify price trends in time series data.
 ///

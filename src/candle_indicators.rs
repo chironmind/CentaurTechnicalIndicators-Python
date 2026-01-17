@@ -1,5 +1,5 @@
 use pyo3::prelude::*;
-use rust_ti::candle_indicators as ci;
+use centaur_technical_indicators::candle_indicators as ci;
 
 /// Candle indicators are technical indicators designed for use with candlestick price charts.
 ///

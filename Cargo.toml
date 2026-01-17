@@ -1,13 +1,13 @@
 [package]
-name = "RustTI_to_PyTechnicalIndicators"
+name = "CentaurTI_to_CentaurTechnicalIndicators_Python"
 version = "3.0.5"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
-name = "pytechnicalindicators"
+name = "centaurtechnicalindicators"
 crate-type = ["cdylib"]
 
 [dependencies]
 pyo3 = "0.25.0"
-rust_ti = "2.2.0"
+centaur_technical_indicators = "1.0.0"

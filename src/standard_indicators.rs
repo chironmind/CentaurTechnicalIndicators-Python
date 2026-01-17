@@ -1,5 +1,5 @@
 use pyo3::prelude::*;
-use rust_ti::standard_indicators as si;
+use centaur_technical_indicators::standard_indicators as si;
 
 /// The `standard_indicators` module provides implementations of widely-recognized technical indicators,
 /// following their established formulas and default parameters as commonly found in financial literature and platforms.

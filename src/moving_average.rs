@@ -1,5 +1,5 @@
 use pyo3::prelude::*;
-use rust_ti::moving_average as ma;
+use centaur_technical_indicators::moving_average as ma;
 
 /// The `moving_average` module provides functions for calculating moving averages, a core component of many technical indicators and trading strategies.
 ///

@@ -1,5 +1,5 @@
 use pyo3::prelude::*;
-use rust_ti::strength_indicators as si;
+use centaur_technical_indicators::strength_indicators as si;
 
 /// The `strength_indicators` module provides functions to assess the strength and conviction of
 /// price movements and trends using volume and price-based calculations.
