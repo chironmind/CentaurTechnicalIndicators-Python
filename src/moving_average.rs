@@ -45,7 +45,7 @@ fn single_moving_average(prices: Vec<f64>, moving_average_type: &str) -> PyResul
     ma::single::moving_average(
         &prices,
         crate::PyMovingAverageType::from_string(moving_average_type)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the Moving Average over a rolling period
@@ -67,7 +67,7 @@ fn bulk_moving_average(
         &prices,
         crate::PyMovingAverageType::from_string(moving_average_type)?.into(),
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the McGinley dynamic
@@ -89,7 +89,7 @@ fn single_mcginley_dynamic(
         latest_price,
         previous_mcginley_dynamic,
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the McGinley dynamic
@@ -111,5 +111,5 @@ fn bulk_mcginley_dynamic(
         &prices,
         previous_mcginley_dynamic,
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }

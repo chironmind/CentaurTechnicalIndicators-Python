@@ -161,7 +161,7 @@ fn bulk_aroon_oscillator(aroon_up: Vec<f64>, aroon_down: Vec<f64>) -> PyResult<V
 ///     Aroon indicator tuple (Aroon Up, Aroon Down, Aroon Oscillator)
 #[pyfunction(name = "aroon_indicator")]
 fn single_aroon_indicator(highs: Vec<f64>, lows: Vec<f64>) -> PyResult<(f64, f64, f64)> {
-    ti::single::aroon_indicator(&highs, &lows).map_err(|e| PyValueError::new_err(e.to_string()))?
+    ti::single::aroon_indicator(&highs, &lows).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates Aroon Indicator
@@ -345,7 +345,7 @@ fn bulk_volume_price_trend(
         &prices,
         &volumes,
         previous_vpt,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // True Strength Index
