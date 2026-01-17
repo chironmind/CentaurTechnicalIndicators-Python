@@ -106,7 +106,7 @@ fn bulk_accumulation_distribution(
         &close,
         &volume,
         previous_accumulation_distribution,
-    )?.map_err(|e| PyValueError::new_err(e.to_string()))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }
 
 // Volume Index
@@ -152,7 +152,7 @@ fn bulk_positive_volume_index(
         &close,
         &volume,
         previous_volume_index,
-    )?.map_err(|e| PyValueError::new_err(e.to_string()))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }
 
 /// Calculates the Negative Volume Index (NVI)
@@ -174,7 +174,7 @@ fn bulk_negative_volume_index(
         &close,
         &volume,
         previous_volume_index,
-    )?.map_err(|e| PyValueError::new_err(e.to_string()))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }
 
 // Relative Vigor Index
@@ -204,8 +204,8 @@ fn single_relative_vigor_index(
         &high,
         &low,
         &close,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }
 
 /// Calculates the Relative Vigor Index (RVI)
@@ -235,7 +235,7 @@ fn bulk_relative_vigor_index(
         &high,
         &low,
         &close,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }

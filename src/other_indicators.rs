@@ -86,7 +86,7 @@ fn single_return_on_investment(
 ///     List of tuples containing (final investment value, percentage return)
 #[pyfunction(name = "return_on_investment")]
 fn bulk_return_on_investment(prices: Vec<f64>, investment: f64) -> PyResult<Vec<(f64, f64)>> {
-    oi::bulk::return_on_investment(&prices, investment)?.map_err(|e| PyValueError::new_err(e.to_string()))
+    Ok(oi::bulk::return_on_investment(&prices, investment))
 }
 
 // True Range
@@ -116,7 +116,7 @@ fn single_true_range(close: f64, high: f64, low: f64) -> PyResult<f64> {
 ///     List of True Range values
 #[pyfunction(name = "true_range")]
 fn bulk_true_range(close: Vec<f64>, high: Vec<f64>, low: Vec<f64>) -> PyResult<Vec<f64>> {
-    oi::bulk::true_range(&close, &high, &low)?.map_err(|e| PyValueError::new_err(e.to_string()))
+    Ok(oi::bulk::true_range(&close, &high, &low))
 }
 
 // Average True Range
@@ -143,8 +143,8 @@ fn single_average_true_range(
         &close,
         &high,
         &low,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
-    )?.map_err(|e| PyValueError::new_err(e.to_string()))
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }
 
 /// Calculates the Average True Range (ATR) over a period
@@ -171,9 +171,9 @@ fn bulk_average_true_range(
         &close,
         &high,
         &low,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
-    )?.map_err(|e| PyValueError::new_err(e.to_string()))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }
 
 // Internal Bar Strength
@@ -207,7 +207,7 @@ fn bulk_internal_bar_strength(
     low: Vec<f64>,
     close: Vec<f64>,
 ) -> PyResult<Vec<f64>> {
-    oi::bulk::internal_bar_strength(&high, &low, &close)?.map_err(|e| PyValueError::new_err(e.to_string()))
+    Ok(oi::bulk::internal_bar_strength(&high, &low, &close))
 }
 
 // Positivity Indicator
@@ -234,6 +234,6 @@ fn bulk_positivity_indicator(
         &open,
         &previous_close,
         signal_period,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
-    )?.map_err(|e| PyValueError::new_err(e.to_string()))
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }

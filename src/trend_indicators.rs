@@ -78,7 +78,7 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///     Aroon Up value
 #[pyfunction(name = "aroon_up")]
 fn single_aroon_up(highs: Vec<f64>) -> PyResult<f64> {
-    ti::single::aroon_up(&highs)?.map_err(|e| PyValueError::new_err(e.to_string()))
+    Ok(ti::single::aroon_up(&highs))
 }
 
 /// Calculates the Aroon Up indicator
@@ -91,7 +91,7 @@ fn single_aroon_up(highs: Vec<f64>) -> PyResult<f64> {
 ///     List of Aroon Up values
 #[pyfunction(name = "aroon_up")]
 fn bulk_aroon_up(highs: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
-    ti::bulk::aroon_up(&highs, period)?.map_err(|e| PyValueError::new_err(e.to_string()))
+    Ok(ti::bulk::aroon_up(&highs, period))
 }
 
 // Aroon Down
@@ -105,7 +105,7 @@ fn bulk_aroon_up(highs: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
 ///     Aroon Down value
 #[pyfunction(name = "aroon_down")]
 fn single_aroon_down(lows: Vec<f64>) -> PyResult<f64> {
-    ti::single::aroon_down(&lows)?.map_err(|e| PyValueError::new_err(e.to_string()))
+    Ok(ti::single::aroon_down(&lows))
 }
 
 /// Calculates the Aroon Down indicator
@@ -118,7 +118,7 @@ fn single_aroon_down(lows: Vec<f64>) -> PyResult<f64> {
 ///     List of Aroon Down values
 #[pyfunction(name = "aroon_down")]
 fn bulk_aroon_down(lows: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
-    ti::bulk::aroon_down(&lows, period)?.map_err(|e| PyValueError::new_err(e.to_string()))
+    Ok(ti::bulk::aroon_down(&lows, period))
 }
 
 // Aroon Oscillator
@@ -146,7 +146,7 @@ fn single_aroon_oscillator(aroon_up: f64, aroon_down: f64) -> PyResult<f64> {
 ///     List of Aroon Oscillator values
 #[pyfunction(name = "aroon_oscillator")]
 fn bulk_aroon_oscillator(aroon_up: Vec<f64>, aroon_down: Vec<f64>) -> PyResult<Vec<f64>> {
-    ti::bulk::aroon_oscillator(&aroon_up, &aroon_down)?.map_err(|e| PyValueError::new_err(e.to_string()))
+    Ok(ti::bulk::aroon_oscillator(&aroon_up, &aroon_down))
 }
 
 // Aroon Indidcator
@@ -161,7 +161,7 @@ fn bulk_aroon_oscillator(aroon_up: Vec<f64>, aroon_down: Vec<f64>) -> PyResult<V
 ///     Aroon indicator tuple (Aroon Up, Aroon Down, Aroon Oscillator)
 #[pyfunction(name = "aroon_indicator")]
 fn single_aroon_indicator(highs: Vec<f64>, lows: Vec<f64>) -> PyResult<(f64, f64, f64)> {
-    ti::single::aroon_indicator(&highs, &lows)?.map_err(|e| PyValueError::new_err(e.to_string()))
+    ti::single::aroon_indicator(&highs, &lows).map_err(|e| PyValueError::new_err(e.to_string()))?
 }
 
 /// Calculates Aroon Indicator
@@ -179,7 +179,7 @@ fn bulk_aroon_indicator(
     lows: Vec<f64>,
     period: usize,
 ) -> PyResult<Vec<(f64, f64, f64)>> {
-    ti::bulk::aroon_indicator(&highs, &lows, period)?.map_err(|e| PyValueError::new_err(e.to_string()))
+    Ok(ti::bulk::aroon_indicator(&highs, &lows, period))
 }
 
 // Parabolic Time Price System
@@ -345,7 +345,7 @@ fn bulk_volume_price_trend(
         &prices,
         &volumes,
         previous_vpt,
-    )?.map_err(|e| PyValueError::new_err(e.to_string()))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }
 
 // True Strength Index
