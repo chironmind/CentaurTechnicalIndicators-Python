@@ -14,7 +14,7 @@ maintainers = [
     { name="ChironMind", email="your@email.com" }
 ]
 license = { file="LICENSE-MIT" }
-keywords = ["finance", "technical indicators", "analysis", "trading", "python", "rust", "quantitative", "centaur"]
+keywords = ["finance", "technical indicators", "analysis", "trading", "python", "rust", "quantitative"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Financial and Insurance Industry",
