@@ -1,7 +1,7 @@
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 
-use centaur_technical_indicators::{ConstantModelType, DeviationModel, MovingAverageType, Position};
+use ::centaur_technical_indicators::{ConstantModelType, DeviationModel, MovingAverageType, Position};
 
 pub mod candle_indicators;
 pub mod chart_trends;
@@ -9,7 +9,6 @@ pub mod correlation_indicators;
 pub mod momentum_indicators;
 pub mod moving_average;
 pub mod other_indicators;
-pub mod standard_indicators;
 pub mod strength_indicators;
 pub mod trend_indicators;
 pub mod volatility_indicators;
@@ -179,9 +178,6 @@ fn centaur_technical_indicators(m: &Bound<'_, PyModule>) -> PyResult<()> {
     let other_mod = PyModule::new(m.py(), "other_indicators")?;
     let _ = other_indicators::other_indicators(&other_mod)?;
     m.add_submodule(&other_mod)?;
-    let standard_mod = PyModule::new(m.py(), "standard_indicators")?;
-    let _ = standard_indicators::standard_indicators(&standard_mod)?;
-    m.add_submodule(&standard_mod)?;
     let chart_mod = PyModule::new(m.py(), "chart_trends")?;
     let _ = chart_trends::chart_trends(&chart_mod)?;
     m.add_submodule(&chart_mod)?;
