@@ -3,11 +3,11 @@
 version = 4
 
 [[package]]
-name = "RustTI_to_PyTechnicalIndicators"
+name = "CentaurTI_to_CentaurTechnicalIndicators_Python"
 version = "3.0.5"
 dependencies = [
+ "centaur_technical_indicators",
  "pyo3",
- "rust_ti",
 ]
 
 [[package]]
@@ -15,6 +15,12 @@ name = "autocfg"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
+
+[[package]]
+name = "centaur_technical_indicators"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ca5cdc00eed15c0bfa1a910c84dbbe6546b9ccdc117302ff73787f8ec2d91fa2"
 
 [[package]]
 name = "heck"
@@ -134,12 +140,6 @@ checksum = "1885c039570dc00dcb4ff087a89e185fd56bae234ddc7f056a945bf36467248d"
 dependencies = [
  "proc-macro2",
 ]
-
-[[package]]
-name = "rust_ti"
-version = "2.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9cb12c002017474b3c19307ebafecb5f16d62891c41ad0623b8c79c05702eeaf"
 
 [[package]]
 name = "syn"
