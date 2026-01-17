@@ -1,7 +1,7 @@
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 
-use rust_ti::{ConstantModelType, DeviationModel, MovingAverageType, Position};
+use centaur_technical_indicators::{ConstantModelType, DeviationModel, MovingAverageType, Position};
 
 pub mod candle_indicators;
 pub mod chart_trends;
@@ -163,7 +163,7 @@ impl From<PyPosition> for Position {
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn pytechnicalindicators(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn centaurtechnicalindicators(m: &Bound<'_, PyModule>) -> PyResult<()> {
     let momentum_mod = PyModule::new(m.py(), "momentum_indicators")?;
     let _ = momentum_indicators::momentum_indicators(&momentum_mod)?;
     m.add_submodule(&momentum_mod)?;

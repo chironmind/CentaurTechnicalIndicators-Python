@@ -1,5 +1,5 @@
 use pyo3::prelude::*;
-use rust_ti::other_indicators as oi;
+use centaur_technical_indicators::other_indicators as oi;
 
 /// The `other_indicators` module provides technical analysis tools that do not fit neatly
 /// into the main categories like momentum, trend, or volatility.

@@ -1,5 +1,5 @@
 use pyo3::prelude::*;
-use rust_ti::correlation_indicators as ci;
+use centaur_technical_indicators::correlation_indicators as ci;
 
 /// The `correlation_indicators` module provides functions to measure the co-movement
 /// and statistical relationship between two different price series or assets.

@@ -1,5 +1,5 @@
 use pyo3::prelude::*;
-use rust_ti::chart_trends as ct;
+use centaur_technical_indicators::chart_trends as ct;
 
 /// The `chart_trends` module provides utilities for detecting, analyzing, and breaking down trends in price charts.
 ///

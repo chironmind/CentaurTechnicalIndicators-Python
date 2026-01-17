@@ -1,5 +1,5 @@
 use pyo3::prelude::*;
-use rust_ti::volatility_indicators as vi;
+use centaur_technical_indicators::volatility_indicators as vi;
 
 /// The `volatility_indicators` module provides functions for measuring the volatility of an asset—how much and how quickly prices move over time.
 ///

@@ -1,5 +1,5 @@
 use pyo3::prelude::*;
-use rust_ti::momentum_indicators as mi;
+use centaur_technical_indicators::momentum_indicators as mi;
 
 /// The `momentum_indicators` module provides functions to measure the speed, strength, and direction of price movements in time series data.
 ///
