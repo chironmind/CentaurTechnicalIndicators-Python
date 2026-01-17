@@ -144,7 +144,7 @@ fn single_average_true_range(
         &high,
         &low,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the Average True Range (ATR) over a period
@@ -173,7 +173,7 @@ fn bulk_average_true_range(
         &low,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Internal Bar Strength
@@ -235,5 +235,5 @@ fn bulk_positivity_indicator(
         &previous_close,
         signal_period,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
