@@ -1,5 +1,6 @@
 use pyo3::prelude::*;
-use centaur_technical_indicators::strength_indicators as si;
+use pyo3::exceptions::PyValueError;
+use ::centaur_technical_indicators::strength_indicators as si;
 
 /// The `strength_indicators` module provides functions to assess the strength and conviction of
 /// price movements and trends using volume and price-based calculations.
@@ -71,13 +72,13 @@ fn single_accumulation_distribution(
     volume: f64,
     previous_accumulation_distribution: f64,
 ) -> PyResult<f64> {
-    Ok(si::single::accumulation_distribution(
+    si::single::accumulation_distribution(
         high,
         low,
         close,
         volume,
         previous_accumulation_distribution,
-    ))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }
 
 /// Calculates the accumulation distribution
@@ -99,13 +100,13 @@ fn bulk_accumulation_distribution(
     volume: Vec<f64>,
     previous_accumulation_distribution: f64,
 ) -> PyResult<Vec<f64>> {
-    Ok(si::bulk::accumulation_distribution(
+    si::bulk::accumulation_distribution(
         &highs,
         &lows,
         &close,
         &volume,
         previous_accumulation_distribution,
-    ))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }
 
 // Volume Index
@@ -125,11 +126,11 @@ fn single_volume_index(
     previous_close: f64,
     previous_volume_index: f64,
 ) -> PyResult<f64> {
-    Ok(si::single::volume_index(
+    si::single::volume_index(
         current_close,
         previous_close,
         previous_volume_index,
-    ))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }
 
 /// Calculates the Positive Volume Index (PVI)
@@ -147,11 +148,11 @@ fn bulk_positive_volume_index(
     volume: Vec<f64>,
     previous_volume_index: f64,
 ) -> PyResult<Vec<f64>> {
-    Ok(si::bulk::positive_volume_index(
+    si::bulk::positive_volume_index(
         &close,
         &volume,
         previous_volume_index,
-    ))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }
 
 /// Calculates the Negative Volume Index (NVI)
@@ -169,11 +170,11 @@ fn bulk_negative_volume_index(
     volume: Vec<f64>,
     previous_volume_index: f64,
 ) -> PyResult<Vec<f64>> {
-    Ok(si::bulk::negative_volume_index(
+    si::bulk::negative_volume_index(
         &close,
         &volume,
         previous_volume_index,
-    ))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }
 
 // Relative Vigor Index
@@ -198,13 +199,13 @@ fn single_relative_vigor_index(
     close: Vec<f64>,
     constant_model_type: &str,
 ) -> PyResult<f64> {
-    Ok(si::single::relative_vigor_index(
+    si::single::relative_vigor_index(
         &open,
         &high,
         &low,
         &close,
-        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ))
+        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }
 
 /// Calculates the Relative Vigor Index (RVI)
@@ -229,12 +230,12 @@ fn bulk_relative_vigor_index(
     constant_model_type: &str,
     period: usize,
 ) -> PyResult<Vec<f64>> {
-    Ok(si::bulk::relative_vigor_index(
+    si::bulk::relative_vigor_index(
         &open,
         &high,
         &low,
         &close,
-        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
         period,
-    ))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }

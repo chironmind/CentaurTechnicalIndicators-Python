@@ -3,8 +3,8 @@
 version = 4
 
 [[package]]
-name = "CentaurTI_to_CentaurTechnicalIndicators_Python"
-version = "3.0.5"
+name = "CentaurTechnicalIndicators"
+version = "1.0.0"
 dependencies = [
  "centaur_technical_indicators",
  "pyo3",

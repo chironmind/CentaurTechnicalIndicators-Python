@@ -1,5 +1,6 @@
 use pyo3::prelude::*;
-use centaur_technical_indicators::chart_trends as ct;
+use pyo3::exceptions::PyValueError;
+use ::centaur_technical_indicators::chart_trends as ct;
 
 /// The `chart_trends` module provides utilities for detecting, analyzing, and breaking down trends in price charts.
 ///
@@ -120,7 +121,7 @@ fn break_down_trends(
     hard_durbin_watson_min: f64,
     hard_durbin_watson_max: f64,
 ) -> PyResult<Vec<(usize, usize, f64, f64)>> {
-    Ok(ct::break_down_trends(
+    ct::break_down_trends(
         &prices,
         ct::TrendBreakConfig {
             max_outliers,
@@ -133,5 +134,5 @@ fn break_down_trends(
             hard_durbin_watson_min,
             hard_durbin_watson_max,
         },
-    ))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))?
 }
