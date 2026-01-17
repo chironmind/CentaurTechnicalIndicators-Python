@@ -63,7 +63,7 @@ fn single_correlate_asset_prices(
         &prices_asset_b,
         crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the correlation between two asset prices over a period.
@@ -93,5 +93,5 @@ fn bulk_correlate_asset_prices(
         crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }

@@ -33,7 +33,7 @@ pub fn chart_trends(m: &Bound<'_, PyModule>) -> PyResult<()> {
 ///     List of tuples containing (peak value, peak index)
 #[pyfunction]
 fn peaks(prices: Vec<f64>, period: usize, closest_neighbor: usize) -> PyResult<Vec<(f64, usize)>> {
-    Ok(ct::peaks(&prices, period, closest_neighbor))
+    ct::peaks(&prices, period, closest_neighbor)?.map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates all valleys for a given period
@@ -51,7 +51,7 @@ fn valleys(
     period: usize,
     closest_neighbor: usize,
 ) -> PyResult<Vec<(f64, usize)>> {
-    Ok(ct::valleys(&prices, period, closest_neighbor))
+    ct::valleys(&prices, period, closest_neighbor)?.map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Returns the slope and intercept of the trend line fitted to peaks
@@ -64,7 +64,7 @@ fn valleys(
 ///     Tuple containing (slope, intercept) of the peak trend line
 #[pyfunction]
 fn peak_trend(prices: Vec<f64>, period: usize) -> PyResult<(f64, f64)> {
-    Ok(ct::peak_trend(&prices, period))
+    ct::peak_trend(&prices, period)?.map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the slope and intercept of the trend line fitted to valleys
@@ -77,7 +77,7 @@ fn peak_trend(prices: Vec<f64>, period: usize) -> PyResult<(f64, f64)> {
 ///     Tuple containing (slope, intercept) of the valley trend line
 #[pyfunction]
 fn valley_trend(prices: Vec<f64>, period: usize) -> PyResult<(f64, f64)> {
-    Ok(ct::valley_trend(&prices, period))
+    ct::valley_trend(&prices, period)?.map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the slope and intercept of the trend line fitted to all prices
@@ -89,7 +89,7 @@ fn valley_trend(prices: Vec<f64>, period: usize) -> PyResult<(f64, f64)> {
 ///     Tuple containing (slope, intercept) of the overall trend line
 #[pyfunction]
 fn overall_trend(prices: Vec<f64>) -> PyResult<(f64, f64)> {
-    Ok(ct::overall_trend(&prices))
+    ct::overall_trend(&prices)?.map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates price trends and their slopes and intercepts
@@ -134,5 +134,5 @@ fn break_down_trends(
             hard_durbin_watson_min,
             hard_durbin_watson_max,
         },
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }

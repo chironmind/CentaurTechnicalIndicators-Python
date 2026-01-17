@@ -69,11 +69,11 @@ fn single_return_on_investment(
     end_price: f64,
     investment: f64,
 ) -> PyResult<(f64, f64)> {
-    oi::single::return_on_investment(
+    Ok(oi::single::return_on_investment(
         start_price,
         end_price,
         investment,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?
+    ))
 }
 
 /// Calculates the return on investment and percent return over a period
@@ -86,7 +86,7 @@ fn single_return_on_investment(
 ///     List of tuples containing (final investment value, percentage return)
 #[pyfunction(name = "return_on_investment")]
 fn bulk_return_on_investment(prices: Vec<f64>, investment: f64) -> PyResult<Vec<(f64, f64)>> {
-    oi::bulk::return_on_investment(&prices, investment).map_err(|e| PyValueError::new_err(e.to_string()))?
+    oi::bulk::return_on_investment(&prices, investment)?.map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // True Range
@@ -102,7 +102,7 @@ fn bulk_return_on_investment(prices: Vec<f64>, investment: f64) -> PyResult<Vec<
 ///     True Range value
 #[pyfunction(name = "true_range")]
 fn single_true_range(close: f64, high: f64, low: f64) -> PyResult<f64> {
-    oi::single::true_range(close, high, low).map_err(|e| PyValueError::new_err(e.to_string()))?
+    Ok(oi::single::true_range(close, high, low))
 }
 
 /// Calculates the True Range for a series of prices
@@ -116,7 +116,7 @@ fn single_true_range(close: f64, high: f64, low: f64) -> PyResult<f64> {
 ///     List of True Range values
 #[pyfunction(name = "true_range")]
 fn bulk_true_range(close: Vec<f64>, high: Vec<f64>, low: Vec<f64>) -> PyResult<Vec<f64>> {
-    oi::bulk::true_range(&close, &high, &low).map_err(|e| PyValueError::new_err(e.to_string()))?
+    oi::bulk::true_range(&close, &high, &low)?.map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Average True Range
@@ -144,7 +144,7 @@ fn single_average_true_range(
         &high,
         &low,
         crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?
+    )?.map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the Average True Range (ATR) over a period
@@ -173,7 +173,7 @@ fn bulk_average_true_range(
         &low,
         crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?
+    )?.map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Internal Bar Strength
@@ -189,7 +189,7 @@ fn bulk_average_true_range(
 ///     Internal bar strength value
 #[pyfunction(name = "internal_bar_strength")]
 fn single_internal_bar_strength(high: f64, low: f64, close: f64) -> PyResult<f64> {
-    oi::single::internal_bar_strength(high, low, close).map_err(|e| PyValueError::new_err(e.to_string()))?
+    Ok(oi::single::internal_bar_strength(high, low, close))
 }
 
 /// Calculates the internal bar strength for a series of prices
@@ -207,7 +207,7 @@ fn bulk_internal_bar_strength(
     low: Vec<f64>,
     close: Vec<f64>,
 ) -> PyResult<Vec<f64>> {
-    oi::bulk::internal_bar_strength(&high, &low, &close).map_err(|e| PyValueError::new_err(e.to_string()))?
+    oi::bulk::internal_bar_strength(&high, &low, &close)?.map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Positivity Indicator
@@ -235,5 +235,5 @@ fn bulk_positivity_indicator(
         &previous_close,
         signal_period,
         crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?
+    )?.map_err(|e| PyValueError::new_err(e.to_string()))
 }
