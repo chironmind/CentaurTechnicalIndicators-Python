@@ -1,9 +1,10 @@
-[![PyPI Version](https://img.shields.io/pypi/v/centaur-technical-indicators.svg)](https://pypi.org/project/centaur-technical-indicators/)
-[![PyPI Downloads](https://pepy.tech/badge/centaur-technical-indicators)](https://pypi.org/project/centaur-technical-indicators/)
-![Python Versions](https://img.shields.io/pypi/pyversions/centaur-technical-indicators)
+[![PyPI Version](https://img.shields.io/pypi/v/centaur_technical_indicators.svg)](https://pypi.org/project/centaur_technical_indicators/)
+[![PyPI Downloads](https://pepy.tech/badge/centaur_technical_indicators)](https://pypi.org/project/centaur_technical_indicators/)
+![Python Versions](https://img.shields.io/pypi/pyversions/centaur_technical_indicators)
 [![CI](https://github.com/chironmind/CentaurTechnicalIndicators-Python/actions/workflows/python-package.yml/badge.svg)](https://github.com/chironmind/CentaurTechnicalIndicators-Python/actions)
 [![License](https://img.shields.io/github/license/chironmind/CentaurTechnicalIndicators-Python)](LICENSE-MIT)
 
+[![Docs - ReadTheDocs](https://img.shields.io/badge/docs-latest-brightgreen?logo=readthedocs)](https://pytechnicalindicators-docs.readthedocs.io/en/latest/)
 [![Docs - GitHub Pages](https://img.shields.io/badge/docs-github%20pages-blue?logo=github)](https://chironmind.github.io/CentaurTechnicalIndicators-docs/)
 [![Tutorials](https://img.shields.io/badge/Tutorials-Available-brightgreen?style=flat&logo=book)](https://github.com/chironmind/CentaurTechnicalIndicators_tutorials)
 [![Benchmarks](https://img.shields.io/badge/Performance-Microsecond-blue?logo=zap)](https://github.com/chironmind/CentaurTechnicalIndicators-benchmarks)
@@ -23,7 +24,7 @@ Looking for the WASM bindings? See: [ChironMind/ti-engine](https://github.com/ch
 **1. Install the package:**
 
 ```shell
-pip install centaur-technical-indicators
+pip install centaur_technical_indicators
 ```
 
 **2. Calculate your first indicator:**
@@ -70,7 +71,7 @@ Simple Moving Average: 100.352
 ## 📚 Reference
 
 
-The API reference can be found on [GitHub Pages](https://chironmind.github.io/CentaurTechnicalIndicators-docs/)
+The API reference can be found [here](https://pytechnicalindicators-docs.readthedocs.io/en/latest/api/)
 
 ### Example
 
