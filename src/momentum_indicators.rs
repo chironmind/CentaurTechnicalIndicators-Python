@@ -808,7 +808,7 @@ fn bulk_percentage_price_oscillator(
         &prices,
         short_period,
         long_period,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
