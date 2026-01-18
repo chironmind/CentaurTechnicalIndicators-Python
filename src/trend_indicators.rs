@@ -371,7 +371,7 @@ fn single_true_strength_index(
 ) -> PyResult<f64> {
     ti::single::true_strength_index(
         &prices,
-        crate::PyConstantModelType::from_string(first_constant_model).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(first_constant_model)?.into(),
         first_period,
         crate::PyConstantModelType::from_string(second_constant_model)?.into(),
     ).map_err(|e| PyValueError::new_err(e.to_string()))
@@ -400,7 +400,7 @@ fn bulk_true_strength_index(
 ) -> PyResult<Vec<f64>> {
     ti::bulk::true_strength_index(
         &prices,
-        crate::PyConstantModelType::from_string(first_constant_model).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(first_constant_model)?.into(),
         first_period,
         crate::PyConstantModelType::from_string(second_constant_model)?.into(),
         second_period,

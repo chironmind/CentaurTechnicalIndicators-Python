@@ -122,7 +122,7 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 fn single_relative_strength_index(prices: Vec<f64>, constant_model_type: &str) -> PyResult<f64> {
     mi::single::relative_strength_index(
         &prices,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
@@ -144,7 +144,7 @@ fn bulk_relative_strength_index(
 ) -> PyResult<Vec<f64>> {
     mi::bulk::relative_strength_index(
         &prices,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
     ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
@@ -191,7 +191,7 @@ fn bulk_stochastic_oscillator(prices: Vec<f64>, period: usize) -> PyResult<Vec<f
 fn single_slow_stochastic(stochastics: Vec<f64>, constant_model_type: &str) -> PyResult<f64> {
     Ok(mi::single::slow_stochastic(
         &stochastics,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
@@ -213,7 +213,7 @@ fn bulk_slow_stochastic(
 ) -> PyResult<Vec<f64>> {
     Ok(mi::bulk::slow_stochastic(
         &stochastics,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
     ).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
@@ -236,7 +236,7 @@ fn single_slowest_stochastic(
 ) -> PyResult<f64> {
     Ok(mi::single::slowest_stochastic(
         &slow_stochastics,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
@@ -258,7 +258,7 @@ fn bulk_slowest_stochastic(
 ) -> PyResult<Vec<f64>> {
     Ok(mi::bulk::slowest_stochastic(
         &slow_stochastics,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
     ).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
@@ -427,7 +427,7 @@ fn single_commodity_channel_index(
 ) -> PyResult<f64> {
     Ok(mi::single::commodity_channel_index(
         &prices,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
         constant_multiplier,
     ).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -456,7 +456,7 @@ fn bulk_commodity_channel_index(
 ) -> PyResult<Vec<f64>> {
     Ok(mi::bulk::commodity_channel_index(
         &prices,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
         constant_multiplier,
         period,
@@ -486,7 +486,7 @@ fn single_mcginley_dynamic_commodity_channel_index(
     Ok(mi::single::mcginley_dynamic_commodity_channel_index(
         &prices,
         previous_mcginley_dynamic,
-        crate::PyDeviationModel::from_string(deviation_model).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyDeviationModel::from_string(deviation_model)?.into(),
         constant_multiplier,
     ).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
@@ -514,7 +514,7 @@ fn bulk_mcginley_dynamic_commodity_channel_index(
     Ok(mi::bulk::mcginley_dynamic_commodity_channel_index(
         &prices,
         previous_mcginley_dynamic,
-        crate::PyDeviationModel::from_string(deviation_model).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyDeviationModel::from_string(deviation_model)?.into(),
         constant_multiplier,
         period,
     ).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -544,7 +544,7 @@ fn single_macd_line(
     Ok(mi::single::macd_line(
         &prices,
         short_period,
-        crate::PyConstantModelType::from_string(short_period_model).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(short_period_model)?.into(),
         crate::PyConstantModelType::from_string(long_period_model)?.into(),
     ).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
@@ -573,7 +573,7 @@ fn bulk_macd_line(
     Ok(mi::bulk::macd_line(
         &prices,
         short_period,
-        crate::PyConstantModelType::from_string(short_period_model).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(short_period_model)?.into(),
         long_period,
         crate::PyConstantModelType::from_string(long_period_model)?.into(),
     ).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -594,7 +594,7 @@ fn bulk_macd_line(
 fn single_signal_line(macds: Vec<f64>, constant_model_type: &str) -> PyResult<f64> {
     Ok(mi::single::signal_line(
         &macds,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
@@ -616,7 +616,7 @@ fn bulk_signal_line(
 ) -> PyResult<Vec<f64>> {
     Ok(mi::bulk::signal_line(
         &macds,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
     ).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
@@ -714,7 +714,7 @@ fn single_chaikin_oscillator(
         &volume,
         short_period,
         previous_accumulation_distribution,
-        crate::PyConstantModelType::from_string(short_period_model).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(short_period_model)?.into(),
         crate::PyConstantModelType::from_string(long_period_model)?.into(),
     ).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
@@ -782,7 +782,7 @@ fn single_percentage_price_oscillator(
     Ok(mi::single::percentage_price_oscillator(
         &prices,
         short_period,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
