@@ -295,7 +295,7 @@ fn bulk_directional_movement_system(
         &lows,
         &close,
         period,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
     ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
