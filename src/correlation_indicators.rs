@@ -61,7 +61,7 @@ fn single_correlate_asset_prices(
     ci::single::correlate_asset_prices(
         &prices_asset_a,
         &prices_asset_b,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
     ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
@@ -90,7 +90,7 @@ fn bulk_correlate_asset_prices(
     ci::bulk::correlate_asset_prices(
         &prices_asset_a,
         &prices_asset_b,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
         period,
     ).map_err(|e| PyValueError::new_err(e.to_string()))

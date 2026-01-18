@@ -263,7 +263,7 @@ fn bulk_parabolic_time_price_system(
         af_start,
         af_step,
         af_max,
-        crate::PyPosition::from_string(position).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyPosition::from_string(position)?.into(),
         previous_sar,
     ).map_err(|e| PyValueError::new_err(e.to_string()))
 }

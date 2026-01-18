@@ -89,7 +89,7 @@ fn single_moving_constant_envelopes(
 ) -> PyResult<(f64, f64, f64)> {
     ci::single::moving_constant_envelopes(
         &prices,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         difference,
     ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
@@ -114,7 +114,7 @@ fn bulk_moving_constant_envelopes(
 ) -> PyResult<Vec<(f64, f64, f64)>> {
     ci::bulk::moving_constant_envelopes(
         &prices,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         difference,
         period,
     ).map_err(|e| PyValueError::new_err(e.to_string()))
@@ -192,7 +192,7 @@ fn single_moving_constant_bands(
 ) -> PyResult<(f64, f64, f64)> {
     ci::single::moving_constant_bands(
         &prices,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
         deviation_multiplier,
     ).map_err(|e| PyValueError::new_err(e.to_string()))
@@ -221,7 +221,7 @@ fn bulk_moving_constant_bands(
 ) -> PyResult<Vec<(f64, f64, f64)>> {
     ci::bulk::moving_constant_bands(
         &prices,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
         deviation_multiplier,
         period,
@@ -250,7 +250,7 @@ fn single_mcginley_dynamic_bands(
 ) -> PyResult<(f64, f64, f64)> {
     ci::single::mcginley_dynamic_bands(
         &prices,
-        crate::PyDeviationModel::from_string(deviation_model).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyDeviationModel::from_string(deviation_model)?.into(),
         deviation_multiplier,
         previous_mcginley_dynamic,
     ).map_err(|e| PyValueError::new_err(e.to_string()))
@@ -278,7 +278,7 @@ fn bulk_mcginley_dynamic_bands(
 ) -> PyResult<Vec<(f64, f64, f64)>> {
     ci::bulk::mcginley_dynamic_bands(
         &prices,
-        crate::PyDeviationModel::from_string(deviation_model).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyDeviationModel::from_string(deviation_model)?.into(),
         deviation_multiplier,
         previous_mcginley_dynamic,
         period,
@@ -415,7 +415,7 @@ fn single_keltner_channel(
         &high,
         &low,
         &close,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         crate::PyConstantModelType::from_string(atr_constant_model_type)?.into(),
         multiplier,
     ).map_err(|e| PyValueError::new_err(e.to_string()))
@@ -452,7 +452,7 @@ fn bulk_keltner_channel(
         &high,
         &low,
         &close,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         crate::PyConstantModelType::from_string(atr_constant_model_type)?.into(),
         multiplier,
         period,
@@ -483,7 +483,7 @@ fn single_supertrend(
         &high,
         &low,
         &close,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         multiplier,
     ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
@@ -514,7 +514,7 @@ fn bulk_supertrend(
         &high,
         &low,
         &close,
-        crate::PyConstantModelType::from_string(constant_model_type).map_err(|e| PyValueError::new_err(e.to_string()))?.into(),
+        crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         multiplier,
         period,
     ).map_err(|e| PyValueError::new_err(e.to_string()))
