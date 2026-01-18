@@ -1,5 +1,6 @@
 use pyo3::prelude::*;
-use rust_ti::volatility_indicators as vi;
+use pyo3::exceptions::PyValueError;
+use ::centaur_technical_indicators::volatility_indicators as vi;
 
 /// The `volatility_indicators` module provides functions for measuring the volatility of an asset—how much and how quickly prices move over time.
 ///
@@ -39,7 +40,7 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///     Ulcer Index value
 #[pyfunction(name = "ulcer_index")]
 fn single_ulcer_index(prices: Vec<f64>) -> PyResult<f64> {
-    Ok(vi::single::ulcer_index(&prices))
+    vi::single::ulcer_index(&prices).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the Ulcer Index for a rolling window.
@@ -52,7 +53,7 @@ fn single_ulcer_index(prices: Vec<f64>) -> PyResult<f64> {
 ///     List of Ulcer Index values (one per window)
 #[pyfunction(name = "ulcer_index")]
 fn bulk_ulcer_index(prices: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
-    Ok(vi::bulk::ulcer_index(&prices, period))
+    vi::bulk::ulcer_index(&prices, period).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates Welles Wilder's volatility system
@@ -77,12 +78,12 @@ fn bulk_volatility_system(
     constant_multiplier: f64,
     constant_model_type: &str,
 ) -> PyResult<Vec<f64>> {
-    Ok(vi::bulk::volatility_system(
+    vi::bulk::volatility_system(
         &high,
         &low,
         &close,
         period,
         constant_multiplier,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
