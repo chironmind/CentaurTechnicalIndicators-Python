@@ -1,4 +1,4 @@
-# Contributing to PyTechnicalIndicators
+# Contributing to Centaur Technical Indicators
 
 Thank you for considering contributing—every improvement is appreciated, big or small!
 
@@ -8,11 +8,11 @@ Thank you for considering contributing—every improvement is appreciated, big o
 
 1. **Fork and clone the repository**  
 2. **Make your changes**  
-3. **Open a Pull Request (PR)** on [GitHub](https://github.com/ChironMind/PyTechnicalIndicators/pulls)
+3. **Open a Pull Request (PR)** on [GitHub](https://github.com/ChironMind/CentaurTechnicalIndicators-Python/pulls)
 4. **Tag @ChironMind** in your PR for a review
-5. **Run benchmarks** from [PyTechnicalIndicators-Benchmarks](https://github.com/ChironMind/PyTechnicalIndicators-benchmarks)
+5. **Run benchmarks** from [CentaurTechnicalIndicators-Benchmarks](https://github.com/ChironMind/CentaurTechnicalIndicators-benchmarks)
 
-See [open issues](https://github.com/ChironMind/PyTechnicalIndicators/issues) if you want to start with something small.
+See [open issues](https://github.com/ChironMind/CentaurTechnicalIndicators-Python/issues) if you want to start with something small.
 
 ---
 
@@ -40,7 +40,7 @@ See [open issues](https://github.com/ChironMind/PyTechnicalIndicators/issues) if
 3. **Verify results**  
    - Add a tab to `assets/rust_ti_hand_calcs.ods` with hand calculations to ensure test accuracy
 4. **Add to benchmarks and run**
-   - Add a bench in [PyTechnicalIndicators-Benchmarks](https://github.com/ChironMind/PyTechnicalIndicators-benchmarks), run it, and document the runtime
+   - Add a bench in [CentaurTechnicalIndicators-Benchmarks](https://github.com/ChironMind/CentaurTechnicalIndicators-benchmarks), run it, and document the runtime
 
 ---
 
