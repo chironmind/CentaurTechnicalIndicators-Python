@@ -1,5 +1,6 @@
 use pyo3::prelude::*;
-use rust_ti::trend_indicators as ti;
+use pyo3::exceptions::PyValueError;
+use ::centaur_technical_indicators::trend_indicators as ti;
 
 /// The `trend_indicators` module provides functions to analyze and quantify price trends in time series data.
 ///
@@ -77,7 +78,7 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///     Aroon Up value
 #[pyfunction(name = "aroon_up")]
 fn single_aroon_up(highs: Vec<f64>) -> PyResult<f64> {
-    Ok(ti::single::aroon_up(&highs))
+    Ok(ti::single::aroon_up(&highs).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the Aroon Up indicator
@@ -90,7 +91,7 @@ fn single_aroon_up(highs: Vec<f64>) -> PyResult<f64> {
 ///     List of Aroon Up values
 #[pyfunction(name = "aroon_up")]
 fn bulk_aroon_up(highs: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
-    Ok(ti::bulk::aroon_up(&highs, period))
+    Ok(ti::bulk::aroon_up(&highs, period).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Aroon Down
@@ -104,7 +105,7 @@ fn bulk_aroon_up(highs: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
 ///     Aroon Down value
 #[pyfunction(name = "aroon_down")]
 fn single_aroon_down(lows: Vec<f64>) -> PyResult<f64> {
-    Ok(ti::single::aroon_down(&lows))
+    Ok(ti::single::aroon_down(&lows).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the Aroon Down indicator
@@ -117,7 +118,7 @@ fn single_aroon_down(lows: Vec<f64>) -> PyResult<f64> {
 ///     List of Aroon Down values
 #[pyfunction(name = "aroon_down")]
 fn bulk_aroon_down(lows: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
-    Ok(ti::bulk::aroon_down(&lows, period))
+    Ok(ti::bulk::aroon_down(&lows, period).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Aroon Oscillator
@@ -145,7 +146,7 @@ fn single_aroon_oscillator(aroon_up: f64, aroon_down: f64) -> PyResult<f64> {
 ///     List of Aroon Oscillator values
 #[pyfunction(name = "aroon_oscillator")]
 fn bulk_aroon_oscillator(aroon_up: Vec<f64>, aroon_down: Vec<f64>) -> PyResult<Vec<f64>> {
-    Ok(ti::bulk::aroon_oscillator(&aroon_up, &aroon_down))
+    Ok(ti::bulk::aroon_oscillator(&aroon_up, &aroon_down).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Aroon Indidcator
@@ -160,7 +161,7 @@ fn bulk_aroon_oscillator(aroon_up: Vec<f64>, aroon_down: Vec<f64>) -> PyResult<V
 ///     Aroon indicator tuple (Aroon Up, Aroon Down, Aroon Oscillator)
 #[pyfunction(name = "aroon_indicator")]
 fn single_aroon_indicator(highs: Vec<f64>, lows: Vec<f64>) -> PyResult<(f64, f64, f64)> {
-    Ok(ti::single::aroon_indicator(&highs, &lows))
+    ti::single::aroon_indicator(&highs, &lows).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates Aroon Indicator
@@ -178,7 +179,7 @@ fn bulk_aroon_indicator(
     lows: Vec<f64>,
     period: usize,
 ) -> PyResult<Vec<(f64, f64, f64)>> {
-    Ok(ti::bulk::aroon_indicator(&highs, &lows, period))
+    Ok(ti::bulk::aroon_indicator(&highs, &lows, period).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Parabolic Time Price System
@@ -256,7 +257,7 @@ fn bulk_parabolic_time_price_system(
     position: &str,
     previous_sar: f64,
 ) -> PyResult<Vec<f64>> {
-    Ok(ti::bulk::parabolic_time_price_system(
+    ti::bulk::parabolic_time_price_system(
         &highs,
         &lows,
         af_start,
@@ -264,7 +265,7 @@ fn bulk_parabolic_time_price_system(
         af_max,
         crate::PyPosition::from_string(position)?.into(),
         previous_sar,
-    ))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Directional Movement System
@@ -289,13 +290,13 @@ fn bulk_directional_movement_system(
     period: usize,
     constant_model_type: &str,
 ) -> PyResult<Vec<(f64, f64, f64, f64)>> {
-    Ok(ti::bulk::directional_movement_system(
+    ti::bulk::directional_movement_system(
         &highs,
         &lows,
         &close,
         period,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Volume Price Trend
@@ -340,11 +341,11 @@ fn bulk_volume_price_trend(
     volumes: Vec<f64>,
     previous_vpt: f64,
 ) -> PyResult<Vec<f64>> {
-    Ok(ti::bulk::volume_price_trend(
+    ti::bulk::volume_price_trend(
         &prices,
         &volumes,
         previous_vpt,
-    ))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // True Strength Index
@@ -368,12 +369,12 @@ fn single_true_strength_index(
     first_constant_model: &str,
     second_constant_model: &str,
 ) -> PyResult<f64> {
-    Ok(ti::single::true_strength_index(
+    ti::single::true_strength_index(
         &prices,
         crate::PyConstantModelType::from_string(first_constant_model)?.into(),
         first_period,
         crate::PyConstantModelType::from_string(second_constant_model)?.into(),
-    ))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the True Strength Index (TSI) over a period
@@ -397,11 +398,11 @@ fn bulk_true_strength_index(
     second_constant_model: &str,
     second_period: usize,
 ) -> PyResult<Vec<f64>> {
-    Ok(ti::bulk::true_strength_index(
+    ti::bulk::true_strength_index(
         &prices,
         crate::PyConstantModelType::from_string(first_constant_model)?.into(),
         first_period,
         crate::PyConstantModelType::from_string(second_constant_model)?.into(),
         second_period,
-    ))
+    ).map_err(|e| PyValueError::new_err(e.to_string()))
 }
