@@ -86,7 +86,7 @@ fn single_return_on_investment(
 ///     List of tuples containing (final investment value, percentage return)
 #[pyfunction(name = "return_on_investment")]
 fn bulk_return_on_investment(prices: Vec<f64>, investment: f64) -> PyResult<Vec<(f64, f64)>> {
-    Ok(oi::bulk::return_on_investment(&prices, investment))
+    Ok(oi::bulk::return_on_investment(&prices, investment).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // True Range
@@ -116,7 +116,7 @@ fn single_true_range(close: f64, high: f64, low: f64) -> PyResult<f64> {
 ///     List of True Range values
 #[pyfunction(name = "true_range")]
 fn bulk_true_range(close: Vec<f64>, high: Vec<f64>, low: Vec<f64>) -> PyResult<Vec<f64>> {
-    Ok(oi::bulk::true_range(&close, &high, &low))
+    Ok(oi::bulk::true_range(&close, &high, &low).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Average True Range
@@ -207,7 +207,7 @@ fn bulk_internal_bar_strength(
     low: Vec<f64>,
     close: Vec<f64>,
 ) -> PyResult<Vec<f64>> {
-    Ok(oi::bulk::internal_bar_strength(&high, &low, &close))
+    Ok(oi::bulk::internal_bar_strength(&high, &low, &close).map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Positivity Indicator
