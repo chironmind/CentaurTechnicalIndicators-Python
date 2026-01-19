@@ -1,5 +1,5 @@
 [package]
-name = "CentaurTechnicalIndicators"
+name = "centaur_technical_indicators"
 version = "1.0.0"
 edition = "2021"
 
