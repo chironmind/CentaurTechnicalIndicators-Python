@@ -1,8 +1,8 @@
-# Copilot Instructions for PyTechnicalIndicators
+# Copilot Instructions for Centaur Technical Indicators
 
 ## Repository Overview
 
-**PyTechnicalIndicators** is a production-ready Python library providing 60+ technical indicators for financial analysis, built on a high-performance Rust backend (RustTI). The project uses PyO3 and maturin to create Python bindings for the underlying Rust implementation.
+**Centaur Technical Indicators** is a production-ready Python library providing 60+ technical indicators for financial analysis, built on a high-performance Rust backend. The project uses PyO3 and maturin to create Python bindings for the underlying Rust implementation.
 
 **Key Stats:**
 - **Languages:** Rust (backend), Python (bindings/tests)  
@@ -33,7 +33,7 @@ maturin develop
 ```
 - **Duration:** ~14 seconds for full compilation
 - **Function:** Compiles Rust code and installs Python package in editable mode
-- **Output:** Installs `pytechnicalindicators` package locally
+- **Output:** Installs `centaur_technical_indicators` package locally
 
 ### Run Tests (Validation)
 ```bash
@@ -137,7 +137,7 @@ cargo fmt --check  # Optional: check Rust formatting
 ### Complete Development Setup
 ```bash
 git clone <repo>
-cd PyTechnicalIndicators
+cd CentaurTechnicalIndicators-Python
 python -m venv .venv
 source .venv/bin/activate
 pip install -r test_requirements.txt
