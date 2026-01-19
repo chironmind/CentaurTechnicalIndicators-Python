@@ -4,18 +4,20 @@
 [![CI](https://github.com/chironmind/CentaurTechnicalIndicators-Python/actions/workflows/python-package.yml/badge.svg)](https://github.com/chironmind/CentaurTechnicalIndicators-Python/actions)
 [![License](https://img.shields.io/github/license/chironmind/CentaurTechnicalIndicators-Python)](LICENSE-MIT)
 
-[![Docs - ReadTheDocs](https://img.shields.io/badge/docs-latest-brightgreen?logo=readthedocs)](https://pytechnicalindicators-docs.readthedocs.io/en/latest/)
+[![Docs - ReadTheDocs](https://img.shields.io/badge/docs-latest-brightgreen?logo=readthedocs)](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/)
 [![Docs - GitHub Pages](https://img.shields.io/badge/docs-github%20pages-blue?logo=github)](https://chironmind.github.io/CentaurTechnicalIndicators-docs/)
-[![Tutorials](https://img.shields.io/badge/Tutorials-Available-brightgreen?style=flat&logo=book)](https://github.com/chironmind/CentaurTechnicalIndicators_tutorials)
-[![Benchmarks](https://img.shields.io/badge/Performance-Microsecond-blue?logo=zap)](https://github.com/chironmind/CentaurTechnicalIndicators-benchmarks)
+[![Tutorials](https://img.shields.io/badge/Tutorials-Available-brightgreen?style=flat&logo=book)](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/tutorials)
+[![Benchmarks](https://img.shields.io/badge/Performance-Microsecond-blue?logo=zap)](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/benchmarks)
 
 # Centaur Technical Indicators
 
-A production-ready Python library providing 60+ technical indicators for financial analysis, built on a high-performance Rust backend. Part of the Centaur Capital ecosystem.
+A production-ready Python library providing 60+ technical indicators for financial analysis, built on a high-performance Rust backend. 
+
+Part of the Centaur Capital ecosystem.
 
 Looking for the Rust crate? See: [ChironMind/CentaurTechnicalIndicators-Rust](https://github.com/ChironMind/CentaurTechnicalIndicators-Rust)
 
-Looking for the WASM bindings? See: [ChironMind/ti-engine](https://github.com/chironmind/ti-engine)
+Looking for the WASM bindings? See: [ChironMind/CentaurTechnicalIndicators-JS](https://github.com/chironmind/CentaurTechnicalIndicators-JS)
 
 ---
 
@@ -48,36 +50,33 @@ Simple Moving Average: 100.352
 
 **3. Explore more tutorials**
 
-- [01 - Using with pandas](https://github.com/chironmind/CentaurTechnicalIndicators_Tutorials/blob/main/01_using_pandas.md)
-- [02 - Using with Plotly](https://github.com/chironmind/CentaurTechnicalIndicators_Tutorials/blob/main/02_using_plotly.md)
-- [03 - Advanced use cases](https://github.com/chironmind/CentaurTechnicalIndicators_Tutorials/blob/main/03_advanced_usage.md)
-- [04 - Connecting to an API](https://github.com/chironmind/CentaurTechnicalIndicators_Tutorials/blob/main/04_api_connection.md)
-- [05 - Using with Jupyter Notebooks](https://github.com/chironmind/CentaurTechnicalIndicators_Tutorials/blob/main/05_using_jupyter.ipynb)
-
+- [01 - Using with pandas](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/tutorials/pandas/)
+- [02 - Using with Plotly](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/tutorials/plotly/)
+- [03 - Advanced use cases](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/tutorials/advanced/)
+- [04 - Connecting to an API](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/tutorials/api_connection/)
 ---
 
 ## 🛠️ How-To Guides
 
 > Task-oriented guides for common problems and advanced scenarios.
 
-- [How to pick Bulk vs Single](https://github.com/chironmind/CentaurTechnicalIndicators-How-To-guides/blob/main/bulk_vs_single.md)
-- [How to choose a Constant Model Type](https://github.com/chironmind/CentaurTechnicalIndicators-How-To-guides/blob/main/choose_constant_model_type.md)
-- [How to choose a Deviation Model](https://github.com/chironmind/CentaurTechnicalIndicators-How-To-guides/blob/main/choose_deviation_model.md)
-- [How to choose a period](https://github.com/chironmind/CentaurTechnicalIndicators-How-To-guides/blob/main/choose_period.md)
-- [How to use the McGinley dynamic function variations](https://github.com/chironmind/CentaurTechnicalIndicators-How-To-guides/blob/main/mcginley_dynamic.md)
+- [How to pick Bulk vs Single](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/bulk_vs_single/)
+- [How to choose a Constant Model Type](https://centaur_technical_indicators-docs.readthedocs.io/en/latest//howto/choose_constant_model_type/)
+- [How to choose a Deviation Model](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/choose_deviation_model/)
+- [How to choose a period](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/choose_period/)
+- [How to use the McGinley dynamic function variations](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/mcginley_dynamic/)
 
 ---
 
 ## 📚 Reference
 
-
-The API reference can be found [here](https://pytechnicalindicators-docs.readthedocs.io/en/latest/api/)
+The API reference can be found [here](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/api/)
 
 ### Example
 
 A reference of how to call each function can be found in the tests:
 
-- [Reference Example](./tests/)
+- [Reference Examples](./tests/)
 
 Clone and run:
 
@@ -98,7 +97,7 @@ $ pytest .
 - `bulk` & `single` function variants  
   - `bulk`: Compute indicator over rolling periods, returns a list.
   - `single`: Compute indicator for the entire list, returns a single value.
-- Types used to personalise the technical indicators (**`moving_average_type`**, **`deviation_model`**, **`contant_model_type`**...)
+- `types` used to personalise the technical indicators (**`moving_average_type`**, **`deviation_model`**, **`contant_model_type`**...)
 
 ---
 
@@ -119,9 +118,6 @@ $ pytest .
 
 All indicators are grouped and split into modules based on their analysis area.  
 Each module has `bulk` (list output) and `single` (scalar output) functions.
-
-### Standard Indicators
-- Simple, Smoothed, Exponential Moving Average, Bollinger Bands, MACD, RSI
 
 ### Candle Indicators
 - Ichimoku Cloud, Moving Constant Bands/Envelopes, Donchian Channels, Keltner, Supertrend
@@ -186,19 +182,19 @@ Medium dataset: 5Y daily data
 Large dataset: 10Y daily data
 
 Coverage and result files
-- Candle indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_candle_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_candle_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_candle_indicators_large_benchmark_results.md)
-- Chart trends: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_chart_trends_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_chart_trends_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_chart_trends_large_benchmark_results.md)
-- Correlation indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_correlation_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_correlation_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_correlation_indicators_large_benchmark_results.md)
-- Momentum indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_momentum_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_momentum_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_momentum_indicators_large_benchmark_results.md)
-- Moving averages: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_moving_average_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_moving_average_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_moving_average_large_benchmark_results.md)
-- Other indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_other_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_other_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_other_indicators_large_benchmark_results.md)
-- Standard indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_standard_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_standard_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_standard_indicators_large_benchmark_results.md)
-- Strength indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_strength_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_strength_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_strength_indicators_large_benchmark_results.md)
-- Trend indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_trend_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_trend_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_trend_indicators_large_benchmark_results.md)
-- Volatility indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_volatility_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_volatility_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_volatility_indicators_large_benchmark_results.md)
+- Candle indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Python-Benchmarks/blob/main/results/markdown/rpi5_candle_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_candle_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_candle_indicators_large_benchmark_results.md)
+- Chart trends: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Python-Benchmarks/blob/main/results/markdown/rpi5_chart_trends_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_chart_trends_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_chart_trends_large_benchmark_results.md)
+- Correlation indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Python-Benchmarks/blob/main/results/markdown/rpi5_correlation_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_correlation_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_correlation_indicators_large_benchmark_results.md)
+- Momentum indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Python-Benchmarks/blob/main/results/markdown/rpi5_momentum_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_momentum_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_momentum_indicators_large_benchmark_results.md)
+- Moving averages: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Python-Benchmarks/blob/main/results/markdown/rpi5_moving_average_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_moving_average_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_moving_average_large_benchmark_results.md)
+- Other indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Python-Benchmarks/blob/main/results/markdown/rpi5_other_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_other_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_other_indicators_large_benchmark_results.md)
+- Standard indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Python-Benchmarks/blob/main/results/markdown/rpi5_standard_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_standard_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_standard_indicators_large_benchmark_results.md)
+- Strength indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Python-Benchmarks/blob/main/results/markdown/rpi5_strength_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_strength_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_strength_indicators_large_benchmark_results.md)
+- Trend indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Python-Benchmarks/blob/main/results/markdown/rpi5_trend_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_trend_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_trend_indicators_large_benchmark_results.md)
+- Volatility indicators: [small](https://github.com/chironmind/CentaurTechnicalIndicators-Python-Benchmarks/blob/main/results/markdown/rpi5_volatility_indicators_small_benchmark_results.md) • [medium](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_volatility_indicators_medium_benchmark_results.md) • [large](https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/blob/main/results/markdown/rpi5_volatility_indicators_large_benchmark_results.md)
 
 Browse all benchmark tables
-- Folder: https://github.com/chironmind/CentaurTechnicalIndicators-Benchmarks/tree/main/results/markdown
+- [CentaurTechnicalIndicators-Python Benchmarks](https://github.com/chironmind/CentaurTechnicalIndicators-Python-Benchmarks/tree/main/results/markdown)
 
 *(Your results may vary depending on platform and Python environment.)*
 
@@ -239,10 +235,10 @@ MIT License. See [LICENSE](LICENSE-MIT).
 
 This repository is part of a structured documentation suite:
 
-- 📕 **Tutorials:** — [See here](https://github.com/ChironMind/CentaurTechnicalIndicators_Tutorials)
-- 📘 **How-To Guides:** — [See here](https://github.com/ChironMind/CentaurTechnicalIndicators-How-To-guides)
-- ⏱️ **Benchmarks:** — [See here](https://github.com/ChironMind/CentaurTechnicalIndicators-Benchmarks)
+- 📕 **Tutorials:** — [See here](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/tutorials/)
+- 📘 **How-To Guides:** — [See here](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/)
+- ⏱️ **Benchmarks:** — [See here](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/benchmarks/)
 - 📙 **Explanations:** — Coming soon
-- 📗 **Reference:** — [See here](https://github.com/ChironMind/CentaurTechnicalIndicators-Python/wiki)
+- 📗 **Reference:** — [See here](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/api/)
  
 ---
