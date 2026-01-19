@@ -17,7 +17,7 @@ Part of the Centaur Capital ecosystem.
 
 Looking for the Rust crate? See: [ChironMind/CentaurTechnicalIndicators-Rust](https://github.com/ChironMind/CentaurTechnicalIndicators-Rust)
 
-Looking for the WASM bindings? See: [ChironMind/CentaurTechnicalIndicators-JS](https://github.com/chironmind/CentaurTechnicalIndicators-JS)
+Looking for the WASM bindings? See: [chironmind/CentaurTechnicalIndicators-JS](https://github.com/chironmind/CentaurTechnicalIndicators-JS)
 
 ---
 
@@ -61,7 +61,7 @@ Simple Moving Average: 100.352
 > Task-oriented guides for common problems and advanced scenarios.
 
 - [How to pick Bulk vs Single](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/bulk_vs_single/)
-- [How to choose a Constant Model Type](https://centaur_technical_indicators-docs.readthedocs.io/en/latest//howto/choose_constant_model_type/)
+- [How to choose a Constant Model Type](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/choose_constant_model_type/)
 - [How to choose a Deviation Model](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/choose_deviation_model/)
 - [How to choose a period](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/choose_period/)
 - [How to use the McGinley dynamic function variations](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/mcginley_dynamic/)
@@ -72,7 +72,7 @@ Simple Moving Average: 100.352
 
 The API reference can be found [here](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/api/)
 
-### Example
+### Examples
 
 A reference of how to call each function can be found in the tests:
 
@@ -97,7 +97,7 @@ $ pytest .
 - `bulk` & `single` function variants  
   - `bulk`: Compute indicator over rolling periods, returns a list.
   - `single`: Compute indicator for the entire list, returns a single value.
-- `types` used to personalise the technical indicators (**`moving_average_type`**, **`deviation_model`**, **`contant_model_type`**...)
+- `types` used to personalise the technical indicators (**`moving_average_type`**, **`deviation_model`**, **`constant_model_type`**...)
 
 ---
 
