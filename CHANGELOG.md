@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.0.0] - 2026-01-19
+
+### Changed
+- **Breaking:** Rebranded from PyTechnicalIndicators to CentaurTechnicalIndicators-Python
+  - Updated all documentation, README, and links to reflect the new CentaurTechnicalIndicators branding
+  - Updated package metadata to reflect the new name and branding
+
+---
+
+*** /!\ The release notes below cover the PyTechnicalIndicators packages before the rebranding /!\ ***
+
 ## [3.0.5] - 2025-10-19
 
 ### Changed
