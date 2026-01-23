@@ -1,13 +1,13 @@
-[![PyPI Version](https://img.shields.io/pypi/v/centaur_technical_indicators.svg)](https://pypi.org/project/centaur_technical_indicators/)
-[![PyPI Downloads](https://pepy.tech/badge/centaur_technical_indicators)](https://pypi.org/project/centaur_technical_indicators/)
-![Python Versions](https://img.shields.io/pypi/pyversions/centaur_technical_indicators)
+[![PyPI Version](https://img.shields.io/pypi/v/centaur_technical_indicators.svg)](https://pypi.org/project/centaur-technical-indicators/)
+[![PyPI Downloads](https://pepy.tech/badge/centaur_technical_indicators)](https://pypi.org/project/centaur-technical-indicators/)
+![Python Versions](https://img.shields.io/pypi/pyversions/centaur-technical-indicators)
 [![CI](https://github.com/chironmind/CentaurTechnicalIndicators-Python/actions/workflows/python-package.yml/badge.svg)](https://github.com/chironmind/CentaurTechnicalIndicators-Python/actions)
 [![License](https://img.shields.io/github/license/chironmind/CentaurTechnicalIndicators-Python)](LICENSE-MIT)
 
-[![Docs - ReadTheDocs](https://img.shields.io/badge/docs-latest-brightgreen?logo=readthedocs)](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/)
+[![Docs - ReadTheDocs](https://img.shields.io/badge/docs-latest-brightgreen?logo=readthedocs)](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/)
 [![Docs - GitHub Pages](https://img.shields.io/badge/docs-github%20pages-blue?logo=github)](https://chironmind.github.io/CentaurTechnicalIndicators-docs/)
-[![Tutorials](https://img.shields.io/badge/Tutorials-Available-brightgreen?style=flat&logo=book)](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/tutorials)
-[![Benchmarks](https://img.shields.io/badge/Performance-Microsecond-blue?logo=zap)](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/benchmarks)
+[![Tutorials](https://img.shields.io/badge/Tutorials-Available-brightgreen?style=flat&logo=book)](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/tutorials)
+[![Benchmarks](https://img.shields.io/badge/Performance-Microsecond-blue?logo=zap)](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/benchmarks)
 
 # Centaur Technical Indicators
 
@@ -50,27 +50,27 @@ Simple Moving Average: 100.352
 
 **3. Explore more tutorials**
 
-- [01 - Using with pandas](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/tutorials/pandas/)
-- [02 - Using with Plotly](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/tutorials/plotly/)
-- [03 - Advanced use cases](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/tutorials/advanced/)
-- [04 - Connecting to an API](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/tutorials/api_connection/)
+- [01 - Using with pandas](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/tutorials/pandas/)
+- [02 - Using with Plotly](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/tutorials/plotly/)
+- [03 - Advanced use cases](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/tutorials/advanced/)
+- [04 - Connecting to an API](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/tutorials/api_connection/)
 ---
 
 ## 🛠️ How-To Guides
 
 > Task-oriented guides for common problems and advanced scenarios.
 
-- [How to pick Bulk vs Single](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/bulk_vs_single/)
-- [How to choose a Constant Model Type](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/choose_constant_model_type/)
-- [How to choose a Deviation Model](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/choose_deviation_model/)
-- [How to choose a period](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/choose_period/)
-- [How to use the McGinley dynamic function variations](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/mcginley_dynamic/)
+- [How to pick Bulk vs Single](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/howto/bulk_vs_single/)
+- [How to choose a Constant Model Type](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/howto/choose_constant_model_type/)
+- [How to choose a Deviation Model](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/howto/choose_deviation_model/)
+- [How to choose a period](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/howto/choose_period/)
+- [How to use the McGinley dynamic function variations](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/howto/mcginley_dynamic/)
 
 ---
 
 ## 📚 Reference
 
-The API reference can be found [here](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/api/)
+The API reference can be found [here](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/api/)
 
 ### Examples
 
@@ -238,7 +238,7 @@ This repository is part of a structured documentation suite:
 - 📕 **Tutorials:** — [See here](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/tutorials/)
 - 📘 **How-To Guides:** — [See here](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/howto/)
 - ⏱️ **Benchmarks:** — [See here](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/benchmarks/)
-- 📙 **Explanations:** — Coming soon
+- 📙 **Explanations:** — [centaurlabs.pages.dev/](https://centaurlabs.pages.dev/)
 - 📗 **Reference:** — [See here](https://centaur_technical_indicators-docs.readthedocs.io/en/latest/api/)
  
 ---
