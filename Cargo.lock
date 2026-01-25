@@ -11,16 +11,16 @@ checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
 [[package]]
 name = "centaur_technical_indicators"
 version = "1.0.0"
-dependencies = [
- "centaur_technical_indicators 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "pyo3",
-]
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ca5cdc00eed15c0bfa1a910c84dbbe6546b9ccdc117302ff73787f8ec2d91fa2"
 
 [[package]]
 name = "centaur_technical_indicators"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ca5cdc00eed15c0bfa1a910c84dbbe6546b9ccdc117302ff73787f8ec2d91fa2"
+version = "1.0.1"
+dependencies = [
+ "centaur_technical_indicators 1.0.0",
+ "pyo3",
+]
 
 [[package]]
 name = "heck"
