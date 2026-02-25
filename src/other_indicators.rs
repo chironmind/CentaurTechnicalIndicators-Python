@@ -63,6 +63,8 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///
 /// Returns:
 ///     Tuple of (final investment value, percentage return)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/other-indicators/return-on-investment/>
 #[pyfunction(name = "return_on_investment")]
 fn single_return_on_investment(
     start_price: f64,
@@ -84,6 +86,8 @@ fn single_return_on_investment(
 ///
 /// Returns:
 ///     List of tuples containing (final investment value, percentage return)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/other-indicators/return-on-investment/>
 #[pyfunction(name = "return_on_investment")]
 fn bulk_return_on_investment(prices: Vec<f64>, investment: f64) -> PyResult<Vec<(f64, f64)>> {
     Ok(oi::bulk::return_on_investment(&prices, investment).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -100,6 +104,8 @@ fn bulk_return_on_investment(prices: Vec<f64>, investment: f64) -> PyResult<Vec<
 ///
 /// Returns:
 ///     True Range value
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/other-indicators/true-range/>
 #[pyfunction(name = "true_range")]
 fn single_true_range(close: f64, high: f64, low: f64) -> PyResult<f64> {
     Ok(oi::single::true_range(close, high, low))
@@ -114,6 +120,8 @@ fn single_true_range(close: f64, high: f64, low: f64) -> PyResult<f64> {
 ///
 /// Returns:
 ///     List of True Range values
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/other-indicators/true-range/>
 #[pyfunction(name = "true_range")]
 fn bulk_true_range(close: Vec<f64>, high: Vec<f64>, low: Vec<f64>) -> PyResult<Vec<f64>> {
     Ok(oi::bulk::true_range(&close, &high, &low).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -132,6 +140,8 @@ fn bulk_true_range(close: Vec<f64>, high: Vec<f64>, low: Vec<f64>) -> PyResult<V
 ///
 /// Returns:
 ///     Average True Range value
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/other-indicators/average-true-range/>
 #[pyfunction(name = "average_true_range")]
 fn single_average_true_range(
     close: Vec<f64>,
@@ -159,6 +169,8 @@ fn single_average_true_range(
 ///
 /// Returns:
 ///     List of Average True Range values
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/other-indicators/average-true-range/>
 #[pyfunction(name = "average_true_range")]
 fn bulk_average_true_range(
     close: Vec<f64>,
@@ -187,6 +199,8 @@ fn bulk_average_true_range(
 ///
 /// Returns:
 ///     Internal bar strength value
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/other-indicators/internal-bar-strength/>
 #[pyfunction(name = "internal_bar_strength")]
 fn single_internal_bar_strength(high: f64, low: f64, close: f64) -> PyResult<f64> {
     Ok(oi::single::internal_bar_strength(high, low, close))
@@ -201,6 +215,8 @@ fn single_internal_bar_strength(high: f64, low: f64, close: f64) -> PyResult<f64
 ///
 /// Returns:
 ///     List of internal bar strength values
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/other-indicators/internal-bar-strength/>
 #[pyfunction(name = "internal_bar_strength")]
 fn bulk_internal_bar_strength(
     high: Vec<f64>,
@@ -223,6 +239,8 @@ fn bulk_internal_bar_strength(
 ///
 /// Returns:
 ///     List of tuples containing (positivity indicator, signal line)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/other-indicators/positivity-indicator/>
 #[pyfunction(name = "positivity_indicator")]
 fn bulk_positivity_indicator(
     open: Vec<f64>,

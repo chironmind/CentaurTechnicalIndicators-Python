@@ -64,6 +64,8 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///
 /// Returns:
 ///     Accumulation Distribution value
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/strength-indicators/accumulation-distribution/>
 #[pyfunction(name = "accumulation_distribution")]
 fn single_accumulation_distribution(
     high: f64,
@@ -92,6 +94,8 @@ fn single_accumulation_distribution(
 ///
 /// Returns:
 ///     List of Accumulation Distribution values
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/strength-indicators/accumulation-distribution/>
 #[pyfunction(name = "accumulation_distribution")]
 fn bulk_accumulation_distribution(
     highs: Vec<f64>,
@@ -120,6 +124,8 @@ fn bulk_accumulation_distribution(
 ///
 /// Returns:
 ///     Volume Index value
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/strength-indicators/positive-volume-index/>
 #[pyfunction(name = "volume_index")]
 fn single_volume_index(
     current_close: f64,
@@ -142,6 +148,8 @@ fn single_volume_index(
 ///
 /// Returns:
 ///     List of Positive Volume Index values
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/strength-indicators/positive-volume-index/>
 #[pyfunction(name = "positive_volume_index")]
 fn bulk_positive_volume_index(
     close: Vec<f64>,
@@ -164,6 +172,8 @@ fn bulk_positive_volume_index(
 ///
 /// Returns:
 ///     List of Negative Volume Index values
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/strength-indicators/negative-volume-index/>
 #[pyfunction(name = "negative_volume_index")]
 fn bulk_negative_volume_index(
     close: Vec<f64>,
@@ -191,6 +201,8 @@ fn bulk_negative_volume_index(
 ///
 /// Returns:
 ///     Relative Vigor Index value
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/strength-indicators/relative-vigor-index/>
 #[pyfunction(name = "relative_vigor_index")]
 fn single_relative_vigor_index(
     open: Vec<f64>,
@@ -221,6 +233,8 @@ fn single_relative_vigor_index(
 ///
 /// Returns:
 ///     List of Relative Vigor Index values
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/strength-indicators/relative-vigor-index/>
 #[pyfunction(name = "relative_vigor_index")]
 fn bulk_relative_vigor_index(
     open: Vec<f64>,

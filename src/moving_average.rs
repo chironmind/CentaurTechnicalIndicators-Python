@@ -40,6 +40,8 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///
 /// Returns:
 ///     Moving average
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/moving-averages/moving-average/>
 #[pyfunction(name = "moving_average")]
 fn single_moving_average(prices: Vec<f64>, moving_average_type: &str) -> PyResult<f64> {
     ma::single::moving_average(
@@ -57,6 +59,8 @@ fn single_moving_average(prices: Vec<f64>, moving_average_type: &str) -> PyResul
 ///
 /// Returns:
 ///     List of moving averages
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/moving-averages/moving-average/>
 #[pyfunction(name = "moving_average")]
 fn bulk_moving_average(
     prices: Vec<f64>,
@@ -79,6 +83,8 @@ fn bulk_moving_average(
 ///
 /// Returns:
 ///     McGinley dynamic
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/moving-averages/mcginley-dynamic/>
 #[pyfunction(name = "mcginley_dynamic")]
 fn single_mcginley_dynamic(
     latest_price: f64,
@@ -101,6 +107,8 @@ fn single_mcginley_dynamic(
 ///
 /// Returns:
 ///     List of McGinley dynamics
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/moving-averages/mcginley-dynamic/>
 #[pyfunction(name = "mcginley_dynamic")]
 fn bulk_mcginley_dynamic(
     prices: Vec<f64>,
