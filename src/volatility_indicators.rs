@@ -69,6 +69,7 @@ fn bulk_ulcer_index(prices: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
 ///
 /// Returns:
 ///     List of volatility system SaR points
+#[allow(deprecated)]
 #[pyfunction(name = "volatility_system")]
 fn bulk_volatility_system(
     high: Vec<f64>,

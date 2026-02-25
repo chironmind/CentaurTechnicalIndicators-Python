@@ -187,6 +187,7 @@ fn bulk_stochastic_oscillator(prices: Vec<f64>, period: usize) -> PyResult<Vec<f
 ///
 /// Returns:
 ///     Slow stochastic
+#[allow(deprecated)]
 #[pyfunction(name = "slow_stochastic")]
 fn single_slow_stochastic(stochastics: Vec<f64>, constant_model_type: &str) -> PyResult<f64> {
     Ok(mi::single::slow_stochastic(
@@ -205,6 +206,7 @@ fn single_slow_stochastic(stochastics: Vec<f64>, constant_model_type: &str) -> P
 ///
 /// Returns:
 ///     List of Slow stochastics
+#[allow(deprecated)]
 #[pyfunction(name = "slow_stochastic")]
 fn bulk_slow_stochastic(
     stochastics: Vec<f64>,
@@ -229,6 +231,7 @@ fn bulk_slow_stochastic(
 ///
 /// Returns:
 ///     Slowest stochastic
+#[allow(deprecated)]
 #[pyfunction(name = "slowest_stochastic")]
 fn single_slowest_stochastic(
     slow_stochastics: Vec<f64>,
@@ -250,6 +253,7 @@ fn single_slowest_stochastic(
 ///
 /// Returns:
 ///     List of lowest stochastic
+#[allow(deprecated)]
 #[pyfunction(name = "slowest_stochastic")]
 fn bulk_slowest_stochastic(
     slow_stochastics: Vec<f64>,
@@ -590,6 +594,7 @@ fn bulk_macd_line(
 ///
 /// Returns:
 ///     Signal line point
+#[allow(deprecated)]
 #[pyfunction(name = "signal_line")]
 fn single_signal_line(macds: Vec<f64>, constant_model_type: &str) -> PyResult<f64> {
     Ok(mi::single::signal_line(
@@ -608,6 +613,7 @@ fn single_signal_line(macds: Vec<f64>, constant_model_type: &str) -> PyResult<f6
 ///
 /// Returns:
 ///     List Signal line points
+#[allow(deprecated)]
 #[pyfunction(name = "signal_line")]
 fn bulk_signal_line(
     macds: Vec<f64>,

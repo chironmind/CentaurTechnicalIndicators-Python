@@ -10,4 +10,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 pyo3 = "0.25.0"
-centaur_technical_indicators = "1.0.0"
+centaur_technical_indicators = "1.2.0"
