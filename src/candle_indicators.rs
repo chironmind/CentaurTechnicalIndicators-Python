@@ -81,6 +81,8 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///
 /// Returns:
 ///     Moving Constant Envelopes tuple (lower envelope, constant model result, upper envelope)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/moving-constant-envelopes/>
 #[pyfunction(name = "moving_constant_envelopes")]
 fn single_moving_constant_envelopes(
     prices: Vec<f64>,
@@ -105,6 +107,8 @@ fn single_moving_constant_envelopes(
 ///
 /// Returns:
 ///     List of Moving Constant Envelopes tuple (lower envelope, constant model result, upper envelope)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/moving-constant-envelopes/>
 #[pyfunction(name = "moving_constant_envelopes")]
 fn bulk_moving_constant_envelopes(
     prices: Vec<f64>,
@@ -131,6 +135,8 @@ fn bulk_moving_constant_envelopes(
 ///
 /// Returns:
 ///     McGinley dynamic envelopes tuple (lower envelope, McGinley dynamic, upper envelope)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/mcginley-dynamic-envelopes/>
 #[pyfunction(name = "mcginley_dynamic_envelopes")]
 fn single_mcginley_dynamic_envelopes(
     prices: Vec<f64>,
@@ -154,6 +160,8 @@ fn single_mcginley_dynamic_envelopes(
 ///
 /// Returns:
 ///     List of McGinley dynamic envelopes tuple (lower envelope, McGinley dynamic, upper envelope)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/mcginley-dynamic-envelopes/>
 #[pyfunction(name = "mcginley_dynamic_envelopes")]
 fn bulk_mcginley_dynamic_envelopes(
     prices: Vec<f64>,
@@ -183,6 +191,8 @@ fn bulk_mcginley_dynamic_envelopes(
 ///
 /// Returns:
 ///     Moving constant bands tuple (lower band, constant model result, upper lower band)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/moving-constant-bands/>
 #[pyfunction(name = "moving_constant_bands")]
 fn single_moving_constant_bands(
     prices: Vec<f64>,
@@ -211,6 +221,8 @@ fn single_moving_constant_bands(
 ///
 /// Returns:
 ///     List of Moving constant bands tuple (lower band, constant model result, upper band)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/moving-constant-bands/>
 #[pyfunction(name = "moving_constant_bands")]
 fn bulk_moving_constant_bands(
     prices: Vec<f64>,
@@ -241,6 +253,8 @@ fn bulk_moving_constant_bands(
 ///
 /// Returns:
 ///     McGinley dynamic bands tuple (lower band, McGinley dynamic, upper band)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/mcginley-dynamic-bands/>
 #[pyfunction(name = "mcginley_dynamic_bands")]
 fn single_mcginley_dynamic_bands(
     prices: Vec<f64>,
@@ -268,6 +282,8 @@ fn single_mcginley_dynamic_bands(
 ///
 /// Returns:
 ///     List of McGinley dynamic bands tuple (lower band, McGinley dynamic, upper band)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/mcginley-dynamic-bands/>
 #[pyfunction(name = "mcginley_dynamic_bands")]
 fn bulk_mcginley_dynamic_bands(
     prices: Vec<f64>,
@@ -300,6 +316,8 @@ fn bulk_mcginley_dynamic_bands(
 /// Returns:
 ///     Ichimoku cloud points tuple (leading span a, leading span b, base line, conversion_line, and most
 ///     revelant closing price)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/ichimoku-cloud/>
 #[pyfunction(name = "ichimoku_cloud")]
 fn single_ichimoku_cloud(
     highs: Vec<f64>,
@@ -332,6 +350,8 @@ fn single_ichimoku_cloud(
 /// Returns:
 ///     A list of Ichimoku cloud points tuple (leading span a, leading span b, base line, conversion_line, and most
 ///     revelant closing price)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/ichimoku-cloud/>
 #[pyfunction(name = "ichimoku_cloud")]
 fn bulk_ichimoku_cloud(
     highs: Vec<f64>,
@@ -361,6 +381,8 @@ fn bulk_ichimoku_cloud(
 ///
 /// Returns:
 ///     Donchian channel tuple (lower, average, upper)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/donchian-channels/>
 #[pyfunction(name = "donchian_channels")]
 fn single_donchian_channels(high: Vec<f64>, low: Vec<f64>) -> PyResult<(f64, f64, f64)> {
     ci::single::donchian_channels(&high, &low).map_err(|e| PyValueError::new_err(e.to_string()))
@@ -375,6 +397,8 @@ fn single_donchian_channels(high: Vec<f64>, low: Vec<f64>) -> PyResult<(f64, f64
 ///
 /// Returns:
 ///     List of Donchian channel tuples (lower, average, upper)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/donchian-channels/>
 #[pyfunction(name = "donchian_channels")]
 fn bulk_donchian_channels(
     high: Vec<f64>,
@@ -402,6 +426,8 @@ fn bulk_donchian_channels(
 ///
 /// Returns:
 ///     Keltner channel tuple
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/keltner-channels/>
 #[pyfunction(name = "keltner_channel")]
 fn single_keltner_channel(
     high: Vec<f64>,
@@ -438,6 +464,8 @@ fn single_keltner_channel(
 ///
 /// Returns:
 ///     List of Keltner channel tuples
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/keltner-channels/>
 #[pyfunction(name = "keltner_channel")]
 fn bulk_keltner_channel(
     high: Vec<f64>,
@@ -471,6 +499,8 @@ fn bulk_keltner_channel(
 ///
 /// Returns:
 ///     Super Trend indicator
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/supertrend/>
 #[pyfunction(name = "supertrend")]
 fn single_supertrend(
     high: Vec<f64>,
@@ -501,6 +531,8 @@ fn single_supertrend(
 ///
 /// Returns:
 ///     List of Super Trend indicators
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/candle-indicators/supertrend/>
 #[pyfunction(name = "supertrend")]
 fn bulk_supertrend(
     high: Vec<f64>,

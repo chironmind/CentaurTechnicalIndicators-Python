@@ -38,6 +38,8 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///
 /// Returns:
 ///     Ulcer Index value
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/volatility-indicators/ulcer-index/>
 #[pyfunction(name = "ulcer_index")]
 fn single_ulcer_index(prices: Vec<f64>) -> PyResult<f64> {
     vi::single::ulcer_index(&prices).map_err(|e| PyValueError::new_err(e.to_string()))
@@ -51,6 +53,8 @@ fn single_ulcer_index(prices: Vec<f64>) -> PyResult<f64> {
 ///
 /// Returns:
 ///     List of Ulcer Index values (one per window)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/volatility-indicators/ulcer-index/>
 #[pyfunction(name = "ulcer_index")]
 fn bulk_ulcer_index(prices: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
     vi::bulk::ulcer_index(&prices, period).map_err(|e| PyValueError::new_err(e.to_string()))

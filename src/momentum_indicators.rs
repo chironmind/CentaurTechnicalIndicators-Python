@@ -118,6 +118,8 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///
 /// Returns:
 ///     Relative Strength Index
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/rsi/>
 #[pyfunction(name = "relative_strength_index")]
 fn single_relative_strength_index(prices: Vec<f64>, constant_model_type: &str) -> PyResult<f64> {
     mi::single::relative_strength_index(
@@ -136,6 +138,8 @@ fn single_relative_strength_index(prices: Vec<f64>, constant_model_type: &str) -
 ///
 /// Returns:
 ///     List of Relative Strength Index
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/rsi/>
 #[pyfunction(name = "relative_strength_index")]
 fn bulk_relative_strength_index(
     prices: Vec<f64>,
@@ -158,6 +162,8 @@ fn bulk_relative_strength_index(
 ///
 /// Returns:
 ///     Stochastic Oscillator
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/stochastic-oscillator/>
 #[pyfunction(name = "stochastic_oscillator")]
 fn single_stochastic_oscillator(prices: Vec<f64>) -> PyResult<f64> {
     Ok(mi::single::stochastic_oscillator(&prices).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -171,6 +177,8 @@ fn single_stochastic_oscillator(prices: Vec<f64>) -> PyResult<f64> {
 ///
 /// Returns:
 ///     List of Stochastic Oscillators
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/stochastic-oscillator/>
 #[pyfunction(name = "stochastic_oscillator")]
 fn bulk_stochastic_oscillator(prices: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
     Ok(mi::bulk::stochastic_oscillator(&prices, period).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -187,6 +195,8 @@ fn bulk_stochastic_oscillator(prices: Vec<f64>, period: usize) -> PyResult<Vec<f
 ///
 /// Returns:
 ///     Slow stochastic
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/slow-stochastic-oscillator/>
 #[allow(deprecated)]
 #[pyfunction(name = "slow_stochastic")]
 fn single_slow_stochastic(stochastics: Vec<f64>, constant_model_type: &str) -> PyResult<f64> {
@@ -206,6 +216,8 @@ fn single_slow_stochastic(stochastics: Vec<f64>, constant_model_type: &str) -> P
 ///
 /// Returns:
 ///     List of Slow stochastics
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/slow-stochastic-oscillator/>
 #[allow(deprecated)]
 #[pyfunction(name = "slow_stochastic")]
 fn bulk_slow_stochastic(
@@ -231,6 +243,8 @@ fn bulk_slow_stochastic(
 ///
 /// Returns:
 ///     Slowest stochastic
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/slow-stochastic-oscillator/>
 #[allow(deprecated)]
 #[pyfunction(name = "slowest_stochastic")]
 fn single_slowest_stochastic(
@@ -253,6 +267,8 @@ fn single_slowest_stochastic(
 ///
 /// Returns:
 ///     List of lowest stochastic
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/slow-stochastic-oscillator/>
 #[allow(deprecated)]
 #[pyfunction(name = "slowest_stochastic")]
 fn bulk_slowest_stochastic(
@@ -278,6 +294,8 @@ fn bulk_slowest_stochastic(
 ///
 /// Returns:
 ///     Williams %R
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/williams-percent-r/>
 #[pyfunction(name = "williams_percent_r")]
 fn single_williams_percent_r(high: Vec<f64>, low: Vec<f64>, close: f64) -> PyResult<f64> {
     Ok(mi::single::williams_percent_r(&high, &low, close).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -293,6 +311,8 @@ fn single_williams_percent_r(high: Vec<f64>, low: Vec<f64>, close: f64) -> PyRes
 ///
 /// Returns:
 ///     List of Williams %R
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/williams-percent-r/>
 #[pyfunction(name = "williams_percent_r")]
 fn bulk_williams_percent_r(
     high: Vec<f64>,
@@ -313,6 +333,8 @@ fn bulk_williams_percent_r(
 ///
 /// Returns:
 ///     Money Flow Index
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/money-flow-index/>
 #[pyfunction(name = "money_flow_index")]
 fn single_money_flow_index(prices: Vec<f64>, volume: Vec<f64>) -> PyResult<f64> {
     Ok(mi::single::money_flow_index(&prices, &volume).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -327,6 +349,8 @@ fn single_money_flow_index(prices: Vec<f64>, volume: Vec<f64>) -> PyResult<f64> 
 ///
 /// Returns:
 ///     Money Flow Index
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/money-flow-index/>
 #[pyfunction(name = "money_flow_index")]
 fn bulk_money_flow_index(prices: Vec<f64>, volume: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
     Ok(mi::bulk::money_flow_index(&prices, &volume, period).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -342,6 +366,8 @@ fn bulk_money_flow_index(prices: Vec<f64>, volume: Vec<f64>, period: usize) -> P
 ///
 /// Returns:
 ///     Rate of Change
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/rate-of-change/>
 #[pyfunction(name = "rate_of_change")]
 fn single_rate_of_change(current_price: f64, previous_price: f64) -> PyResult<f64> {
     Ok(mi::single::rate_of_change(current_price, previous_price).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -354,6 +380,8 @@ fn single_rate_of_change(current_price: f64, previous_price: f64) -> PyResult<f6
 ///
 /// Returns:
 ///     List of Rate of Change
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/rate-of-change/>
 #[pyfunction(name = "rate_of_change")]
 fn bulk_rate_of_change(prices: Vec<f64>) -> PyResult<Vec<f64>> {
     Ok(mi::bulk::rate_of_change(&prices).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -371,6 +399,8 @@ fn bulk_rate_of_change(prices: Vec<f64>) -> PyResult<Vec<f64>> {
 ///
 /// Returns:
 ///     On Balance Volume
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/on-balance-volume/>
 #[pyfunction(name = "on_balance_volume")]
 fn single_on_balance_volume(
     current_price: f64,
@@ -395,6 +425,8 @@ fn single_on_balance_volume(
 ///
 /// Returns:
 ///     List of On Balance Volume
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/on-balance-volume/>
 #[pyfunction(name = "on_balance_volume")]
 fn bulk_on_balance_volume(
     prices: Vec<f64>,
@@ -422,6 +454,8 @@ fn bulk_on_balance_volume(
 ///
 /// Returns:
 ///     Commodity Channel Index
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/commodity-channel-index/>
 #[pyfunction(name = "commodity_channel_index")]
 fn single_commodity_channel_index(
     prices: Vec<f64>,
@@ -450,6 +484,8 @@ fn single_commodity_channel_index(
 ///
 /// Returns:
 ///     Commodity Channel Index
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/commodity-channel-index/>
 #[pyfunction(name = "commodity_channel_index")]
 fn bulk_commodity_channel_index(
     prices: Vec<f64>,
@@ -480,6 +516,8 @@ fn bulk_commodity_channel_index(
 ///
 /// Returns:
 ///     A tuple with the Commodity Channel Index and McGinley Dynamic
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/mcginley-dynamic-commodity-channel-index/>
 #[pyfunction(name = "mcginley_dynamic_commodity_channel_index")]
 fn single_mcginley_dynamic_commodity_channel_index(
     prices: Vec<f64>,
@@ -507,6 +545,8 @@ fn single_mcginley_dynamic_commodity_channel_index(
 ///
 /// Returns:
 ///     A tuple with the Commodity Channel Index and McGinley Dynamic
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/mcginley-dynamic-commodity-channel-index/>
 #[pyfunction(name = "mcginley_dynamic_commodity_channel_index")]
 fn bulk_mcginley_dynamic_commodity_channel_index(
     prices: Vec<f64>,
@@ -538,6 +578,8 @@ fn bulk_mcginley_dynamic_commodity_channel_index(
 ///
 /// Returns:
 ///     Moving Average Convergence Divergence
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/macd/>
 #[pyfunction(name = "macd_line")]
 fn single_macd_line(
     prices: Vec<f64>,
@@ -566,6 +608,8 @@ fn single_macd_line(
 ///
 /// Returns:
 ///     Moving Average Convergence Divergence
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/macd/>
 #[pyfunction(name = "macd_line")]
 fn bulk_macd_line(
     prices: Vec<f64>,
@@ -594,6 +638,8 @@ fn bulk_macd_line(
 ///
 /// Returns:
 ///     Signal line point
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/macd/>
 #[allow(deprecated)]
 #[pyfunction(name = "signal_line")]
 fn single_signal_line(macds: Vec<f64>, constant_model_type: &str) -> PyResult<f64> {
@@ -613,6 +659,8 @@ fn single_signal_line(macds: Vec<f64>, constant_model_type: &str) -> PyResult<f6
 ///
 /// Returns:
 ///     List Signal line points
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/macd/>
 #[allow(deprecated)]
 #[pyfunction(name = "signal_line")]
 fn bulk_signal_line(
@@ -640,6 +688,8 @@ fn bulk_signal_line(
 /// Returns:
 ///     Tuple with Moving Average Convergence Divergence, short McGinley dynamic, long McGinley
 ///     dynamic
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/mcginley-dynamic-macd/>
 #[pyfunction(name = "mcginley_dynamic_macd_line")]
 fn single_mcginley_dynamic_macd_line(
     prices: Vec<f64>,
@@ -667,6 +717,8 @@ fn single_mcginley_dynamic_macd_line(
 /// Returns:
 ///     Tuple with Moving Average Convergence Divergence, short McGinley dynamic, long McGinley
 ///     dynamic
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/mcginley-dynamic-macd/>
 #[pyfunction(name = "mcginley_dynamic_macd_line")]
 fn bulk_mcginley_dynamic_macd_line(
     prices: Vec<f64>,
@@ -702,6 +754,8 @@ fn bulk_mcginley_dynamic_macd_line(
 ///
 /// Returns:
 ///     Tuple of Chaikin Oscillator and Accumulation Distribution
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/chaikin-oscillator/>
 #[pyfunction(name = "chaikin_oscillator")]
 fn single_chaikin_oscillator(
     highs: Vec<f64>,
@@ -742,6 +796,8 @@ fn single_chaikin_oscillator(
 ///
 /// Returns:
 ///     Tuple of Chaikin Oscillator and Accumulation Distribution
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/chaikin-oscillator/>
 #[pyfunction(name = "chaikin_oscillator")]
 fn bulk_chaikin_oscillator(
     highs: Vec<f64>,
@@ -779,6 +835,8 @@ fn bulk_chaikin_oscillator(
 ///
 /// Returns:
 ///     The Percentage Price Oscillator
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/percentage-price-oscillator/>
 #[pyfunction(name = "percentage_price_oscillator")]
 fn single_percentage_price_oscillator(
     prices: Vec<f64>,
@@ -803,6 +861,8 @@ fn single_percentage_price_oscillator(
 ///
 /// Returns:
 ///     List of Percentage Price Oscillator
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/percentage-price-oscillator/>
 #[pyfunction(name = "percentage_price_oscillator")]
 fn bulk_percentage_price_oscillator(
     prices: Vec<f64>,
@@ -827,6 +887,8 @@ fn bulk_percentage_price_oscillator(
 ///     
 /// Returns:
 ///     The Chande Momentum Oscillator
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/chande-momentum-oscillator/>
 #[pyfunction(name = "chande_momentum_oscillator")]
 fn single_chande_momentum_oscillator(prices: Vec<f64>) -> PyResult<f64> {
     Ok(mi::single::chande_momentum_oscillator(&prices).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -840,6 +902,8 @@ fn single_chande_momentum_oscillator(prices: Vec<f64>) -> PyResult<f64> {
 ///     
 /// Returns:
 ///     List Chande Momentum Oscillator
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/chande-momentum-oscillator/>
 #[pyfunction(name = "chande_momentum_oscillator")]
 fn bulk_chande_momentum_oscillator(prices: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
     Ok(mi::bulk::chande_momentum_oscillator(&prices, period).map_err(|e| PyValueError::new_err(e.to_string()))?)
