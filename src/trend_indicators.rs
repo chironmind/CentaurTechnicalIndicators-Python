@@ -311,6 +311,7 @@ fn bulk_directional_movement_system(
 ///
 /// Returns:
 ///     VPT value
+#[allow(deprecated)]
 #[pyfunction(name = "volume_price_trend")]
 fn single_volume_price_trend(
     current_price: f64,
@@ -335,6 +336,7 @@ fn single_volume_price_trend(
 ///
 /// Returns:
 ///     List of VPT values
+#[allow(deprecated)]
 #[pyfunction(name = "volume_price_trend")]
 fn bulk_volume_price_trend(
     prices: Vec<f64>,
