@@ -76,6 +76,8 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///
 /// Returns:
 ///     Aroon Up value
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/trend-indicators/aroon-indicator/>
 #[pyfunction(name = "aroon_up")]
 fn single_aroon_up(highs: Vec<f64>) -> PyResult<f64> {
     Ok(ti::single::aroon_up(&highs).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -89,6 +91,8 @@ fn single_aroon_up(highs: Vec<f64>) -> PyResult<f64> {
 ///
 /// Returns:
 ///     List of Aroon Up values
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/trend-indicators/aroon-indicator/>
 #[pyfunction(name = "aroon_up")]
 fn bulk_aroon_up(highs: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
     Ok(ti::bulk::aroon_up(&highs, period).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -103,6 +107,8 @@ fn bulk_aroon_up(highs: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
 ///
 /// Returns:
 ///     Aroon Down value
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/trend-indicators/aroon-indicator/>
 #[pyfunction(name = "aroon_down")]
 fn single_aroon_down(lows: Vec<f64>) -> PyResult<f64> {
     Ok(ti::single::aroon_down(&lows).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -116,6 +122,8 @@ fn single_aroon_down(lows: Vec<f64>) -> PyResult<f64> {
 ///
 /// Returns:
 ///     List of Aroon Down values
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/trend-indicators/aroon-indicator/>
 #[pyfunction(name = "aroon_down")]
 fn bulk_aroon_down(lows: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
     Ok(ti::bulk::aroon_down(&lows, period).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -131,6 +139,8 @@ fn bulk_aroon_down(lows: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
 ///
 /// Returns:
 ///     Aroon Oscillator value
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/trend-indicators/aroon-indicator/>
 #[pyfunction(name = "aroon_oscillator")]
 fn single_aroon_oscillator(aroon_up: f64, aroon_down: f64) -> PyResult<f64> {
     Ok(ti::single::aroon_oscillator(aroon_up, aroon_down))
@@ -144,6 +154,8 @@ fn single_aroon_oscillator(aroon_up: f64, aroon_down: f64) -> PyResult<f64> {
 ///
 /// Returns:
 ///     List of Aroon Oscillator values
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/trend-indicators/aroon-indicator/>
 #[pyfunction(name = "aroon_oscillator")]
 fn bulk_aroon_oscillator(aroon_up: Vec<f64>, aroon_down: Vec<f64>) -> PyResult<Vec<f64>> {
     Ok(ti::bulk::aroon_oscillator(&aroon_up, &aroon_down).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -159,6 +171,8 @@ fn bulk_aroon_oscillator(aroon_up: Vec<f64>, aroon_down: Vec<f64>) -> PyResult<V
 ///
 /// Returns:
 ///     Aroon indicator tuple (Aroon Up, Aroon Down, Aroon Oscillator)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/trend-indicators/aroon-indicator/>
 #[pyfunction(name = "aroon_indicator")]
 fn single_aroon_indicator(highs: Vec<f64>, lows: Vec<f64>) -> PyResult<(f64, f64, f64)> {
     ti::single::aroon_indicator(&highs, &lows).map_err(|e| PyValueError::new_err(e.to_string()))
@@ -173,6 +187,8 @@ fn single_aroon_indicator(highs: Vec<f64>, lows: Vec<f64>) -> PyResult<(f64, f64
 ///
 /// Returns:
 ///     List of  Aroon indicator tuples (Aroon Up, Aroon Down, Aroon Oscillator)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/trend-indicators/aroon-indicator/>
 #[pyfunction(name = "aroon_indicator")]
 fn bulk_aroon_indicator(
     highs: Vec<f64>,
@@ -194,6 +210,8 @@ fn bulk_aroon_indicator(
 ///
 /// Returns:
 ///     SAR value
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/trend-indicators/parabolic-time-price-system/>
 #[pyfunction(name = "long_parabolic_time_price_system")]
 fn single_long_parabolic_time_price_system(
     previous_sar: f64,
@@ -219,6 +237,8 @@ fn single_long_parabolic_time_price_system(
 ///
 /// Returns:
 ///     SAR value
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/trend-indicators/parabolic-time-price-system/>
 #[pyfunction(name = "short_parabolic_time_price_system")]
 fn single_short_parabolic_time_price_system(
     previous_sar: f64,
@@ -247,6 +267,8 @@ fn single_short_parabolic_time_price_system(
 ///
 /// Returns:
 ///     List of SAR values
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/trend-indicators/parabolic-time-price-system/>
 #[pyfunction(name = "parabolic_time_price_system")]
 fn bulk_parabolic_time_price_system(
     highs: Vec<f64>,
@@ -282,6 +304,8 @@ fn bulk_parabolic_time_price_system(
 ///
 /// Returns:
 ///     List of Directional Movement System tuples (+DI, -DI, ADX, ADXR)
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/trend-indicators/directional-movement-system/>
 #[pyfunction(name = "directional_movement_system")]
 fn bulk_directional_movement_system(
     highs: Vec<f64>,
@@ -311,6 +335,7 @@ fn bulk_directional_movement_system(
 ///
 /// Returns:
 ///     VPT value
+#[allow(deprecated)]
 #[pyfunction(name = "volume_price_trend")]
 fn single_volume_price_trend(
     current_price: f64,
@@ -335,6 +360,7 @@ fn single_volume_price_trend(
 ///
 /// Returns:
 ///     List of VPT values
+#[allow(deprecated)]
 #[pyfunction(name = "volume_price_trend")]
 fn bulk_volume_price_trend(
     prices: Vec<f64>,
@@ -362,6 +388,8 @@ fn bulk_volume_price_trend(
 ///
 /// Returns:
 ///     TSI value
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/trend-indicators/true-strength-index/>
 #[pyfunction(name = "true_strength_index")]
 fn single_true_strength_index(
     prices: Vec<f64>,
@@ -390,6 +418,8 @@ fn single_true_strength_index(
 ///
 /// Returns:
 ///     List of TSI values
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/trend-indicators/true-strength-index/>
 #[pyfunction(name = "true_strength_index")]
 fn bulk_true_strength_index(
     prices: Vec<f64>,
