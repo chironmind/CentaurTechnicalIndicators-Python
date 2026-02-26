@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## [1.0.1] - 2026-02-26
+## [1.2.0] - 2026-02-26
 
 ### Changed
 - Updated `centaur_technical_indicators` Rust crate dependency from `1.0.0` to `1.2.0`
