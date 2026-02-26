@@ -195,8 +195,6 @@ fn bulk_stochastic_oscillator(prices: Vec<f64>, period: usize) -> PyResult<Vec<f
 ///
 /// Returns:
 ///     Slow stochastic
-///
-/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/slow-stochastic-oscillator/>
 #[allow(deprecated)]
 #[pyfunction(name = "slow_stochastic")]
 fn single_slow_stochastic(stochastics: Vec<f64>, constant_model_type: &str) -> PyResult<f64> {
@@ -216,8 +214,6 @@ fn single_slow_stochastic(stochastics: Vec<f64>, constant_model_type: &str) -> P
 ///
 /// Returns:
 ///     List of Slow stochastics
-///
-/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/slow-stochastic-oscillator/>
 #[allow(deprecated)]
 #[pyfunction(name = "slow_stochastic")]
 fn bulk_slow_stochastic(
@@ -243,8 +239,6 @@ fn bulk_slow_stochastic(
 ///
 /// Returns:
 ///     Slowest stochastic
-///
-/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/slow-stochastic-oscillator/>
 #[allow(deprecated)]
 #[pyfunction(name = "slowest_stochastic")]
 fn single_slowest_stochastic(
@@ -267,8 +261,6 @@ fn single_slowest_stochastic(
 ///
 /// Returns:
 ///     List of lowest stochastic
-///
-/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/slow-stochastic-oscillator/>
 #[allow(deprecated)]
 #[pyfunction(name = "slowest_stochastic")]
 fn bulk_slowest_stochastic(
@@ -638,8 +630,6 @@ fn bulk_macd_line(
 ///
 /// Returns:
 ///     Signal line point
-///
-/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/macd/>
 #[allow(deprecated)]
 #[pyfunction(name = "signal_line")]
 fn single_signal_line(macds: Vec<f64>, constant_model_type: &str) -> PyResult<f64> {
@@ -659,8 +649,6 @@ fn single_signal_line(macds: Vec<f64>, constant_model_type: &str) -> PyResult<f6
 ///
 /// Returns:
 ///     List Signal line points
-///
-/// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/macd/>
 #[allow(deprecated)]
 #[pyfunction(name = "signal_line")]
 fn bulk_signal_line(
