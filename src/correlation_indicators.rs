@@ -51,6 +51,8 @@ fn register_single_module(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
 ///
 /// Returns:
 ///     Correlation between the two asset price series.
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/correlation-indicators/correlate-asset-prices/>
 #[pyfunction(name = "correlate_asset_prices")]
 fn single_correlate_asset_prices(
     prices_asset_a: Vec<f64>,
@@ -79,6 +81,8 @@ fn single_correlate_asset_prices(
 ///
 /// Returns:
 ///     List of correlations for each window of the given period.
+///
+/// See: <https://tech.centaurresearchtechnologies.com/indicators/correlation-indicators/correlate-asset-prices/>
 #[pyfunction(name = "correlate_asset_prices")]
 fn bulk_correlate_asset_prices(
     prices_asset_a: Vec<f64>,

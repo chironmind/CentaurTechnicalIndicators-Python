@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.2.0] - 2026-02-26
+
+### Changed
+- Updated `centaur_technical_indicators` Rust crate dependency from `1.0.0` to `1.2.0`
+  - Added `#[allow(deprecated)]` to binding functions wrapping deprecated upstream functions (`slow_stochastic`, `slowest_stochastic`, `signal_line`, `volume_price_trend`, `volatility_system`) to preserve the existing Python API surface unchanged
+
+### Added
+- Added `/// See: <URL>` reference links to all Python binding function docstrings, mirroring the reference links introduced in the 1.2.0 upstream crate
+
+---
+
 ## [1.0.0] - 2026-01-19
 
 ### Changed
