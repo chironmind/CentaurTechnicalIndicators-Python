@@ -27,18 +27,14 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
-      - name: Install test dependencies
+      - name: Create virtual environment and run tests
         run: |
+          python -m venv .venv
+          source .venv/bin/activate
           python -m pip install --upgrade pip
-          pip install -r test_requirements.txt
-      - name: Build local extension
-        uses: PyO3/maturin-action@v1
-        with:
-          command: develop
-          args: --release
-          sccache: true
-      - name: Run test suite
-        run: python -m pytest
+          pip install -r test_requirements.txt maturin
+          maturin develop --release
+          python -m pytest
 
   linux:
     runs-on: ${{ matrix.platform.runner }}
