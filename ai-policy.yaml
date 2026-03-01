@@ -1,0 +1,52 @@
+version: 1
+repository: CentaurTechnicalIndicators-Python
+
+required_checks:
+  local_commands:
+    - maturin develop
+    - python -m pytest
+    - cargo fmt --check
+  benchmark:
+    required_for_paths:
+      - src/candle_indicators.rs
+      - src/chart_trends.rs
+      - src/correlation_indicators.rs
+      - src/momentum_indicators.rs
+      - src/moving_average.rs
+      - src/other_indicators.rs
+      - src/strength_indicators.rs
+      - src/trend_indicators.rs
+      - src/volatility_indicators.rs
+    companion_repo: https://github.com/ChironMind/CentaurTechnicalIndicators-benchmarks
+
+change_requirements:
+  user_facing_change_requires:
+    - CHANGELOG.md
+  public_api_change_requires:
+    - Rust docstring updates for changed/new public binding functions
+    - tests in matching tests/ module
+    - PR Compatibility section summarizing API impact
+
+coding_rules:
+  api_pattern:
+    instruction: Preserve the bulk/single function variant pattern for all indicators.
+  errors:
+    required_error_type: PyValueError
+    instruction: Surface all errors to Python as PyValueError with user-meaningful messages.
+  compatibility:
+    preserve_public_api_unless_explicit_breaking_approval: true
+
+pr_report:
+  required_sections:
+    - Summary
+    - Scope
+    - Compatibility
+    - Validation
+    - Changelog
+
+notes:
+  source_of_truth:
+    - AGENTS.md
+    - CONTRIBUTING.md
+    - AI_FRIENDLY_ROADMAP.md
+  purpose: Minimal machine-readable policy for AI agents and automation.
