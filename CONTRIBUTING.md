@@ -51,5 +51,28 @@ See [open issues](https://github.com/ChironMind/CentaurTechnicalIndicators-Pytho
 
 ---
 
+## 🔒 Local quality gates
+
+Run these before opening a PR:
+
+1. `maturin develop` — bindings compile cleanly
+2. `python -m pytest` — all tests pass
+3. `cargo fmt --check` — no formatting diffs
+
+---
+
+## 🤖 AI-assisted contribution checklist
+
+If you used an AI agent to contribute:
+
+- [ ] Reviewed all AI-generated changes for correctness
+- [ ] Confirmed the scope is minimal and matches the task
+- [ ] Verified `maturin develop` builds successfully
+- [ ] Verified `python -m pytest` passes
+- [ ] Updated `CHANGELOG.md` with a user-facing entry
+- [ ] Disclosed AI assistance in the PR description
+
+---
+
 Thanks again for your interest and contributions!
 
