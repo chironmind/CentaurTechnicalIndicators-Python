@@ -6,7 +6,7 @@ Quick orientation for contributors and coding agents working in `CentaurTechnica
 
 - `src/`: Rust source files (PyO3 binding implementations for each indicator module).
 - `tests/`: Python test files (smoke tests for each binding module).
-- `assets/`: Supporting artifacts (banner images, hand-calculation spreadsheets).
+- `assets/`: Supporting artifacts (documentation assets, banner images).
 - `.github/workflows/`: CI workflows (PR validation, release pipeline).
 - `Cargo.toml`: Rust package version and dependency configuration.
 - `pyproject.toml`: Python package metadata and maturin build settings.

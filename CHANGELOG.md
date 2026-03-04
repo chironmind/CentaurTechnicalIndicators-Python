@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 - Updated `centaur_technical_indicators` Rust crate dependency from `1.2.0` to `1.2.1`
-  - Removed `#[allow(deprecated)]` from `volume_price_trend` binding functions (`trend_indicators.rs`) as the upstream crate removed the deprecation marker in `1.2.1`
+  - Removed `#[allow(deprecated)]` from `volume_price_trend` binding functions (`src/trend_indicators.rs`) as the upstream crate removed the deprecation marker in `1.2.1`
 
 ### Added
 - Added `AI_FRIENDLY_ROADMAP.md` with module API surface, contributor-workflow, and library-feature roadmap adapted for this Python binding repository
