@@ -9,6 +9,13 @@ Guidance for coding agents working in this repository.
   - `src/` → Rust implementation + Python bindings
   - `tests/` → Python-facing smoke/behavior tests for bindings
 
+## Docs to review before coding
+- `docs/AI_ONBOARDING.md`
+- `.github/copilot-instructions.md`
+- `AI_FRIENDLY_ROADMAP.md`
+- `docs/REPO_MAP.md`
+- `CONTRIBUTING.md`
+
 ## Recommended workflow
 1. **Set up an isolated environment**
    ```bash
@@ -42,6 +49,30 @@ Guidance for coding agents working in this repository.
 - Keep naming and argument conventions consistent with neighboring functions.
 - Use clear, user-facing error messages for invalid inputs.
 
+## Change scope discipline
+- Keep changes minimal and focused on the requested task.
+- Do not include opportunistic refactors unless explicitly requested.
+- If you identify unrelated issues, note them separately instead of bundling them into the same change.
+- Preserve existing file organization and naming conventions unless the task requires a structural change.
+
+## Backward compatibility rules
+When changing public Python APIs, preserve compatibility unless the task explicitly allows a breaking change:
+
+1. Do not silently change indicator semantics, output ordering, or warmup behavior.
+2. Do not remove or rename public functions, types, enums, or parameters without explicit approval.
+3. If behavior changes are required, document them in docstrings and `CHANGELOG.md` with clear migration notes.
+
+## Pre-PR quality gates (must pass)
+Run these before opening a PR:
+
+1. `maturin develop` (bindings compile cleanly)
+2. `python -m pytest` (all tests pass)
+3. `cargo fmt --check` (no formatting diffs)
+
+## CI implementation policy
+- Prefer native Python/maturin/cargo commands in workflows.
+- Do not introduce third-party GitHub Actions unless explicitly approved by maintainers.
+
 ## Validation expectations before finishing
 - Rebuild bindings after Rust changes: `maturin develop`.
 - Run relevant tests (ideally full `python -m pytest`).
@@ -54,8 +85,23 @@ Guidance for coding agents working in this repository.
 - [ ] Documentation/changelog updated when needed.
 - [ ] Commit message clearly describes the change.
 
+## PR expectations for agents
+- Keep PRs focused and minimal.
+- Summarize what the agent changed and what was manually verified.
+- Include command output summary for the required quality gates.
+- Explicitly note the `CHANGELOG.md` entry.
+
+### Required PR summary format
+Use this structure in PR descriptions/comments:
+
+1. `Summary`: what changed and why.
+2. `Scope`: files/modules touched and what was intentionally not changed.
+3. `Compatibility`: any user-facing behavior/API impact.
+4. `Validation`: results summary for `maturin develop`, `pytest`, and `cargo fmt`.
+5. `Changelog`: exact `CHANGELOG.md` entry added/updated.
+
 ## Repository expectations
-- This is a public Rust library. Prioritize correctness, determinism, and backward compatibility.
+- This is a public Python/Rust library. Prioritize correctness, determinism, and backward compatibility.
 - Prefer minimal, focused diffs over broad refactors.
 - Do not add new dependencies unless explicitly requested.
 - Treat public APIs, documented behavior, and examples as stability-sensitive.
@@ -69,3 +115,4 @@ Guidance for coding agents working in this repository.
 ## Change boundaries
 - Do not modify CI, licensing, security, or contributor-governance files unless explicitly requested.
 - Keep unrelated formatting churn to a minimum.
+
