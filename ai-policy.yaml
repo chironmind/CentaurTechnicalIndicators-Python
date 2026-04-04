@@ -39,7 +39,6 @@ coding_rules:
 pr_report:
   required_sections:
     - Summary
-    - Scope
     - Compatibility
     - Validation
     - Changelog
@@ -48,5 +47,4 @@ notes:
   source_of_truth:
     - AGENTS.md
     - CONTRIBUTING.md
-    - AI_FRIENDLY_ROADMAP.md
   purpose: Minimal machine-readable policy for AI agents and automation.

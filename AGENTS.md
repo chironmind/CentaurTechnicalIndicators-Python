@@ -10,9 +10,6 @@ Guidance for coding agents working in this repository.
   - `tests/` → Python-facing smoke/behavior tests for bindings
 
 ## Docs to review before coding
-- `docs/AI_ONBOARDING.md`
-- `.github/copilot-instructions.md`
-- `AI_FRIENDLY_ROADMAP.md`
 - `docs/REPO_MAP.md`
 - `CONTRIBUTING.md`
 
@@ -95,10 +92,9 @@ Run these before opening a PR:
 Use this structure in PR descriptions/comments:
 
 1. `Summary`: what changed and why.
-2. `Scope`: files/modules touched and what was intentionally not changed.
-3. `Compatibility`: any user-facing behavior/API impact.
-4. `Validation`: results summary for `maturin develop`, `pytest`, and `cargo fmt`.
-5. `Changelog`: exact `CHANGELOG.md` entry added/updated.
+2. `Compatibility`: any user-facing behavior/API impact.
+3. `Validation`: results summary for `maturin develop`, `pytest`, and `cargo fmt`.
+4. `Changelog`: exact `CHANGELOG.md` entry added/updated.
 
 ## Repository expectations
 - This is a public Python/Rust library. Prioritize correctness, determinism, and backward compatibility.
