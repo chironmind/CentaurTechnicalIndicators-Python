@@ -47,6 +47,24 @@ def test_bulk_relative_strength_index():
     with pytest.raises(ValueError):
         momentum_indicators.bulk.relative_strength_index(prices, "", 3)
 
+flat_prices = [100.0, 100.0, 100.0, 102.0, 101.0]
+
+def test_single_relative_strength_index_zero_change_regression():
+    """Regression: zero-change periods must not be discarded from RSI calculation (upstream fix in v1.2.2)."""
+    assert momentum_indicators.single.relative_strength_index(flat_prices, "simple") == 66.66666666666666
+    assert momentum_indicators.single.relative_strength_index(flat_prices, "smoothed") == 60.0
+    assert momentum_indicators.single.relative_strength_index(flat_prices, "exponential") == 54.54545454545455
+    assert momentum_indicators.single.relative_strength_index(flat_prices, "median") == 0.0
+    assert momentum_indicators.single.relative_strength_index(flat_prices, "mode") == 0.0
+
+def test_bulk_relative_strength_index_zero_change_regression():
+    """Regression: zero-change periods must not be discarded from bulk RSI calculation (upstream fix in v1.2.2)."""
+    assert momentum_indicators.bulk.relative_strength_index(flat_prices, "simple", 3) == [0.0, 100.0, 66.66666666666666]
+    assert momentum_indicators.bulk.relative_strength_index(flat_prices, "smoothed", 3) == [0.0, 100.0, 50.0]
+    assert momentum_indicators.bulk.relative_strength_index(flat_prices, "exponential", 3) == [0.0, 100.0, 40.0]
+    assert momentum_indicators.bulk.relative_strength_index(flat_prices, "median", 3) == [0.0, 100.0, 66.66666666666666]
+    assert momentum_indicators.bulk.relative_strength_index(flat_prices, "mode", 3) == [0.0, 100.0, 66.66666666666666]
+
 def test_single_stochastic_oscillator():
     assert momentum_indicators.single.stochastic_oscillator(prices) == 0.0
 
