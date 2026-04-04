@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [Unreleased]
+
+## [1.2.2] - 2026-04-04
+
+### Fixed
+- Inherited fix for `relative_strength_index` (single and bulk) producing incorrect values via upstream crate update. The internal `previous_gains_loss` helper was only collecting non-zero gains/losses, discarding zero entries and causing misaligned averages.
+
+### Changed
+- Updated `centaur_technical_indicators` Rust crate dependency from `1.2.1` to `1.2.2`
+
+### Removed
+- Removed `AI_FRIENDLY_ROADMAP.md`, `docs/AI_ONBOARDING.md`, and `.github/copilot-instructions.md` — redundant with `AGENTS.md`
+- Removed dangling references to removed files from `AGENTS.md`, `docs/REPO_MAP.md`, and `ai-policy.yaml`
+- Simplified PR template from 7 sections to 4 (`Summary`, `Compatibility`, `Validation`, `Changelog`)
+
+---
+
 ## [1.2.1] - 2026-03-01
 
 ### Changed
