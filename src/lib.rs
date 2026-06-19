@@ -25,18 +25,45 @@ pub enum PyConstantModelType {
 }
 
 impl PyConstantModelType {
-    // Add a method to create from string
+    /// Parse a `ConstantModelType` from a string alias (matching is case-insensitive).
+    ///
+    /// Each variant accepts a primary one-word form, a short abbreviation, and a long
+    /// snake_case form. The full accepted set is:
+    ///
+    /// - `simple` | `ma` | `simple_moving_average` → Simple moving average
+    /// - `smoothed` | `sma` | `smoothed_moving_average` → Smoothed moving average
+    /// - `exponential` | `ema` | `exponential_moving_average` → Exponential moving average
+    /// - `median` | `smm` | `simple_moving_median` → Simple moving median
+    /// - `mode` | `simple_moving_mode` → Simple moving mode (no 3-letter abbreviation)
+    ///
+    /// **Watch the abbreviations:** `ma` → **Simple** and `sma` → **Smoothed** (not Simple).
+    ///
+    /// Note these abbreviations and snake_case forms are accepted *here* but **not** by
+    /// [`PyMovingAverageType::from_string`], which takes only `simple`/`smoothed`/`exponential`.
     pub fn from_string(s: &str) -> PyResult<Self> {
         match s.to_lowercase().as_str() {
-            "simple" | "ma" | "simple_moving_average" => Ok(PyConstantModelType::SimpleMovingAverage),
-            "smoothed" | "sma" | "smoothed_moving_average" => Ok(PyConstantModelType::SmoothedMovingAverage),
-            "exponential" | "ema" | "exponential_moving_average" => Ok(PyConstantModelType::ExponentialMovingAverage),
-            "median" | "smm" | "simple_moving_median" => Ok(PyConstantModelType::SimpleMovingMedian),
+            "simple" | "ma" | "simple_moving_average" => {
+                Ok(PyConstantModelType::SimpleMovingAverage)
+            }
+            "smoothed" | "sma" | "smoothed_moving_average" => {
+                Ok(PyConstantModelType::SmoothedMovingAverage)
+            }
+            "exponential" | "ema" | "exponential_moving_average" => {
+                Ok(PyConstantModelType::ExponentialMovingAverage)
+            }
+            "median" | "smm" | "simple_moving_median" => {
+                Ok(PyConstantModelType::SimpleMovingMedian)
+            }
             "mode" | "simple_moving_mode" => Ok(PyConstantModelType::SimpleMovingMode),
             _ => Err(PyValueError::new_err(format!(
-                "Unknown constant model type: '{}'. Valid options are: 'simple', 'smoothed', 'exponential', 'median', 'mode'", 
+                "Unknown constant model type: '{}'. Valid options (case-insensitive) are: \
+                 'simple' | 'ma' | 'simple_moving_average', \
+                 'smoothed' | 'sma' | 'smoothed_moving_average', \
+                 'exponential' | 'ema' | 'exponential_moving_average', \
+                 'median' | 'smm' | 'simple_moving_median', \
+                 'mode' | 'simple_moving_mode'. Note: 'ma' = Simple, 'sma' = Smoothed",
                 s
-            )))
+            ))),
         }
     }
 }
@@ -56,6 +83,19 @@ impl From<PyConstantModelType> for ConstantModelType {
 }
 
 impl PyDeviationModel {
+    /// Parse a `DeviationModel` from a string alias (matching is case-insensitive).
+    ///
+    /// Each variant accepts a primary one-word form plus a long snake_case form (and `log`
+    /// additionally accepts the `logstd` abbreviation). The full accepted set is:
+    ///
+    /// - `standard` | `std` | `standard_deviation` → Standard deviation
+    /// - `mean` | `mean_absolute_deviation` → Mean absolute deviation
+    /// - `median` | `median_absolute_deviation` → Median absolute deviation
+    /// - `mode` | `mode_absolute_deviation` → Mode absolute deviation
+    /// - `ulcer` | `ulcer_index` → Ulcer index
+    /// - `log` | `logstd` | `log_standard_deviation` → Log standard deviation
+    /// - `laplace` | `laplace_std_equivalent` → Laplace std equivalent
+    /// - `cauchy` | `cauchy_iqr_scale` → Cauchy IQR scale
     pub fn from_string(s: &str) -> PyResult<Self> {
         let lower = s.to_lowercase();
 
@@ -65,13 +105,23 @@ impl PyDeviationModel {
             "median" | "median_absolute_deviation" => Ok(PyDeviationModel::MedianAbsoluteDeviation),
             "mode" | "mode_absolute_deviation" => Ok(PyDeviationModel::ModeAbsoluteDeviation),
             "ulcer" | "ulcer_index" => Ok(PyDeviationModel::UlcerIndex),
-            "log" | "log_standard_deviation" | "logstd" => Ok(PyDeviationModel::LogStandardDeviation),
+            "log" | "log_standard_deviation" | "logstd" => {
+                Ok(PyDeviationModel::LogStandardDeviation)
+            }
             "laplace" | "laplace_std_equivalent" => Ok(PyDeviationModel::LaplaceStdEquivalent),
             "cauchy" | "cauchy_iqr_scale" => Ok(PyDeviationModel::CauchyIQRScale),
             _ => Err(PyValueError::new_err(format!(
-                "Unknown deviation model: '{}'. Valid options are: 'standard', 'mean', 'median', 'mode', 'ulcer', 'log', 'laplace', 'cauchy'",
+                "Unknown deviation model: '{}'. Valid options (case-insensitive) are: \
+                 'standard' | 'std' | 'standard_deviation', \
+                 'mean' | 'mean_absolute_deviation', \
+                 'median' | 'median_absolute_deviation', \
+                 'mode' | 'mode_absolute_deviation', \
+                 'ulcer' | 'ulcer_index', \
+                 'log' | 'logstd' | 'log_standard_deviation', \
+                 'laplace' | 'laplace_std_equivalent', \
+                 'cauchy' | 'cauchy_iqr_scale'",
                 s
-            )))
+            ))),
         }
     }
 }
@@ -111,15 +161,27 @@ pub enum PyMovingAverageType {
 }
 
 impl PyMovingAverageType {
+    /// Parse a `MovingAverageType` from a string alias (matching is case-insensitive).
+    ///
+    /// Accepts **only** the three primary one-word forms — no abbreviations, no snake_case:
+    ///
+    /// - `simple` → Simple
+    /// - `smoothed` → Smoothed
+    /// - `exponential` → Exponential
+    ///
+    /// This is the opposite of [`PyConstantModelType::from_string`]: the abbreviations
+    /// `ma`/`sma`/`ema` and snake_case forms like `simple_moving_average` raise `ValueError`
+    /// here.
     pub fn from_string(s: &str) -> PyResult<Self> {
         match s.to_lowercase().as_str() {
             "simple" => Ok(PyMovingAverageType::Simple),
             "smoothed" => Ok(PyMovingAverageType::Smoothed),
             "exponential" => Ok(PyMovingAverageType::Exponential),
             _ => Err(PyValueError::new_err(format!(
-                "Unknown moving average type: '{}'. Valid options are: 'simple', 'smoothed', 'exponential'",
+                "Unknown moving average type: '{}'. Valid options (case-insensitive) are: \
+                 'simple', 'smoothed', 'exponential' (no abbreviations or snake_case forms)",
                 s
-            )))
+            ))),
         }
     }
 }
