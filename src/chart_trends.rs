@@ -1,6 +1,6 @@
-use pyo3::prelude::*;
-use pyo3::exceptions::PyValueError;
 use ::centaur_technical_indicators::chart_trends as ct;
+use pyo3::exceptions::PyValueError;
+use pyo3::prelude::*;
 
 /// The `chart_trends` module provides utilities for detecting, analyzing, and breaking down trends in price charts.
 ///
@@ -33,7 +33,8 @@ pub fn chart_trends(m: &Bound<'_, PyModule>) -> PyResult<()> {
 ///     List of tuples containing (peak value, peak index)
 #[pyfunction]
 fn peaks(prices: Vec<f64>, period: usize, closest_neighbor: usize) -> PyResult<Vec<(f64, usize)>> {
-    Ok(ct::peaks(&prices, period, closest_neighbor).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(ct::peaks(&prices, period, closest_neighbor)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates all valleys for a given period
@@ -51,7 +52,8 @@ fn valleys(
     period: usize,
     closest_neighbor: usize,
 ) -> PyResult<Vec<(f64, usize)>> {
-    Ok(ct::valleys(&prices, period, closest_neighbor).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(ct::valleys(&prices, period, closest_neighbor)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Returns the slope and intercept of the trend line fitted to peaks
@@ -134,5 +136,6 @@ fn break_down_trends(
             hard_durbin_watson_min,
             hard_durbin_watson_max,
         },
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }

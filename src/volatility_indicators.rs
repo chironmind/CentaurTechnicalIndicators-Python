@@ -1,6 +1,6 @@
-use pyo3::prelude::*;
-use pyo3::exceptions::PyValueError;
 use ::centaur_technical_indicators::volatility_indicators as vi;
+use pyo3::exceptions::PyValueError;
+use pyo3::prelude::*;
 
 /// The `volatility_indicators` module provides functions for measuring the volatility of an asset—how much and how quickly prices move over time.
 ///
@@ -90,5 +90,6 @@ fn bulk_volatility_system(
         period,
         constant_multiplier,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }

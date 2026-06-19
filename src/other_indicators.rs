@@ -1,6 +1,6 @@
-use pyo3::prelude::*;
-use pyo3::exceptions::PyValueError;
 use ::centaur_technical_indicators::other_indicators as oi;
+use pyo3::exceptions::PyValueError;
+use pyo3::prelude::*;
 
 /// The `other_indicators` module provides technical analysis tools that do not fit neatly
 /// into the main categories like momentum, trend, or volatility.
@@ -90,7 +90,8 @@ fn single_return_on_investment(
 /// See: <https://tech.centaurresearchtechnologies.com/indicators/other-indicators/return-on-investment/>
 #[pyfunction(name = "return_on_investment")]
 fn bulk_return_on_investment(prices: Vec<f64>, investment: f64) -> PyResult<Vec<(f64, f64)>> {
-    Ok(oi::bulk::return_on_investment(&prices, investment).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(oi::bulk::return_on_investment(&prices, investment)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // True Range
@@ -124,7 +125,8 @@ fn single_true_range(close: f64, high: f64, low: f64) -> PyResult<f64> {
 /// See: <https://tech.centaurresearchtechnologies.com/indicators/other-indicators/true-range/>
 #[pyfunction(name = "true_range")]
 fn bulk_true_range(close: Vec<f64>, high: Vec<f64>, low: Vec<f64>) -> PyResult<Vec<f64>> {
-    Ok(oi::bulk::true_range(&close, &high, &low).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(oi::bulk::true_range(&close, &high, &low)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Average True Range
@@ -154,7 +156,8 @@ fn single_average_true_range(
         &high,
         &low,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the Average True Range (ATR) over a period
@@ -185,7 +188,8 @@ fn bulk_average_true_range(
         &low,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Internal Bar Strength
@@ -223,7 +227,8 @@ fn bulk_internal_bar_strength(
     low: Vec<f64>,
     close: Vec<f64>,
 ) -> PyResult<Vec<f64>> {
-    Ok(oi::bulk::internal_bar_strength(&high, &low, &close).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(oi::bulk::internal_bar_strength(&high, &low, &close)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Positivity Indicator
@@ -253,5 +258,6 @@ fn bulk_positivity_indicator(
         &previous_close,
         signal_period,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
