@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Added
+- `cargo fmt --check` step to CI (the `verify` job in `CI.yml`).
 - `docs/2.0.0.md` breaking-change backlog.
 - Tests pinning accepted model-type / deviation-model / moving-average-type string aliases.
 - Documentation of the full accepted string-alias set for each regime (incl. the `sma`→Smoothed
