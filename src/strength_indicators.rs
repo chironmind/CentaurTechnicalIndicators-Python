@@ -1,6 +1,6 @@
-use pyo3::prelude::*;
-use pyo3::exceptions::PyValueError;
 use ::centaur_technical_indicators::strength_indicators as si;
+use pyo3::exceptions::PyValueError;
+use pyo3::prelude::*;
 
 /// The `strength_indicators` module provides functions to assess the strength and conviction of
 /// price movements and trends using volume and price-based calculations.
@@ -110,7 +110,8 @@ fn bulk_accumulation_distribution(
         &close,
         &volume,
         previous_accumulation_distribution,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Volume Index
@@ -156,11 +157,8 @@ fn bulk_positive_volume_index(
     volume: Vec<f64>,
     previous_volume_index: f64,
 ) -> PyResult<Vec<f64>> {
-    si::bulk::positive_volume_index(
-        &close,
-        &volume,
-        previous_volume_index,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    si::bulk::positive_volume_index(&close, &volume, previous_volume_index)
+        .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the Negative Volume Index (NVI)
@@ -180,11 +178,8 @@ fn bulk_negative_volume_index(
     volume: Vec<f64>,
     previous_volume_index: f64,
 ) -> PyResult<Vec<f64>> {
-    si::bulk::negative_volume_index(
-        &close,
-        &volume,
-        previous_volume_index,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    si::bulk::negative_volume_index(&close, &volume, previous_volume_index)
+        .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Relative Vigor Index
@@ -217,7 +212,8 @@ fn single_relative_vigor_index(
         &low,
         &close,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the Relative Vigor Index (RVI)
@@ -251,5 +247,6 @@ fn bulk_relative_vigor_index(
         &close,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }

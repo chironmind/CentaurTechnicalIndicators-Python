@@ -1,7 +1,9 @@
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 
-use ::centaur_technical_indicators::{ConstantModelType, DeviationModel, MovingAverageType, Position};
+use ::centaur_technical_indicators::{
+    ConstantModelType, DeviationModel, MovingAverageType, Position,
+};
 
 pub mod candle_indicators;
 pub mod chart_trends;
