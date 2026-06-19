@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+- `docs/2.0.0.md` breaking-change backlog.
+
 ## [1.2.2] - 2026-04-04
 
 ### Fixed
