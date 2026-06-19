@@ -1,6 +1,6 @@
-use pyo3::prelude::*;
-use pyo3::exceptions::PyValueError;
 use ::centaur_technical_indicators::moving_average as ma;
+use pyo3::exceptions::PyValueError;
+use pyo3::prelude::*;
 
 /// The `moving_average` module provides functions for calculating moving averages, a core component of many technical indicators and trading strategies.
 ///
@@ -47,7 +47,8 @@ fn single_moving_average(prices: Vec<f64>, moving_average_type: &str) -> PyResul
     ma::single::moving_average(
         &prices,
         crate::PyMovingAverageType::from_string(moving_average_type)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the Moving Average over a rolling period
@@ -71,7 +72,8 @@ fn bulk_moving_average(
         &prices,
         crate::PyMovingAverageType::from_string(moving_average_type)?.into(),
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the McGinley dynamic
@@ -91,11 +93,8 @@ fn single_mcginley_dynamic(
     previous_mcginley_dynamic: f64,
     period: usize,
 ) -> PyResult<f64> {
-    ma::single::mcginley_dynamic(
-        latest_price,
-        previous_mcginley_dynamic,
-        period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    ma::single::mcginley_dynamic(latest_price, previous_mcginley_dynamic, period)
+        .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the McGinley dynamic
@@ -115,9 +114,6 @@ fn bulk_mcginley_dynamic(
     previous_mcginley_dynamic: f64,
     period: usize,
 ) -> PyResult<Vec<f64>> {
-    ma::bulk::mcginley_dynamic(
-        &prices,
-        previous_mcginley_dynamic,
-        period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    ma::bulk::mcginley_dynamic(&prices, previous_mcginley_dynamic, period)
+        .map_err(|e| PyValueError::new_err(e.to_string()))
 }

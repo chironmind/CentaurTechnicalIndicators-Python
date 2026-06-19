@@ -1,6 +1,6 @@
-use pyo3::prelude::*;
-use pyo3::exceptions::PyValueError;
 use ::centaur_technical_indicators::trend_indicators as ti;
+use pyo3::exceptions::PyValueError;
+use pyo3::prelude::*;
 
 /// The `trend_indicators` module provides functions to analyze and quantify price trends in time series data.
 ///
@@ -158,7 +158,8 @@ fn single_aroon_oscillator(aroon_up: f64, aroon_down: f64) -> PyResult<f64> {
 /// See: <https://tech.centaurresearchtechnologies.com/indicators/trend-indicators/aroon-indicator/>
 #[pyfunction(name = "aroon_oscillator")]
 fn bulk_aroon_oscillator(aroon_up: Vec<f64>, aroon_down: Vec<f64>) -> PyResult<Vec<f64>> {
-    Ok(ti::bulk::aroon_oscillator(&aroon_up, &aroon_down).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(ti::bulk::aroon_oscillator(&aroon_up, &aroon_down)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Aroon Indidcator
@@ -195,7 +196,8 @@ fn bulk_aroon_indicator(
     lows: Vec<f64>,
     period: usize,
 ) -> PyResult<Vec<(f64, f64, f64)>> {
-    Ok(ti::bulk::aroon_indicator(&highs, &lows, period).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(ti::bulk::aroon_indicator(&highs, &lows, period)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Parabolic Time Price System
@@ -287,7 +289,8 @@ fn bulk_parabolic_time_price_system(
         af_max,
         crate::PyPosition::from_string(position)?.into(),
         previous_sar,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Directional Movement System
@@ -320,7 +323,8 @@ fn bulk_directional_movement_system(
         &close,
         period,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Volume Price Trend
@@ -365,11 +369,8 @@ fn bulk_volume_price_trend(
     volumes: Vec<f64>,
     previous_vpt: f64,
 ) -> PyResult<Vec<f64>> {
-    ti::bulk::volume_price_trend(
-        &prices,
-        &volumes,
-        previous_vpt,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    ti::bulk::volume_price_trend(&prices, &volumes, previous_vpt)
+        .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // True Strength Index
@@ -400,7 +401,8 @@ fn single_true_strength_index(
         crate::PyConstantModelType::from_string(first_constant_model)?.into(),
         first_period,
         crate::PyConstantModelType::from_string(second_constant_model)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the True Strength Index (TSI) over a period
@@ -432,5 +434,6 @@ fn bulk_true_strength_index(
         first_period,
         crate::PyConstantModelType::from_string(second_constant_model)?.into(),
         second_period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }

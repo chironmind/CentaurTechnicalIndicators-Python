@@ -1,6 +1,6 @@
-use pyo3::prelude::*;
-use pyo3::exceptions::PyValueError;
 use ::centaur_technical_indicators::momentum_indicators as mi;
+use pyo3::exceptions::PyValueError;
+use pyo3::prelude::*;
 
 /// The `momentum_indicators` module provides functions to measure the speed, strength, and direction of price movements in time series data.
 ///
@@ -125,7 +125,8 @@ fn single_relative_strength_index(prices: Vec<f64>, constant_model_type: &str) -
     mi::single::relative_strength_index(
         &prices,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the Relative strength index (RSI)
@@ -150,7 +151,8 @@ fn bulk_relative_strength_index(
         &prices,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Stochastic Oscillator
@@ -166,7 +168,8 @@ fn bulk_relative_strength_index(
 /// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/stochastic-oscillator/>
 #[pyfunction(name = "stochastic_oscillator")]
 fn single_stochastic_oscillator(prices: Vec<f64>) -> PyResult<f64> {
-    Ok(mi::single::stochastic_oscillator(&prices).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(mi::single::stochastic_oscillator(&prices)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the stochastic oscillator
@@ -181,7 +184,8 @@ fn single_stochastic_oscillator(prices: Vec<f64>) -> PyResult<f64> {
 /// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/stochastic-oscillator/>
 #[pyfunction(name = "stochastic_oscillator")]
 fn bulk_stochastic_oscillator(prices: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
-    Ok(mi::bulk::stochastic_oscillator(&prices, period).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(mi::bulk::stochastic_oscillator(&prices, period)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Slow Stochastic
@@ -201,7 +205,8 @@ fn single_slow_stochastic(stochastics: Vec<f64>, constant_model_type: &str) -> P
     Ok(mi::single::slow_stochastic(
         &stochastics,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the slow stochastic
@@ -225,7 +230,8 @@ fn bulk_slow_stochastic(
         &stochastics,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Slowest Stochastic
@@ -248,7 +254,8 @@ fn single_slowest_stochastic(
     Ok(mi::single::slowest_stochastic(
         &slow_stochastics,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the slowest Stochastic
@@ -272,7 +279,8 @@ fn bulk_slowest_stochastic(
         &slow_stochastics,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Wiiliams %R
@@ -290,7 +298,8 @@ fn bulk_slowest_stochastic(
 /// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/williams-percent-r/>
 #[pyfunction(name = "williams_percent_r")]
 fn single_williams_percent_r(high: Vec<f64>, low: Vec<f64>, close: f64) -> PyResult<f64> {
-    Ok(mi::single::williams_percent_r(&high, &low, close).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(mi::single::williams_percent_r(&high, &low, close)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the Williams %R
@@ -312,7 +321,8 @@ fn bulk_williams_percent_r(
     close: Vec<f64>,
     period: usize,
 ) -> PyResult<Vec<f64>> {
-    Ok(mi::bulk::williams_percent_r(&high, &low, &close, period).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(mi::bulk::williams_percent_r(&high, &low, &close, period)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Money Flow Index
@@ -329,7 +339,8 @@ fn bulk_williams_percent_r(
 /// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/money-flow-index/>
 #[pyfunction(name = "money_flow_index")]
 fn single_money_flow_index(prices: Vec<f64>, volume: Vec<f64>) -> PyResult<f64> {
-    Ok(mi::single::money_flow_index(&prices, &volume).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(mi::single::money_flow_index(&prices, &volume)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the Money Flow Index (MFI)
@@ -345,7 +356,8 @@ fn single_money_flow_index(prices: Vec<f64>, volume: Vec<f64>) -> PyResult<f64> 
 /// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/money-flow-index/>
 #[pyfunction(name = "money_flow_index")]
 fn bulk_money_flow_index(prices: Vec<f64>, volume: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
-    Ok(mi::bulk::money_flow_index(&prices, &volume, period).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(mi::bulk::money_flow_index(&prices, &volume, period)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Rate of Change
@@ -362,7 +374,8 @@ fn bulk_money_flow_index(prices: Vec<f64>, volume: Vec<f64>, period: usize) -> P
 /// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/rate-of-change/>
 #[pyfunction(name = "rate_of_change")]
 fn single_rate_of_change(current_price: f64, previous_price: f64) -> PyResult<f64> {
-    Ok(mi::single::rate_of_change(current_price, previous_price).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(mi::single::rate_of_change(current_price, previous_price)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the Rate of Change (RoC)
@@ -405,7 +418,8 @@ fn single_on_balance_volume(
         previous_price,
         current_volume,
         previous_on_balance_volume,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the On Balance Volume (OBV)
@@ -425,11 +439,10 @@ fn bulk_on_balance_volume(
     volume: Vec<f64>,
     previous_on_balance_volume: f64,
 ) -> PyResult<Vec<f64>> {
-    Ok(mi::bulk::on_balance_volume(
-        &prices,
-        &volume,
-        previous_on_balance_volume,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(
+        mi::bulk::on_balance_volume(&prices, &volume, previous_on_balance_volume)
+            .map_err(|e| PyValueError::new_err(e.to_string()))?,
+    )
 }
 
 // Commodity Channel Index
@@ -460,7 +473,8 @@ fn single_commodity_channel_index(
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
         constant_multiplier,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the Commodity Channel Index (CCI)
@@ -492,7 +506,8 @@ fn bulk_commodity_channel_index(
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
         constant_multiplier,
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // McGinley Dynamic Commodity Channel Index
@@ -522,7 +537,8 @@ fn single_mcginley_dynamic_commodity_channel_index(
         previous_mcginley_dynamic,
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
         constant_multiplier,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the McGinley Dynamic Commodity Channel Index (CCI)
@@ -553,7 +569,8 @@ fn bulk_mcginley_dynamic_commodity_channel_index(
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
         constant_multiplier,
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // MACD
@@ -584,7 +601,8 @@ fn single_macd_line(
         short_period,
         crate::PyConstantModelType::from_string(short_period_model)?.into(),
         crate::PyConstantModelType::from_string(long_period_model)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the Moving Average Convergence Divergence (MACD) line
@@ -616,7 +634,8 @@ fn bulk_macd_line(
         crate::PyConstantModelType::from_string(short_period_model)?.into(),
         long_period,
         crate::PyConstantModelType::from_string(long_period_model)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // MACD Signal line
@@ -636,7 +655,8 @@ fn single_signal_line(macds: Vec<f64>, constant_model_type: &str) -> PyResult<f6
     Ok(mi::single::signal_line(
         &macds,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the MACD signal line divergence.
@@ -660,7 +680,8 @@ fn bulk_signal_line(
         &macds,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // McGinley Dynamic MACD
@@ -690,7 +711,8 @@ fn single_mcginley_dynamic_macd_line(
         short_period,
         previous_short_mcginley,
         previous_long_mcginley,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the McGinley dynamic MACD line
@@ -721,7 +743,8 @@ fn bulk_mcginley_dynamic_macd_line(
         previous_short_mcginley,
         long_period,
         previous_long_mcginley,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Chaikin Oscillator
@@ -764,7 +787,8 @@ fn single_chaikin_oscillator(
         previous_accumulation_distribution,
         crate::PyConstantModelType::from_string(short_period_model)?.into(),
         crate::PyConstantModelType::from_string(long_period_model)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the  Chaikin Oscillator (CO)
@@ -808,7 +832,8 @@ fn bulk_chaikin_oscillator(
         previous_accumulation_distribution,
         crate::PyConstantModelType::from_string(short_period_model)?.into(),
         crate::PyConstantModelType::from_string(long_period_model)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Percentage Price Oscillator
@@ -835,7 +860,8 @@ fn single_percentage_price_oscillator(
         &prices,
         short_period,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the Percentage Price Oscillator (PPO)
@@ -863,7 +889,8 @@ fn bulk_percentage_price_oscillator(
         short_period,
         long_period,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 // Chande Momentum Oscillator
@@ -879,7 +906,8 @@ fn bulk_percentage_price_oscillator(
 /// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/chande-momentum-oscillator/>
 #[pyfunction(name = "chande_momentum_oscillator")]
 fn single_chande_momentum_oscillator(prices: Vec<f64>) -> PyResult<f64> {
-    Ok(mi::single::chande_momentum_oscillator(&prices).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(mi::single::chande_momentum_oscillator(&prices)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }
 
 /// Calculates the Chande Momentum Oscillator (CMO)
@@ -894,5 +922,6 @@ fn single_chande_momentum_oscillator(prices: Vec<f64>) -> PyResult<f64> {
 /// See: <https://tech.centaurresearchtechnologies.com/indicators/momentum-indicators/chande-momentum-oscillator/>
 #[pyfunction(name = "chande_momentum_oscillator")]
 fn bulk_chande_momentum_oscillator(prices: Vec<f64>, period: usize) -> PyResult<Vec<f64>> {
-    Ok(mi::bulk::chande_momentum_oscillator(&prices, period).map_err(|e| PyValueError::new_err(e.to_string()))?)
+    Ok(mi::bulk::chande_momentum_oscillator(&prices, period)
+        .map_err(|e| PyValueError::new_err(e.to_string()))?)
 }

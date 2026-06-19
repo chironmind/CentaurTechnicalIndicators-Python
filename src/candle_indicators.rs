@@ -1,6 +1,6 @@
-use pyo3::prelude::*;
-use pyo3::exceptions::PyValueError;
 use ::centaur_technical_indicators::candle_indicators as ci;
+use pyo3::exceptions::PyValueError;
+use pyo3::prelude::*;
 
 /// Candle indicators are technical indicators designed for use with candlestick price charts.
 ///
@@ -93,7 +93,8 @@ fn single_moving_constant_envelopes(
         &prices,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         difference,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the Moving Constant Envelopes
@@ -121,7 +122,8 @@ fn bulk_moving_constant_envelopes(
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         difference,
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // McGinley dynamic envelopes
@@ -143,11 +145,8 @@ fn single_mcginley_dynamic_envelopes(
     difference: f64,
     previous_mcginley_dynamic: f64,
 ) -> PyResult<(f64, f64, f64)> {
-    ci::single::mcginley_dynamic_envelopes(
-        &prices,
-        difference,
-        previous_mcginley_dynamic,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    ci::single::mcginley_dynamic_envelopes(&prices, difference, previous_mcginley_dynamic)
+        .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the McGinley dynamic envelopes
@@ -169,12 +168,8 @@ fn bulk_mcginley_dynamic_envelopes(
     previous_mcginley_dynamic: f64,
     period: usize,
 ) -> PyResult<Vec<(f64, f64, f64)>> {
-    ci::bulk::mcginley_dynamic_envelopes(
-        &prices,
-        difference,
-        previous_mcginley_dynamic,
-        period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    ci::bulk::mcginley_dynamic_envelopes(&prices, difference, previous_mcginley_dynamic, period)
+        .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Moving Constant bands
@@ -205,7 +200,8 @@ fn single_moving_constant_bands(
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
         deviation_multiplier,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates moving constant bands
@@ -237,7 +233,8 @@ fn bulk_moving_constant_bands(
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
         deviation_multiplier,
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // McGinley dynamic bands
@@ -267,7 +264,8 @@ fn single_mcginley_dynamic_bands(
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
         deviation_multiplier,
         previous_mcginley_dynamic,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates McGinley dynamic bands
@@ -298,7 +296,8 @@ fn bulk_mcginley_dynamic_bands(
         deviation_multiplier,
         previous_mcginley_dynamic,
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Ichimoku Cloud
@@ -334,7 +333,8 @@ fn single_ichimoku_cloud(
         conversion_period,
         base_period,
         span_b_period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the Ichimoku Cloud
@@ -368,7 +368,8 @@ fn bulk_ichimoku_cloud(
         conversion_period,
         base_period,
         span_b_period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Donchian Channels
@@ -405,7 +406,8 @@ fn bulk_donchian_channels(
     low: Vec<f64>,
     period: usize,
 ) -> PyResult<Vec<(f64, f64, f64)>> {
-    ci::bulk::donchian_channels(&high, &low, period).map_err(|e| PyValueError::new_err(e.to_string()))
+    ci::bulk::donchian_channels(&high, &low, period)
+        .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 // Keltner Channels
@@ -444,7 +446,8 @@ fn single_keltner_channel(
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         crate::PyConstantModelType::from_string(atr_constant_model_type)?.into(),
         multiplier,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the Keltner Channel over a given period
@@ -484,7 +487,8 @@ fn bulk_keltner_channel(
         crate::PyConstantModelType::from_string(atr_constant_model_type)?.into(),
         multiplier,
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the Super Trend indicator
@@ -515,7 +519,8 @@ fn single_supertrend(
         &close,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         multiplier,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the Super Trend indicator
@@ -549,5 +554,6 @@ fn bulk_supertrend(
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         multiplier,
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }

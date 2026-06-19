@@ -1,6 +1,6 @@
-use pyo3::prelude::*;
-use pyo3::exceptions::PyValueError;
 use ::centaur_technical_indicators::correlation_indicators as ci;
+use pyo3::exceptions::PyValueError;
+use pyo3::prelude::*;
 
 /// The `correlation_indicators` module provides functions to measure the co-movement
 /// and statistical relationship between two different price series or assets.
@@ -65,7 +65,8 @@ fn single_correlate_asset_prices(
         &prices_asset_b,
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
 
 /// Calculates the correlation between two asset prices over a period.
@@ -97,5 +98,6 @@ fn bulk_correlate_asset_prices(
         crate::PyConstantModelType::from_string(constant_model_type)?.into(),
         crate::PyDeviationModel::from_string(deviation_model)?.into(),
         period,
-    ).map_err(|e| PyValueError::new_err(e.to_string()))
+    )
+    .map_err(|e| PyValueError::new_err(e.to_string()))
 }
