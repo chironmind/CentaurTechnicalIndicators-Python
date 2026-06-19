@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Tests pinning accepted model-type / deviation-model / moving-average-type string aliases.
 - Documentation of the full accepted string-alias set for each regime (incl. the `sma`→Smoothed
   / `ma`→Simple aliases), with `from_string` error messages reconciled to match.
+### Changed
+- Updated `centaur_technical_indicators` Rust crate dependency from `1.2.2` to `1.3.0`.
 
 ## [1.2.2] - 2026-04-04
 
