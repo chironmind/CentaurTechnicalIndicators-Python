@@ -23,12 +23,17 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Rust",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 dynamic = ["version"]
 
 [project.urls]
 "Homepage" = "https://github.com/chironmind/CentaurTechnicalIndicators-Python"
-"Documentation" = "https://github.com/chironmind/CentaurTechnicalIndicators-Python/wiki"
+"Documentation" = "https://centaurtechnicalindicators-python.readthedocs.io/en/latest/"
 "Source" = "https://github.com/chironmind/CentaurTechnicalIndicators-Python"
 "Issues" = "https://github.com/chironmind/CentaurTechnicalIndicators-Python/issues"
 
