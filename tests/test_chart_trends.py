@@ -1,3 +1,5 @@
+import pytest
+
 from centaur_technical_indicators import chart_trends
 
 """The purpose of these tests are just to confirm that the bindings work.
@@ -54,5 +56,29 @@ def test_break_down_trends():
     )
    
     assert trends == [(0, 2, 1.5, 100.16666666666667), (2, 4, -2.0, 107.0)]
+
+
+def test_peak_favorable_move():
+    # Reference 107; forward window [104, 100, 102]; 107 - min(100) = 7.0
+    assert chart_trends.peak_favorable_move([107.0, 104.0, 100.0, 102.0], 0, 3) == 7.0
+    # Monotonic rise: price never drops below the reference, so the move is negative.
+    assert chart_trends.peak_favorable_move([100.0, 101.0, 102.0, 103.0], 0, 3) == -1.0
+
+def test_valley_favorable_move():
+    # Reference 100; forward window [102, 107, 104]; max(107) - 100 = 7.0
+    assert chart_trends.valley_favorable_move([100.0, 102.0, 107.0, 104.0], 0, 3) == 7.0
+    # Monotonic fall: price never rises above the reference, so the move is negative.
+    assert chart_trends.valley_favorable_move([105.0, 104.0, 103.0, 102.0], 0, 3) == -1.0
+
+def test_favorable_move_invalid_input():
+    # Empty prices -> EmptyData -> ValueError
+    with pytest.raises(ValueError):
+        chart_trends.peak_favorable_move([], 0, 3)
+    # period == 0 -> InvalidPeriod -> ValueError
+    with pytest.raises(ValueError):
+        chart_trends.peak_favorable_move([100.0, 101.0, 102.0], 0, 0)
+    # Forward window out of bounds (index + period >= len) -> InvalidPeriod -> ValueError
+    with pytest.raises(ValueError):
+        chart_trends.valley_favorable_move([100.0, 101.0, 102.0], 1, 3)
 
 
