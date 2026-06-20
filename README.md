@@ -11,9 +11,9 @@
 
 # Centaur Technical Indicators
 
-A production-ready Python library providing 60+ technical indicators for financial analysis, built on a high-performance Rust backend. 
+A production-ready Python library providing 50+ technical indicators for financial analysis, built on a high-performance Rust backend.
 
-Part of the Centaur Capital ecosystem.
+Part of the CRT (Centaur Research & Technologies) ecosystem.
 
 Looking for the Rust crate? See: [ChironMind/CentaurTechnicalIndicators-Rust](https://github.com/ChironMind/CentaurTechnicalIndicators-Rust)
 
@@ -36,7 +36,7 @@ import centaur_technical_indicators as cti
 
 prices = [100.2, 100.46, 100.53, 100.38, 100.19]
 
-ma = cti.moving_average(
+ma = cti.moving_average.single.moving_average(
     prices,
     "simple"
 )
@@ -94,9 +94,14 @@ $ pytest .
 ### Library Structure
 
 - Modules based on their analysis areas (**`moving_average`**, **`momentum_indicators`**, **`strength_indicators`**...)
-- `bulk` & `single` function variants  
+- Most modules have both `bulk` and `single` sub-modules:
   - `bulk`: Compute indicator over rolling periods, returns a list.
   - `single`: Compute indicator for the entire list, returns a single value.
+- **Exceptions (asymmetric shape):**
+  - `chart_trends` — flat module (no `single`/`bulk` sub-modules; functions are top-level).
+  - `volatility_indicators` — `volatility_system` is `bulk` only; `ulcer_index` has both.
+  - `other_indicators`, `strength_indicators`, and `trend_indicators` are asymmetric (not every
+    indicator has both variants).
 - `types` used to personalise the technical indicators (**`moving_average_type`**, **`deviation_model`**, **`constant_model_type`**...)
 
 ---
@@ -116,35 +121,42 @@ $ pytest .
 
 ## 📈 Available Indicators
 
-All indicators are grouped and split into modules based on their analysis area.  
-Each module has `bulk` (list output) and `single` (scalar output) functions.
+All indicators are grouped and split into modules based on their analysis area.
 
 ### Candle Indicators
-- Ichimoku Cloud, Moving Constant Bands/Envelopes, Donchian Channels, Keltner, Supertrend
+- Ichimoku Cloud, Moving Constant Bands/Envelopes, Donchian Channels, Keltner, Supertrend,
+  McGinley Dynamic Envelopes, McGinley Dynamic Bands
 
 ### Chart Trends
-- Trend break down, overall trends, peak/valley trends
+- Trend break down, overall trends, peak/valley trends, peak favorable move, valley favorable move
 
 ### Correlation Indicators
 - Correlate asset prices
 
 ### Momentum Indicators
-- Chaikin Oscillator, CCI, MACD, Money Flow Index, On Balance Volume, ROC, RSI, Williams %R
+- Chaikin Oscillator, CCI, MACD, Money Flow Index, On Balance Volume, ROC, RSI, Williams %R,
+  Stochastic Oscillator, Slow Stochastic, Slowest Stochastic, Percentage Price Oscillator (PPO),
+  Chande Momentum Oscillator (CMO), Signal Line (MACD signal),
+  McGinley Dynamic Commodity Channel Index, McGinley Dynamic MACD Line
 
 ### Moving Averages
 - McGinley Dynamic, Moving Average
 
 ### Other Indicators
-- ROI, True Range, ATR, Internal Bar Strength
+- ROI, True Range, ATR, Internal Bar Strength, Positivity Indicator
 
 ### Strength Indicators
-- Accumulation/Distribution, PVI, NVI, RVI
+- Accumulation/Distribution, PVI, NVI, RVI, Volume Index
 
 ### Trend Indicators
 - Aroon (Up/Down/Oscillator), Parabolic, DM, Volume-Price Trend, TSI
 
 ### Volatility Indicators
 - Ulcer Index, Volatility System
+
+**Note on scope:** Statistical primitives available in Python's `statistics` / `math` modules
+(the Rust `basic_indicators` surface) are intentionally not re-bound. Use the standard library
+directly for those.
 
 ---
 
@@ -226,7 +238,7 @@ This repository is part of a structured documentation suite:
 - 📕 **Tutorials:** — [See here](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/tutorials/)
 - 📘 **How-To Guides:** — [See here](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/howto/)
 - ⏱️ **Benchmarks:** — [See here](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/benchmarks/)
-- 📙 **Explanations:** — [centaurlabs.pages.dev/](https://centaurlabs.pages.dev/)
+- 📙 **Explanations:** — [tech.centaurresearchtechnologies.com](https://tech.centaurresearchtechnologies.com/)
 - 📗 **Reference:** — [See here](https://centaurtechnicalindicators-python.readthedocs.io/en/latest/api/)
  
 ---
