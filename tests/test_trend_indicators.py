@@ -1,3 +1,4 @@
+import math
 import pytest
 
 from centaur_technical_indicators import trend_indicators
@@ -27,6 +28,16 @@ high = [200.0, 210.0, 205.0, 190.0, 185.0]
 low = [175.0, 192.0, 200.0, 174.0, 179.0]
 close = [192.0, 200.0, 201.0, 187.0, 188.0]
 volume = [1000.0, 1500.0, 1200.0, 900.0, 1300.0]
+
+def test_all_nan_aroon_up_returns_nan_not_panic():
+    result = trend_indicators.single.aroon_up([float("nan"), float("nan")])
+    assert math.isnan(result)
+
+
+def test_all_nan_aroon_down_returns_nan_not_panic():
+    result = trend_indicators.single.aroon_down([float("nan"), float("nan")])
+    assert math.isnan(result)
+
 
 def test_single_aroon_up():
     assert trend_indicators.single.aroon_up(high) == 25.0

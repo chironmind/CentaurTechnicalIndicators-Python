@@ -1,3 +1,4 @@
+import math
 import pytest
 
 from centaur_technical_indicators import momentum_indicators
@@ -269,6 +270,11 @@ def test_single_chande_momentum_oscillator():
 
 def test_bulk_chande_momentum_oscillator():
     assert momentum_indicators.bulk.chande_momentum_oscillator(prices, 3) == [100.0, -33.33333333333333, -100.0]
+
+def test_all_nan_stochastic_returns_nan_not_panic():
+    result = momentum_indicators.single.stochastic_oscillator([float("nan"), float("nan")])
+    assert math.isnan(result)
+
 
 def test_new_deviation_models_commodity_channel_index():
     """Test new probability distribution deviation models added in rust_ti 2.2.0"""
