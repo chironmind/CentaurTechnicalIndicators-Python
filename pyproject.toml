@@ -5,7 +5,7 @@ build-backend = "maturin"
 [project]
 name = "centaur_technical_indicators"
 requires-python = ">=3.10"
-description = "A collection of 60+ fully configurable technical indicators for financial analysis, powered by Rust and Python. Part of the Centaur Capital ecosystem."
+description = "A collection of 50+ fully configurable technical indicators for financial analysis, powered by Rust and Python. Part of the CRT (Centaur Research & Technologies) ecosystem."
 readme = "README.md"
 authors = [
     { name="ChironMind", email="your@email.com" }

@@ -10,6 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 - Incorrect `Documentation` URL in package metadata (pointed at the GitHub wiki).
+- README quick-start example called `cti.moving_average(...)` (a submodule, not callable)
+  instead of `cti.moving_average.single.moving_average(...)`.
+- Docstring keyword-name mismatches that could raise `TypeError` (`supertrend`
+  `constant_type_model` → `constant_model_type`; `true_range` `previous_close` → `close`).
+- README "Available Indicators" / "Library Structure" drift and benchmark-vs-list inconsistency.
 - Inherited Rust 1.3.0 behavior changes, now user-visible through the bindings:
   `chart_trends.peaks` / `chart_trends.valleys` corrected for index-0 and
   retained-after-monotonic-run extrema; and `aroon_up` / `aroon_down` /
@@ -24,10 +29,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Tests pinning accepted model-type / deviation-model / moving-average-type string aliases.
 - Documentation of the full accepted string-alias set for each regime (incl. the `sma`→Smoothed
   / `ma`→Simple aliases), with `from_string` error messages reconciled to match.
- 
+- README scope note: statistical primitives (the Rust `basic_indicators` surface) are
+  intentionally not re-bound.
+
 ### Changed
 - Updated `centaur_technical_indicators` Rust crate dependency from `1.2.2` to `1.3.0`.
 - Expanded PyPI classifiers to declare Python 3.10–3.14.
+- Updated ecosystem naming from "Centaur Capital" to "CRT (Centaur Research & Technologies)"
+  and the legacy `centaurlabs.pages.dev` documentation link.
+- Adjusted the indicator-count claim from "60+" to "50+".
 
 ## [1.2.2] - 2026-04-04
 
