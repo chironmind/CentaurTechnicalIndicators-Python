@@ -31,6 +31,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   / `ma`→Simple aliases), with `from_string` error messages reconciled to match.
 - README scope note: statistical primitives (the Rust `basic_indicators` surface) are
   intentionally not re-bound.
+- Type stubs (`.pyi`) and a `py.typed` marker (PEP 561 inline typing) for the full API surface.
+- `__version__` on the top-level package, resolved via `importlib.metadata`.
+- Mixed package layout with a hand-authored `__init__.py` (adopts maturin `python-source`).
 
 ### Changed
 - Updated `centaur_technical_indicators` Rust crate dependency from `1.2.2` to `1.3.0`.
@@ -38,6 +41,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Updated ecosystem naming from "Centaur Capital" to "CRT (Centaur Research & Technologies)"
   and the legacy `centaurlabs.pages.dev` documentation link.
 - Adjusted the indicator-count claim from "60+" to "50+".
+- Exclude internal `docs/` from the source distribution (sdist).
 
 ## [1.2.2] - 2026-04-04
 
