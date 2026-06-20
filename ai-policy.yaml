@@ -39,6 +39,7 @@ coding_rules:
 pr_report:
   required_sections:
     - Summary
+    - Scope
     - Compatibility
     - Validation
     - Changelog
