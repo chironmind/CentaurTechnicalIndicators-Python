@@ -86,7 +86,7 @@ Run all three inside the repo's `.venv` (the `maturin`/`pytest` binaries are not
 
 Notes:
 - **clippy is intentionally parked** — do not add a clippy gate without maintainer approval.
-- CI (`.github/workflows/CI.yml`, `python-package.yml`) currently enforces only `maturin develop` (CI.yml uses `--release`) and `python -m pytest`; `cargo fmt` is a **local-only** pre-PR gate. If tests are skipped for environmental reasons, say why.
+- CI enforces all three gates: `.github/workflows/CI.yml`'s `verify` job runs `cargo fmt --all -- --check` (first), then `maturin develop --release` and `python -m pytest`; `python-package.yml` runs the pytest matrix across Python versions. `cargo fmt` is a CI gate, not local-only. If tests are skipped for environmental reasons, say why.
 
 ## Stop-and-report
 Stop and report — do not work around, guess, or paper over — when:
