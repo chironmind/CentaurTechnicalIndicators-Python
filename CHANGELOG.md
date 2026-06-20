@@ -15,8 +15,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Docstring keyword-name mismatches that could raise `TypeError` (`supertrend`
   `constant_type_model` → `constant_model_type`; `true_range` `previous_close` → `close`).
 - README "Available Indicators" / "Library Structure" drift and benchmark-vs-list inconsistency.
+- Inherited Rust 1.3.0 behavior changes, now user-visible through the bindings:
+  `chart_trends.peaks` / `chart_trends.valleys` corrected for index-0 and
+  retained-after-monotonic-run extrema; and `aroon_up` / `aroon_down` /
+  `stochastic_oscillator` return `NaN` instead of panicking on all-NaN input.
 
 ### Added
+- Python regression tests for inherited Rust 1.3.0 chart-trend / degenerate-input fixes.
 - `chart_trends.peak_favorable_move` and `chart_trends.valley_favorable_move` bindings (maximum
   favorable excursion over a forward window), mirroring Rust 1.3.0.
 - `cargo fmt --check` step to CI (the `verify` job in `CI.yml`).

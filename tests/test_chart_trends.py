@@ -70,6 +70,16 @@ def test_valley_favorable_move():
     # Monotonic fall: price never rises above the reference, so the move is negative.
     assert chart_trends.valley_favorable_move([105.0, 104.0, 103.0, 102.0], 0, 3) == -1.0
 
+def test_peaks_keeps_valid_index_zero_peak():
+    """Regression: index-0 extremum must not be dropped (Rust 1.3.0 fix)."""
+    assert chart_trends.peaks([110., 109., 108., 107.], 2, 1) == [(110.0, 0)]
+
+
+def test_peaks_does_not_drop_retained_peak_after_monotonic_run():
+    """Regression: peak retained after a monotonic run must survive (Rust 1.3.0 fix)."""
+    assert chart_trends.peaks([110., 109., 108., 120.], 2, 2) == [(110.0, 0), (120.0, 3)]
+
+
 def test_favorable_move_invalid_input():
     # Empty prices -> EmptyData -> ValueError
     with pytest.raises(ValueError):

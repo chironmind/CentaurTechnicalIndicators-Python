@@ -144,6 +144,12 @@ def test_bulk_supertrend():
     with pytest.raises(ValueError):
         candle_indicators.bulk.supertrend(high, low, close, "", 2.0, 3)
 
+def test_cauchy_degenerate_moving_constant_bands_no_panic():
+    """Regression: flat input (IQR=0) must not panic through FFI; hardened cauchy path returns finite bands."""
+    result = candle_indicators.single.moving_constant_bands([100., 100., 100., 100.], "simple", "cauchy", 3.0)
+    assert result == (100.0, 100.0, 100.0)
+
+
 def test_new_deviation_models_moving_constant_bands():
     """Test new probability distribution deviation models added in rust_ti 2.2.0"""
     # Test log standard deviation
