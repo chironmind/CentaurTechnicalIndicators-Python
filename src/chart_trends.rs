@@ -19,6 +19,8 @@ pub fn chart_trends(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(valley_trend, m)?)?;
     m.add_function(wrap_pyfunction!(overall_trend, m)?)?;
     m.add_function(wrap_pyfunction!(break_down_trends, m)?)?;
+    m.add_function(wrap_pyfunction!(peak_favorable_move, m)?)?;
+    m.add_function(wrap_pyfunction!(valley_favorable_move, m)?)?;
     Ok(())
 }
 
@@ -138,4 +140,42 @@ fn break_down_trends(
         },
     )
     .map_err(|e| PyValueError::new_err(e.to_string()))
+}
+
+/// Calculates the peak favorable move for the price at a given index.
+///
+/// The favorable move is the largest drop from `prices[index]` to the lowest price in the
+/// inclusive forward window `[index + 1, index + period]`. The result is signed: it is negative
+/// when no price in the window falls below `prices[index]`.
+///
+/// Args:
+///     prices: List of prices
+///     index: Index of the reference price
+///     period: Number of bars in the forward window
+///
+/// Returns:
+///     The signed favorable move (`prices[index] - min(window)`)
+#[pyfunction]
+fn peak_favorable_move(prices: Vec<f64>, index: usize, period: usize) -> PyResult<f64> {
+    ct::peak_favorable_move(&prices, index, period)
+        .map_err(|e| PyValueError::new_err(e.to_string()))
+}
+
+/// Calculates the valley favorable move for the price at a given index.
+///
+/// The favorable move is the largest rise from `prices[index]` to the highest price in the
+/// inclusive forward window `[index + 1, index + period]`. The result is signed: it is negative
+/// when no price in the window rises above `prices[index]`.
+///
+/// Args:
+///     prices: List of prices
+///     index: Index of the reference price
+///     period: Number of bars in the forward window
+///
+/// Returns:
+///     The signed favorable move (`max(window) - prices[index]`)
+#[pyfunction]
+fn valley_favorable_move(prices: Vec<f64>, index: usize, period: usize) -> PyResult<f64> {
+    ct::valley_favorable_move(&prices, index, period)
+        .map_err(|e| PyValueError::new_err(e.to_string()))
 }

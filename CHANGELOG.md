@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Incorrect `Documentation` URL in package metadata (pointed at the GitHub wiki).
 
 ### Added
+- `chart_trends.peak_favorable_move` and `chart_trends.valley_favorable_move` bindings (maximum
+  favorable excursion over a forward window), mirroring Rust 1.3.0.
 - `cargo fmt --check` step to CI (the `verify` job in `CI.yml`).
 - `docs/2.0.0.md` breaking-change backlog.
 - Tests pinning accepted model-type / deviation-model / moving-average-type string aliases.
