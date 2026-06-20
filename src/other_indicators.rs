@@ -99,7 +99,7 @@ fn bulk_return_on_investment(prices: Vec<f64>, investment: f64) -> PyResult<Vec<
 /// Calculates the True Range (TR)
 ///
 /// Args:
-///     previous_close: Previous period close
+///     close: Previous period close
 ///     high: Current period high
 ///     low: Current period low
 ///
