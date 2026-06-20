@@ -33,8 +33,6 @@ pub fn chart_trends(m: &Bound<'_, PyModule>) -> PyResult<()> {
 ///
 /// Returns:
 ///     List of tuples containing (peak value, peak index)
-///
-/// See: <https://tech.centaurresearchtechnologies.com/indicators/chart-trends/peaks/>
 #[pyfunction]
 fn peaks(prices: Vec<f64>, period: usize, closest_neighbor: usize) -> PyResult<Vec<(f64, usize)>> {
     Ok(ct::peaks(&prices, period, closest_neighbor)
@@ -50,8 +48,6 @@ fn peaks(prices: Vec<f64>, period: usize, closest_neighbor: usize) -> PyResult<V
 ///
 /// Returns:
 ///     List of tuples containing (valley value, valley index)
-///
-/// See: <https://tech.centaurresearchtechnologies.com/indicators/chart-trends/valleys/>
 #[pyfunction]
 fn valleys(
     prices: Vec<f64>,
@@ -70,8 +66,6 @@ fn valleys(
 ///
 /// Returns:
 ///     Tuple containing (slope, intercept) of the peak trend line
-///
-/// See: <https://tech.centaurresearchtechnologies.com/indicators/chart-trends/peak-trend/>
 #[pyfunction]
 fn peak_trend(prices: Vec<f64>, period: usize) -> PyResult<(f64, f64)> {
     Ok(ct::peak_trend(&prices, period).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -85,8 +79,6 @@ fn peak_trend(prices: Vec<f64>, period: usize) -> PyResult<(f64, f64)> {
 ///
 /// Returns:
 ///     Tuple containing (slope, intercept) of the valley trend line
-///
-/// See: <https://tech.centaurresearchtechnologies.com/indicators/chart-trends/valley-trend/>
 #[pyfunction]
 fn valley_trend(prices: Vec<f64>, period: usize) -> PyResult<(f64, f64)> {
     Ok(ct::valley_trend(&prices, period).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -99,8 +91,6 @@ fn valley_trend(prices: Vec<f64>, period: usize) -> PyResult<(f64, f64)> {
 ///
 /// Returns:
 ///     Tuple containing (slope, intercept) of the overall trend line
-///
-/// See: <https://tech.centaurresearchtechnologies.com/indicators/chart-trends/overall-trend/>
 #[pyfunction]
 fn overall_trend(prices: Vec<f64>) -> PyResult<(f64, f64)> {
     Ok(ct::overall_trend(&prices).map_err(|e| PyValueError::new_err(e.to_string()))?)
@@ -122,8 +112,6 @@ fn overall_trend(prices: Vec<f64>) -> PyResult<(f64, f64)> {
 ///
 /// Returns:
 ///     List of tuples containing (start_index, end_index, slope, intercept) for each trend segment
-///
-/// See: <https://tech.centaurresearchtechnologies.com/indicators/chart-trends/break-down-trends/>
 #[pyfunction]
 fn break_down_trends(
     prices: Vec<f64>,
