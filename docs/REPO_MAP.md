@@ -8,9 +8,11 @@ Quick orientation for contributors and coding agents working in `CentaurTechnica
 - `tests/`: Python test files (smoke tests for each binding module).
 - `assets/`: Supporting artifacts (documentation assets, banner images).
 - `.github/workflows/`: CI workflows (PR validation, release pipeline).
-- `docs/`: internal docs (excluded from the sdist, never shipped) — `REPO_MAP.md` (this file),
-  [`DECISIONS-1.3.0.md`](DECISIONS-1.3.0.md) (the 1.3.0 release decision record), and
-  [`2.0.0.md`](2.0.0.md) (breaking-change backlog for the next major).
+- `docs/`: internal knowledge base (excluded from the sdist, never shipped) — see
+  [`docs/README.md`](README.md). Holds `REPO_MAP.md` (this file), `technical_decisions/`
+  (the 1.3.0 [decision record](technical_decisions/DECISIONS-1.3.0.md) + the
+  [`2.0.0.md`](technical_decisions/2.0.0.md) breaking-change backlog), and `implementation_decisions/`
+  (the master plan, the twelve slice briefs, and the resume/state doc).
 - `Cargo.toml`: Rust package version and dependency configuration.
 - `pyproject.toml`: Python package metadata and maturin build settings.
 - `CHANGELOG.md`: required entry point for every user-facing change.
