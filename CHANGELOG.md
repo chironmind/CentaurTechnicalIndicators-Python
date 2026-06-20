@@ -24,7 +24,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Tests pinning accepted model-type / deviation-model / moving-average-type string aliases.
 - Documentation of the full accepted string-alias set for each regime (incl. the `sma`→Smoothed
   / `ma`→Simple aliases), with `from_string` error messages reconciled to match.
-- `See:` reference links on all `chart_trends` docstrings.
 - README scope note: statistical primitives (the Rust `basic_indicators` surface) are
   intentionally not re-bound.
 

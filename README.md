@@ -99,7 +99,7 @@ $ pytest .
   - `single`: Compute indicator for the entire list, returns a single value.
 - **Exceptions (asymmetric shape):**
   - `chart_trends` — flat module (no `single`/`bulk` sub-modules; functions are top-level).
-  - `volatility_indicators` — `ulcer_index` has `single` only; `volatility_system` is `bulk` only.
+  - `volatility_indicators` — `volatility_system` is `bulk` only; `ulcer_index` has both.
   - `other_indicators`, `strength_indicators`, and `trend_indicators` are asymmetric (not every
     indicator has both variants).
 - `types` used to personalise the technical indicators (**`moving_average_type`**, **`deviation_model`**, **`constant_model_type`**...)
