@@ -1,0 +1,101 @@
+# S9 — Create `docs/2.0.0.md` (standalone session brief)
+
+> Self-contained. You do **not** need to read `PLAN.md`. One new file; no code changes.
+> Crate-version-agnostic.
+
+## Mission
+
+Create `docs/2.0.0.md` — the breaking-change backlog for the next major version — with the exact
+content in step 1 below.
+
+## Repo facts
+
+- `docs/` already exists (holds `REPO_MAP.md`). PyO3/maturin project; `.venv` has `maturin` +
+  `pytest`. Gates: `maturin develop`, `python -m pytest`, `cargo fmt --check`. Own worktree + own
+  venv.
+
+## Steps
+
+1. Create `docs/2.0.0.md` with **exactly** this content (verbatim — do not reword):
+
+   ```markdown
+   # 2.0.0 — Breaking-change backlog
+
+   Items that require a breaking (major) release. Not actionable in 1.x. Recorded so they are
+   not re-litigated and not accidentally "fixed" in a minor. Each entry: what, why it's
+   breaking, proposed resolution.
+
+   ## 1. Misleading model-type aliases
+
+   `PyConstantModelType::from_string` maps `"sma"` -> Smoothed and `"ma"` -> Simple, inverting
+   the universal convention that SMA means Simple Moving Average.
+
+   - Why breaking: removing or remapping an accepted string changes behavior for any caller
+     relying on the current mapping.
+   - Resolution: remap `"sma"` -> Simple and drop/repurpose `"ma"`, or remove the two/three-
+     letter abbreviations entirely in favor of the unambiguous one-word and snake_case forms.
+     1.3.0 documents and pins the current behavior; 2.0 changes it.
+
+   ## 2. TSI single/bulk argument-order mismatch
+
+   `single.true_strength_index` is `(prices, first_period, first_constant_model,
+   second_constant_model)`; `bulk.true_strength_index` is `(prices, first_constant_model,
+   first_period, second_constant_model, second_period)` -- period/model order is swapped between
+   the two public signatures. Both map correctly to upstream; this is a public-API ergonomics
+   wart, not a miscompiled call.
+
+   - Why breaking: reordering either signature changes positional-argument meaning.
+   - Resolution: pick one order (recommend model-then-period, matching upstream) and apply it to
+     both.
+
+   ## 3. Deprecated upstream functions exposed without a Python signal
+
+   `slow_stochastic`, `slowest_stochastic`, `signal_line` (momentum) and `volatility_system`
+   (volatility) wrap upstream functions marked `#[deprecated(since = "1.0.0")]` via
+   `#[allow(deprecated)]`. The Python docstrings give no deprecation signal.
+
+   - Why breaking: dropping them removes public functions; even adding a hard deprecation warning
+     changes observable behavior.
+   - Resolution: decide whether to annotate (e.g. `DeprecationWarning`) or drop in 2.0.
+
+   ## 4. Python-unreachable parameterized enum variants
+
+   Several upstream enum variants are not exposed because they carry parameters that the current
+   string-based `from_string` API can't express:
+   - `PyConstantModelType` omits `PersonalisedMovingAverage`.
+   - `PyMovingAverageType` omits `Personalised`.
+   - `PyDeviationModel` omits `CustomAbsoluteDeviation`, `StudentT`, `EmpiricalQuantileRange`.
+
+   - Why breaking: exposing them requires an API change (the string-only constructor can't carry
+     parameters), which alters the type-construction surface.
+   - Resolution: design a parameterized constructor path (e.g. structured objects alongside the
+     string shorthands) in 2.0.
+
+   ## Notes
+
+   - The Rust crate's own 2.0 concerns (e.g. `#[non_exhaustive]` migration of public enums) live
+     in the Rust repo, not here.
+   ```
+
+2. Run the gates (no code changed, so they're confirmation), add CHANGELOG, open PR.
+
+## CHANGELOG (under the existing `## [Unreleased]`)
+
+```
+### Added
+- `docs/2.0.0.md` breaking-change backlog.
+```
+
+## Commit / PR
+
+- Branch: `git checkout -b docs/2.0-backlog`. Stage `docs/2.0.0.md`, `CHANGELOG.md`. Don't
+  `git add` untracked scratch files.
+- Commit prefix `docs:`; end with
+  `Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>`.
+- PR body: **Summary** / **Compatibility** (none) / **Validation** / **Changelog**.
+
+## Done criteria
+
+- `docs/2.0.0.md` created verbatim. Gates green. PR opened.
+
+## Effort: **low**
