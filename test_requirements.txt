@@ -2,5 +2,5 @@ iniconfig==2.1.0
 maturin==1.11.5
 packaging==25.0
 pluggy==1.6.0
-Pygments==2.19.2
-pytest==8.4.1
+Pygments==2.20.0
+pytest==9.0.3

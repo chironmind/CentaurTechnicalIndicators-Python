@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [Unreleased]
+
+### Security
+- Bumped test-only tooling: pytest 8.4.1 → 9.0.3 (resolves GHSA-6w46-j5rx-g56g, vulnerable tmpdir
+  handling) and Pygments 2.19.2 → 2.20.0 (resolves GHSA-5239-wwwm-4pmq, ReDoS in the GUID-matching
+  regex). Development/CI dependencies only — no runtime or API impact on the installed package.
+
+---
+
 ## [1.3.0] - 2026-06-20
 
 ### Fixed
