@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [Unreleased]
+
+### Security
+- Bumped PyO3 from 0.25 to 0.29, resolving GHSA-36hh-v3qg-5jq4 (out-of-bounds read in the
+  `nth`/`nth_back` iterators of `PyList`/`PyTuple`) and GHSA-chgr-c6px-7xpp (missing `Sync` bound
+  on `PyCFunction::new_closure`). Neither vulnerable path is exercised by these bindings; the bump
+  clears both advisories at the dependency level.
+
+### Changed
+- Declared `rust-version = "1.83"` in `Cargo.toml` — the minimum supported Rust the PyO3 0.29
+  bump requires (no impact on prebuilt wheels; relevant only when building from source).
+
+---
+
 ## [1.3.0] - 2026-06-20
 
 ### Fixed
