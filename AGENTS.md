@@ -113,7 +113,7 @@ For parallel or batched work (e.g. running multiple slice briefs):
 
 ## Core-crate version & source of truth
 - The binding wraps the published crates.io crate `centaur_technical_indicators`; that core-crate version is the source of truth, and `[package] version` in `Cargo.toml` is normally bumped to match it (see `docs/REPO_MAP.md` for the full rule).
-- Current in-flight state on `main`: the dependency is pinned to `1.3.0` while `[package] version` is intentionally held at `1.2.2` until the release cut — deferred deliberately, not forgotten.
+- `[package] version` need **not** always equal the core-crate version. A **binding-only patch release** — one that changes only the bindings/tooling (e.g. the 1.3.1 security patch: PyO3 and test-tooling bumps, no core-crate code) — may move `[package] version` ahead while the `centaur_technical_indicators` dependency stays put. The version-match rule above is the default; binding-only patches are the documented exception. *(Example: 1.3.1 ships `[package] version = 1.3.1` against core crate `1.3.0`.)*
 
 ## Pull request checklist for agents
 - [ ] Scope is minimal and matches the task; only the named files changed.
