@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## [Unreleased]
+## [1.3.1] - 2026-06-21
 
 ### Security
 - Bumped test-only tooling: pytest 8.4.1 → 9.0.3 (resolves GHSA-6w46-j5rx-g56g, vulnerable tmpdir
